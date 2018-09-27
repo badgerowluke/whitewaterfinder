@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\whitewaterfinder.BusinessObjects\whitewaterfinder.BusinessObjects.csproj" />
+    <ProjectReference Include="..\whitewaterfinder.Repo\whitewaterfinder.Repo.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+</Project>
