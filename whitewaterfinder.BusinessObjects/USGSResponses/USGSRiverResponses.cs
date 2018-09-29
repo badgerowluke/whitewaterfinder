@@ -1,5 +1,5 @@
 using System;
-namespace whitewaterfinder.BusinessObjects
+namespace whitewaterfinder.BusinessObjects.USGSResponses
 {
     public class USGSRiverResponse
     {

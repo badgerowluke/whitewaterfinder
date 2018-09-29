@@ -1,7 +1,10 @@
+using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using whitewaterfinder.BusinessObjects.Rivers;
+using whitewaterfinder.BusinessObjects.USGSResponses;
 using whitewaterfinder.BusinessObjects;
 namespace whitewaterfinder.Repo
 {
@@ -36,11 +39,21 @@ namespace whitewaterfinder.Repo
                         Srs = obj.Value.TimeSeries[0].SourceInfo.Geolocation.GeogLocation.SRS,
                         RiverId = obj.Value.TimeSeries[0].SourceInfo.SiteCode[0].Value
                     };
+
+                    var riverData = new List<RiverData>();
+
+                    river.Flow = obj.DoStuff();
+                    river.Levels = obj.DoStuff();
+
+                    river.RiverData = river.PopulateRiverData();
+
                     return river;
 
                 }
+                
 
             }
         }
+
     } 
 }
