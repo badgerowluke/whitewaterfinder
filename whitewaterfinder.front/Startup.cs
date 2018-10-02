@@ -6,6 +6,9 @@ using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
+using whitewaterfinder.Core;
+using whitewaterfinder.Repo;
+
 namespace whitewaterfinder.front
 {
     public class Startup
@@ -21,7 +24,15 @@ namespace whitewaterfinder.front
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddTransient<IRiverService, RiverService>();
+            services.AddSingleton<IRiverRepository, RiverRepository>();
+            services.AddSingleton<IRiverDetailRepository, RiverDetailRepository>();
+             
+            // services.AddSingleton<ILookupRepository, LookupRepository>();
+            // services.AddSingleton<IIterationRepository, IterationRepository>();
 
+            // services.AddTransient<IIterationServices, IterationServiceProvider>();
+            
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {
