@@ -28,10 +28,7 @@ namespace whitewaterfinder.front
             services.AddSingleton<IRiverRepository, RiverRepository>();
             services.AddSingleton<IRiverDetailRepository, RiverDetailRepository>();
              
-            // services.AddSingleton<ILookupRepository, LookupRepository>();
-            // services.AddSingleton<IIterationRepository, IterationRepository>();
 
-            // services.AddTransient<IIterationServices, IterationServiceProvider>();
             
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
