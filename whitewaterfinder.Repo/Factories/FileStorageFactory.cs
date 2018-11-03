@@ -1,13 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-
+using Newtonsoft.Json;
+using System.Linq;
 
 namespace whitewaterfinder.Repo.Factories
 {
     public interface IFileFactory
     {
-
+        IEnumerable<T> GetEnumerable<T>(string filename);
     }
     public class FileStorageFactory: IFileFactory
     {
@@ -16,13 +17,17 @@ namespace whitewaterfinder.Repo.Factories
         {
             folder = _path;
         }
-        public IEnumerable<T> GetListOfThings<T>( string filename)
+        public IEnumerable<T> GetEnumerable<T>( string filename)
         {
-            using (StreamReader reader = new StreamReader(folder +filename))
-            {
+            var riverStream = new FileStream("Data/usRivers",FileMode.Open);
+            var riverList = new List<T>();
+            
+            using(StreamReader reader = new StreamReader(riverStream)){
                 string json = reader.ReadToEnd();
+                var list = JsonConvert.DeserializeObject<IDictionary<string,string>>(json);
             }
-            return new List<T>();
+
+            return riverList;
         }
     }
 }

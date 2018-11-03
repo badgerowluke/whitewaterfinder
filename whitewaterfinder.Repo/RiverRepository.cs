@@ -4,7 +4,7 @@ using System.Linq;
 using Newtonsoft.Json;
 
 using whitewaterfinder.BusinessObjects.Rivers;
-
+using whitewaterfinder.Repo.Factories;
 namespace whitewaterfinder.Repo
 {
     public interface IRiverRepository 
@@ -13,6 +13,11 @@ namespace whitewaterfinder.Repo
     }
     public class RiverRepository : IRiverRepository
     {
+        private readonly IFileFactory folders;
+        public RiverRepository(IFileFactory _folder)
+        {
+            folders = _folder;
+        }
         public IEnumerable<River> GetAllUSRivers(string partName){
             var riverStream = new FileStream("Data/usRivers",FileMode.Open);
             var riverList = new List<River>();

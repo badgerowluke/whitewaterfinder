@@ -1,8 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <ProjectReference Include="..\whitewaterfinder.BusinessObjects\whitewaterfinder.BusinessObjects.csproj" />
     <ProjectReference Include="..\whitewaterfinder.Repo\whitewaterfinder.Repo.csproj" />
+    <ProjectReference Include="..\whitewaterfinder.BusinessObjects\whitewaterfinder.BusinessObjects.csproj" />
   </ItemGroup>
 
   <PropertyGroup>
