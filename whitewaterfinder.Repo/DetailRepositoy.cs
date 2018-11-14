@@ -42,10 +42,10 @@ namespace whitewaterfinder.Repo
 
                     var riverData = new List<RiverData>();
 
-                    river.Flow = obj.DoStuff();
-                    river.Levels = obj.DoStuff();
+                    river.Flow = obj.ParseTimeSeriesData();
+                    river.Levels = obj.ParseTimeSeriesData();
 
-                    river.RiverData = river.PopulateRiverData();
+                    // river.RiverData = river.PopulateRiverData();
 
                     return river;
 

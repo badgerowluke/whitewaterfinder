@@ -9,6 +9,7 @@ namespace whitewaterfinder.Repo.Factories
     public interface IFileFactory
     {
         IEnumerable<T> GetEnumerable<T>(string filename);
+        T Get<T>(string filename); 
     }
     public class FileStorageFactory: IFileFactory
     {
@@ -19,15 +20,25 @@ namespace whitewaterfinder.Repo.Factories
         }
         public IEnumerable<T> GetEnumerable<T>( string filename)
         {
-            var riverStream = new FileStream("Data/usRivers",FileMode.Open);
-            var riverList = new List<T>();
+            var stream = new FileStream(Path.Combine(folder, filename), FileMode.Open);
+            var listOut = new List<T>();
             
-            using(StreamReader reader = new StreamReader(riverStream)){
+            using(StreamReader reader = new StreamReader(stream)){
                 string json = reader.ReadToEnd();
                 var list = JsonConvert.DeserializeObject<IDictionary<string,string>>(json);
+                
             }
 
-            return riverList;
+            return listOut;
+        }
+        public T Get<T>(string filename)
+        {
+            var stream = new FileStream(Path.Combine(folder, filename), FileMode.Open);
+            using(StreamReader reader = new StreamReader(stream)){
+                string json = reader.ReadToEnd();
+                return JsonConvert.DeserializeObject<T>(json);
+                
+            }
         }
     }
 }

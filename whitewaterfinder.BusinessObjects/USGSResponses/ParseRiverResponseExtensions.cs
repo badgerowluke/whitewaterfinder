@@ -6,7 +6,7 @@ namespace whitewaterfinder.BusinessObjects.USGSResponses
 {
     public static class RiverResponseExtensions
     {
-        public static RiverData[] DoStuff(this USGSRiverResponse response)
+        public static RiverData[] ParseTimeSeriesData(this USGSRiverResponse response)
         {
             foreach (var dataSet in response.Value.TimeSeries) {
                 var units = dataSet.Variable.unit.UnitCode;

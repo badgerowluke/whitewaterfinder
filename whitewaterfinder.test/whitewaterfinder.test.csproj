@@ -19,4 +19,10 @@
 
   </ItemGroup>
 
+    <ItemGroup>
+    <None Update="data\riverdata.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

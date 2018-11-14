@@ -21,6 +21,9 @@ namespace whitewaterfinder.Repo
         public IEnumerable<River> GetAllUSRivers(string partName){
             var riverStream = new FileStream("Data/usRivers",FileMode.Open);
             var riverList = new List<River>();
+
+            var stuff = folders.GetEnumerable<River>("Data/usRivers");
+            
             
             using(StreamReader reader = new StreamReader(riverStream)){
                 string json = reader.ReadToEnd();
