@@ -1,12 +1,13 @@
 using System;
 using System.Collections.Generic;
 using whitewaterfinder.BusinessObjects.Rivers;
+using whitewaterfinder.BusinessObjects.Enumerations;
 
 namespace whitewaterfinder.BusinessObjects.USGSResponses
 {
     public static class RiverResponseExtensions
     {
-        public static RiverData[] ParseTimeSeriesData(this USGSRiverResponse response)
+        public static RiverData[] ParseTimeSeriesData(this USGSRiverResponse response, TimeSeriesTypes type)
         {
             foreach (var dataSet in response.Value.TimeSeries) {
                 var units = dataSet.Variable.unit.UnitCode;
@@ -14,9 +15,17 @@ namespace whitewaterfinder.BusinessObjects.USGSResponses
 
                 switch (units) {
                     case ("ft3/s"):
-                        return ProcessRiverData(dataVals[0], units);
+                        if(type == TimeSeriesTypes.CubicFeet) {
+                            return ProcessRiverData(dataVals[0], units);
+                        } else {
+                            break;
+                        }
                     case ("ft"):
-                        return ProcessRiverData(dataVals[0], units);
+                        if(type == TimeSeriesTypes.GuageHeight) {
+                            return ProcessRiverData(dataVals[0], units);
+                        } else {
+                            break;
+                        }
                 }
             }
             return new List<RiverData>().ToArray();
