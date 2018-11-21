@@ -18,9 +18,11 @@ namespace whitewaterfinder.api
     {
         [FunctionName("Rivers")]
         public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = null)] HttpRequest req,
             ILogger log, ExecutionContext context)
         {
+            try 
+            {
             var config = new ConfigurationBuilder()
                 .SetBasePath(context.FunctionAppDirectory)
                 .AddJsonFile("local.settings.json", optional: true, reloadOnChange: true)
@@ -41,6 +43,12 @@ namespace whitewaterfinder.api
             return rivers != null
                 ? (ActionResult)new OkObjectResult(rivers)
                 : new BadRequestObjectResult("Please pass a name on the query string or in the request body");
+            }catch (Exception e )
+            {
+                log.LogError(null, e.StackTrace);
+                throw new Exception();
+            }
+
         }
     }
 }
