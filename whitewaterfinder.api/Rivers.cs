@@ -19,7 +19,7 @@ namespace whitewaterfinder.api
         [FunctionName("Rivers")]
         public static async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = null)] HttpRequest req,
-            ILogger log)
+            ILogger log, ExecutionContext context)
         {
             if (req == null)
             {
@@ -31,11 +31,16 @@ namespace whitewaterfinder.api
                 throw new ArgumentNullException(nameof(log));
             }
 
+            if (context == null)
+            {
+                throw new ArgumentNullException(nameof(context));
+            }
+
             try 
             {
                 log.LogInformation("I am here");
                 var config = new ConfigurationBuilder()
-                    // .SetBasePath(context.FunctionAppDirectory)
+                    .SetBasePath(context.FunctionAppDirectory)
                     // .AddJsonFile("local.settings.json", optional: true, reloadOnChange: true)
                     .AddEnvironmentVariables()
                     .Build();
