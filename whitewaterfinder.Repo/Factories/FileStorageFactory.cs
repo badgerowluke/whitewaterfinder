@@ -6,19 +6,19 @@ using System.Linq;
 
 namespace whitewaterfinder.Repo.Factories
 {
-    public interface IFileFactory
+    public interface IStorageFactory
     {
-        IEnumerable<T> GetEnumerable<T>(string filename);
+        IEnumerable<T> GetMultiple<T>(string filename);
         T Get<T>(string filename); 
     }
-    public class FileStorageFactory: IFileFactory
+    public class FileStorageFactory: IStorageFactory
     {
         private readonly string folder;
         public FileStorageFactory(string _path)
         {
             folder = _path;
         }
-        public IEnumerable<T> GetEnumerable<T>( string filename)
+        public IEnumerable<T> GetMultiple<T>( string filename)
         {
             var stream = new FileStream(Path.Combine(folder, filename), FileMode.Open);
             var listOut = new List<T>();

@@ -9,38 +9,19 @@ namespace whitewaterfinder.Repo
 {
     public interface IRiverRepository 
     {
-        IEnumerable<River> GetAllUSRivers(string partName);
+        IEnumerable<River> GetAllUSRivers();
     }
     public class RiverRepository : IRiverRepository
     {
-        private readonly IFileFactory folders;
-        public RiverRepository(IFileFactory _folder)
+        private readonly IStorageFactory folders;
+        public RiverRepository(IStorageFactory _folder)
         {
             folders = _folder;
         }
-        public IEnumerable<River> GetAllUSRivers(string partName){
-            var riverStream = new FileStream("Data/usRivers",FileMode.Open);
-            var riverList = new List<River>();
+        public IEnumerable<River> GetAllUSRivers(){
 
-            var stuff = folders.GetEnumerable<River>("Data/usRivers");
+            return folders.GetMultiple<River>("usRivers.json");
             
-            
-            using(StreamReader reader = new StreamReader(riverStream)){
-                string json = reader.ReadToEnd();
-                var list = JsonConvert.DeserializeObject<IDictionary<string,string>>(json);
-                if(string.IsNullOrEmpty(partName)){
-                    return riverList;
-                } else {
-                    
-                }
-                var vals = list.Where(r => r.Key.ToUpper().Contains(partName.ToUpper())).Distinct().Take(40);
-                foreach(var val in vals){
-                    var river = new River() { Name = val.Key, RiverId = val.Value};
-                    riverList.Add(river);
-                }
-
-                return riverList;
-            }
         }
     }
 }

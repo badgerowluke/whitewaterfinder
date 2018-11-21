@@ -28,7 +28,14 @@ namespace whitewaterfinder.Core
         }
         public IEnumerable<River> GetRivers(string partName)
         {
-            return repo.GetAllUSRivers(partName);
+            var riverList = repo.GetAllUSRivers();
+            if(string.IsNullOrEmpty(partName)){
+                return riverList;
+            } else {
+                var vals = riverList.Where(r => r.Name.ToUpper().Contains(partName.ToUpper())).Distinct().Take(40);
+                return vals;
+            }
+
         }
         public River GetRiverDetails(string riverCode)
         {
