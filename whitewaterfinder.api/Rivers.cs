@@ -19,14 +19,24 @@ namespace whitewaterfinder.api
         [FunctionName("Rivers")]
         public static async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = null)] HttpRequest req,
-            ILogger log, ExecutionContext context)
+            ILogger log)
         {
+            if (req == null)
+            {
+                throw new ArgumentNullException(nameof(req));
+            }
+
+            if (log == null)
+            {
+                throw new ArgumentNullException(nameof(log));
+            }
+
             try 
             {
                 log.LogInformation("I am here");
                 var config = new ConfigurationBuilder()
-                    .SetBasePath(context.FunctionAppDirectory)
-                    .AddJsonFile("local.settings.json", optional: true, reloadOnChange: true)
+                    // .SetBasePath(context.FunctionAppDirectory)
+                    // .AddJsonFile("local.settings.json", optional: true, reloadOnChange: true)
                     .AddEnvironmentVariables()
                     .Build();
 
@@ -34,7 +44,7 @@ namespace whitewaterfinder.api
 
                 string name = req.Query["name"];
                 
-                // string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+                string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
                 // dynamic data = JsonConvert.DeserializeObject(requestBody);
                 // name = name ?? data?.name;
                 var factory = new AzureStorageFactory(config.GetConnectionString("blob-store"),"data");
@@ -44,7 +54,7 @@ namespace whitewaterfinder.api
                 var rivers = service.GetRivers(name);
                 
                 return rivers != null
-                    ? (ActionResult)new OkObjectResult(rivers)
+                    ? (ActionResult)new OkObjectResult("rivers")
                     : new BadRequestObjectResult("Please pass a name on the query string or in the request body");
             }catch (Exception e )
             {
