@@ -25,8 +25,8 @@ namespace whitewaterfinder.Repo.Factories
             
             using(StreamReader reader = new StreamReader(stream)){
                 string json = reader.ReadToEnd();
-                var list = JsonConvert.DeserializeObject<IDictionary<string,string>>(json);
-                
+                var list = JsonConvert.DeserializeObject<IEnumerable<T>>(json);
+                listOut = list.ToList();
             }
 
             return listOut;

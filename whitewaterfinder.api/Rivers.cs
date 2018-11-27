@@ -38,14 +38,14 @@ namespace whitewaterfinder.api
 
             try 
             {
-                log.LogInformation("I am here");
+                // log.LogInformation("I am here");
                 var config = new ConfigurationBuilder()
                     .SetBasePath(context.FunctionAppDirectory)
                     // .AddJsonFile("local.settings.json", optional: true, reloadOnChange: true)
                     .AddEnvironmentVariables()
                     .Build();
 
-                log.LogInformation("we have the config");
+                // log.LogInformation("we have the config");
 
                 string name = req.Query["name"];
                 
@@ -53,13 +53,14 @@ namespace whitewaterfinder.api
                 // dynamic data = JsonConvert.DeserializeObject(requestBody);
                 // name = name ?? data?.name;
                 var factory = new AzureStorageFactory(config.GetConnectionString("blob-store"),"data");
+                // var factory = new FileStorageFactory("Data");
                 var repo = new RiverRepository(factory);
                 var details = new RiverDetailRepository();
                 var service = new RiverService(repo, details);
                 var rivers = service.GetRivers(name);
                 
                 return rivers != null
-                    ? (ActionResult)new OkObjectResult("rivers")
+                    ? (ActionResult)new OkObjectResult(rivers)
                     : new BadRequestObjectResult("Please pass a name on the query string or in the request body");
             }catch (Exception e )
             {
