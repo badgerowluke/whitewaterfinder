@@ -37,6 +37,7 @@ namespace whitewaterfinder.Core
             }
 
         }
+        
         public River GetRiverDetails(string riverCode)
         {
             return detail.GetRiverDetailsAsync(riverCode).Result;

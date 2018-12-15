@@ -6,6 +6,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Table;
+
+// using whitewaterfinder.BusinessObjects.Rivers;
+
 
 namespace whitewaterfinder.Repo.Factories
 {
@@ -34,6 +38,20 @@ namespace whitewaterfinder.Repo.Factories
                 return JsonConvert.DeserializeObject<T>(json);
             }
         }
+        public TableResult Post<T>(T record, string tableName)
+        {
+            return PostAsync<T>(record, tableName).Result;
+        }
+        private async Task<TableResult> PostAsync<T>(T record, string tableName)
+        {
+            var tableClient = account.CreateCloudTableClient();
+            var table = tableClient.GetTableReference(tableName);
+           
+            var insert = TableOperation.Insert((ITableEntity) record);
+
+            return await table.ExecuteAsync(insert);
+
+        }
         public IEnumerable<T> GetMultiple<T>(string name)
         {
             return GetEnumerableAsync<T>(container, name).Result;
@@ -53,5 +71,8 @@ namespace whitewaterfinder.Repo.Factories
                 return list;
             }            
         }
+
+
     }
+
 }

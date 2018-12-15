@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  
+  
+  <ItemGroup>
+    <ProjectReference Include="..\whitewaterfinder.BusinessObjects\whitewaterfinder.BusinessObjects.csproj" />
+    <ProjectReference Include="..\whitewaterfinder.Core\whitewaterfinder.Core.csproj" />
+    <ProjectReference Include="..\whitewaterfinder.Repo\whitewaterfinder.Repo.csproj" />
+  </ItemGroup>  
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+</Project>

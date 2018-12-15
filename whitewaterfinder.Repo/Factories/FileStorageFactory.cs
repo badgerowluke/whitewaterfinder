@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
 using System.Linq;
+using Microsoft.WindowsAzure.Storage.Table;
 
 namespace whitewaterfinder.Repo.Factories
 {
@@ -10,6 +11,7 @@ namespace whitewaterfinder.Repo.Factories
     {
         IEnumerable<T> GetMultiple<T>(string filename);
         T Get<T>(string filename); 
+        TableResult Post<T>(T record, string tableName);
     }
     public class FileStorageFactory: IStorageFactory
     {
@@ -30,6 +32,10 @@ namespace whitewaterfinder.Repo.Factories
             }
 
             return listOut;
+        }
+        public TableResult Post<T>(T record, string tableName)
+        {
+            throw new NotImplementedException();
         }
         public T Get<T>(string filename)
         {

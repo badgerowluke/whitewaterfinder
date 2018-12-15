@@ -1,4 +1,6 @@
 using System;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Table;
 namespace whitewaterfinder.BusinessObjects.Rivers
 {
     public class River
@@ -20,5 +22,16 @@ namespace whitewaterfinder.BusinessObjects.Rivers
         public object Value { get; set; }
         public string Flow { get; set; }
         public string Level { get; set; }
+    }
+    public class RiverEntity : TableEntity
+    {
+        public DateTime Date { get; set; }
+        public string RiverName { get; set; }
+        public string RiverId { get; set; }
+        public string User { get; set; }
+        public RiverEntity(Guid reportId)
+        {
+            RowKey = reportId.ToString();
+        }
     }
 }
