@@ -28,7 +28,8 @@ namespace whitewaterfinder.BusinessObjects.Rivers
         public DateTime Date { get; set; }
         public string RiverName { get; set; }
         public string RiverId { get; set; }
-        public string User { get; set; }
+
+
         public RiverEntity(Guid reportId)
         {
             RowKey = reportId.ToString();

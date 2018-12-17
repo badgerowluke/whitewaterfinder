@@ -23,9 +23,9 @@ namespace whitewaterfinder.Repo
             return folders.GetMultiple<River>("usRivers.json");
             
         }
-        public void InsertRiverData(River aRiver)
+        public void InsertRiverData(RiverEntity aRiver)
         {
-            folders.Post<River>(aRiver, "USRivers");
+            folders.Post<RiverEntity>(aRiver, "USRivers");
         }
     }
 }

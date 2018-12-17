@@ -44,12 +44,19 @@ namespace whitewaterfinder.Repo.Factories
         }
         private async Task<TableResult> PostAsync<T>(T record, string tableName)
         {
-            var tableClient = account.CreateCloudTableClient();
-            var table = tableClient.GetTableReference(tableName);
-           
-            var insert = TableOperation.Insert((ITableEntity) record);
-
-            return await table.ExecuteAsync(insert);
+            try 
+            {                
+                var tableClient = account.CreateCloudTableClient();
+                var table = tableClient.GetTableReference(tableName);
+                bool complete = table.CreateIfNotExistsAsync().Result;
+                var insert = TableOperation.Insert((ITableEntity) record);
+                var val =  await table.ExecuteAsync(insert);
+                return val;
+            } catch (StorageException e )
+            {
+                
+                throw new Exception(e.RequestInformation.ExtendedErrorInformation.ToString());
+            }
 
         }
         public IEnumerable<T> GetMultiple<T>(string name)
