@@ -6,7 +6,7 @@ namespace whitewaterfinder.Repo.Factories
     {
         IEnumerable<T> GetMultiple<T>(string filename);
         T Get<T>(string filename); 
-        T Get<T>(TableQuery query);
+        T Get<T>(TableQuery query, string tablename);
         TableResult Post<T>(T record, string tableName);
     }
 

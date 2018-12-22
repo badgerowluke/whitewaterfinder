@@ -40,7 +40,7 @@ namespace whitewaterfinder.Repo.Factories
                 
             }
         }
-        public T Get<T>(TableQuery query)
+        public T Get<T>(TableQuery query, string table)
         {
             throw new NotImplementedException();
         }

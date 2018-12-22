@@ -41,11 +41,11 @@ namespace whitewaterfinder.Repo.Factories
                 return JsonConvert.DeserializeObject<T>(json);
             }
         }
-        public T Get<T>(TableQuery query) 
+        public T Get<T>(TableQuery query, string table) 
         {
-            return GetAsyncFromTable<T>(query, "USRivers").Result;
+            return GetAsync<T>(query, table).Result;
         }
-        private async Task<T> GetAsyncFromTable<T>(TableQuery query, string tableName)
+        private async Task<T> GetAsync<T>(TableQuery query, string tableName)
         {
             var tableClient = account.CreateCloudTableClient();
             var table = tableClient.GetTableReference(tableName);

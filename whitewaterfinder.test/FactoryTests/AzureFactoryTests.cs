@@ -25,7 +25,7 @@ namespace whitewaterfinder.test.FactoryTests
         {
             var fac = new AzureStorageFactory(connectionString, "USRivers");
             var query = new TableQuery();
-            var stuff = fac.GetFromTable<List<DynamicTableEntity>>(query);
+            var stuff = fac.Get<List<DynamicTableEntity>>(query, "USRivers");
             Assert.NotEmpty(stuff);
 
         }
@@ -34,7 +34,7 @@ namespace whitewaterfinder.test.FactoryTests
         {
             var fac = new AzureStorageFactory(connectionString, "USRivers");
             var query = new TableQuery();
-            var stuff = fac.GetFromTable<List<DynamicTableEntity>>(query)[0];
+            var stuff = fac.Get<List<DynamicTableEntity>>(query, "USRivers")[0];
 
             var outVal = (River)Activator.CreateInstance(typeof(River));
             foreach (var property in stuff.Properties)
