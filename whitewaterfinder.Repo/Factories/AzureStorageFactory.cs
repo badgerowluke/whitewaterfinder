@@ -41,7 +41,7 @@ namespace whitewaterfinder.Repo.Factories
                 return JsonConvert.DeserializeObject<T>(json);
             }
         }
-        public T GetFromTable<T>(TableQuery query) 
+        public T Get<T>(TableQuery query) 
         {
             return GetAsyncFromTable<T>(query, "USRivers").Result;
         }
