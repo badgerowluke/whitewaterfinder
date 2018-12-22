@@ -25,7 +25,7 @@ namespace whitewaterfinder.Daemon
                 var entity = new RiverEntity(Guid.NewGuid())
                 {
                     Date = DateTime.Now,
-                    Name = river.Name,
+                    Name = river.RiverName,
                     RiverId = river.RiverId,
                     Timestamp = DateTime.Now,
                     RowKey = river.RiverId,
@@ -33,7 +33,7 @@ namespace whitewaterfinder.Daemon
                     PartitionKey = "1"
                 };
                 azureRepo.InsertRiverData(entity);
-                Console.WriteLine(river.Name);
+                Console.WriteLine(river.RiverName);
             }
         }
     }
