@@ -7,12 +7,6 @@ using Microsoft.WindowsAzure.Storage.Table;
 
 namespace whitewaterfinder.Repo.Factories
 {
-    public interface IStorageFactory
-    {
-        IEnumerable<T> GetMultiple<T>(string filename);
-        T Get<T>(string filename); 
-        TableResult Post<T>(T record, string tableName);
-    }
     public class FileStorageFactory: IStorageFactory
     {
         private readonly string folder;
@@ -45,6 +39,10 @@ namespace whitewaterfinder.Repo.Factories
                 return JsonConvert.DeserializeObject<T>(json);
                 
             }
+        }
+        public T Get<T>(TableQuery query)
+        {
+            throw new NotImplementedException();
         }
     }
 }

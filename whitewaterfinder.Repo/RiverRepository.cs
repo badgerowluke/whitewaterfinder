@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Microsoft.WindowsAzure.Storage.Table;
 using Newtonsoft.Json;
 
 using whitewaterfinder.BusinessObjects.Rivers;
@@ -18,8 +19,11 @@ namespace whitewaterfinder.Repo
         {
             folders = _folder;
         }
-        public IEnumerable<River> GetAllUSRivers(){
-
+        public IEnumerable<River> GetAllUSRivers()
+        {
+            TableQuery stuff = new TableQuery();
+            var riverEntities = folders.Get<List<DynamicTableEntity>>(stuff);
+            
             return folders.GetMultiple<River>("usRivers.json");
             
         }

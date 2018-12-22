@@ -12,7 +12,7 @@ namespace whitewaterfinder.test
     {
         private const string connectionString = "DefaultEndpointsProtocol=https;AccountName=waterfinder;AccountKey=e0c3AhZdjwribEAHNNUfdcYtX3x4rAqYv0Xfy35z9Xt6Ve7woUG6aWmvAwDH1HY/Vu/2XsjXmHcpCdsr4cXvXg==;BlobEndpoint=https://waterfinder.blob.core.windows.net/;QueueEndpoint=https://waterfinder.queue.core.windows.net/;TableEndpoint=https://waterfinder.table.core.windows.net/;FileEndpoint=https://waterfinder.file.core.windows.net/;";
 
-        [Fact]
+        [Fact(Skip="didn't really end up doing it this way")]
         public void ThisMigratesData()
         {
             var fileFactory = new FileStorageFactory("data");
@@ -26,7 +26,7 @@ namespace whitewaterfinder.test
 
             foreach(var river in rivers)
             {
-                Console.WriteLine(river.Name);
+                Console.WriteLine(river.RiverName);
             }
             
         }

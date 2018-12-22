@@ -25,7 +25,7 @@ namespace whitewaterfinder.Daemon
                 var entity = new RiverEntity(Guid.NewGuid())
                 {
                     Date = DateTime.Now,
-                    RiverName = river.Name,
+                    Name = river.Name,
                     RiverId = river.RiverId,
                     Timestamp = DateTime.Now,
                     RowKey = river.RiverId,

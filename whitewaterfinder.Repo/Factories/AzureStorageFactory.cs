@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Table;
+using System.Reflection;
+using System.Runtime.CompilerServices;
+
 
 // using whitewaterfinder.BusinessObjects.Rivers;
 
@@ -16,15 +19,15 @@ namespace whitewaterfinder.Repo.Factories
     public class AzureStorageFactory: IStorageFactory
     {
         private CloudStorageAccount account;
-        private readonly string container;
+        private readonly string containername;
         public AzureStorageFactory(string connectionString, string blobContainer)
         {
-            container = blobContainer;
+            containername = blobContainer;
             account = CloudStorageAccount.Parse(connectionString);
         }
         public T Get<T>( string blobName)
         {
-            return GetAsync<T>(container, blobName).Result;
+            return GetAsync<T>(containername, blobName).Result;
         }
         private async Task<T> GetAsync<T>(string containerName, string blobName)
         {
@@ -38,6 +41,34 @@ namespace whitewaterfinder.Repo.Factories
                 return JsonConvert.DeserializeObject<T>(json);
             }
         }
+        public T GetFromTable<T>(TableQuery query) 
+        {
+            return GetAsyncFromTable<T>(query, "USRivers").Result;
+        }
+        private async Task<T> GetAsyncFromTable<T>(TableQuery query, string tableName)
+        {
+            var tableClient = account.CreateCloudTableClient();
+            var table = tableClient.GetTableReference(tableName);
+            var outVal = (T)Activator.CreateInstance(typeof(T));
+
+            TableContinuationToken token = null;
+            do
+            {
+                var results = await table.ExecuteQuerySegmentedAsync(query, token);
+                token = results.ContinuationToken;
+                foreach(var entity in results.Results)
+                {
+                    var stuff = outVal.GetType().GetGenericArguments()[0];
+
+                    outVal.GetType().GetMethod("Add").Invoke(outVal, new[] { entity });
+
+                }
+
+            } while (token != null);
+
+
+            return outVal;
+        }
         public TableResult Post<T>(T record, string tableName)
         {
             return PostAsync<T>(record, tableName).Result;
@@ -49,7 +80,7 @@ namespace whitewaterfinder.Repo.Factories
                 var tableClient = account.CreateCloudTableClient();
                 var table = tableClient.GetTableReference(tableName);
                 bool complete = table.CreateIfNotExistsAsync().Result;
-                var insert = TableOperation.Insert((ITableEntity) record);
+                var insert = TableOperation.InsertOrReplace((ITableEntity) record);
                 var val =  await table.ExecuteAsync(insert);
                 return val;
             } catch (StorageException e )
@@ -61,7 +92,7 @@ namespace whitewaterfinder.Repo.Factories
         }
         public IEnumerable<T> GetMultiple<T>(string name)
         {
-            return GetEnumerableAsync<T>(container, name).Result;
+            return GetEnumerableAsync<T>(containername, name).Result;
         }        
         private async Task<IEnumerable<T>> GetEnumerableAsync<T>(string containerName, string blobName)
         {
