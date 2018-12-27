@@ -5,7 +5,7 @@ namespace whitewaterfinder.Repo.Helpers
 {
     internal static class AzureFormatHelpers
     {
-        public static T RecastEntities<T>(List<DynamicTableEntity> entities)
+        public static T RecastEntities<T>(IEnumerable<DynamicTableEntity> entities)
         {
             var outVal = (T)Activator.CreateInstance(typeof(T));
             var content = outVal.GetType().GetGenericArguments()[0];

@@ -23,6 +23,7 @@ namespace whitewaterfinder.Repo
         public IEnumerable<River> GetAllUSRivers()
         {
             TableQuery stuff = new TableQuery();
+            
             var riverEntities = folders.Get<List<DynamicTableEntity>>(stuff, "USRivers");
             return AzureFormatHelpers.RecastEntities<List<River>>(riverEntities);
             

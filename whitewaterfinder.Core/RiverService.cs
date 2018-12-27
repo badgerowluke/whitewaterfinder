@@ -32,7 +32,8 @@ namespace whitewaterfinder.Core
             if(string.IsNullOrEmpty(partName)){
                 return riverList;
             } else {
-                var vals = riverList.Where(r => r.RiverName.ToUpper().Contains(partName.ToUpper())).Distinct().Take(40);
+                var vals = riverList.Where(r => r.RiverName.ToUpper()
+                .Contains(partName.ToUpper())).Distinct().Take(40);
                 return vals;
             }
 
