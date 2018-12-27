@@ -9,10 +9,7 @@ using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Table;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-
-
-// using whitewaterfinder.BusinessObjects.Rivers;
-
+using whitewaterfinder.Repo.Helpers;
 
 namespace whitewaterfinder.Repo.Factories
 {
@@ -61,12 +58,9 @@ namespace whitewaterfinder.Repo.Factories
                     var stuff = outVal.GetType().GetGenericArguments()[0];
 
                     outVal.GetType().GetMethod("Add").Invoke(outVal, new[] { entity });
-
                 }
 
             } while (token != null);
-
-
             return outVal;
         }
         public TableResult Post<T>(T record, string tableName)

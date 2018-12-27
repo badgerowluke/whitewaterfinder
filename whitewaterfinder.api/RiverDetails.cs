@@ -11,7 +11,7 @@ using Newtonsoft.Json;
 using whitewaterfinder.Core;
 using whitewaterfinder.Repo;
 using whitewaterfinder.Repo.Factories;
-
+using Microsoft.Extensions.Configuration;
 
 namespace whitewaterfinder.api
 {
@@ -20,17 +20,21 @@ namespace whitewaterfinder.api
         [FunctionName("RiverDetails")]
         public static async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)] HttpRequest req,
-            ILogger log)
+            ILogger log, ExecutionContext context)
         {
             log.LogInformation("C# HTTP trigger function processed a request.");
-
+                var config = new ConfigurationBuilder()
+                    .SetBasePath(context.FunctionAppDirectory)
+                    // .AddJsonFile("local.settings.json", optional: true, reloadOnChange: true)
+                    .AddEnvironmentVariables()
+                    .Build();
             string name = req.Query["riverCode"];
 
             string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
             dynamic data = JsonConvert.DeserializeObject(requestBody);
             name = name ?? data?.name;
 
-            var factory = new FileStorageFactory("");
+            var factory = new AzureStorageFactory(config.GetConnectionString("blob-store"),"data");
             var repo = new RiverRepository(factory);
             var details = new RiverDetailRepository();
             var service = new RiverService(repo, details);

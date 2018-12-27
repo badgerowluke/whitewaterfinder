@@ -33,20 +33,25 @@ namespace whitewaterfinder.Repo
                     var vals = outstuff.Content.ReadAsStringAsync().Result;
                     USGSRiverResponse obj = JsonConvert.DeserializeObject<USGSRiverResponse>(vals);
                     
-                    river = new River() {
-                        RiverName = obj.Value.TimeSeries[0].SourceInfo.SiteName,
-                        Latitude = obj.Value.TimeSeries[0].SourceInfo.Geolocation.GeogLocation.Latitude,
-                        Longitude = obj.Value.TimeSeries[0].SourceInfo.Geolocation.GeogLocation.Longitude,
-                        Srs = obj.Value.TimeSeries[0].SourceInfo.Geolocation.GeogLocation.SRS,
-                        RiverId = obj.Value.TimeSeries[0].SourceInfo.SiteCode[0].Value
-                    };
+                    if(obj.Value.TimeSeries.Length > 0)
+                    {
+                        river = new River() 
+                        {
+                            RiverName = obj.Value.TimeSeries[0].SourceInfo.SiteName,
+                            Latitude = obj.Value.TimeSeries[0].SourceInfo.Geolocation.GeogLocation.Latitude,
+                            Longitude = obj.Value.TimeSeries[0].SourceInfo.Geolocation.GeogLocation.Longitude,
+                            Srs = obj.Value.TimeSeries[0].SourceInfo.Geolocation.GeogLocation.SRS,
+                            RiverId = obj.Value.TimeSeries[0].SourceInfo.SiteCode[0].Value
+                        };
 
-                    var riverData = new List<RiverData>();
+                        var riverData = new List<RiverData>();
 
-                    river.Flow = obj.ParseTimeSeriesData(TimeSeriesTypes.CubicFeet);
-                    river.Levels = obj.ParseTimeSeriesData(TimeSeriesTypes.GuageHeight);
+                        river.Flow = obj.ParseTimeSeriesData(TimeSeriesTypes.CubicFeet);
+                        river.Levels = obj.ParseTimeSeriesData(TimeSeriesTypes.GuageHeight);
 
-                    river.RiverData = river.PopulateRiverData();
+                        river.RiverData = river.PopulateRiverData();
+
+                    }
 
                     return river;
 
