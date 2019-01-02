@@ -20,21 +20,21 @@ namespace whitewaterfinder.Daemon
             var service = new RiverService(azureRepo, details);
             
 
-            foreach(var river in rivers)
-            {
-                var entity = new RiverEntity(Guid.NewGuid())
-                {
-                    Date = DateTime.Now,
-                    Name = river.RiverName,
-                    RiverId = river.RiverId,
-                    Timestamp = DateTime.Now,
-                    RowKey = river.RiverId,
-                    ETag = "river", 
-                    PartitionKey = "1"
-                };
-                azureRepo.InsertRiverData(entity);
-                Console.WriteLine(river.RiverName);
-            }
+            // foreach(var river in rivers)
+            // {
+            //     var entity = new RiverEntity(Guid.NewGuid())
+            //     {
+            //         Date = DateTime.Now,
+            //         Name = river.RiverName,
+            //         RiverId = river.RiverId,
+            //         Timestamp = DateTime.Now,
+            //         RowKey = river.RiverId,
+            //         ETag = "river", 
+            //         PartitionKey = "1"
+            //     };
+            //     azureRepo.InsertRiverData(entity);
+            //     Console.WriteLine(river.RiverName);
+            // }
         }
     }
 }
