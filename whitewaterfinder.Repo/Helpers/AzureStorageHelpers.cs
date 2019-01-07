@@ -12,6 +12,7 @@ namespace whitewaterfinder.Repo.Helpers
             foreach(var entity in entities)
             {
                 var outContent = Activator.CreateInstance(content);
+                
                 foreach(var property in entity.Properties)
                 {
                     var propInfo = outContent.GetType().GetProperty(property.Key);
@@ -27,6 +28,19 @@ namespace whitewaterfinder.Repo.Helpers
                                 outContent.GetType().GetProperty(property.Key)
                                     .SetValue(outContent, property.Value.DateTime);
                                 break;
+                            case("Systme.Int32"):
+                                outContent.GetType().GetProperty(property.Key)
+                                    .SetValue(outContent, property.Value.DateTime);
+                                break;
+                            case("Systme.Double"):
+                                outContent.GetType().GetProperty(property.Key)
+                                    .SetValue(outContent, property.Value.DateTime);
+                                break;        
+                            case("Systme.Boolean"):
+                                outContent.GetType().GetProperty(property.Key)
+                                    .SetValue(outContent, property.Value.DateTime);
+                                break;                                                                
+                                
                         }
                     }
 

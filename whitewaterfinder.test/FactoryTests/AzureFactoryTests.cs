@@ -59,7 +59,7 @@ namespace whitewaterfinder.test.FactoryTests
                 }
             }
             Assert.IsType<River>(outVal);
-            Assert.NotNull(outVal.RiverName);
+            Assert.NotNull(outVal.Name);
         }
     }
 }

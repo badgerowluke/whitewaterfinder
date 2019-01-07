@@ -37,7 +37,7 @@ namespace whitewaterfinder.Repo
                     {
                         river = new River() 
                         {
-                            RiverName = obj.Value.TimeSeries[0].SourceInfo.SiteName,
+                            Name = obj.Value.TimeSeries[0].SourceInfo.SiteName,
                             Latitude = obj.Value.TimeSeries[0].SourceInfo.Geolocation.GeogLocation.Latitude,
                             Longitude = obj.Value.TimeSeries[0].SourceInfo.Geolocation.GeogLocation.Longitude,
                             Srs = obj.Value.TimeSeries[0].SourceInfo.Geolocation.GeogLocation.SRS,

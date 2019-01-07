@@ -22,16 +22,18 @@ namespace whitewaterfinder.Repo
         }
         public IEnumerable<River> GetAllUSRivers()
         {
-            TableQuery stuff = new TableQuery();
+             TableQuery stuff = new TableQuery();
+             stuff.Take(40);
+             
             
-            var riverEntities = folders.Get<List<DynamicTableEntity>>(stuff, "USRivers");
-            return AzureFormatHelpers.RecastEntities<List<River>>(riverEntities);
-            
+             var riverEntities = folders.Get<List<DynamicTableEntity>>(stuff, "USRivers");
+             return AzureFormatHelpers.RecastEntities<List<River>>(riverEntities);
+            //return folders.Get<List<River>>( "usRivers.json");
         }
 
         public void InsertRiverData(RiverEntity aRiver)
         {
-            folders.Post<RiverEntity>(aRiver, "USRivers");
+            folders.Post(aRiver, "USRivers2");
         }
     }
 }

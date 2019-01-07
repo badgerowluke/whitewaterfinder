@@ -5,7 +5,7 @@ namespace whitewaterfinder.BusinessObjects.Rivers
 {
     public class River
     {
-		public string RiverName { get; set; }
+		public string Name { get; set; }
 		public string RiverId { get; set; }
 		public string Latitude { get; set; }
 		public string Longitude { get; set; }

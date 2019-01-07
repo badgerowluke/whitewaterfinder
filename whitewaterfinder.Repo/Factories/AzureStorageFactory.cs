@@ -65,7 +65,15 @@ namespace whitewaterfinder.Repo.Factories
         }
         public TableResult Post<T>(T record, string tableName)
         {
-            return PostAsync<T>(record, tableName).Result;
+            if(record is ITableEntity)
+            {
+                return PostAsync<T>(record, tableName).Result;
+            }
+            else
+            {
+                var thing = new TableEntity();
+                return default(TableResult);
+            }
         }
         private async Task<TableResult> PostAsync<T>(T record, string tableName)
         {

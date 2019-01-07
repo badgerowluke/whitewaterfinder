@@ -5,6 +5,11 @@
     <ProjectReference Include="..\whitewaterfinder.BusinessObjects\whitewaterfinder.BusinessObjects.csproj" />
     <ProjectReference Include="..\whitewaterfinder.Core\whitewaterfinder.Core.csproj" />
     <ProjectReference Include="..\whitewaterfinder.Repo\whitewaterfinder.Repo.csproj" />
+  </ItemGroup>
+  
+  
+  <ItemGroup>
+    <PackageReference Include="WindowsAzure.Storage" Version="9.3.3" />
   </ItemGroup>  
 
   <PropertyGroup>

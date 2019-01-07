@@ -26,7 +26,7 @@ namespace whitewaterfinder.test
 
             foreach(var river in rivers)
             {
-                Console.WriteLine(river.RiverName);
+                Console.WriteLine(river.Name);
             }
             
         }
