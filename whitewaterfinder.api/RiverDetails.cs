@@ -34,7 +34,7 @@ namespace whitewaterfinder.api
             dynamic data = JsonConvert.DeserializeObject(requestBody);
             name = name ?? data?.name;
 
-            var factory = new AzureStorageFactory(config.GetConnectionString("blob-store"),"data");
+            var factory = new AzureStorageFactory(config.GetConnectionString("blob-store"));
             var repo = new RiverRepository(factory);
             var details = new RiverDetailRepository();
             var service = new RiverService(repo, details);

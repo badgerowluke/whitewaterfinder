@@ -1,8 +1,10 @@
 using System;
+using System.Collections.Generic;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Table;
 namespace whitewaterfinder.BusinessObjects.Rivers
 {
+
     public class River
     {
 		public string Name { get; set; }
@@ -13,6 +15,8 @@ namespace whitewaterfinder.BusinessObjects.Rivers
         public RiverData[] Levels { get; set; }
         public RiverData[] Flow { get; set; }
         public RiverData[] RiverData { get; set; }
+        public string State { get; set; }
+        public string StateCode { get; set; }
 
 		public River() {
 		}
@@ -26,8 +30,16 @@ namespace whitewaterfinder.BusinessObjects.Rivers
     public class RiverEntity : TableEntity, ITableEntity
     {
         public DateTime Date { get; set; }
-        public string Name { get; set; }
-        public string RiverId { get; set; }
+		public string Name { get; set; }
+		public string RiverId { get; set; }
+		public string Latitude { get; set; }
+		public string Longitude { get; set; }
+		public string Srs { get; set; }
+        public RiverData[] Levels { get; set; }
+        public RiverData[] Flow { get; set; }
+        public RiverData[] RiverData { get; set; }
+        public string State { get; set; }
+        public string StateCode { get; set; }
 
         public RiverEntity()
         {
@@ -39,4 +51,5 @@ namespace whitewaterfinder.BusinessObjects.Rivers
             RowKey = reportId.ToString();
         }
     }
+
 }

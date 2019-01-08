@@ -10,6 +10,7 @@ namespace whitewaterfinder.Repo.Factories
     public class FileStorageFactory: IStorageFactory
     {
         private readonly string folder;
+        public string CollectionName { get; set; }
         public FileStorageFactory(string _path)
         {
             folder = _path;
@@ -30,6 +31,11 @@ namespace whitewaterfinder.Repo.Factories
         public TableResult Post<T>(T record, string tableName)
         {
             throw new NotImplementedException();
+        }
+        public T Post<T>(T record)
+        {
+            throw new NotImplementedException();
+
         }
         public T Get<T>(string filename)
         {

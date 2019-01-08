@@ -20,7 +20,7 @@ namespace whitewaterfinder.test
             var details = new RiverDetailRepository();
             var service = new RiverService(fileRepo, details);
             var rivers = fileRepo.GetAllUSRivers();
-            var azureFactory = new AzureStorageFactory(connectionString, "");
+            var azureFactory = new AzureStorageFactory(connectionString);
             var azureRepo = new RiverRepository(azureFactory);
             
 

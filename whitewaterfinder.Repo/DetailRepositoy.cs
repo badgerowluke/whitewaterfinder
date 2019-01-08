@@ -19,6 +19,7 @@ namespace whitewaterfinder.Repo
         {
             
         }
+        
         public async Task<River> GetRiverDetailsAsync(string riverCode)
         {
             var river = new River();

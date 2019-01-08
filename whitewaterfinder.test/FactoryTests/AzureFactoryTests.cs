@@ -16,14 +16,14 @@ namespace whitewaterfinder.test.FactoryTests
         [Fact]
         public void WeDoGetAStorageFactory()
         {
-            var fac = new AzureStorageFactory(connectionString, "USRivers");
+            var fac = new AzureStorageFactory(connectionString);
             Assert.NotNull(fac);
 
         }
         [Fact]
         public void AzureFactory_DoesReturnResults()
         {
-            var fac = new AzureStorageFactory(connectionString, "USRivers");
+            var fac = new AzureStorageFactory(connectionString);
             var query = new TableQuery();
             var stuff = fac.Get<List<DynamicTableEntity>>(query, "USRivers");
             Assert.NotEmpty(stuff);
@@ -32,7 +32,7 @@ namespace whitewaterfinder.test.FactoryTests
         [Fact]
         public void AzureFactory_ConvertDynamicEntityToMeaningfulEntity()
         {
-            var fac = new AzureStorageFactory(connectionString, "USRivers");
+            var fac = new AzureStorageFactory(connectionString);
             var query = new TableQuery();
             var stuff = fac.Get<List<DynamicTableEntity>>(query, "USRivers")[0];
 

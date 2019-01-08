@@ -46,5 +46,16 @@ namespace whitewaterfinder.BusinessObjects.USGSResponses
             }
             return dataList.ToArray();
         }
+        public static River ParseTimeSeriesData(this USGSRiverResponse response)
+        {
+            return new River() 
+            {
+                Name = response.Value.TimeSeries[0].SourceInfo.SiteName,
+                Latitude = response.Value.TimeSeries[0].SourceInfo.Geolocation.GeogLocation.Latitude,
+                Longitude = response.Value.TimeSeries[0].SourceInfo.Geolocation.GeogLocation.Longitude,
+                Srs = response.Value.TimeSeries[0].SourceInfo.Geolocation.GeogLocation.SRS,
+                RiverId = response.Value.TimeSeries[0].SourceInfo.SiteCode[0].Value
+            };
+        }
     }
 }

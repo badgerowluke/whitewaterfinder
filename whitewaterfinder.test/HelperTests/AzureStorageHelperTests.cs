@@ -15,7 +15,7 @@ namespace whitewaterfinder.test.HelperTests
         [Fact]
         public void FormatHelperReturnsList()
         {
-            var fac = new AzureStorageFactory(connectionString, "USRivers");
+            var fac = new AzureStorageFactory(connectionString);
             var repo = new RiverRepository(fac);
             // var query = new TableQuery();
             var stuff = repo.GetAllUSRivers();

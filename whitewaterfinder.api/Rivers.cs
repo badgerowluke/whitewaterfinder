@@ -21,39 +21,19 @@ namespace whitewaterfinder.api
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = null)] HttpRequest req,
             ILogger log, ExecutionContext context)
         {
-            if (req == null)
-            {
-                throw new ArgumentNullException(nameof(req));
-            }
-
-            if (log == null)
-            {
-                throw new ArgumentNullException(nameof(log));
-            }
-
-            if (context == null)
-            {
-                throw new ArgumentNullException(nameof(context));
-            }
-
             try 
             {
-                // log.LogInformation("I am here");
+
                 var config = new ConfigurationBuilder()
                     .SetBasePath(context.FunctionAppDirectory)
-                    // .AddJsonFile("local.settings.json", optional: true, reloadOnChange: true)
                     .AddEnvironmentVariables()
                     .Build();
-
-                // log.LogInformation("we have the config");
 
                 string name = req.Query["name"];
                 
                 string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-                // dynamic data = JsonConvert.DeserializeObject(requestBody);
-                // name = name ?? data?.name;
-                var factory = new AzureStorageFactory(config.GetConnectionString("blob-store"),"data");
-                // var factory = new FileStorageFactory("Data");
+
+                var factory = new AzureStorageFactory(config.GetConnectionString("blob-store"));
                 var repo = new RiverRepository(factory);
                 var details = new RiverDetailRepository();
                 var service = new RiverService(repo, details);

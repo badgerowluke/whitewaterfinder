@@ -16,15 +16,14 @@ namespace whitewaterfinder.Repo.Factories
     public class AzureStorageFactory: IStorageFactory
     {
         private CloudStorageAccount account;
-        private readonly string containername;
-        public AzureStorageFactory(string connectionString, string blobContainer)
+        public string CollectionName { get; set; }
+        public AzureStorageFactory(string connectionString)
         {
-            containername = blobContainer;
             account = CloudStorageAccount.Parse(connectionString);
         }
         public T Get<T>( string blobName)
         {
-            return GetAsync<T>(containername, blobName).Result;
+            return GetAsync<T>(CollectionName, blobName).Result;
         }
         private async Task<T> GetAsync<T>(string containerName, string blobName)
         {
@@ -47,7 +46,7 @@ namespace whitewaterfinder.Repo.Factories
             var tableClient = account.CreateCloudTableClient();
             var table = tableClient.GetTableReference(tableName);
             var outVal = (T)Activator.CreateInstance(typeof(T));
-
+            
             TableContinuationToken token = null;
             do
             {
@@ -55,46 +54,86 @@ namespace whitewaterfinder.Repo.Factories
                 token = results.ContinuationToken;
                 foreach(var entity in results.Results)
                 {
-                    var stuff = outVal.GetType().GetGenericArguments()[0];
 
                     outVal.GetType().GetMethod("Add").Invoke(outVal, new[] { entity });
                 }
 
             } while (token != null);
+
             return outVal;
         }
-        public TableResult Post<T>(T record, string tableName)
+        public TableResult Post<T>(T record, string table)
+        {
+            throw new NotImplementedException("Not coming");
+        }
+        public T Post<T>(T record)
         {
             if(record is ITableEntity)
             {
-                return PostAsync<T>(record, tableName).Result;
+                //just send the object in
+                var table = PostAsync(record).Result;
             }
             else
             {
-                var thing = new TableEntity();
-                return default(TableResult);
+                //work it into the correct format.
+                var recordProps = record.GetType().GetProperties();
+                var obj = BuildTableEntity(recordProps, record);
+                
+                TableResult table = PostAsync((ITableEntity) obj).Result;
             }
+            return record;
         }
-        private async Task<TableResult> PostAsync<T>(T record, string tableName)
+        private DynamicTableEntity BuildTableEntity<T>(PropertyInfo[] recordProps, T record)
+        {
+            var props = new Dictionary<string, EntityProperty>();
+            var partitionKey = "1";
+            foreach(var prop in recordProps)
+            {
+                // if(prop.Name.ToUpper().Equals("ID"))
+                // {
+                //     partitionKey = prop.GetValue(record).ToString();
+                // }
+                switch(prop.PropertyType.ToString())
+                {
+                    case("System.String"):
+                        props.Add(prop.Name, new EntityProperty( prop.GetValue(record).ToString()));
+                        break;
+                    case("System.Boolean"):
+                        props.Add(prop.Name, new EntityProperty((bool?) prop.GetValue(record)));
+                        break;
+                    case("System.Double"):
+                        props.Add(prop.Name, new EntityProperty((double?) prop.GetValue(record)));
+                        break;
+                    case("System.Int32"):
+                        props.Add(prop.Name, new EntityProperty((Int32?) prop.GetValue(record)));
+                        break;
+                    case("System.Int64"):
+                        props.Add(prop.Name, new EntityProperty((Int64?) prop.GetValue(record)));
+                        break;
+                }
+            }
+            return new DynamicTableEntity(partitionKey, record.GetType().Name, "*", props); 
+        }
+        private async Task<TableResult> PostAsync<T>(T record)
         {
             try 
             {                
                 var tableClient = account.CreateCloudTableClient();
-                var table = tableClient.GetTableReference(tableName);
+                var table = tableClient.GetTableReference(CollectionName);
                 bool complete = table.CreateIfNotExistsAsync().Result;
-                var insert = TableOperation.InsertOrReplace((ITableEntity) record);
+                var insert = TableOperation.InsertOrMerge((ITableEntity) record);
+                // var insert = TableOperation.InsertOrReplace((ITableEntity) record);
                 var val =  await table.ExecuteAsync(insert);
                 return val;
+
             } catch (StorageException e )
             {
-                
                 throw new Exception(e.RequestInformation.ExtendedErrorInformation.ToString());
             }
-
         }
         public IEnumerable<T> GetMultiple<T>(string name)
         {
-            return GetEnumerableAsync<T>(containername, name).Result;
+            return GetEnumerableAsync<T>(CollectionName, name).Result;
         }        
         private async Task<IEnumerable<T>> GetEnumerableAsync<T>(string containerName, string blobName)
         {

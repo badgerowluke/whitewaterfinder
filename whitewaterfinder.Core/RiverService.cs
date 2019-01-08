@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.Caching;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -28,12 +29,15 @@ namespace whitewaterfinder.Core
         }
         public IEnumerable<River> GetRivers(string partName)
         {
+
+            
             var riverList = repo.GetAllUSRivers();
+
             if(string.IsNullOrEmpty(partName)){
                 return riverList;
             } else {
                 var vals = riverList.Where(r => r.Name.ToUpper()
-                .Contains(partName.ToUpper())).Distinct().Take(40);
+                .Contains(partName.ToUpper())).Distinct();
                 return vals;
             }
 
