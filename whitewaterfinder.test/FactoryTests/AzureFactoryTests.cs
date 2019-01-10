@@ -23,43 +23,69 @@ namespace whitewaterfinder.test.FactoryTests
         [Fact]
         public void AzureFactory_DoesReturnResults()
         {
-            var fac = new AzureStorageFactory(connectionString);
-            var query = new TableQuery();
-            var stuff = fac.Get<List<DynamicTableEntity>>(query, "USRivers");
+            var fac = new AzureStorageFactory(connectionString)
+            {
+                CollectionName = "RiversUnitedStates"
+            };
+            var query = new TableQuery()
+              .Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, "search"));
+            var stuff = fac.Get<List<River>>(query, string.Empty);
             Assert.NotEmpty(stuff);
 
         }
-        [Fact]
-        public void AzureFactory_ConvertDynamicEntityToMeaningfulEntity()
+
+        [Fact (Skip="This fails because I don't have a good plan for implementing it correctly.")]
+        public void AzureFactory_UsesTheSearchContextFromUser()
         {
-            var fac = new AzureStorageFactory(connectionString);
-            var query = new TableQuery();
-            var stuff = fac.Get<List<DynamicTableEntity>>(query, "USRivers")[0];
-
-            var outVal = (River)Activator.CreateInstance(typeof(River));
-            foreach (var property in stuff.Properties)
+            var fac = new AzureStorageFactory(connectionString)
             {
-                
-                var propInfo = outVal.GetType().GetProperty(property.Key);
-                if (propInfo != null)
-                {
-                    switch(propInfo.PropertyType.ToString())
-                    {
-                        case ("System.String"):
+                CollectionName = "RiversUnitedStates"
+            };
+            var query = new TableQuery()
+              .Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, "search"));
 
-                            outVal.GetType().GetProperty(property.Key)
-                                  .SetValue(outVal, property.Value.StringValue);
-                            break;
-                        case ("System.DateTime"):
-                            outVal.GetType().GetProperty(property.Key)
-                                .SetValue(outVal, property.Value.DateTime);
-                            break;
-                    }
+            var stuff = fac.Get<List<River>>(query, "gaul");
 
-                }
-            }
-            Assert.IsType<River>(outVal);
-            Assert.NotNull(outVal.Name);
+            Assert.InRange(stuff.Count, 1, 4);
+        }
+        [Fact]
+        public void AzureFactory_Get_DoesReturnSingleEntity()
+        {
+            var fac = new AzureStorageFactory(connectionString)
+            {
+                CollectionName = "RiversUnitedStates"
+            };
+            var query = new TableQuery()
+              .Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, "search"));
+            var stuff = fac.Get<River>(query, "GAULEY RIVER BELOW SUMMERSVILLE DAM, WV");
+            Assert.IsType<River>(stuff);
+        }
+        [Fact]
+        public void AzureFactory_Get_Handles_ListKeyValuePair()
+        {
+            var fac = new AzureStorageFactory(connectionString)
+            {
+                CollectionName = "RiversUnitedStates"
+            };
+            var query = new TableQuery()
+              .Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, "search"));
+            var stuff = fac.Get<List<KeyValuePair<string,string>>>(query, "GAULEY RIVER BELOW SUMMERSVILLE DAM, WV");
+            Assert.IsType <List<KeyValuePair<string, string>>> (stuff);
+        }
+        [Fact]
+        public void AzureFactory_Get_PullsPartitionAndRowKey()
+        {
+            var fac = new AzureStorageFactory(connectionString)
+            {
+                CollectionName = "USRivers"
+            };
+            var filter = TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, "AK");
+            var rowfilter = TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, "15008000");
+            var query = new TableQuery();
+
+            query.Where(TableQuery.CombineFilters(filter,TableOperators.And, rowfilter));
+            var stuff = fac.Get<River>(query, "SALMON R NR HYDER AK");
+            Assert.Equal("SALMON R NR HYDER AK", stuff.Name);
         }
     }
 }

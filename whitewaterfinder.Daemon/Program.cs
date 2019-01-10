@@ -15,11 +15,19 @@ namespace whitewaterfinder.Daemon
         static void Main(string[] args)
         {
             var azureFactory = new AzureStorageFactory(connectionString);
-            var azureRepo = new RiverRepository(azureFactory, "USRivers2");
-            // var rivers = azureRepo.GetAllUSRivers();
-
+            // azureFactory.CollectionName = "data";
+            // var rivers = azureFactory.Get<List<River>>("usRivers.json");
             var details = new RiverDetailRepository();
-            var service = new RiverService(azureRepo, details);
+            var azureRepo = new RiverRepository(azureFactory, "USRivers");
+            // LoadStates(azureRepo);
+            // var service = new RiverService(azureRepo, details);
+            // service.GetRivers("gau");
+            var rivers = azureRepo.GetAllUSRivers();
+            
+
+        }
+        static void LoadStates(RiverRepository azureRepo)
+        {
             var states = GetStateCodes();
             
             foreach(var state in states)
@@ -36,7 +44,7 @@ namespace whitewaterfinder.Daemon
                         RiverId = ts.SourceInfo.SiteCode[0].Value,
                         State = state.Key,
                         StateCode = state.Value,
-                        PartitionKey = state.Value,
+                        PartitionKey = "search",
                         ETag = "river_Insert",
                         RowKey = ts.SourceInfo.SiteCode[0].Value,
                         Date = DateTime.Now

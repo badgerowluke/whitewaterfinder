@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -31,12 +32,12 @@ namespace whitewaterfinder.Repo
         }
         public async Task<USGSRiverResponse> GetRiverData(string stateCode)
         {
-            using(HttpClient client = new HttpClient())
+            using (HttpClient client = new HttpClient())
             {
                 HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get,
                 "https://waterservices.usgs.gov/nwis/iv/?format=json&indent=on&stateCd=" + stateCode);
 
-                using(HttpResponseMessage response = await client.SendAsync(request))
+                using (HttpResponseMessage response = await client.SendAsync(request))
                 {
                     var vals = response.Content.ReadAsStringAsync().Result;
                     USGSRiverResponse obj = JsonConvert.DeserializeObject<USGSRiverResponse>(vals);
@@ -46,11 +47,10 @@ namespace whitewaterfinder.Repo
         }
         public IEnumerable<River> GetAllUSRivers()
         {
-             TableQuery stuff = new TableQuery();
-             stuff.Take(40);
-             
-             var riverEntities = folders.Get<List<DynamicTableEntity>>(stuff, "USRivers");
-             return AzureFormatHelpers.RecastEntities<List<River>>(riverEntities);
+            var stuff = new TableQuery()
+             .Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, "search"));
+            return folders.Get<List<River>>(stuff, string.Empty);
+
         }
         public void InsertRiverData(RiverEntity aRiver)
         {

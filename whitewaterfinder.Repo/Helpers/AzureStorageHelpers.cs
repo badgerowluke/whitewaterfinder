@@ -1,94 +1,81 @@
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using Microsoft.WindowsAzure.Storage.Table;
+
 namespace whitewaterfinder.Repo.Helpers
 {
     internal static class AzureFormatHelpers
     {
-        public static T RecastEntity<T>(DynamicTableEntity entity)
+        public static object RecastEntity(DynamicTableEntity entity, Type type)
         {
-            var outVal = (T)Activator.CreateInstance(typeof(T));
-            var content = outVal.GetType().GetGenericArguments()[0];            
-            var outContent = Activator.CreateInstance(content);
-            
-            foreach(var property in entity.Properties)
+            var val = Activator.CreateInstance(type);
+            foreach (var property in entity.Properties)
             {
-                var propInfo = outContent.GetType().GetProperty(property.Key);
-                if(propInfo != null)
+                var propInfo = val.GetType().GetProperty(property.Key);
+                if (propInfo != null)
                 {
-                    switch(propInfo.PropertyType.ToString())
+                    switch (propInfo.PropertyType.ToString())
                     {
                         case ("System.String"):
-                            outContent.GetType().GetProperty(property.Key)
-                                .SetValue(outContent, property.Value.StringValue);
+                            val.GetType().GetProperty(property.Key).SetValue(val, property.Value.StringValue);
                             break;
                         case ("System.DateTime"):
-                            outContent.GetType().GetProperty(property.Key)
-                                .SetValue(outContent, property.Value.DateTime);
+                            val.GetType().GetProperty(property.Key).SetValue(val, property.Value.DateTime);
                             break;
-                        case("Systme.Int32"):
-                            outContent.GetType().GetProperty(property.Key)
-                                .SetValue(outContent, property.Value.DateTime);
+                        case ("System.DateTimeOffset"):
+                            val.GetType().GetProperty(property.Key).SetValue(val, property.Value.DateTimeOffsetValue);
                             break;
-                        case("Systme.Double"):
-                            outContent.GetType().GetProperty(property.Key)
-                                .SetValue(outContent, property.Value.DateTime);
-                            break;        
-                        case("Systme.Boolean"):
-                            outContent.GetType().GetProperty(property.Key)
-                                .SetValue(outContent, property.Value.DateTime);
-                            break;                                                                
-                            
+                        case ("System.Int32"):
+                            val.GetType().GetProperty(property.Key).SetValue(val, property.Value.Int32Value);
+                            break;
+                        case ("System.Int64"):
+                            val.GetType().GetProperty(property.Key).SetValue(val, property.Value.Int64Value);
+                            break;
+                        case ("Systme.Double"):
+                            val.GetType().GetProperty(property.Key).SetValue(val, property.Value.DoubleValue);
+                            break;
+                        case ("Systme.Boolean"):
+                            val.GetType().GetProperty(property.Key).SetValue(val, property.Value.BooleanValue);
+                            break;
+                        case ("Systme.Binary"):
+                            val.GetType().GetProperty(property.Key).SetValue(val, property.Value.BinaryValue);
+                            break;
                     }
                 }
-
             }
-            return (T) outContent;
+            return val;
         }
-        public static T RecastEntities<T>(IEnumerable<DynamicTableEntity> entities)
+        public static DynamicTableEntity BuildTableEntity<T>(PropertyInfo[] recordProps, T record)
         {
-            var outVal = (T)Activator.CreateInstance(typeof(T));
-            var content = outVal.GetType().GetGenericArguments()[0];
-            foreach(var entity in entities)
+            var props = new Dictionary<string, EntityProperty>();
+            var partitionKey = "1";
+            foreach (var prop in recordProps)
             {
-                var outContent = Activator.CreateInstance(content);
-                
-                foreach(var property in entity.Properties)
+                // if(prop.Name.ToUpper().Equals("ID"))
+                // {
+                //     partitionKey = prop.GetValue(record).ToString();
+                // }
+                switch (prop.PropertyType.ToString())
                 {
-                    var propInfo = outContent.GetType().GetProperty(property.Key);
-                    if(propInfo != null)
-                    {
-                        switch(propInfo.PropertyType.ToString())
-                        {
-                            case ("System.String"):
-                                outContent.GetType().GetProperty(property.Key)
-                                    .SetValue(outContent, property.Value.StringValue);
-                                break;
-                            case ("System.DateTime"):
-                                outContent.GetType().GetProperty(property.Key)
-                                    .SetValue(outContent, property.Value.DateTime);
-                                break;
-                            case("Systme.Int32"):
-                                outContent.GetType().GetProperty(property.Key)
-                                    .SetValue(outContent, property.Value.DateTime);
-                                break;
-                            case("Systme.Double"):
-                                outContent.GetType().GetProperty(property.Key)
-                                    .SetValue(outContent, property.Value.DateTime);
-                                break;        
-                            case("Systme.Boolean"):
-                                outContent.GetType().GetProperty(property.Key)
-                                    .SetValue(outContent, property.Value.DateTime);
-                                break;                                                                
-                                
-                        }
-                    }
-
+                    case ("System.String"):
+                        props.Add(prop.Name, new EntityProperty(prop.GetValue(record).ToString()));
+                        break;
+                    case ("System.Boolean"):
+                        props.Add(prop.Name, new EntityProperty((bool?)prop.GetValue(record)));
+                        break;
+                    case ("System.Double"):
+                        props.Add(prop.Name, new EntityProperty((double?)prop.GetValue(record)));
+                        break;
+                    case ("System.Int32"):
+                        props.Add(prop.Name, new EntityProperty((Int32?)prop.GetValue(record)));
+                        break;
+                    case ("System.Int64"):
+                        props.Add(prop.Name, new EntityProperty((Int64?)prop.GetValue(record)));
+                        break;
                 }
-                outVal.GetType().GetMethod("Add").Invoke(outVal, new[] { outContent });
-
             }
-            return outVal;
+            return new DynamicTableEntity(partitionKey, record.GetType().Name, "*", props);
         }
     }
 }

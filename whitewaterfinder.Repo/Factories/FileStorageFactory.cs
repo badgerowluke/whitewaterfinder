@@ -28,10 +28,7 @@ namespace whitewaterfinder.Repo.Factories
 
             return listOut;
         }
-        public TableResult Post<T>(T record, string tableName)
-        {
-            throw new NotImplementedException();
-        }
+
         public T Post<T>(T record)
         {
             throw new NotImplementedException();

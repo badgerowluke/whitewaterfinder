@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Table;
-using System.Reflection;
-using System.Runtime.CompilerServices;
+
 using whitewaterfinder.Repo.Helpers;
+using System.Reflection;
 
 namespace whitewaterfinder.Repo.Factories
 {
@@ -41,12 +41,13 @@ namespace whitewaterfinder.Repo.Factories
         {
             return GetAsync<T>(query, table).Result;
         }
-        private async Task<T> GetAsync<T>(TableQuery query, string tableName)
+        private async Task<T> GetAsync<T>(TableQuery query, string searchFilter)
         {
             var tableClient = account.CreateCloudTableClient();
-            var table = tableClient.GetTableReference(tableName);
+            var table = tableClient.GetTableReference(CollectionName);
             var outVal = (T)Activator.CreateInstance(typeof(T));
-            
+            var content = outVal.GetType().GetGenericArguments().Length > 0 ? outVal.GetType().GetGenericArguments()[0] : null ;
+           
             TableContinuationToken token = null;
             do
             {
@@ -54,18 +55,50 @@ namespace whitewaterfinder.Repo.Factories
                 token = results.ContinuationToken;
                 foreach(var entity in results.Results)
                 {
-
-                    outVal.GetType().GetMethod("Add").Invoke(outVal, new[] { entity });
+                    if (outVal.GetType().GetMethod("Add") != null && content != null)
+                    {
+                        var val =  AzureFormatHelpers.RecastEntity(entity, content);
+                        outVal.GetType().GetMethod("Add").Invoke(outVal, new[] { val });
+                        // if(!string.IsNullOrEmpty(searchFilter) && QueryHelper(val, searchFilter))
+                        // {
+                        //     outVal.GetType().GetMethod("Add").Invoke(outVal, new[] { val });
+                        // }
+                        // if(string.IsNullOrEmpty(searchFilter))
+                        // {
+                        // }
+                    }
+                    else
+                    { 
+                        return (T)AzureFormatHelpers.RecastEntity(entity, typeof(T));
+                    }
                 }
 
             } while (token != null);
 
             return outVal;
         }
-        public TableResult Post<T>(T record, string table)
+        private bool QueryHelper(object val, string searchVal)
         {
-            throw new NotImplementedException("Not coming");
+            try
+            {
+                List<bool> propChecks = new List<bool>();
+                foreach(var prop in val.GetType().GetProperties())
+                {
+                    var propVal = prop.GetValue(val);
+                    if(propVal != null)
+                    {
+                        propChecks.Add(propVal.ToString().ToUpper()
+                            .Contains(searchVal.ToUpper()));
+                    }
+                }
+                return propChecks.Contains(true);
+
+            } catch (Exception e )
+            {
+                throw new Exception(e.Message);
+            }
         }
+
         public T Post<T>(T record)
         {
             if(record is ITableEntity)
@@ -77,42 +110,11 @@ namespace whitewaterfinder.Repo.Factories
             {
                 //work it into the correct format.
                 var recordProps = record.GetType().GetProperties();
-                var obj = BuildTableEntity(recordProps, record);
+                var obj = AzureFormatHelpers.BuildTableEntity(recordProps, record);
                 
                 TableResult table = PostAsync((ITableEntity) obj).Result;
             }
             return record;
-        }
-        private DynamicTableEntity BuildTableEntity<T>(PropertyInfo[] recordProps, T record)
-        {
-            var props = new Dictionary<string, EntityProperty>();
-            var partitionKey = "1";
-            foreach(var prop in recordProps)
-            {
-                // if(prop.Name.ToUpper().Equals("ID"))
-                // {
-                //     partitionKey = prop.GetValue(record).ToString();
-                // }
-                switch(prop.PropertyType.ToString())
-                {
-                    case("System.String"):
-                        props.Add(prop.Name, new EntityProperty( prop.GetValue(record).ToString()));
-                        break;
-                    case("System.Boolean"):
-                        props.Add(prop.Name, new EntityProperty((bool?) prop.GetValue(record)));
-                        break;
-                    case("System.Double"):
-                        props.Add(prop.Name, new EntityProperty((double?) prop.GetValue(record)));
-                        break;
-                    case("System.Int32"):
-                        props.Add(prop.Name, new EntityProperty((Int32?) prop.GetValue(record)));
-                        break;
-                    case("System.Int64"):
-                        props.Add(prop.Name, new EntityProperty((Int64?) prop.GetValue(record)));
-                        break;
-                }
-            }
-            return new DynamicTableEntity(partitionKey, record.GetType().Name, "*", props); 
         }
         private async Task<TableResult> PostAsync<T>(T record)
         {
@@ -122,7 +124,7 @@ namespace whitewaterfinder.Repo.Factories
                 var table = tableClient.GetTableReference(CollectionName);
                 bool complete = table.CreateIfNotExistsAsync().Result;
                 var insert = TableOperation.InsertOrMerge((ITableEntity) record);
-                // var insert = TableOperation.InsertOrReplace((ITableEntity) record);
+
                 var val =  await table.ExecuteAsync(insert);
                 return val;
 
