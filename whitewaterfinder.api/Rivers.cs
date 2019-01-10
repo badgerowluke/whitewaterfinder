@@ -34,7 +34,8 @@ namespace whitewaterfinder.api
                 string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
 
                 var factory = new AzureStorageFactory(config.GetConnectionString("blob-store"));
-                var repo = new RiverRepository(factory);
+                
+                var repo = new RiverRepository(factory, "RiversUnitedStates");
                 var details = new RiverDetailRepository();
                 var service = new RiverService(repo, details);
                 var rivers = service.GetRivers(name);
