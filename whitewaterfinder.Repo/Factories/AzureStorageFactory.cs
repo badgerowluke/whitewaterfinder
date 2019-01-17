@@ -59,13 +59,6 @@ namespace whitewaterfinder.Repo.Factories
                     {
                         var val =  AzureFormatHelpers.RecastEntity(entity, content);
                         outVal.GetType().GetMethod("Add").Invoke(outVal, new[] { val });
-                        // if(!string.IsNullOrEmpty(searchFilter) && QueryHelper(val, searchFilter))
-                        // {
-                        //     outVal.GetType().GetMethod("Add").Invoke(outVal, new[] { val });
-                        // }
-                        // if(string.IsNullOrEmpty(searchFilter))
-                        // {
-                        // }
                     }
                     else
                     { 

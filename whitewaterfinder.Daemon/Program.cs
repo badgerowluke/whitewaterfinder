@@ -22,7 +22,9 @@ namespace whitewaterfinder.Daemon
             // LoadStates(azureRepo);
             // var service = new RiverService(azureRepo, details);
             // service.GetRivers("gau");
-            var rivers = azureRepo.GetAllUSRivers();
+            // var rivers = azureRepo.GetAllUSRivers();
+            var rivers = azureRepo.GetRivers();
+            int three = 1+1;
             
 
         }

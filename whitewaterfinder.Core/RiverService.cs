@@ -30,12 +30,10 @@ namespace whitewaterfinder.Core
         public IEnumerable<River> GetRivers(string partName)
         {
 
-            
-            var riverList = repo.GetAllUSRivers();
-
             if(string.IsNullOrEmpty(partName)){
-                return riverList;
+                return repo.GetRivers();
             } else {
+                var riverList = repo.GetAllUSRivers();
                 var vals = riverList.Where(r => r.Name.ToUpper()
                 .Contains(partName.ToUpper())).Distinct();
                 return vals;

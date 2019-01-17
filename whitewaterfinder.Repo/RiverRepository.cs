@@ -15,6 +15,7 @@ namespace whitewaterfinder.Repo
     public interface IRiverRepository 
     {
         IEnumerable<River> GetAllUSRivers();
+        IEnumerable<River> GetRivers();
     }
     public class RiverRepository : IRiverRepository
     {
@@ -45,8 +46,14 @@ namespace whitewaterfinder.Repo
                 }
             }
         }
+        public IEnumerable<River>GetRivers()
+        {
+            folders.CollectionName = "data";
+            return folders.Get<List<River>>("usRivers.json");
+        }
         public IEnumerable<River> GetAllUSRivers()
         {
+            //TODO NOTE.  the concept behind the partitionkey is the "folder" the rowkey is the "file"
             var stuff = new TableQuery()
              .Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, "search"));
             return folders.Get<List<River>>(stuff, string.Empty);
