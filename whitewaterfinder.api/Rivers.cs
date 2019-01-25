@@ -10,7 +10,8 @@ using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using whitewaterfinder.Core;
 using whitewaterfinder.Repo;
-using whitewaterfinder.Repo.Factories;
+//using whitewaterfinder.Repo.Factories;
+using com.brgs.orm;
 
 namespace whitewaterfinder.api
 {

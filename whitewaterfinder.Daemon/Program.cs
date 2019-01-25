@@ -1,9 +1,8 @@
-﻿using whitewaterfinder.Repo.Factories;
+﻿//using whitewaterfinder.Repo.Factories;
 using whitewaterfinder.Repo;
 using whitewaterfinder.Core;
 using whitewaterfinder.BusinessObjects.Rivers;
-using whitewaterfinder.BusinessObjects.USGSResponses;
-using Newtonsoft.Json;
+using com.brgs.orm;
 using System;
 using System.Collections.Generic;
 
@@ -18,15 +17,14 @@ namespace whitewaterfinder.Daemon
             // azureFactory.CollectionName = "data";
             // var rivers = azureFactory.Get<List<River>>("usRivers.json");
             var details = new RiverDetailRepository();
-            var azureRepo = new RiverRepository(azureFactory, "USRivers");
+            var azureRepo = new RiverRepository(azureFactory, "RiversUnitedStates");
             // LoadStates(azureRepo);
             // var service = new RiverService(azureRepo, details);
             // service.GetRivers("gau");
             // var rivers = azureRepo.GetAllUSRivers();
             var rivers = azureRepo.GetRivers();
+            var rivers2 = azureRepo.GetAllUSRivers();
             int three = 1+1;
-            
-
         }
         static void LoadStates(RiverRepository azureRepo)
         {

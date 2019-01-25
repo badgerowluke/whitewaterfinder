@@ -1,8 +1,9 @@
 using Xunit;
-using whitewaterfinder.Repo.Factories;
+//using whitewaterfinder.Repo.Factories;
 using whitewaterfinder.Repo;
 using whitewaterfinder.Core;
-using Newtonsoft.Json;
+using com.brgs.orm;
+
 using System;
 
 
@@ -15,7 +16,8 @@ namespace whitewaterfinder.test
         [Fact(Skip="didn't really end up doing it this way")]
         public void ThisMigratesData()
         {
-            var fileFactory = new FileStorageFactory("data");
+            var fileFactory = new FileStorageFactory();
+            //var fileFactory = new FileStorageFactory("data");
             var fileRepo = new RiverRepository(fileFactory);
             var details = new RiverDetailRepository();
             var service = new RiverService(fileRepo, details);

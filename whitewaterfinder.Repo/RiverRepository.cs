@@ -8,8 +8,11 @@ using Microsoft.WindowsAzure.Storage.Table;
 using Newtonsoft.Json;
 using whitewaterfinder.BusinessObjects.Rivers;
 using whitewaterfinder.BusinessObjects.USGSResponses;
-using whitewaterfinder.Repo.Factories;
-using whitewaterfinder.Repo.Helpers;
+//using whitewaterfinder.Repo.Factories;
+//using whitewaterfinder.Repo.Helpers;
+using com.brgs.orm;
+
+
 namespace whitewaterfinder.Repo
 {
     public interface IRiverRepository 
@@ -20,7 +23,7 @@ namespace whitewaterfinder.Repo
     public class RiverRepository : IRiverRepository
     {
         private readonly IStorageFactory folders;
-        private const string RiverTable = "USRivers";
+        private const string RiverTable = "RiversUnitedStates";
         public RiverRepository(IStorageFactory _folder)
         {
             folders = _folder;
@@ -53,9 +56,10 @@ namespace whitewaterfinder.Repo
         }
         public IEnumerable<River> GetAllUSRivers()
         {
+            folders.CollectionName = RiverTable;
             //TODO NOTE.  the concept behind the partitionkey is the "folder" the rowkey is the "file"
-            var stuff = new TableQuery()
-             .Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, "search"));
+            var stuff = new TableQuery();
+            //  .Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, "search"));
             return folders.Get<List<River>>(stuff, string.Empty);
 
         }

@@ -1,10 +1,11 @@
 using Xunit;
-using whitewaterfinder.Repo.Factories;
+//using whitewaterfinder.Repo.Factories;
 using whitewaterfinder.Repo;
 using whitewaterfinder.BusinessObjects.Rivers;
 using Newtonsoft.Json;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Table;
+using com.brgs.orm;
 using System.Collections.Generic;
 using System;
 namespace whitewaterfinder.test.HelperTests
