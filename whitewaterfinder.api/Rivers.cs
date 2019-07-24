@@ -10,8 +10,8 @@ using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using whitewaterfinder.Core;
 using whitewaterfinder.Repo;
-//using whitewaterfinder.Repo.Factories;
 using com.brgs.orm;
+using com.brgs.orm.Azure;
 
 namespace whitewaterfinder.api
 {
@@ -29,12 +29,12 @@ namespace whitewaterfinder.api
                     .SetBasePath(context.FunctionAppDirectory)
                     .AddEnvironmentVariables()
                     .Build();
-
+                var account = new CloudStorageAccountBuilder(config.GetConnectionString("blob-store"));
                 string name = req.Query["name"];
                 
                 string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
 
-                var factory = new AzureStorageFactory(config.GetConnectionString("blob-store"));
+                var factory = new AzureStorageFactory(account);
                 
                 var repo = new RiverRepository(factory, "RiversUnitedStates");
                 var details = new RiverDetailRepository();

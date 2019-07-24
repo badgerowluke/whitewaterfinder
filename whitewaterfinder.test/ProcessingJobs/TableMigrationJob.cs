@@ -3,7 +3,7 @@ using Xunit;
 using whitewaterfinder.Repo;
 using whitewaterfinder.Core;
 using com.brgs.orm;
-
+using com.brgs.orm.Azure;
 using System;
 
 
@@ -22,7 +22,8 @@ namespace whitewaterfinder.test
             var details = new RiverDetailRepository();
             var service = new RiverService(fileRepo, details);
             var rivers = fileRepo.GetAllUSRivers();
-            var azureFactory = new AzureStorageFactory(connectionString);
+            var account = new CloudStorageAccountBuilder(connectionString);
+            var azureFactory = new AzureStorageFactory(account);
             var azureRepo = new RiverRepository(azureFactory);
             
 

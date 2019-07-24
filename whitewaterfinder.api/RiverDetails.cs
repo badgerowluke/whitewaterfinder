@@ -12,6 +12,7 @@ using whitewaterfinder.Core;
 using whitewaterfinder.Repo;
 //using whitewaterfinder.Repo.Factories;
 using com.brgs.orm;
+using com.brgs.orm.Azure;
 using Microsoft.Extensions.Configuration;
 
 namespace whitewaterfinder.api
@@ -34,8 +35,8 @@ namespace whitewaterfinder.api
             string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
             dynamic data = JsonConvert.DeserializeObject(requestBody);
             name = name ?? data?.name;
-
-            var factory = new AzureStorageFactory(config.GetConnectionString("blob-store"));
+            var account = new CloudStorageAccountBuilder(config.GetConnectionString("blob-store"));
+            var factory = new AzureStorageFactory(account);
             var repo = new RiverRepository(factory);
             var details = new RiverDetailRepository();
             var service = new RiverService(repo, details);
