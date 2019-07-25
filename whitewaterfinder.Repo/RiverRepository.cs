@@ -11,6 +11,7 @@ using whitewaterfinder.BusinessObjects.USGSResponses;
 //using whitewaterfinder.Repo.Factories;
 //using whitewaterfinder.Repo.Helpers;
 using com.brgs.orm;
+using com.brgs.orm.Azure;
 
 
 namespace whitewaterfinder.Repo
@@ -49,7 +50,7 @@ namespace whitewaterfinder.Repo
                 }
             }
         }
-        public IEnumerable<River>GetRivers()
+        public IEnumerable<River> GetRivers()
         {
             folders.CollectionName = "data";
             return folders.Get<List<River>>("usRivers.json");
@@ -60,9 +61,17 @@ namespace whitewaterfinder.Repo
             //TODO NOTE.  the concept behind the partitionkey is the "folder" the rowkey is the "file"
             var stuff = new TableQuery();
             //  .Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, "search"));
-            return folders.Get<List<River>>(stuff, string.Empty);
+            return folders.Get<List<River>>(stuff);
 
         }
+        // public IEnumerable<River> GetAllUSRivers(string val)
+        // {
+        //     folders.CollectionName = RiverTable;
+        //     //TODO NOTE.  the concept behind the partitionkey is the "folder" the rowkey is the "file"
+        //     var stuff = new TableQuery();
+        //     //  .Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, "search"));
+        //     return folders.Get<List<River>>(stuff, r => r.Properties.ContainsKey("Name") && r.Properties["Name"].StringValue.Contains(val));            
+        // }
         public void InsertRiverData(RiverEntity aRiver)
         {
             folders.Post(aRiver);

@@ -5,7 +5,8 @@ using whitewaterfinder.BusinessObjects.Rivers;
 using Newtonsoft.Json;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Table;
-using com.brgs.orm;
+using com.brgs.orm.Azure;
+
 using System.Collections.Generic;
 using System;
 namespace whitewaterfinder.test.HelperTests
@@ -16,7 +17,10 @@ namespace whitewaterfinder.test.HelperTests
         [Fact]
         public void FormatHelperReturnsList()
         {
-            var fac = new AzureStorageFactory(connectionString);
+            var account = new CloudStorageAccountBuilder(connectionString);
+
+            var fac = new AzureStorageFactory(account);
+
             var repo = new RiverRepository(fac);
             // var query = new TableQuery();
             var stuff = repo.GetAllUSRivers();

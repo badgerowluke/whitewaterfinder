@@ -3,6 +3,7 @@ using whitewaterfinder.Repo;
 using whitewaterfinder.Core;
 using whitewaterfinder.BusinessObjects.Rivers;
 using com.brgs.orm;
+using com.brgs.orm.Azure;
 using System;
 using System.Collections.Generic;
 
@@ -13,7 +14,10 @@ namespace whitewaterfinder.Daemon
         private const string connectionString = "DefaultEndpointsProtocol=https;AccountName=waterfinder;AccountKey=e0c3AhZdjwribEAHNNUfdcYtX3x4rAqYv0Xfy35z9Xt6Ve7woUG6aWmvAwDH1HY/Vu/2XsjXmHcpCdsr4cXvXg==;EndpointSuffix=core.windows.net";
         static void Main(string[] args)
         {
-            var azureFactory = new AzureStorageFactory(connectionString);
+            Console.WriteLine(args[0]);
+
+            var account = new CloudStorageAccountBuilder(connectionString);            
+            var azureFactory = new AzureStorageFactory(account);
             // azureFactory.CollectionName = "data";
             // var rivers = azureFactory.Get<List<River>>("usRivers.json");
             var details = new RiverDetailRepository();
@@ -22,7 +26,7 @@ namespace whitewaterfinder.Daemon
             // var service = new RiverService(azureRepo, details);
             // service.GetRivers("gau");
             // var rivers = azureRepo.GetAllUSRivers();
-            var rivers = azureRepo.GetRivers();
+            // var rivers = azureRepo.GetRivers();
             var rivers2 = azureRepo.GetAllUSRivers();
             int three = 1+1;
         }
