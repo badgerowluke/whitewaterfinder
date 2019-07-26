@@ -240,3 +240,6 @@ _Pvt_Extensions
 # FAKE - F# Make
 .fake/
 .vscode/settings.json
+whitewaterfinder.front/Properties/launchSettings.json
+whitewaterfinder.api/local.settings.json
+local.settings.json
