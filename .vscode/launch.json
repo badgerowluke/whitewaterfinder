@@ -10,7 +10,7 @@
            "request": "launch",
            "preLaunchTask": "build",
            "program": "${workspaceFolder}/whitewaterfinder.Daemon/bin/Debug/netcoreapp2.1/whitewaterfinder.Daemon.dll",
-           "args": [],
+           "args": ["Tacos", "Pizza", "Steak"],
            "cwd": "${workspaceFolder}/whitewaterfinder.Daemon",
            "stopAtEntry": false,
            "console": "internalConsole"
