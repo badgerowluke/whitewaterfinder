@@ -17,29 +17,31 @@ using Microsoft.Extensions.Configuration;
 
 namespace whitewaterfinder.api
 {
-    public static class RiverDetails
+    public  class RiverDetails
     {
+        private readonly ICloudStorageAccount _account;
+        public RiverDetails(ICloudStorageAccount account)
+        {
+            _account = account;
+        }
         [FunctionName("RiverDetails")]
-        public static async Task<IActionResult> Run(
+        public async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)] HttpRequest req,
             ILogger log, ExecutionContext context)
         {
-            log.LogInformation("C# HTTP trigger function processed a request.");
-                var config = new ConfigurationBuilder()
-                    .SetBasePath(context.FunctionAppDirectory)
-                    // .AddJsonFile("local.settings.json", optional: true, reloadOnChange: true)
-                    .AddEnvironmentVariables()
-                    .Build();
+
             string name = req.Query["riverCode"];
 
             string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
             dynamic data = JsonConvert.DeserializeObject(requestBody);
             name = name ?? data?.name;
-            var account = new CloudStorageAccountBuilder(config.GetConnectionString("blob-store"));
-            var factory = new AzureStorageFactory(account);
+
+            var factory = new AzureStorageFactory(_account);
             var repo = new RiverRepository(factory);
             var details = new RiverDetailRepository();
             var service = new RiverService(repo, details);
+
+            
             var riverDetails = service.GetRiverDetails(name);
 
             return name != null

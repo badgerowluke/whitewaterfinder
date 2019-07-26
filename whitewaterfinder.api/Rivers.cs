@@ -6,11 +6,8 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Configuration;
-using Newtonsoft.Json;
 using whitewaterfinder.Core;
 using whitewaterfinder.Repo;
-using com.brgs.orm;
 using com.brgs.orm.Azure;
 
 namespace whitewaterfinder.api
