@@ -6,35 +6,32 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Configuration;
-using Newtonsoft.Json;
 using whitewaterfinder.Core;
 using whitewaterfinder.Repo;
-using com.brgs.orm;
 using com.brgs.orm.Azure;
 
 namespace whitewaterfinder.api
 {
-    public static class Rivers
+    public class Rivers
     {
+        private readonly ICloudStorageAccount _account;
+        public Rivers(ICloudStorageAccount account)
+        {
+            _account = account;
+        }
         [FunctionName("Rivers")]
-        public static async Task<IActionResult> Run(
+        public async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = null)] HttpRequest req,
             ILogger log, ExecutionContext context)
         {
             try 
             {
 
-                var config = new ConfigurationBuilder()
-                    .SetBasePath(context.FunctionAppDirectory)
-                    .AddEnvironmentVariables()
-                    .Build();
-                var account = new CloudStorageAccountBuilder(config.GetConnectionString("blob-store"));
                 string name = req.Query["name"];
                 
                 string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
 
-                var factory = new AzureStorageFactory(account);
+                var factory = new AzureStorageFactory(_account);
                 
                 var repo = new RiverRepository(factory, "RiversUnitedStates");
                 var details = new RiverDetailRepository();
