@@ -1,6 +1,0 @@
-{
-    "IsEncrypted": false,
-    "ConnectionStrings": {
-        "blob-store": "DefaultEndpointsProtocol=https;AccountName=waterfinder;AccountKey=e0c3AhZdjwribEAHNNUfdcYtX3x4rAqYv0Xfy35z9Xt6Ve7woUG6aWmvAwDH1HY/Vu/2XsjXmHcpCdsr4cXvXg==;BlobEndpoint=https://waterfinder.blob.core.windows.net/;QueueEndpoint=https://waterfinder.queue.core.windows.net/;TableEndpoint=https://waterfinder.table.core.windows.net/;FileEndpoint=https://waterfinder.file.core.windows.net/;"
-    }
-}
