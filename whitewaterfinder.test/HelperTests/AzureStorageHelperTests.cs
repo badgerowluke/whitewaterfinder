@@ -6,9 +6,12 @@ using Newtonsoft.Json;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Table;
 using com.brgs.orm.Azure;
+using Moq;
 
 using System.Collections.Generic;
 using System;
+using System.Net.Http;
+
 namespace whitewaterfinder.test.HelperTests
 {
     public class AzureStorageHelperTests
@@ -20,8 +23,9 @@ namespace whitewaterfinder.test.HelperTests
             var account = new CloudStorageAccountBuilder(connectionString);
 
             var fac = new AzureStorageFactory(account);
+            var mockHttp = new Mock<HttpClient>();
 
-            var repo = new RiverRepository(fac);
+            var repo = new RiverRepository(fac, mockHttp.Object);
             // var query = new TableQuery();
             var stuff = repo.GetAllUSRivers();
             Assert.IsType<List<River>>(stuff);

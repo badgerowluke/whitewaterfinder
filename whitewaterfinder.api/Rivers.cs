@@ -21,9 +21,11 @@ namespace whitewaterfinder.api
     public class Rivers
     {
         private readonly ICloudStorageAccount _account;
-        public Rivers(ICloudStorageAccount account)
+        private readonly IRiverService _service;
+        public Rivers(ICloudStorageAccount account, IRiverService service)
         {
             _account = account;
+            _service = service;
         }
         [FunctionName("Rivers")]
         [OpenApiOperation("Rivers")]
@@ -43,12 +45,7 @@ namespace whitewaterfinder.api
                 
                 string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
 
-                var factory = new AzureStorageFactory(_account);
-                
-                var repo = new RiverRepository(factory, "RiversUnitedStates");
-                var details = new RiverDetailRepository();
-                var service = new RiverService(repo, details);
-                var rivers = service.GetRivers(name);
+                var rivers = _service.GetRivers(name);
                 
                 return rivers != null
                     ? (ActionResult)new OkObjectResult(rivers)

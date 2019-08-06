@@ -25,9 +25,11 @@ namespace whitewaterfinder.api
     public  class RiverDetails
     {
         private readonly ICloudStorageAccount _account;
-        public RiverDetails(ICloudStorageAccount account)
+        private readonly IRiverService _service;
+        public RiverDetails(ICloudStorageAccount account, IRiverService service)
         {
             _account = account;
+            _service = service;
         }
         [FunctionName("RiverDetails")]
         [OpenApiOperation("Rivers")]
@@ -47,13 +49,7 @@ namespace whitewaterfinder.api
             dynamic data = JsonConvert.DeserializeObject(requestBody);
             name = name ?? data?.name;
 
-            var factory = new AzureStorageFactory(_account);
-            var repo = new RiverRepository(factory);
-            var details = new RiverDetailRepository();
-            var service = new RiverService(repo, details);
-
-            
-            var riverDetails = service.GetRiverDetails(name);
+            var riverDetails = _service.GetRiverDetails(name);
 
             return name != null
                 ? (ActionResult)new OkObjectResult(riverDetails)

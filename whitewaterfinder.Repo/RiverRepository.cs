@@ -22,11 +22,13 @@ namespace whitewaterfinder.Repo
     public class RiverRepository : IRiverRepository
     {
         private readonly IAzureStorage folders;
+        private readonly HttpClient _client;
         private const string RiverTable = "RiversUnitedStates";
-        public RiverRepository(IAzureStorage _folder)
+        public RiverRepository(IAzureStorage _folder, HttpClient client)
         {
             folders = _folder;
             folders.CollectionName = RiverTable;
+            _client = client;
         }
         public RiverRepository(IAzureStorage _folder, string table)
         {
