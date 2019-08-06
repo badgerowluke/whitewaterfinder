@@ -8,9 +8,7 @@ using Microsoft.WindowsAzure.Storage.Table;
 using Newtonsoft.Json;
 using whitewaterfinder.BusinessObjects.Rivers;
 using whitewaterfinder.BusinessObjects.USGSResponses;
-//using whitewaterfinder.Repo.Factories;
-//using whitewaterfinder.Repo.Helpers;
-using com.brgs.orm;
+
 using com.brgs.orm.Azure;
 
 
@@ -23,14 +21,14 @@ namespace whitewaterfinder.Repo
     }
     public class RiverRepository : IRiverRepository
     {
-        private readonly IStorageFactory folders;
+        private readonly IAzureStorage folders;
         private const string RiverTable = "RiversUnitedStates";
-        public RiverRepository(IStorageFactory _folder)
+        public RiverRepository(IAzureStorage _folder)
         {
             folders = _folder;
             folders.CollectionName = RiverTable;
         }
-        public RiverRepository(IStorageFactory _folder, string table)
+        public RiverRepository(IAzureStorage _folder, string table)
         {
             folders = _folder;
             folders.CollectionName = table;

@@ -28,7 +28,6 @@ namespace whitewaterfinder.Daemon
             // var rivers = azureRepo.GetAllUSRivers();
             // var rivers = azureRepo.GetRivers();
             var rivers2 = azureRepo.GetAllUSRivers();
-            int three = 1+1;
         }
         static void LoadStates(RiverRepository azureRepo)
         {
