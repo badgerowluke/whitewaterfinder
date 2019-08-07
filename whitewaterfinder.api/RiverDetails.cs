@@ -45,18 +45,26 @@ namespace whitewaterfinder.api
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = null)] HttpRequest req,
             ILogger log, ExecutionContext context)
         {
+            try
+            {
+                string name = req.Query["riverCode"];
 
-            string name = req.Query["riverCode"];
+                string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+                dynamic data = JsonConvert.DeserializeObject(requestBody);
+                name = name ?? data?.name;
 
-            string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-            dynamic data = JsonConvert.DeserializeObject(requestBody);
-            name = name ?? data?.name;
+                var riverDetails = _service.GetRiverDetails(name);
 
-            var riverDetails = _service.GetRiverDetails(name);
+                return name != null
+                    ? (ActionResult)new OkObjectResult(riverDetails)
+                    : new NoContentResult();
 
-            return name != null
-                ? (ActionResult)new OkObjectResult(riverDetails)
-                : new BadRequestObjectResult("Please pass a name on the query string or in the request body");
+            } catch( Exception e) 
+            {
+                log.LogError(new EventId(), e.StackTrace);
+                throw;
+            }
+
         }
         private Dictionary<string, string> GetNeededConfig(IConfiguration config)
         {

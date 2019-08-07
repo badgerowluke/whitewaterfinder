@@ -24,6 +24,7 @@ namespace whitewaterfinder.api
             builder.Services.AddSingleton<ICloudStorageAccount>(new CloudStorageAccountBuilder(config.GetConnectionString("blob-store")));
             builder.Services.AddSingleton<IAzureStorage, AzureStorageFactory>();
             builder.Services.AddSingleton<IConfiguration>(config);
+            builder.Services.AddSingleton<IAppSettings>(new AppSettings(config));
             builder.Services.AddSingleton<IRiverRepository, RiverRepository>();
             builder.Services.AddSingleton<IRiverDetailRepository, RiverDetailRepository>();
             builder.Services.AddSingleton<IRiverService, RiverService>();
