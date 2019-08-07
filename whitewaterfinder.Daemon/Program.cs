@@ -6,6 +6,7 @@ using com.brgs.orm;
 using com.brgs.orm.Azure;
 using System;
 using System.Collections.Generic;
+using System.Net.Http;
 
 namespace whitewaterfinder.Daemon
 {
@@ -18,9 +19,10 @@ namespace whitewaterfinder.Daemon
 
             var account = new CloudStorageAccountBuilder(connectionString);            
             var azureFactory = new AzureStorageFactory(account);
+            var client = new HttpClient();
             // azureFactory.CollectionName = "data";
             // var rivers = azureFactory.Get<List<River>>("usRivers.json");
-            var details = new RiverDetailRepository();
+            var details = new RiverDetailRepository(client);
             var azureRepo = new RiverRepository(azureFactory, "RiversUnitedStates");
             // LoadStates(azureRepo);
             // var service = new RiverService(azureRepo, details);

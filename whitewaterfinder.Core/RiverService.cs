@@ -33,10 +33,12 @@ namespace whitewaterfinder.Core
             if(string.IsNullOrEmpty(partName)){
                 return repo.GetRivers();
             } else {
-                var riverList = repo.GetAllUSRivers();
-                var vals = riverList.Where(r => r.Name.ToUpper()
-                .Contains(partName.ToUpper())).Distinct();
-                return vals;
+
+                return repo.GetRiversAsync(partName).GetAwaiter().GetResult();
+                // var riverList = repo.GetAllUSRivers();
+                // var vals = riverList.Where(r => r.Name.ToUpper()
+                // .Contains(partName.ToUpper())).Distinct();
+                // return vals;
             }
 
         }

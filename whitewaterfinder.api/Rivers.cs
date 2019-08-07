@@ -15,6 +15,7 @@ using Aliencube.AzureFunctions.Extensions.OpenApi.Attributes;
 using System.Collections.Generic;
 using System.Net;
 using Microsoft.OpenApi.Models;
+using Microsoft.Extensions.Configuration;
 
 namespace whitewaterfinder.api
 {
@@ -22,10 +23,12 @@ namespace whitewaterfinder.api
     {
         private readonly ICloudStorageAccount _account;
         private readonly IRiverService _service;
-        public Rivers(ICloudStorageAccount account, IRiverService service)
+        private readonly string _searchKey;
+        public Rivers(ICloudStorageAccount account, IRiverService service, IConfiguration settings)
         {
             _account = account;
             _service = service;
+            _searchKey = settings["azuresearch-key"];
         }
         [FunctionName("Rivers")]
         [OpenApiOperation("Rivers")]
@@ -40,7 +43,6 @@ namespace whitewaterfinder.api
         {
             try 
             {
-
                 string name = req.Query["name"];
                 
                 string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
@@ -49,7 +51,7 @@ namespace whitewaterfinder.api
                 
                 return rivers != null
                     ? (ActionResult)new OkObjectResult(rivers)
-                    : new BadRequestObjectResult("Please pass a name on the query string or in the request body");
+                    : new NoContentResult();
             }catch (Exception e )
             {
                 log.LogError(new EventId(), e.StackTrace);
