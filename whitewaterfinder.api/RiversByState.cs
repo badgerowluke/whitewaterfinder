@@ -12,16 +12,25 @@ using System.Net;
 using System.Collections.Generic;
 using whitewaterfinder.BusinessObjects.Rivers;
 using com.brgs.orm.Azure;
+using whitewaterfinder.Core;
+using Microsoft.Extensions.Configuration;
+using System;
 
 namespace whitewaterfinder.api
 {
     public class RiversByState
     {
-        private readonly ICloudStorageAccount _account;
-        public RiversByState(ICloudStorageAccount account)
+
+        private readonly IRiverService _service;
+
+        public RiversByState(IRiverService service, IConfiguration settings)
         {
-            _account = account;
+            _service = service;
+            var config = GetNeededConfig(settings);
+            _service.Register(config);
         }
+
+
         [FunctionName("RiversByState")]
         [OpenApiOperation("RiversByState")]
         [OpenApiParameter("state", In=ParameterLocation.Query, Required=true, Description="The State you'd like to search within", Type=typeof(string))]
@@ -29,20 +38,32 @@ namespace whitewaterfinder.api
         [OpenApiResponseBody(System.Net.HttpStatusCode.NoContent, "application/json", typeof(string))]
         [OpenApiResponseBody(System.Net.HttpStatusCode.InternalServerError, "application/json", typeof(string))]
         [OpenApiResponseBody(System.Net.HttpStatusCode.BadRequest, "application/json", typeof(string))]        
-        public static async Task<IActionResult> Run(
+        public async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = null)] HttpRequest req,
             ILogger log)
         {
+            try
+            {
+                string name = req.Query["name"];
 
-            string name = req.Query["name"];
 
-            string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-            dynamic data = JsonConvert.DeserializeObject(requestBody);
-            name = name ?? data?.name;
+                var rivers = _service.GetRivers(name);
 
-            return name != null
-                ? (ActionResult)new OkObjectResult($"Hello, {name}")
-                : new BadRequestObjectResult("Please pass a name on the query string or in the request body");
+                return rivers != null
+                    ? (ActionResult)new OkObjectResult(rivers)
+                    : new NoContentResult();
+            }
+            catch (Exception e)
+            {
+                log.LogError(new EventId(), e.StackTrace);
+                throw;
+            }
+        }
+        private Dictionary<string, string> GetNeededConfig(IConfiguration config)
+        {
+            var outConfig = new Dictionary<string, string>();
+            outConfig.Add("riverTable", "USRivers");
+            return outConfig;
         }
     }
 }

@@ -1,14 +1,10 @@
-using System;
-using System.Runtime.Caching;
-using System.Collections.Generic;
-using System.Linq;
 
+using System.Collections.Generic;
+
+using whitewaterfinder.Core.Data;
 using whitewaterfinder.Repo;
 using whitewaterfinder.BusinessObjects.Rivers;
-using whitewaterfinder.BusinessObjects;
-using System.Net.Http;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
+
 
 
 namespace whitewaterfinder.Core
@@ -19,7 +15,7 @@ namespace whitewaterfinder.Core
         River GetRiverDetails(string riverCode);
         void Register(Dictionary<string,string> config);
     }
-    public class RiverService : IRiverService
+    public class RiverService : StateData, IRiverService
     {
         private readonly IRiverRepository repo;
         private readonly IRiverDetailRepository detail;

@@ -20,13 +20,10 @@ namespace whitewaterfinder.api
 {
     public class Rivers
     {
-        private readonly ICloudStorageAccount _account;
         private readonly IRiverService _service;
-
-
-        public Rivers(ICloudStorageAccount account, IRiverService service, IConfiguration settings)
+        public Rivers( IRiverService service, IConfiguration settings)
         {
-            _account = account;
+
             _service = service;
             var config = GetNeededConfig(settings);
             _service.Register(config);

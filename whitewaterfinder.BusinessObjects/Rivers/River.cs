@@ -27,7 +27,7 @@ namespace whitewaterfinder.BusinessObjects.Rivers
         public string Flow { get; set; }
         public string Level { get; set; }
     }
-    public class RiverEntity : TableEntity, ITableEntity
+    public class RiverEntity : TableEntity
     {
         public DateTime Date { get; set; }
 		public string Name { get; set; }

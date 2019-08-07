@@ -20,16 +20,8 @@ namespace whitewaterfinder.Daemon
             var account = new CloudStorageAccountBuilder(connectionString);            
             var azureFactory = new AzureStorageFactory(account);
             var client = new HttpClient();
-            // azureFactory.CollectionName = "data";
-            // var rivers = azureFactory.Get<List<River>>("usRivers.json");
-            var details = new RiverDetailRepository(client);
+
             var azureRepo = new RiverRepository(azureFactory, "RiversUnitedStates");
-            // LoadStates(azureRepo);
-            // var service = new RiverService(azureRepo, details);
-            // service.GetRivers("gau");
-            // var rivers = azureRepo.GetAllUSRivers();
-            // var rivers = azureRepo.GetRivers();
-            var rivers2 = azureRepo.GetAllUSRivers();
         }
         static void LoadStates(RiverRepository azureRepo)
         {

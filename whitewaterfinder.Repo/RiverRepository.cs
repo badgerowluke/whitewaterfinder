@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Microsoft.WindowsAzure.Storage.Table;
 using Newtonsoft.Json;
 using whitewaterfinder.BusinessObjects.Rivers;
 using whitewaterfinder.BusinessObjects.USGSResponses;
@@ -16,7 +15,6 @@ namespace whitewaterfinder.Repo
 {
     public interface IRiverRepository 
     {
-        IEnumerable<River> GetAllUSRivers();
         IEnumerable<River> GetRivers();
         Task<IEnumerable<River>> GetRiversAsync(string partName);
         void Register(IDictionary<string, string> configVals);
@@ -82,16 +80,6 @@ namespace whitewaterfinder.Repo
                 return vals.ToObject<IEnumerable<River>>();
             }
         }
-        public IEnumerable<River> GetAllUSRivers()
-        {
-            folders.CollectionName = _riverTable;
-            //TODO NOTE.  the concept behind the partitionkey is the "folder" the rowkey is the "file"
-            var stuff = new TableQuery();
-            //  .Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, "search"));
-            return folders.Get<List<River>>(stuff);
-
-        }
-
 
         public void InsertRiverData(RiverEntity aRiver)
         {
