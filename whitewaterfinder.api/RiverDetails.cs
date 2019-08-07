@@ -25,9 +25,14 @@ namespace whitewaterfinder.api
     public  class RiverDetails
     {
         private readonly ICloudStorageAccount _account;
-        public RiverDetails(ICloudStorageAccount account)
+        private readonly IRiverService _service;
+        public RiverDetails(ICloudStorageAccount account, IRiverService service, IConfiguration settings)
         {
             _account = account;
+            _service = service;
+            var config = GetNeededConfig(settings);
+            _service.Register(config);
+
         }
         [FunctionName("RiverDetails")]
         [OpenApiOperation("Rivers")]
@@ -47,17 +52,17 @@ namespace whitewaterfinder.api
             dynamic data = JsonConvert.DeserializeObject(requestBody);
             name = name ?? data?.name;
 
-            var factory = new AzureStorageFactory(_account);
-            var repo = new RiverRepository(factory);
-            var details = new RiverDetailRepository();
-            var service = new RiverService(repo, details);
-
-            
-            var riverDetails = service.GetRiverDetails(name);
+            var riverDetails = _service.GetRiverDetails(name);
 
             return name != null
                 ? (ActionResult)new OkObjectResult(riverDetails)
                 : new BadRequestObjectResult("Please pass a name on the query string or in the request body");
+        }
+        private Dictionary<string, string> GetNeededConfig(IConfiguration config)
+        {
+            var outConfig = new Dictionary<string, string>();
+            outConfig.Add("baseUSGSURL", config["baseUSGSUrl"]);
+            return outConfig;
         }
     }
 }
