@@ -17,6 +17,7 @@ namespace whitewaterfinder.Repo
     {
         IEnumerable<River> GetRivers();
         Task<IEnumerable<River>> GetRiversAsync(string partName);
+        IEnumerable<River> GetRiversByState(string stateCode);
         void Register(IDictionary<string, string> configVals);
 
     }
@@ -79,6 +80,19 @@ namespace whitewaterfinder.Repo
                 var vals = objs["value"];
                 return vals.ToObject<IEnumerable<River>>();
             }
+        }
+        public IEnumerable<River> GetRiversByState(string stateCode)
+        {
+            folders.CollectionName = _riverTable;
+            var entities = folders.Get<RiverEntity>(r => r.PartitionKey.Equals(stateCode));
+            var outList = new List<River>();
+            foreach(var entity in entities)
+            {
+                var river = entity.ToRiver();
+                outList.Add(river);
+            }
+
+            return outList;
         }
 
         public void InsertRiverData(RiverEntity aRiver)

@@ -63,6 +63,9 @@ namespace whitewaterfinder.api
         {
             var outConfig = new Dictionary<string, string>();
             outConfig.Add("riverTable", "USRivers");
+            outConfig.Add("searchKey", config["azuresearch-key"]);
+            outConfig.Add("baseUSGSURL", config["baseUSGSUrl"]);
+            outConfig.Add("searchUrl", config["searchUrl"]);
             return outConfig;
         }
     }

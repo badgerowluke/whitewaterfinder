@@ -1,5 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
+
+
 
 namespace whitewaterfinder.Core.Data
 {
@@ -55,12 +58,22 @@ namespace whitewaterfinder.Core.Data
             { "Virginia", "VA" },
             { "Washington", "WA" },
             { "West Virginia", "WV" },
+            { "West by God", "WV" },
             { "Wisconsin", "WI" },
             { "Wyoming", "WY" }
         };
-        protected string GetStateCode(string val)
+        public string GetStateCode(string val)
         {
-            var stateCode = States.Where(s => s.Value.ToLower().Equals(val.ToLower())).FirstOrDefault();
+            var stateCodePair = States.FirstOrDefault(s => s.Value.ToLower().Equals(val.ToLower()));
+            var stateNamePair = States.FirstOrDefault(s => s.Key.ToLower().Equals(val.ToLower()));
+            if(!string.IsNullOrEmpty(stateCodePair.Value))
+            {
+                return stateCodePair.Value;
+            }
+            if(!string.IsNullOrEmpty(stateNamePair.Value))
+            {
+                return stateNamePair.Value;
+            }
 
             return string.Empty;
         }

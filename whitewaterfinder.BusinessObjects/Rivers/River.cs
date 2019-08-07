@@ -4,8 +4,17 @@ using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Table;
 namespace whitewaterfinder.BusinessObjects.Rivers
 {
+    public interface IRiver
+    {
+        string Name { get; set; }
+        string RiverId { get; set; }
+        string Latitude { get; set; }
+        string Srs { get; set; }
+        string State { get; set; }
+        string StateCode { get; set; }
+    }
 
-    public class River
+    public class River : IRiver
     {
 		public string Name { get; set; }
 		public string RiverId { get; set; }
@@ -27,7 +36,7 @@ namespace whitewaterfinder.BusinessObjects.Rivers
         public string Flow { get; set; }
         public string Level { get; set; }
     }
-    public class RiverEntity : TableEntity
+    public class RiverEntity : TableEntity, IRiver
     {
         public DateTime Date { get; set; }
 		public string Name { get; set; }
