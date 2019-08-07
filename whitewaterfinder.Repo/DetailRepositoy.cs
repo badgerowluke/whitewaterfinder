@@ -11,20 +11,26 @@ namespace whitewaterfinder.Repo
     public interface IRiverDetailRepository
     {
         Task<River> GetRiverDetailsAsync(string riverCode);
+        void Register(IDictionary<string, string> configVals);
     }   
     public class RiverDetailRepository : IRiverDetailRepository
     {
         private readonly HttpClient _client;
+        private string _usgsUrl;
         public RiverDetailRepository(HttpClient client)
         {
             _client = client;
+        }
+        public void Register(IDictionary<string, string> configVals)
+        {
+            _usgsUrl = configVals["baseUSGSURL"] + "sites=";
         }
         
         public async Task<River> GetRiverDetailsAsync(string riverCode)
         {
             var river = new River();
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, 
-            "https://waterservices.usgs.gov/nwis/iv/?format=json&indent=on&sites="
+            _usgsUrl
             + riverCode +"&period=P1D&parameterCd=00065,00060&siteStatus=all");
 
             
@@ -43,7 +49,7 @@ namespace whitewaterfinder.Repo
                         RiverId = obj.Value.TimeSeries[0].SourceInfo.SiteCode[0].Value
                     };
 
-                    var riverData = new List<RiverData>();
+
 
                     river.Flow = obj.ParseTimeSeriesData(TimeSeriesTypes.CubicFeet);
                     river.Levels = obj.ParseTimeSeriesData(TimeSeriesTypes.GuageHeight);

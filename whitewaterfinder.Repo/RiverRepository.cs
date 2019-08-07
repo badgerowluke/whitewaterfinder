@@ -18,29 +18,43 @@ namespace whitewaterfinder.Repo
     {
         IEnumerable<River> GetAllUSRivers();
         IEnumerable<River> GetRivers();
-        Task<IEnumerable<River>> GetRiversAsync(string stateCode);
+        Task<IEnumerable<River>> GetRiversAsync(string partName);
+        void Register(IDictionary<string, string> configVals);
 
     }
     public class RiverRepository : IRiverRepository
     {
         private readonly IAzureStorage folders;
         private readonly HttpClient _client;
-        private const string RiverTable = "RiversUnitedStates";
+        private string _riverTable;
+        private string _baseUSGSUrl;
+        private string _azureSearchUrl;
+        private string _azureSearchKey;
         public RiverRepository(IAzureStorage _folder, HttpClient client)
         {
             folders = _folder;
-            folders.CollectionName = RiverTable;
+            folders.CollectionName = _riverTable;
             _client = client;
         }
+        [Obsolete("moving away from thie pattern")]
         public RiverRepository(IAzureStorage _folder, string table)
         {
             folders = _folder;
             folders.CollectionName = table;
         }
+        public void Register(IDictionary<string, string> configVals)
+        {
+            _riverTable = configVals["riverTable"];
+            _baseUSGSUrl = configVals["baseUSGSURL"] + "stateCd=";
+
+            /*TODO: look into parameterizing the search */
+            _azureSearchUrl = configVals["searchUrl"];
+            _azureSearchKey = configVals["searchKey"];
+        }
         public async Task<USGSRiverResponse> GetRiverData(string stateCode)
         {
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get,
-            "https://waterservices.usgs.gov/nwis/iv/?format=json&indent=on&stateCd=" + stateCode);
+            _baseUSGSUrl + stateCode);
 
             using (HttpResponseMessage response = await _client.SendAsync(request))
             {
@@ -57,8 +71,8 @@ namespace whitewaterfinder.Repo
         public async Task<IEnumerable<River>> GetRiversAsync(string partName)
         {
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get,
-            "https://askwebster-asvs3oon36uy7ty.search.windows.net/indexes/azuretable-index/docs/suggest?suggesterName=RiverName&api-version=2019-05-06&fuzzy=false&$top=20&&$select=Name,RiverId&search=" + partName);
-            request.Headers.Add("api-key", "");
+            _azureSearchUrl + partName);
+            request.Headers.Add("api-key", _azureSearchKey);
 
             using(HttpResponseMessage response = await _client.SendAsync(request))
             {
@@ -70,7 +84,7 @@ namespace whitewaterfinder.Repo
         }
         public IEnumerable<River> GetAllUSRivers()
         {
-            folders.CollectionName = RiverTable;
+            folders.CollectionName = _riverTable;
             //TODO NOTE.  the concept behind the partitionkey is the "folder" the rowkey is the "file"
             var stuff = new TableQuery();
             //  .Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, "search"));

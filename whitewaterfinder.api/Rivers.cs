@@ -7,7 +7,6 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using whitewaterfinder.Core;
-using whitewaterfinder.Repo;
 using whitewaterfinder.BusinessObjects.Rivers;
 using com.brgs.orm.Azure;
 
@@ -23,12 +22,15 @@ namespace whitewaterfinder.api
     {
         private readonly ICloudStorageAccount _account;
         private readonly IRiverService _service;
-        private readonly string _searchKey;
+
+
         public Rivers(ICloudStorageAccount account, IRiverService service, IConfiguration settings)
         {
             _account = account;
             _service = service;
-            _searchKey = settings["azuresearch-key"];
+            var config = GetNeededConfig(settings);
+            _service.Register(config);
+
         }
         [FunctionName("Rivers")]
         [OpenApiOperation("Rivers")]
@@ -45,8 +47,7 @@ namespace whitewaterfinder.api
             {
                 string name = req.Query["name"];
                 
-                string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-
+                
                 var rivers = _service.GetRivers(name);
                 
                 return rivers != null
@@ -55,9 +56,18 @@ namespace whitewaterfinder.api
             }catch (Exception e )
             {
                 log.LogError(new EventId(), e.StackTrace);
-                throw new Exception();
+                throw;
             }
 
+        }
+        private Dictionary<string, string> GetNeededConfig(IConfiguration config)
+        {
+            var outConfig = new Dictionary<string, string>();
+            outConfig.Add("searchKey", config["azuresearch-key"]);
+            outConfig.Add("baseUSGSURL", config["baseUSGSUrl"]);
+            outConfig.Add("riverTable", "USRivers");
+            outConfig.Add("searchUrl", config["searchUrl"]);
+            return outConfig;
         }
     }
 }
