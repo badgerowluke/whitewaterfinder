@@ -27,25 +27,25 @@ namespace whitewaterfinder.test.RiverServiceTests
             Assert.Equal("WV", val);
         }
         [Fact]
-        public  void ReturnAnEnumerableOfRiverWithPartialName()
+        public async void ReturnAnEnumerableOfRiverWithPartialName()
         {
             MockRiverRepo.Setup(m =>  m.GetRiversAsync(It.IsAny<string>())).ReturnsAsync(new List<River>());
-            var vals = service.GetRivers("gaul");
+            var vals = await service.GetRivers("gaul");
             Assert.IsType<List<River>>(vals);
         }
         [Fact] 
-        public void ReturnsAnEnumerableOfRiverWithStateCode()
+        public async void ReturnsAnEnumerableOfRiverWithStateCode()
         {
             MockRiverRepo.Setup(m =>  m.GetRiversByState(It.IsAny<string>())).Returns(new List<River>());
-            var vals = service.GetRivers("MD");
+            var vals = await service.GetRivers("MD");
             Assert.IsType<List<River>>(vals);
 
         }
         [Fact]
-        public void ReturnsAnEnumerableOfRiversWithEmptyString()
+        public async void ReturnsAnEnumerableOfRiversWithEmptyString()
         {
             MockRiverRepo.Setup(m =>  m.GetRivers()).Returns(new List<River>());
-            var vals = service.GetRivers(string.Empty);
+            var vals = await service.GetRivers(string.Empty);
             Assert.IsType<List<River>>(vals);
 
         }
