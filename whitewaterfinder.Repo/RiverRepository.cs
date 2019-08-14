@@ -52,6 +52,7 @@ namespace whitewaterfinder.Repo
         }
         public async Task<USGSRiverResponse> GetRiverData(string stateCode)
         {
+            if(string.IsNullOrEmpty(stateCode)) { throw new ArgumentException("we need to know where you'd like to search" ); }
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get,
             _baseUSGSUrl + stateCode);
 
@@ -69,6 +70,7 @@ namespace whitewaterfinder.Repo
         }
         public async Task<IEnumerable<River>> GetRiversAsync(string partName)
         {
+            if(string.IsNullOrEmpty(partName)) { throw new ArgumentException("we need to know where you'd like to search" ); }
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get,
             _azureSearchUrl + partName);
             request.Headers.Add("api-key", _azureSearchKey);
