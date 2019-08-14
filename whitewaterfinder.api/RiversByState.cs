@@ -47,7 +47,7 @@ namespace whitewaterfinder.api
                 string name = req.Query["name"];
 
 
-                var rivers = _service.GetRivers(name);
+                var rivers = await _service.GetRivers(name);
 
                 return rivers != null
                     ? (ActionResult)new OkObjectResult(rivers)

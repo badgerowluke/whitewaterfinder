@@ -4,14 +4,13 @@ using System.Collections.Generic;
 using whitewaterfinder.Core.Data;
 using whitewaterfinder.Repo;
 using whitewaterfinder.BusinessObjects.Rivers;
-
-
+using System.Threading.Tasks;
 
 namespace whitewaterfinder.Core
 {
     public interface IRiverService 
     {
-        IEnumerable<River> GetRivers(string partName);
+        Task<IEnumerable<River>> GetRivers(string partName);
         River GetRiverDetails(string riverCode);
         void Register(Dictionary<string,string> config);
     }
@@ -30,7 +29,7 @@ namespace whitewaterfinder.Core
         {
             _config = config;
         }
-        public IEnumerable<River> GetRivers(string partName)
+        public async Task<IEnumerable<River>> GetRivers(string partName)
         {
             repo.Register(_config);
             if(string.IsNullOrEmpty(partName)){
@@ -40,7 +39,7 @@ namespace whitewaterfinder.Core
                 {
                     return repo.GetRiversByState(partName);
                 }
-                return repo.GetRiversAsync(partName).GetAwaiter().GetResult();
+                return await repo.GetRiversAsync(partName);
             }
         }
         

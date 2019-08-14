@@ -21,7 +21,6 @@ namespace whitewaterfinder.Daemon
             var azureFactory = new AzureStorageFactory(account);
             var client = new HttpClient();
 
-            var azureRepo = new RiverRepository(azureFactory, "RiversUnitedStates");
         }
         static void LoadStates(RiverRepository azureRepo)
         {
