@@ -1,0 +1,33 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "sites_paddle_finder_name": {
+            "value": null
+        },
+        "profiles_waterfinder_name": {
+            "value": null
+        },
+        "serverfarms_EastUSPlan_name": {
+            "value": null
+        },
+        "components_paddle_finder_name": {
+            "value": null
+        },
+        "vaults_paddlefinderkeyss_name": {
+            "value": null
+        },
+        "storageAccounts_waterfinder_name": {
+            "value": null
+        },
+        "workspaces_func_analytics_name": {
+            "value": null
+        },
+        "alertrules_Failure_Anomalies___paddle_finder_name": {
+            "value": null
+        },
+        "solutions_AzureActivity(func_analytics)_name": {
+            "value": null
+        }
+    }
+}
