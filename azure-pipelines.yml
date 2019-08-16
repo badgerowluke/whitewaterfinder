@@ -28,17 +28,6 @@ steps:
   displayName: 'build User Pref functions'
   workingDirectory: whitewaterfinder.api.user
 
-- task: CopyFiles@2
-  inputs: 
-    SourceFolder: whitewaterfinder.api.user
-    Contents: |
-        **\dist\**
-        **\bin\**
-        **\node_modules\**
-    TargetFolder: $(Build.ArtifactStagingDirectory)
-
-
-
 - task: DotNetCoreCLI@2
   displayName: Build
   inputs:
@@ -64,8 +53,10 @@ steps:
   inputs:
     PathtoPublish: whitewaterfinder.infrastructure
     ArtifactName: 'infra'
+
+
 - task: PublishBuildArtifacts@1
   displayName: 'Copy Preferences Functions'
   inputs:
-    PathtoPublish: $(build.artifactstagingdirectory)
+    PathtoPublish: whitewaterfinder.api.user
     ArtifactName: 'preferencesfunc'
