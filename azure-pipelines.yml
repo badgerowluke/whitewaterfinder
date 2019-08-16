@@ -13,7 +13,7 @@ queue:
 steps:
 - task: NodeTool@0
   inputs:
-    versionSpec; '10.x'
+    versionSpec: '10.x'
   displayName: 'set node environment' 
 
 - script: npm install && npm run Build
