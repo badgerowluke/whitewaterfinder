@@ -1,0 +1,12 @@
+{
+  "bindings": [
+    {
+      "name": "myQueueItem",
+      "type": "queueTrigger",
+      "direction": "in",
+      "queueName": "user-preference-queue",
+      "connection": "blob-store"
+    }
+  ],
+  "scriptFile": "../dist/WriteUserPreferences/index.js"
+}
