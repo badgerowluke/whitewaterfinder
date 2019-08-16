@@ -5,6 +5,7 @@ resources:
 
 trigger:
     - master  
+    - feature/ARM-template
 
 queue:
   name: Hosted Ubuntu 1604
@@ -44,7 +45,7 @@ steps:
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact'
   inputs:
-    PathtoPublish: whitewaterfinder.api
+    PathtoPublish: $(build.artifactstagingdirectory)
 
 
 
