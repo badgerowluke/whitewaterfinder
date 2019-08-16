@@ -5,7 +5,7 @@ resources:
 
 trigger:
     - master  
-    - feature/ARM-template
+
 
 queue:
   name: Hosted Ubuntu 1604
