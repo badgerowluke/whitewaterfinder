@@ -35,7 +35,7 @@ steps:
         **\dist\**
         **\bin\**
         **\node_modules\**
-    TargetFolder: $(build.artifactstagingdirectory)
+    TargetFolder: $(Build.ArtifactStagingDirectory)
 
 
 
