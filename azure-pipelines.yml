@@ -45,7 +45,11 @@ steps:
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact'
   inputs:
-    PathtoPublish: $(build.artifactstagingdirectory)
+    PathtoPublish: whitewaterfinder.api
+- task: PublishBuildArtifacts@1
+  displayName: 'Copy ARM'
+  inputs:
+    PathtoPublish: whitewaterfinder.infrastructure
 
 
 
