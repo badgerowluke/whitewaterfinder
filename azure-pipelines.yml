@@ -11,6 +11,14 @@ queue:
   name: Hosted Ubuntu 1604
 
 steps:
+- task: NodeTool@0
+  inputs:
+    versionSpec; '10.x'
+  displayName: 'set node environment' 
+
+- script: npm install && npm run Build
+  displayName: 'build User Pref functions'
+  workingDirectory: whitewaterfinder.api.user
 
 - task: DotNetCoreCLI@2
   displayName: Restore
@@ -33,14 +41,6 @@ steps:
     projects: '**/*[Tt]ests/*.csproj'
     arguments: '--configuration $(BuildConfiguration)'
 
-# - task: DotNetCoreCLI@2
-#   displayName: Publish
-#   inputs:
-#     command: publish
-#     publishWebProjects: True
-#     arguments: '--configuration $(BuildConfiguration) --output $(build.artifactstagingdirectory)'
-#     zipAfterPublish: True
-#     workingDirectory: whitewaterfinder.api
 
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact'
