@@ -33,23 +33,26 @@ steps:
     projects: '**/*[Tt]ests/*.csproj'
     arguments: '--configuration $(BuildConfiguration)'
 
-- task: DotNetCoreCLI@2
-  displayName: Publish
-  inputs:
-    command: publish
-    publishWebProjects: True
-    arguments: '--configuration $(BuildConfiguration) --output $(build.artifactstagingdirectory)'
-    zipAfterPublish: True
-    workingDirectory: whitewaterfinder.api
+# - task: DotNetCoreCLI@2
+#   displayName: Publish
+#   inputs:
+#     command: publish
+#     publishWebProjects: True
+#     arguments: '--configuration $(BuildConfiguration) --output $(build.artifactstagingdirectory)'
+#     zipAfterPublish: True
+#     workingDirectory: whitewaterfinder.api
 
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact'
   inputs:
     PathtoPublish: whitewaterfinder.api
+
 - task: PublishBuildArtifacts@1
   displayName: 'Copy ARM'
   inputs:
     PathtoPublish: whitewaterfinder.infrastructure
+    ArtifactName: 'infra'
+
 
 
 
