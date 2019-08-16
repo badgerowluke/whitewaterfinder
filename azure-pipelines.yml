@@ -16,7 +16,7 @@ steps:
     versionSpec: '10.x'
   displayName: 'set node environment' 
 
-- script: npm install && npm run Build
+- script: npm install && npm run build
   displayName: 'build User Pref functions'
   workingDirectory: whitewaterfinder.api.user
 
