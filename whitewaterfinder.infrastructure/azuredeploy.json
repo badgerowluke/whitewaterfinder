@@ -1,0 +1,141 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "storageAccountType": {
+      "type": "string",
+      "defaultValue": "Standard_LRS",
+      "allowedValues": [
+        "Standard_LRS",
+        "Standard_GRS",
+        "Standard_ZRS",
+        "Premium_LRS"
+      ],
+      "metadata": {
+        "description": "Storage Account type"
+      }
+    },
+    "location": {
+      "type": "string",
+      "defaultValue": "[resourceGroup().location]", 
+      "metadata": {
+        "description": "Location for all resources."
+      }
+    },
+    "appName":{ "type": "string", "defaultValue" : "paddle-finder2" },
+    "appPlanName": {"type" : "string", "defaultValue" : "WaterFinderPlan" },
+    "preferencesApp" : { "type" : "string" , "defaultValue" : "paddle-finder-preferences" },
+    "preferencesPlanName": { "type": "string", "defaultValue": "paddle-finder-preferences-plan" }
+  },
+  "variables": {
+    "storageAccountName": "[concat('waterfinder','')]"
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Storage/storageAccounts",
+      "apiVersion": "2019-04-01",
+      "name": "[variables('storageAccountName')]",
+      "location": "[parameters('location')]",
+      "sku": {
+        "name": "[parameters('storageAccountType')]"
+      },
+      "kind": "StorageV2",
+      "properties": {}
+    },
+    {
+        "type":"Microsoft.Web/serverfarms",
+        "apiVersion":"2016-09-01",
+        "name":"[parameters('appPlanName')]",
+        "location":"[parameters('location')]",
+        "sku":{
+            "name":"Y1",
+            "tier":"Dynamic",
+            "size":"Y1",
+            "family":"Y",
+            "capacity":0
+
+        },
+        "kind":"functionapp",
+        "properties": {
+            "name": "[parameters('appPlanName')]",
+            "perSiteScaling": false,
+            "reserved": false,
+            "targetWorkerCount": 0,
+            "targetWorkerSizeId": 0
+        }        
+    },
+    {
+        "type":"Microsoft.Web/sites",
+        "apiVersion":"2016-08-01",
+        "name":"[parameters('appName')]",
+        "location":"[parameters('location')]",
+        "dependsOn":[
+            "[resourceId('Microsoft.Web/serverfarms', parameters('appPlanName'))]"
+        ],
+        "kind":"functionapp",
+        "properties": {
+            "enabled": true,
+            "hostNameSSlStates":[
+                {
+                    "name":"[concat(parameters('appName'), '.azurewebsites.net')]",
+                    "sslState":"Disabled",
+                    "hostType":"Standard"
+                },
+                {
+                    "name":"[concat(parameters('appName'), '.scm.azurewebsites.net')]",
+                    "sslState":"Disabled",
+                    "hostType":"Repository"
+                }
+            ],
+            "serverFarmId":"[resourceId('Microsoft.Web/serverfarms',parameters('appPlanName'))]",
+            "reserved": false,
+            "scmSiteAlsoStopped": false,
+            "clientAffinityEnabled": false,
+            "clientCertEnabled": false,
+            "hostNamesDisabled": false,
+            "containerSize": 1536,
+            "dailyMemoryTimeQuota": 0,
+            "httpsOnly": false            
+
+        }
+    }  ,
+
+    {
+        "type":"Microsoft.Web/sites",
+        "apiVersion":"2016-08-01",
+        "name":"[parameters('preferencesApp')]",
+        "location":"[parameters('location')]",
+        "dependsOn":[
+            "[resourceId('Microsoft.Web/serverfarms',parameters('appPlanName'))]"
+        ],
+        "kind":"functionapp",
+        "properties": {
+            "enabled": true,
+            "hostNameSSlStates":[
+                {
+                    "name":"[concat(parameters('preferencesApp'), '.azurewebsites.net')]",
+                    "sslState":"Disabled",
+                    "hostType":"Standard"
+                },
+                {
+                    "name":"[concat(parameters('preferencesApp'), '.scm.azurewebsites.net')]",
+                    "sslState":"Disabled",
+                    "hostType":"Repository"
+                }
+            ],
+            "serverFarmId":"[resourceId('Microsoft.Web/serverfarms',parameters('appPlanName'))]",
+            "reserved": false,
+            "scmSiteAlsoStopped": false,
+            "clientAffinityEnabled": false,
+            "clientCertEnabled": false,
+            "hostNamesDisabled": false,
+            "containerSize": 1536,
+            "dailyMemoryTimeQuota": 0,
+            "httpsOnly": false            
+
+        }
+    }  
+    
+  ],
+  "outputs": { }
+}

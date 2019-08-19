@@ -5,6 +5,7 @@ resources:
 
 trigger:
     - master  
+    - feature/ARM-template
 
 
 queue:
