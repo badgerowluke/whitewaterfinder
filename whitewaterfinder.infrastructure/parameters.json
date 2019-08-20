@@ -4,7 +4,6 @@
     "parameters":{
         "appName":{"value": "paddle-finder2" },
         "appPlanName": {"value": "WaterFinderPlan" },
-        "preferencesApp": { "value" : "paddle-finder-preferences" },
-        "preferencesPlanName": { "value": "paddle-finder-preferences-plan"}
+        "preferencesApp": { "value" : "paddle-finder-preferences" }
     }
 }
