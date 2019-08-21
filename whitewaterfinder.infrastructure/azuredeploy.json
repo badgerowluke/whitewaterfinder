@@ -27,7 +27,7 @@
     "preferencesApp" : { "type" : "string" , "defaultValue" : "paddle-finder-preferences" }
   },
   "variables": {
-    "storageAccountName": "[concat('waterfinder', uniquestring(resourceGroup().id))]"
+    "storageAccountName": "waterfinder"
   },
   "resources": [
     {
@@ -111,7 +111,7 @@
         "properties": {
             "sku": {
                 "family": "A",
-                "name": "Standard"
+                "name": "standard"
             },
             "tenantId": "3b0af43d-a683-4a4e-aa12-09fd23444008",
             "accessPolicies": [
@@ -120,41 +120,33 @@
                     "objectId": "ec5b35fa-94ca-4733-96d5-416d3f5043ed",
                     "permissions": {
                         "keys": [
-                            "Get",
-                            "List",
-                            "Update",
-                            "Create",
-                            "Import",
-                            "Delete",
-                            "Recover",
-                            "Backup",
-                            "Restore"
+                            "get",
+                            "list",
+                            "update",
+                            "create",
+                            "import",
+                            "delete",
+                            "recover",
+                            "backup",
+                            "restore"
                         ],
                         "secrets": [
-                            "Get",
-                            "List",
-                            "Set",
-                            "Delete",
-                            "Recover",
-                            "Backup",
-                            "Restore"
+                            "get",
+                            "list",
+                            "set",
+                            "delete",
+                            "recover",
+                            "backup",
+                            "restore"
                         ],
                         "certificates": [
-                            "Get",
-                            "List",
-                            "Update",
-                            "Create",
-                            "Import",
-                            "Delete",
-                            "Recover",
-                            "Backup",
-                            "Restore",
-                            "ManageContacts",
-                            "ManageIssuers",
-                            "GetIssuers",
-                            "ListIssuers",
-                            "SetIssuers",
-                            "DeleteIssuers"
+                            "get",
+                            "list",
+                            "update",
+                            "create",
+                            "import",
+                            "delete",
+                            "recover"
                         ]
                     }
                 }
@@ -257,7 +249,7 @@
         }
     }, 
     {
-        "type": "microsoft.insights/components",
+        "type": "Microsoft.Insights/components",
         "apiVersion": "2015-05-01",
         "name":"[parameters('appName')]",
         "location":"eastus", 
