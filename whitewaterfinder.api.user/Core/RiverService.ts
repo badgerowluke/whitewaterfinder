@@ -1,4 +1,5 @@
-import {TableService, QueueService, ExponentialRetryPolicyFilter, createTableService,createQueueService, TableUtilities } from "azure-storage";
+import {TableService, QueueService, ExponentialRetryPolicyFilter, createTableService, 
+    createQueueService, TableUtilities, TableQuery } from "azure-storage";
 import * as uuidv1 from 'uuid/v1';
 export class RiverService {
     private service: TableService;
@@ -33,8 +34,29 @@ export class RiverService {
         })        
 
     }
-    getFromStorage  = async(): Promise<any> =>{
-        return null;
+    getFromStorage  = async (name:string): Promise<any> =>{
+        var query = new TableQuery()
+        .where('PartitionKey eq ?', name);
+
+        var continuation = null;
+        return new Promise(async (resolve, reject) =>{
+            await this.service.queryEntities("UserPreferences", query, continuation, (error, result, response) =>{
+                if(error) {
+                    reject(error);
+                }
+        
+                resolve(result.entries);
+                
+            })
+        })
+    }
+
+    private entityResolver = (entity) =>{
+        let resolvedEntity = {};
+        for(let key in entity) {
+            resolvedEntity[key] = entity[key]._
+        }
+        return resolvedEntity;
     }
     postToQueue = (record:any) =>  {
         this.queue.createQueueIfNotExists("user-preference-queue", (error, results, response)=>{
