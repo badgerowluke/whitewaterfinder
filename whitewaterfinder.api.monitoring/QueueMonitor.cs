@@ -3,6 +3,7 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Host;
 using Microsoft.Extensions.Logging;
 using Microsoft.ApplicationInsights;
+using Aliencube.AzureFunctions.Extensions.OpenApi.Attributes;
 
 namespace whitewaterfinder.api.monitoring
 {
@@ -12,10 +13,9 @@ namespace whitewaterfinder.api.monitoring
         {
             
         }
-        private static readonly TelemetryClient tc = new TelemetryClient();
         [FunctionName("QueueMonitor")]
         [OpenApiOperation("QueueMonitor")]
-        public static void Run([TimerTrigger("0 */30 * * * *")]TimerInfo myTimer, ILogger log)
+        public  void Run([TimerTrigger("0 */30 * * * *")]TimerInfo myTimer, ILogger log)
         {
             log.LogInformation($"C# Timer trigger function executed at: {DateTime.Now}");
         }
