@@ -14,6 +14,7 @@ namespace whitewaterfinder.api.monitoring
         }
         private static readonly TelemetryClient tc = new TelemetryClient();
         [FunctionName("QueueMonitor")]
+        [OpenApiOperation("QueueMonitor")]
         public static void Run([TimerTrigger("0 */30 * * * *")]TimerInfo myTimer, ILogger log)
         {
             log.LogInformation($"C# Timer trigger function executed at: {DateTime.Now}");
