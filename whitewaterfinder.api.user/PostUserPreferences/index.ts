@@ -1,5 +1,4 @@
 import { AzureFunction, Context, HttpRequest } from "@azure/functions"
-import * as azure from  "azure-storage";
 import { RiverService } from "../Core/RiverService";
 
 
