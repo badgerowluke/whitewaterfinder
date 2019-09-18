@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Http;
 using System;
+using com.brgs.orm.Azure;
 
 [assembly: FunctionsStartup(typeof(whitewaterfinder.api.monitoring.Startup))]
 
@@ -18,7 +19,9 @@ namespace whitewaterfinder.api.monitoring
                 .AddEnvironmentVariables()
                 .Build();
 
-            builder.Services.AddSingleton<IAppSettings>(new AppSettings(config));                    
+            builder.Services.AddSingleton<IAppSettings>(new AppSettings(config));    
+            builder.Services.AddSingleton<ICloudStorageAccount>(new CloudStorageAccountBuilder(config.GetConnectionString("blob-store")));                
+            builder.Services.AddSingleton<IAzureStorage,AzureQueueBuilder>();
         }
     }
 }

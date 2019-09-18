@@ -4,20 +4,25 @@ using Microsoft.Azure.WebJobs.Host;
 using Microsoft.Extensions.Logging;
 using Microsoft.ApplicationInsights;
 using Aliencube.AzureFunctions.Extensions.OpenApi.Attributes;
+using Microsoft.Extensions.Configuration;
+using com.brgs.orm.Azure;
 
 namespace whitewaterfinder.api.monitoring
 {
     public class QueueMonitor
     {
-        public QueueMonitor()
+        private readonly IAzureStorage _storage;
+
+        public QueueMonitor(IAzureStorage storage   )
         {
-            
+            _storage = storage;
         }
         [FunctionName("QueueMonitor")]
         [OpenApiOperation("QueueMonitor")]
-        public  void Run([TimerTrigger("0 */30 * * * *")]TimerInfo myTimer, ILogger log)
+        public  void Run([TimerTrigger("0 */1 * * * *")]TimerInfo myTimer, ILogger log)
         {
-            log.LogInformation($"C# Timer trigger function executed at: {DateTime.Now}");
+            log.LogInformation("Queue ran");            
+
         }
     }
 }

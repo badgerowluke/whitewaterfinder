@@ -9,9 +9,6 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
 using whitewaterfinder.Core;
-using whitewaterfinder.Repo;
-//using whitewaterfinder.Repo.Factories;
-using com.brgs.orm;
 using com.brgs.orm.Azure;
 using Microsoft.Extensions.Configuration;
 using Aliencube.AzureFunctions.Extensions.OpenApi.Attributes;
