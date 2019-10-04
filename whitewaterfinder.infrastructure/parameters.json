@@ -2,8 +2,9 @@
     "$schema":"https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
     "contentVersion":"1.0.0.0",
     "parameters":{
-        "appName":{"value": "paddle-finder2" },
+        "appName":{"value": "paddle-finder" },
         "appPlanName": {"value": "WaterFinderPlan" },
-        "preferencesApp": { "value" : "paddle-finder-preferences" }
+        "preferencesApp": { "value" : "paddle-finder-preferences" },
+        "storageAccountName": { "value" : "waterfinder" }
     }
 }
