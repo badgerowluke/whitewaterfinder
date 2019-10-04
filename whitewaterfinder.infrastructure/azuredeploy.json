@@ -22,18 +22,20 @@
         "description": "Location for all resources."
       }
     },
-    "appName":{ "type": "string", "defaultValue" : "paddle-finder2" },
+    "appName":{ "type": "string", "defaultValue" : "paddle-finder" },
     "appPlanName": {"type" : "string", "defaultValue" : "WaterFinderPlan" },
-    "preferencesApp" : { "type" : "string" , "defaultValue" : "paddle-finder-preferences" }
+    "preferencesApp" : { "type" : "string" , "defaultValue" : "paddle-finder-preferences" },
+    "storageAccountName": { "type" : "string","defaultValue": "waterfinder" }
   },
   "variables": {
-    "storageAccountName": "waterfinder"
+
+    "storageAccountId": "[concat(resourceGroup().id,'/providers/Microsoft.Storage/storageAccounts/', parameters('storageAccountName'))]"
   },
   "resources": [
     {
       "type": "Microsoft.Storage/storageAccounts",
       "apiVersion": "2019-04-01",
-      "name": "[variables('storageAccountName')]",
+      "name": "[parameters('storageAccountName')]",
       "location": "[parameters('location')]",
       "sku": {
         "name": "[parameters('storageAccountType')]"
@@ -44,9 +46,9 @@
     {
         "type":"Microsoft.Storage/storageAccounts/blobServices",
         "apiVersion":"2019-04-01",
-        "name": "[concat(variables('storageAccountName'), '/default')]",
+        "name": "[concat(parameters('storageAccountName'), '/default')]",
         "dependsOn":[
-            "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]"
+            "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName'))]"
         ], 
         "properties": {
             "cors": {
@@ -70,10 +72,10 @@
     {
         "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
         "apiVersion": "2019-04-01",
-        "name": "[concat(variables('storageAccountName'), '/default/azure-webjobs-hosts')]",
+        "name": "[concat(parameters('storageAccountName'), '/default/azure-webjobs-hosts')]",
         "dependsOn": [
-            "[resourceId('Microsoft.Storage/storageAccounts/blobServices', variables('storageAccountName'), 'default')]",
-            "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]"
+            "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccountName'), 'default')]",
+            "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName'))]"
         ],
         "properties": {
             "publicAccess": "None"
@@ -82,10 +84,10 @@
     {
         "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
         "apiVersion": "2019-04-01",
-        "name": "[concat(variables('storageAccountName'), '/default/azure-webjobs-secrets')]",
+        "name": "[concat(parameters('storageAccountName'), '/default/azure-webjobs-secrets')]",
         "dependsOn": [
-            "[resourceId('Microsoft.Storage/storageAccounts/blobServices', variables('storageAccountName'), 'default')]",
-            "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]"
+            "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccountName'), 'default')]",
+            "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName'))]"
         ],
         "properties": {
             "publicAccess": "None"
@@ -94,29 +96,41 @@
     {
         "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
         "apiVersion": "2019-04-01",
-        "name": "[concat(variables('storageAccountName'), '/default/data')]",
+        "name": "[concat(parameters('storageAccountName'), '/default/data')]",
         "dependsOn": [
-            "[resourceId('Microsoft.Storage/storageAccounts/blobServices', variables('storageAccountName'), 'default')]",
-            "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]"
+            "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccountName'), 'default')]",
+            "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName'))]"
         ],
         "properties": {
             "publicAccess": "Container"
         }
-    },    
+    },  
+    {
+        "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+        "apiVersion": "2019-04-01",
+        "name": "[concat(parameters('storageAccountName'), '/default/$web')]",
+        "dependsOn": [
+            "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccountName'), 'default')]",
+            "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName'))]"
+        ],
+        "properties": {
+            "publicAccess": "Container"
+        }
+    },  
     {
         "type": "Microsoft.KeyVault/vaults",
         "apiVersion": "2016-10-01",
-        "name": "[parameters('appPlanName')]",
-        "location": "northcentralus",
+        "name": "[parameters('appName')]",
+        "location": "[parameters('location')]",
         "properties": {
             "sku": {
                 "family": "A",
                 "name": "standard"
             },
-            "tenantId": "3b0af43d-a683-4a4e-aa12-09fd23444008",
+            "tenantId": "{%%tenantId%%}",
             "accessPolicies": [
                 {
-                    "tenantId": "3b0af43d-a683-4a4e-aa12-09fd23444008",
+                    "tenantId": "{%%tenantId%%}",
                     "objectId": "ec5b35fa-94ca-4733-96d5-416d3f5043ed",
                     "permissions": {
                         "keys": [
@@ -209,10 +223,68 @@
             "hostNamesDisabled": false,
             "containerSize": 1536,
             "dailyMemoryTimeQuota": 0,
-            "httpsOnly": false            
+            "httpsOnly": true,     
+            "siteConfig": {
+                "appSettings": [
+                    {
+                        "name": "AzureWebJobsStorage",
+                        "value": "[concat('DefaultEndpointsProtocol=https;AccountName=',parameters('storageAccountName'),';AccountKey=',concat(listKeys(variables('storageAccountId'),'2015-05-01-preview').key1))]"
+                    },
+                    {
+                        "name": "AzureWebJobsDashboard",
+                        "value": "[concat('DefaultEndpointsProtocol=https;AccountName=',parameters('storageAccountName'),';AccountKey=',concat(listKeys(variables('storageAccountId'),'2015-05-01-preview').key1))]"
+
+                    },
+                    {
+                        "name": "FUNCTIONS_EXTENSION_VERSION",
+                        "value": "~2"
+                    },
+                    {
+                        "name": "FUNCTIONS_WORKER_RUNTIME",
+                        "value": "dotnet"
+                    },
+                    {
+                        "name": "WEBSITE_CONTENTSHARE",
+                        "value": "[toLower(parameters('appName'))]"
+                    },
+                    {
+                        "name": "WEBSITE_CONTENTAZUREFILECONNECTIONSTRING",
+                        "value": "[concat('DefaultEndpointsProtocol=https;AccountName=',parameters('storageAccountName'),';AccountKey=',concat(listKeys(variables('storageAccountId'),'2015-05-01-preview').key1))]"
+                    },
+                    {
+                        "name": "WEBSITE_NODE_DEFAULT_VERSION",
+                        "value": "8.11.1"
+                    },             
+                    {
+                        "name": "blob-store",
+                        "value": "[concat('DefaultEndpointsProtocol=https;AccountName=',parameters('storageAccountName'),';AccountKey=',concat(listKeys(variables('storageAccountId'),'2015-05-01-preview').key1))]"
+                    },
+                    {
+                        "name":"azuresearch-key",
+                        "value":"{%%azuresearch-key%%}"
+                    },
+                    {
+                        "name":"aiKey",
+                        "value":"{%%aiKey%%}"
+                    },
+                    {
+                        "name":"baseUSGSUrl",
+                        "value":"{%%baseUSGSUrl%%}"
+                    },
+                    {
+                        "name":"searchUrl",
+                        "value":"{%%searchUrl%%}"
+                    },
+                    {
+                        "name":"riverTable",
+                        "value":"{%%riverTable%%}"
+                    }
+                ]
+            }
 
         }
     },
+    
     {
         "type":"Microsoft.Web/sites",
         "apiVersion":"2016-08-01",
@@ -244,7 +316,23 @@
             "hostNamesDisabled": false,
             "containerSize": 1536,
             "dailyMemoryTimeQuota": 0,
-            "httpsOnly": false            
+            "httpsOnly": false,
+            "siteConfig": {
+                "appSettings": [
+                    {
+                        "name": "blob-store",
+                        "value": "[concat('DefaultEndpointsProtocol=https;AccountName=',parameters('storageAccountName'),';AccountKey=',concat(listKeys(variables('storageAccountId'),'2015-05-01-preview').key1))]"
+                    },
+                    {
+                        "name": "AzureWebJobsStorage",
+                        "value": "[concat('DefaultEndpointsProtocol=https;AccountName=',parameters('storageAccountName'),';AccountKey=',concat(listKeys(variables('storageAccountId'),'2015-05-01-preview').key1))]"
+                    },
+                    {
+                        "name": "FUNCTIONS_EXTENSION_VERSION",
+                        "value": "~2"
+                    }
+                ]
+            }                     
 
         }
     }, 
@@ -252,10 +340,10 @@
         "type": "Microsoft.Insights/components",
         "apiVersion": "2015-05-01",
         "name":"[parameters('appName')]",
-        "location":"eastus", 
+        "location":"[parameters('location')]", 
         "tags": {
-            "hidden-link:/subscriptions/95708013-4dc4-48e1-8cef-b69178f42bf7/resourceGroups/waterfinder/providers/Microsoft.Web/sites/paddle-finder2": "Resource",
-            "hidden-link:/subscriptions/95708013-4dc4-48e1-8cef-b69178f42bf7/resourceGroups/waterfinder/providers/Microsoft.Web/sites/paddle-finder-preferences": "Resource"
+            "hidden-link:/subscriptions/{%%subscription%%}/resourceGroups/waterfinder/providers/Microsoft.Web/sites/paddle-finder2": "Resource",
+            "hidden-link:/subscriptions/{%%subscription%%}/resourceGroups/waterfinder/providers/Microsoft.Web/sites/paddle-finder-preferences": "Resource"
         },        
         "kind":"web",
         "properties" : {

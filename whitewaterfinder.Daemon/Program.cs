@@ -7,21 +7,51 @@ using com.brgs.orm.Azure;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using Microsoft.Extensions.Configuration;
+using System.IO;
+using Newtonsoft.Json;
+using System.Linq;
 
 namespace whitewaterfinder.Daemon
 {
     class Program
     {
-        private const string connectionString = "DefaultEndpointsProtocol=https;AccountName=waterfinder;AccountKey=e0c3AhZdjwribEAHNNUfdcYtX3x4rAqYv0Xfy35z9Xt6Ve7woUG6aWmvAwDH1HY/Vu/2XsjXmHcpCdsr4cXvXg==;EndpointSuffix=core.windows.net";
+        private const string connectionString = "";
         static void Main(string[] args)
         {
-            Console.WriteLine(args[0]);
+            var config = new ConfigurationBuilder()
+                .SetBasePath(Environment.CurrentDirectory)
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                .AddEnvironmentVariables()
+                .Build();
 
-            var account = new CloudStorageAccountBuilder(connectionString);            
+
+            var account = new CloudStorageAccountBuilder(config["blob-store"]);            
             var azureFactory = new AzureStorageFactory(account);
+            azureFactory.CollectionName = "USRivers";
             var client = new HttpClient();
 
+            var rivers = new List<River>();
+            using(var file = new FileStream(config["river-file"], FileMode.Open))
+            using(var reader = new StreamReader(file))
+            {
+                var json = reader.ReadToEnd();
+                rivers = JsonConvert.DeserializeObject<List<River>>(json);
+            }
+
+            var states = rivers.Select((r, code) => r.StateCode).Distinct();
+
+            foreach(var state in states)
+            {
+                var stateRivers = rivers.Where(x => x.StateCode.Equals(state));
+                azureFactory.PartitionKey =  state;
+                var count = azureFactory.PostBatchAsync(stateRivers).GetAwaiter().GetResult();
+            }
+
+            int three = 1;
         }
+        
+        
         static void LoadStates(RiverRepository azureRepo)
         {
             var states = GetStateCodes();
