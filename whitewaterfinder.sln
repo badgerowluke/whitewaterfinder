@@ -3,7 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26124.0
 MinimumVisualStudioVersion = 15.0.26124.0
-
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "whitewaterfinder.test", "whitewaterfinder.test\whitewaterfinder.test.csproj", "{F2A73E10-4B89-4780-9FAD-37FB79CADBE6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "whitewaterfinder.Core", "whitewaterfinder.Core\whitewaterfinder.Core.csproj", "{93272ABB-29CD-4D80-B9A5-CF2AA63897D8}"
@@ -17,6 +16,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "whitewaterfinder.Daemon", "whitewaterfinder.Daemon\whitewaterfinder.Daemon.csproj", "{36A2B15C-99FB-415A-BCEC-06C41B76000F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "whitewaterfinder_api_monitoring", "whitewaterfinder.api.monitoring\whitewaterfinder_api_monitoring.csproj", "{872B89D5-ED3F-4C8A-8667-E5D084E108AA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "whitewaterfinder.Bot", "whitewaterfinder.Bot\whitewaterfinder.Bot.csproj", "{89C3B9AE-4A00-4766-818C-18D30391B26B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "whitewaterfinder.app.bot", "whitewaterfinder.app.bot\whitewaterfinder.app.bot.csproj", "{70358AF1-2155-47A9-B5DA-CE016044C6EC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -127,5 +130,29 @@ Global
 		{872B89D5-ED3F-4C8A-8667-E5D084E108AA}.Release|x64.Build.0 = Release|Any CPU
 		{872B89D5-ED3F-4C8A-8667-E5D084E108AA}.Release|x86.ActiveCfg = Release|Any CPU
 		{872B89D5-ED3F-4C8A-8667-E5D084E108AA}.Release|x86.Build.0 = Release|Any CPU
+		{89C3B9AE-4A00-4766-818C-18D30391B26B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{89C3B9AE-4A00-4766-818C-18D30391B26B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{89C3B9AE-4A00-4766-818C-18D30391B26B}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{89C3B9AE-4A00-4766-818C-18D30391B26B}.Debug|x64.Build.0 = Debug|Any CPU
+		{89C3B9AE-4A00-4766-818C-18D30391B26B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{89C3B9AE-4A00-4766-818C-18D30391B26B}.Debug|x86.Build.0 = Debug|Any CPU
+		{89C3B9AE-4A00-4766-818C-18D30391B26B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{89C3B9AE-4A00-4766-818C-18D30391B26B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{89C3B9AE-4A00-4766-818C-18D30391B26B}.Release|x64.ActiveCfg = Release|Any CPU
+		{89C3B9AE-4A00-4766-818C-18D30391B26B}.Release|x64.Build.0 = Release|Any CPU
+		{89C3B9AE-4A00-4766-818C-18D30391B26B}.Release|x86.ActiveCfg = Release|Any CPU
+		{89C3B9AE-4A00-4766-818C-18D30391B26B}.Release|x86.Build.0 = Release|Any CPU
+		{70358AF1-2155-47A9-B5DA-CE016044C6EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{70358AF1-2155-47A9-B5DA-CE016044C6EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{70358AF1-2155-47A9-B5DA-CE016044C6EC}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{70358AF1-2155-47A9-B5DA-CE016044C6EC}.Debug|x64.Build.0 = Debug|Any CPU
+		{70358AF1-2155-47A9-B5DA-CE016044C6EC}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{70358AF1-2155-47A9-B5DA-CE016044C6EC}.Debug|x86.Build.0 = Debug|Any CPU
+		{70358AF1-2155-47A9-B5DA-CE016044C6EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{70358AF1-2155-47A9-B5DA-CE016044C6EC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{70358AF1-2155-47A9-B5DA-CE016044C6EC}.Release|x64.ActiveCfg = Release|Any CPU
+		{70358AF1-2155-47A9-B5DA-CE016044C6EC}.Release|x64.Build.0 = Release|Any CPU
+		{70358AF1-2155-47A9-B5DA-CE016044C6EC}.Release|x86.ActiveCfg = Release|Any CPU
+		{70358AF1-2155-47A9-B5DA-CE016044C6EC}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

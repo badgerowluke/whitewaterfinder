@@ -7,7 +7,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/whitewaterfinder.front/whitewaterfinder.front.csproj"
+                "${workspaceFolder}/whitewaterfinder.sln"
             ],
             "problemMatcher": "$msCompile"
         }

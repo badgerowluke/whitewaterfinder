@@ -245,3 +245,4 @@ whitewaterfinder.api/local.settings.json
 local.settings.json
 whitewaterfinder.test/lcov.info
 whitewaterfinder.Daemon/appsettings.json
+whitewaterfinder.app.bot/Webster.bot
