@@ -3,8 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26124.0
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "whitewaterfinder.front", "whitewaterfinder.front\whitewaterfinder.front.csproj", "{2103EA23-358F-4C44-A207-0E2DFBCD3194}"
-EndProject
+
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "whitewaterfinder.test", "whitewaterfinder.test\whitewaterfinder.test.csproj", "{F2A73E10-4B89-4780-9FAD-37FB79CADBE6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "whitewaterfinder.Core", "whitewaterfinder.Core\whitewaterfinder.Core.csproj", "{93272ABB-29CD-4D80-B9A5-CF2AA63897D8}"

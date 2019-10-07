@@ -48,7 +48,6 @@ namespace whitewaterfinder.Daemon
                 var count = azureFactory.PostBatchAsync(stateRivers).GetAwaiter().GetResult();
             }
 
-            int three = 1;
         }
         
         
