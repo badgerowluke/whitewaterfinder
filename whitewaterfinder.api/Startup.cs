@@ -6,6 +6,7 @@ using Microsoft.Extensions.Http;
 using System;
 using whitewaterfinder.Core;
 using whitewaterfinder.Repo;
+using whitewaterfinder.BusinessObjects.Configuration;
 
 [assembly: FunctionsStartup(typeof(whitewaterfinder.api.Startup))]
 
@@ -17,14 +18,16 @@ namespace whitewaterfinder.api
         {
             var config = new ConfigurationBuilder()
                 .SetBasePath(Environment.CurrentDirectory)
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                .AddJsonFile("local.settings.json", optional: true, reloadOnChange: true)
                 .AddEnvironmentVariables()
                 .Build();
+            var myConfig = config.Get<RiverRepositoryConfig>();
             builder.Services.AddHttpClient();
-            builder.Services.AddSingleton<ICloudStorageAccount>(new CloudStorageAccountBuilder(config["blob-store"]));
-            builder.Services.AddSingleton<IAzureStorage, AzureStorageFactory>();
+            builder.Services.AddSingleton<ICloudStorageAccount>(new CloudStorageAccountBuilder(myConfig.BlobStore));
+            builder.Services.AddSingleton<IAzureStorage, AzureTableBuilder>();
             builder.Services.AddSingleton<IConfiguration>(config);
             builder.Services.AddSingleton<IAppSettings>(new AppSettings(config));
+            builder.Services.AddSingleton<RiverRepositoryConfig>(sp => myConfig);
             builder.Services.AddSingleton<IRiverRepository, RiverRepository>();
             builder.Services.AddSingleton<IRiverDetailRepository, RiverDetailRepository>();
             builder.Services.AddSingleton<IRiverService, RiverService>();

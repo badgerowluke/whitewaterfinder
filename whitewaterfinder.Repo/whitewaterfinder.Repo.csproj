@@ -5,7 +5,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="com.brgs.orm" Version="0.1.6-CI-20190805-172537" />
+    <PackageReference Include="com.brgs.orm" Version="0.1.21-CI-20191008-214648" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
     <PackageReference Include="WindowsAzure.Storage" Version="9.3.3" />
   </ItemGroup>

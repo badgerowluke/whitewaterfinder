@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using whitewaterfinder.BusinessObjects.Rivers;
 using whitewaterfinder.BusinessObjects.USGSResponses;
-
+using whitewaterfinder.BusinessObjects.Configuration;
 using com.brgs.orm.Azure;
 using Newtonsoft.Json.Linq;
 
@@ -17,8 +17,8 @@ namespace whitewaterfinder.Repo
     {
         IEnumerable<River> GetRivers();
         Task<IEnumerable<River>> GetRiversAsync(string partName);
-        IEnumerable<River> GetRiversByState(string stateCode);
-        void Register(IDictionary<string, string> configVals);
+        Task<IEnumerable<River>> GetRiversByState(string stateCode);
+        void Register(RiverRepositoryConfig configVals);
 
     }
     public class RiverRepository : IRiverRepository
@@ -35,24 +35,19 @@ namespace whitewaterfinder.Repo
             folders.CollectionName = _riverTable;
             _client = client;
         }
-        [Obsolete("moving away from thie pattern")]
-        public RiverRepository(IAzureStorage _folder, string table)
+        public void Register(RiverRepositoryConfig configVals)
         {
-            folders = _folder;
-            folders.CollectionName = table;
-        }
-        public void Register(IDictionary<string, string> configVals)
-        {
-            _riverTable = configVals["riverTable"];
-            _baseUSGSUrl = configVals["baseUSGSURL"] + "stateCd=";
+            _riverTable = configVals.RiverTable;
+            _baseUSGSUrl = configVals.BaseUSGSURL + "stateCd=";
 
             /*TODO: look into parameterizing the search */
-            _azureSearchUrl = configVals["searchUrl"];
-            _azureSearchKey = configVals["searchKey"];
+            _azureSearchUrl = configVals.AzureSearchUrl;
+            _azureSearchKey = configVals.AzureSearchKey;
         }
         public async Task<USGSRiverResponse> GetRiverData(string stateCode)
         {
             if(string.IsNullOrEmpty(stateCode)) { throw new ArgumentException("we need to know where you'd like to search" ); }
+            
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get,
             _baseUSGSUrl + stateCode);
 
@@ -65,8 +60,9 @@ namespace whitewaterfinder.Repo
         }
         public IEnumerable<River> GetRivers()
         {
-            folders.CollectionName = "data";
-            return folders.Get<List<River>>("usRivers.json");
+            // folders.CollectionName = "data";
+            // return folders.Get<List<River>>("usRivers.json");
+            throw new NotImplementedException();
         }
         public async Task<IEnumerable<River>> GetRiversAsync(string partName)
         {
@@ -77,16 +73,17 @@ namespace whitewaterfinder.Repo
 
             using(HttpResponseMessage response = await _client.SendAsync(request))
             {
-                var data = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+                var data = await response.Content.ReadAsStringAsync();
                 var objs = JObject.Parse(data);
                 var vals = objs["value"];
                 return vals.ToObject<IEnumerable<River>>();
             }
         }
-        public IEnumerable<River> GetRiversByState(string stateCode)
+        public async Task<IEnumerable<River>> GetRiversByState(string stateCode)
         {
             folders.CollectionName = _riverTable;
-            var entities = folders.Get<RiverEntity>(r => r.PartitionKey.Equals(stateCode));
+
+            var entities = await folders.GetAsync<RiverEntity>(r => r.PartitionKey.Equals(stateCode));
             var outList = new List<River>();
             foreach(var entity in entities)
             {
@@ -97,9 +94,9 @@ namespace whitewaterfinder.Repo
             return outList;
         }
 
-        public void InsertRiverData(RiverEntity aRiver)
+        public async Task InsertRiverData(RiverEntity aRiver)
         {
-            folders.Post(aRiver);
+            await folders.PostAsync(aRiver);
         }
     }
 }
