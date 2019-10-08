@@ -9,6 +9,7 @@ namespace whitewaterfinder.Bot.Models
         public string LuisAPIHostName { get; set; }
         public string QnAKnowledgebaseId { get; set; }
         public string QnAEndpointKey { get; set; }
-        public string QnAEndpointHostName { get; set; }        
+        public string QnAEndpointHostName { get; set; }  
+        public string StateStore { get; set; }      
     }
 }

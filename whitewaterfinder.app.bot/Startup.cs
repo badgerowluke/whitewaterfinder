@@ -43,7 +43,7 @@ namespace whitewaterfinder.app.bot
             } else 
             {
                 const string DefaultBotContainer = "botstore";
-                datastore = new Microsoft.Bot.Builder.Azure.AzureBlobStorage("", DefaultBotContainer);
+                datastore = new Microsoft.Bot.Builder.Azure.AzureBlobStorage(myConfig.StateStore, DefaultBotContainer);
                 creds = new SimpleCredentialProvider(myConfig.MicrosoftAppId, myConfig.MicrosoftAppPassword);
             }
             services.AddSingleton<ICredentialProvider>(sp => creds);
