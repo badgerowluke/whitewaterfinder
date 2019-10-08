@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using Microsoft.Extensions.Configuration;
+
 using System.IO;
 using Newtonsoft.Json;
 using System.Linq;
@@ -23,16 +24,18 @@ namespace whitewaterfinder.Daemon
                 .SetBasePath(Environment.CurrentDirectory)
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .AddEnvironmentVariables()
-                .Build();
+                .Build()
+                .Get<DaemonConfig>();
+            
 
 
-            var account = new CloudStorageAccountBuilder(config["blob-store"]);            
+            var account = new CloudStorageAccountBuilder(config.BlobStore);            
             var azureFactory = new AzureStorageFactory(account);
-            azureFactory.CollectionName = "USRivers";
+            azureFactory.CollectionName = config.TableCollection;
             var client = new HttpClient();
 
             var rivers = new List<River>();
-            using(var file = new FileStream(config["river-file"], FileMode.Open))
+            using(var file = new FileStream(config.RiverFile, FileMode.Open))
             using(var reader = new StreamReader(file))
             {
                 var json = reader.ReadToEnd();
