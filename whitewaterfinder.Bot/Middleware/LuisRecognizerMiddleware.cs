@@ -11,11 +11,13 @@ namespace whitewaterfinder.Bot.Middleware
         private readonly IRecognizer _recognizer;
         public LuisRecognizerMiddleware(IRecognizer recognize)
         {
-            
+            _recognizer = recognize;
         }
 
         public async Task OnTurnAsync(ITurnContext turnContext, NextDelegate next, CancellationToken cancellationToken = default(CancellationToken))
         {
+            var results = await _recognizer.RecognizeAsync(turnContext, cancellationToken);
+            turnContext.TurnState.Add("TopResult", string.Empty);
             await next(cancellationToken);
         }
     }

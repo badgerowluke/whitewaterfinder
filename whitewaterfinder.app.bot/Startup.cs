@@ -12,15 +12,18 @@ using Microsoft.Extensions.DependencyInjection;
 using whitewaterfinder.Bot;
 using whitewaterfinder.Bot.Middleware;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Configuration;
 
 namespace whitewaterfinder.app.bot
 {
     public class Startup
     {
         public IHostingEnvironment Environment { get; }
-        public Startup(IHostingEnvironment env)
+        public IConfiguration Configuration  { get; }
+        public Startup(IHostingEnvironment env, IConfiguration config)
         {
             this.Environment = env;
+            this.Configuration = config;
         }
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
