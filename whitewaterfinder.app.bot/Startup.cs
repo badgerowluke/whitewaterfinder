@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 using whitewaterfinder.Bot;
 using whitewaterfinder.Bot.Middleware;
+using whitewaterfinder.Bot.Models;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Configuration;
 
@@ -30,6 +31,8 @@ namespace whitewaterfinder.app.bot
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddHttpClient();
+            var myConfig = Configuration.Get<WebsterConfig>();
+            services.AddSingleton<WebsterConfig>(sp => myConfig);
 
             IStorage datastore;
             ICredentialProvider creds;
@@ -41,7 +44,7 @@ namespace whitewaterfinder.app.bot
             {
                 const string DefaultBotContainer = "botstore";
                 datastore = new Microsoft.Bot.Builder.Azure.AzureBlobStorage("", DefaultBotContainer);
-                creds = new SimpleCredentialProvider("","");
+                creds = new SimpleCredentialProvider(myConfig.MicrosoftAppId, myConfig.MicrosoftAppPassword);
             }
             services.AddSingleton<ICredentialProvider>(sp => creds);
             services.AddSingleton<IStorage>(ds => datastore);

@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.AI.Luis;
 using Microsoft.Extensions.Configuration;
-
+using whitewaterfinder.Bot.Models;
 
 namespace whitewaterfinder.Bot
 {
@@ -11,19 +11,19 @@ namespace whitewaterfinder.Bot
     {
         private readonly LuisRecognizer _recognizer;
         
-        public Recognizer(IConfiguration config)
+        public Recognizer(WebsterConfig config)
         {
-            var luisIsConfigured = !string.IsNullOrEmpty(config["LuisAppId"]) 
-            && !string.IsNullOrEmpty(config["LuisAPIKey"]) 
-            && !string.IsNullOrEmpty(config["LuisAPIHostName"]);
+            var luisIsConfigured = !string.IsNullOrEmpty(config.LuisAppId) 
+            && !string.IsNullOrEmpty(config.LuisAPIKey) 
+            && !string.IsNullOrEmpty(config.LuisAPIHostName);
             if (luisIsConfigured)
             {
 
 
                 _recognizer = new LuisRecognizer(new LuisApplication(
-                    config["LuisAppId"],
-                    config["LuisAPIKey"],
-                    $"https://{config["LuisAPIHostName"]}.cognitiveservices.azure.com"), 
+                    config.LuisAppId,
+                    config.LuisAPIKey,
+                    config.LuisAPIHostName), 
                     new LuisPredictionOptions{IncludeAllIntents = true, IncludeInstanceData = true},
                     true);
             }              
