@@ -5,10 +5,10 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Bot.Builder;
-using Microsoft.Bot.Builder.BotFramework;
 using Microsoft.Bot.Builder.Integration.AspNet.Core;
 using Microsoft.Bot.Connector.Authentication;
 using Microsoft.Extensions.DependencyInjection;
+
 using whitewaterfinder.Bot;
 using whitewaterfinder.Bot.Middleware;
 using Microsoft.Extensions.Logging;
@@ -26,26 +26,32 @@ namespace whitewaterfinder.app.bot
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-
-
-
+            services.AddHttpClient();
 
             IStorage datastore;
+            ICredentialProvider creds;
             if(Environment.IsDevelopment())
             {
                 datastore = new MemoryStorage();
+                creds = new SimpleCredentialProvider("","");
             } else 
             {
                 const string DefaultBotContainer = "botstore";
                 datastore = new Microsoft.Bot.Builder.Azure.AzureBlobStorage("", DefaultBotContainer);
+                creds = new SimpleCredentialProvider("","");
             }
+            services.AddSingleton<ICredentialProvider>(sp => creds);
             services.AddSingleton<IStorage>(ds => datastore);
 
             services.AddSingleton<ConversationState>();
             services.AddSingleton<UserState>();
             services.AddSingleton<IRecognizer, Recognizer>();
+            // services.AddSingleton<IWebsterQnAMaker, WebsterQnAMaker>();
 
+
+            /* MiddlewareSet is an ordered list of execution objects */  
             var set = new MiddlewareSet();
+            set.Use(new AutoSaveStateMiddleware(new BotState[] { services.BuildServiceProvider().GetService<UserState>(), services.BuildServiceProvider().GetService<ConversationState>()}));
             set.Use(new MembersAddedMiddleware());
             set.Use(new LuisRecognizerMiddleware(services.BuildServiceProvider().GetService<IRecognizer>()));
             services.AddSingleton<IMiddleware>(sp => set);
