@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using whitewaterfinder.BusinessObjects.Rivers;
 using whitewaterfinder.BusinessObjects.USGSResponses;
-
+using whitewaterfinder.BusinessObjects.Configuration;
 using com.brgs.orm.Azure;
 using Newtonsoft.Json.Linq;
 
@@ -18,7 +18,7 @@ namespace whitewaterfinder.Repo
         IEnumerable<River> GetRivers();
         Task<IEnumerable<River>> GetRiversAsync(string partName);
         IEnumerable<River> GetRiversByState(string stateCode);
-        void Register(IDictionary<string, string> configVals);
+        void Register(RiverRepositoryConfig configVals);
 
     }
     public class RiverRepository : IRiverRepository
@@ -41,14 +41,14 @@ namespace whitewaterfinder.Repo
             folders = _folder;
             folders.CollectionName = table;
         }
-        public void Register(IDictionary<string, string> configVals)
+        public void Register(RiverRepositoryConfig configVals)
         {
-            _riverTable = configVals["riverTable"];
-            _baseUSGSUrl = configVals["baseUSGSURL"] + "stateCd=";
+            _riverTable = configVals.RiverTable;
+            _baseUSGSUrl = configVals.BaseUSGSURL + "stateCd=";
 
             /*TODO: look into parameterizing the search */
-            _azureSearchUrl = configVals["searchUrl"];
-            _azureSearchKey = configVals["searchKey"];
+            _azureSearchUrl = configVals.AzureSearchUrl;
+            _azureSearchKey = configVals.AzureSearchKey;
         }
         public async Task<USGSRiverResponse> GetRiverData(string stateCode)
         {

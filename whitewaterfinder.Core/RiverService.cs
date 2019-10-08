@@ -5,6 +5,7 @@ using whitewaterfinder.Core.Data;
 using whitewaterfinder.Repo;
 using whitewaterfinder.BusinessObjects.Rivers;
 using System.Threading.Tasks;
+using whitewaterfinder.BusinessObjects.Configuration;
 
 namespace whitewaterfinder.Core
 {
@@ -12,23 +13,21 @@ namespace whitewaterfinder.Core
     {
         Task<IEnumerable<River>> GetRivers(string partName);
         River GetRiverDetails(string riverCode);
-        void Register(Dictionary<string,string> config);
     }
     public class RiverService : StateData, IRiverService
     {
         private readonly IRiverRepository repo;
         private readonly IRiverDetailRepository detail;
-        private IDictionary<string, string> _config;
+        private readonly RiverRepositoryConfig _config;
         public RiverService(IRiverRepository riverRep, 
-            IRiverDetailRepository _details)
+            IRiverDetailRepository _details,
+            RiverRepositoryConfig config)
         {
             repo = riverRep;
             detail = _details;
-        }
-        public void Register(Dictionary<string, string> config)
-        {
             _config = config;
         }
+
         public async Task<IEnumerable<River>> GetRivers(string partName)
         {
             repo.Register(_config);

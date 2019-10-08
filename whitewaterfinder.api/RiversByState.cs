@@ -26,8 +26,7 @@ namespace whitewaterfinder.api
         public RiversByState(IRiverService service, IConfiguration settings)
         {
             _service = service;
-            var config = GetNeededConfig(settings);
-            _service.Register(config);
+
         }
 
 
