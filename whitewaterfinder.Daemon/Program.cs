@@ -12,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using System.IO;
 using Newtonsoft.Json;
 using System.Linq;
+using whitewaterfinder.BusinessObjects.Configuration;
 
 namespace whitewaterfinder.Daemon
 {
@@ -25,27 +26,32 @@ namespace whitewaterfinder.Daemon
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .AddEnvironmentVariables()
                 .Build()
-                .Get<DaemonConfig>();
+                .Get<RiverRepositoryConfig>();
             
 
 
             var account = new CloudStorageAccountBuilder(config.BlobStore);            
-            var azureFactory = new AzureStorageFactory(account);
-            azureFactory.CollectionName = config.TableCollection;
+            var azureFactory = new AzureTableBuilder(account);
+            azureFactory.CollectionName = config.RiverTable;
             var client = new HttpClient();
+            var repo = new RiverRepository(azureFactory, client);
+            repo.Register(config);
 
-            var rivers = new List<River>();
-            using(var file = new FileStream(config.RiverFile, FileMode.Open))
-            using(var reader = new StreamReader(file))
-            {
-                var json = reader.ReadToEnd();
-                rivers = JsonConvert.DeserializeObject<List<River>>(json);
-            }
+            var stuff = repo.GetRiversByState("WV").Result;
+            int three = 1;
+
+            // var rivers = new List<River>();
+            // using(var file = new FileStream(config.RiverFile, FileMode.Open))
+            // using(var reader = new StreamReader(file))
+            // {
+            //     var json = reader.ReadToEnd();
+            //     rivers = JsonConvert.DeserializeObject<List<River>>(json);
+            // }
 
 
 
         }
-        static void LoadTableStore(AzureStorageFactory azureFactory, List<River> rivers)
+        static void LoadTableStore(AzureTableBuilder azureFactory, List<River> rivers)
         {
             var states = rivers.Select((r, code) => r.StateCode).Distinct();
 

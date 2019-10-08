@@ -36,7 +36,7 @@ namespace whitewaterfinder.Core
             } else {
                 if(!string.IsNullOrEmpty(GetStateCode(partName)))
                 {
-                    return repo.GetRiversByState(partName);
+                    return await repo.GetRiversByState(partName);
                 }
                 return await repo.GetRiversAsync(partName);
             }
