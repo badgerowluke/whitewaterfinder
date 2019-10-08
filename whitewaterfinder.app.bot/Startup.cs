@@ -56,6 +56,8 @@ namespace whitewaterfinder.app.bot
             set.Use(new LuisRecognizerMiddleware(services.BuildServiceProvider().GetService<IRecognizer>()));
             services.AddSingleton<IMiddleware>(sp => set);
 
+            
+
             // Create the Bot Framework Adapter with error handling enabled.
             services.AddSingleton<IBotFrameworkHttpAdapter, AdapterWithErrorHandler>();
                       
