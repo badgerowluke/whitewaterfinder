@@ -39,6 +39,11 @@ namespace whitewaterfinder.Daemon
                 rivers = JsonConvert.DeserializeObject<List<River>>(json);
             }
 
+
+
+        }
+        static void LoadTableStore(AzureStorageFactory azureFactory, List<River> rivers)
+        {
             var states = rivers.Select((r, code) => r.StateCode).Distinct();
 
             foreach(var state in states)
@@ -47,7 +52,6 @@ namespace whitewaterfinder.Daemon
                 azureFactory.PartitionKey =  state;
                 var count = azureFactory.PostBatchAsync(stateRivers).GetAwaiter().GetResult();
             }
-
         }
         
         
