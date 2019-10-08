@@ -11,9 +11,10 @@ namespace whitewaterfinder.Bot
 {
     public class AdapterWithErrorHandler : BotFrameworkHttpAdapter
     {
-        public AdapterWithErrorHandler(IConfiguration configuration, ILogger<BotFrameworkHttpAdapter> logger, ConversationState conversationState = null)
+        public AdapterWithErrorHandler(IConfiguration configuration, ILogger<BotFrameworkHttpAdapter> logger,IMiddleware middleware,  ConversationState conversationState = null)
             : base(configuration, logger)
         {
+            Use(middleware);
             OnTurnError = async (turnContext, exception) =>
             {
                 // Log any leaked exception from the application.
