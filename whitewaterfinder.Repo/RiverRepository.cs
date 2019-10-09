@@ -11,6 +11,7 @@ using whitewaterfinder.BusinessObjects.Configuration;
 using com.brgs.orm.Azure;
 using Newtonsoft.Json.Linq;
 
+
 namespace whitewaterfinder.Repo
 {
     public interface IRiverRepository 
@@ -81,6 +82,8 @@ namespace whitewaterfinder.Repo
         }
         public async Task<IEnumerable<River>> GetRiversByState(string stateCode)
         {
+            if(string.IsNullOrEmpty(_riverTable)) { throw new ArgumentNullException("Table name cannot be null"); }
+            if(string.IsNullOrEmpty(stateCode)) { throw new ArgumentNullException("State you're searching for cannot be null"); }
             folders.CollectionName = _riverTable;
 
             var entities = await folders.GetAsync<RiverEntity>(r => r.PartitionKey.Equals(stateCode));
