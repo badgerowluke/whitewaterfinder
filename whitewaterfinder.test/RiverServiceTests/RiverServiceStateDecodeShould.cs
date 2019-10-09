@@ -36,7 +36,7 @@ namespace whitewaterfinder.test.RiverServiceTests
         [Fact] 
         public async void ReturnsAnEnumerableOfRiverWithStateCode()
         {
-            MockRiverRepo.Setup(m =>  m.GetRiversByState(It.IsAny<string>())).Returns(new List<River>());
+            MockRiverRepo.Setup(m =>  m.GetRiversByState(It.IsAny<string>())).ReturnsAsync(new List<River>());
             var vals = await service.GetRivers("MD");
             Assert.IsType<List<River>>(vals);
 

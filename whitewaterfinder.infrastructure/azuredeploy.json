@@ -270,11 +270,11 @@
                         "value": "8.11.1"
                     },             
                     {
-                        "name": "blob-store",
+                        "name": "blobStore",
                         "value": "[concat('DefaultEndpointsProtocol=https;AccountName=',parameters('storageAccountName'),';AccountKey=',concat(listKeys(variables('storageAccountId'),'2015-05-01-preview').key1))]"
                     },
                     {
-                        "name":"azuresearch-key",
+                        "name":"azureSearchKey",
                         "value":"{%%azuresearch-key%%}"
                     },
                     {
@@ -286,7 +286,7 @@
                         "value":"{%%baseUSGSUrl%%}"
                     },
                     {
-                        "name":"searchUrl",
+                        "name":"azureSearchUrl",
                         "value":"{%%searchUrl%%}"
                     },
                     {
@@ -333,7 +333,7 @@
             "siteConfig": {
                 "appSettings": [
                     {
-                        "name": "blob-store",
+                        "name": "blobStore",
                         "value": "[concat('DefaultEndpointsProtocol=https;AccountName=',parameters('storageAccountName'),';AccountKey=',concat(listKeys(variables('storageAccountId'),'2015-05-01-preview').key1))]"
                     },
                     {

@@ -6,7 +6,7 @@ namespace whitewaterfinder.BusinessObjects.Rivers
 {
     public interface IRiver
     {
-        string Id { get; }
+        string Id { get; set; }
         string Name { get; set; }
         string RiverId { get; set; }
         string Latitude { get; set; }
@@ -17,7 +17,7 @@ namespace whitewaterfinder.BusinessObjects.Rivers
 
     public class River : IRiver
     {
-        public string Id { get { return RiverId; } }
+        public string Id { get; set; }
 		public string Name { get; set; }
 		public string RiverId { get; set; }
 		public string Latitude { get; set; }
@@ -40,7 +40,7 @@ namespace whitewaterfinder.BusinessObjects.Rivers
     }
     public class RiverEntity : TableEntity, IRiver
     {
-        public string Id { get { return RiverId; } }
+        public string Id { get; set; }
         public DateTime Date { get; set; }
 		public string Name { get; set; }
 		public string RiverId { get; set; }

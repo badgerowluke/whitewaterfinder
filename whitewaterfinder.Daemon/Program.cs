@@ -8,9 +8,11 @@ using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using Microsoft.Extensions.Configuration;
+
 using System.IO;
 using Newtonsoft.Json;
 using System.Linq;
+using whitewaterfinder.BusinessObjects.Configuration;
 
 namespace whitewaterfinder.Daemon
 {
@@ -23,22 +25,34 @@ namespace whitewaterfinder.Daemon
                 .SetBasePath(Environment.CurrentDirectory)
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .AddEnvironmentVariables()
-                .Build();
+                .Build()
+                .Get<RiverRepositoryConfig>();
+            
 
 
-            var account = new CloudStorageAccountBuilder(config["blob-store"]);            
-            var azureFactory = new AzureStorageFactory(account);
-            azureFactory.CollectionName = "USRivers";
+            var account = new CloudStorageAccountBuilder(config.BlobStore);            
+            var azureFactory = new AzureTableBuilder(account);
+            azureFactory.CollectionName = config.RiverTable;
             var client = new HttpClient();
+            var repo = new RiverRepository(azureFactory, client);
+            repo.Register(config);
 
-            var rivers = new List<River>();
-            using(var file = new FileStream(config["river-file"], FileMode.Open))
-            using(var reader = new StreamReader(file))
-            {
-                var json = reader.ReadToEnd();
-                rivers = JsonConvert.DeserializeObject<List<River>>(json);
-            }
+            var stuff = repo.GetRiversByState("WV").Result;
+            int three = 1;
 
+            // var rivers = new List<River>();
+            // using(var file = new FileStream(config.RiverFile, FileMode.Open))
+            // using(var reader = new StreamReader(file))
+            // {
+            //     var json = reader.ReadToEnd();
+            //     rivers = JsonConvert.DeserializeObject<List<River>>(json);
+            // }
+
+
+
+        }
+        static void LoadTableStore(AzureTableBuilder azureFactory, List<River> rivers)
+        {
             var states = rivers.Select((r, code) => r.StateCode).Distinct();
 
             foreach(var state in states)
@@ -47,7 +61,6 @@ namespace whitewaterfinder.Daemon
                 azureFactory.PartitionKey =  state;
                 var count = azureFactory.PostBatchAsync(stateRivers).GetAwaiter().GetResult();
             }
-
         }
         
         

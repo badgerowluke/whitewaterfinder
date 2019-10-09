@@ -25,8 +25,7 @@ namespace whitewaterfinder.api
         {
 
             _service = service;
-            var config = GetNeededConfig(settings);
-            _service.Register(config);
+
 
         }
         [FunctionName("Rivers")]
@@ -37,8 +36,7 @@ namespace whitewaterfinder.api
         [OpenApiResponseBody(System.Net.HttpStatusCode.InternalServerError, "application/json", typeof(string))]
         [OpenApiResponseBody(System.Net.HttpStatusCode.BadRequest, "application/json", typeof(string))]
         public async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = null)] HttpRequest req,
-            ILogger log, ExecutionContext context)
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = null)] HttpRequest req, ExecutionContext context)
         {
             try 
             {
@@ -52,19 +50,10 @@ namespace whitewaterfinder.api
                     : new NoContentResult();
             }catch (Exception e )
             {
-                log.LogError(new EventId(), e.StackTrace);
+
                 throw;
             }
 
-        }
-        private Dictionary<string, string> GetNeededConfig(IConfiguration config)
-        {
-            var outConfig = new Dictionary<string, string>();
-            outConfig.Add("searchKey", config["azuresearch-key"]);
-            outConfig.Add("baseUSGSURL", config["baseUSGSUrl"]);
-            outConfig.Add("riverTable", "RiversUnitedStates");
-            outConfig.Add("searchUrl", config["searchUrl"]);
-            return outConfig;
         }
     }
 }

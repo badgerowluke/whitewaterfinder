@@ -1,4 +1,5 @@
 using Moq;
+using whitewaterfinder.BusinessObjects.Configuration;
 using whitewaterfinder.Core;
 using whitewaterfinder.Repo;
 
@@ -13,8 +14,9 @@ namespace whitewaterfinder.test.RiverServiceTests
         {
             MockRiverRepo = new Mock<IRiverRepository>();
             MockDetailRepo = new Mock<IRiverDetailRepository>();
+
             
-            service = new RiverService(MockRiverRepo.Object, MockDetailRepo.Object);
+            service = new RiverService(MockRiverRepo.Object, MockDetailRepo.Object, new RiverRepositoryConfig());
         }
     }
 }

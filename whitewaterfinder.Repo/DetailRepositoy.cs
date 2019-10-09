@@ -6,12 +6,14 @@ using Newtonsoft.Json;
 using whitewaterfinder.BusinessObjects.Rivers;
 using whitewaterfinder.BusinessObjects.USGSResponses;
 using whitewaterfinder.BusinessObjects.Enumerations;
+using whitewaterfinder.BusinessObjects.Configuration;
+
 namespace whitewaterfinder.Repo
 {
     public interface IRiverDetailRepository
     {
         Task<River> GetRiverDetailsAsync(string riverCode);
-        void Register(IDictionary<string, string> configVals);
+        void Register(RiverRepositoryConfig configVals);
     }   
     public class RiverDetailRepository : IRiverDetailRepository
     {
@@ -21,9 +23,9 @@ namespace whitewaterfinder.Repo
         {
             _client = client;
         }
-        public void Register(IDictionary<string, string> configVals)
+        public void Register(RiverRepositoryConfig configVals)
         {
-            _usgsUrl = configVals["baseUSGSURL"] + "sites=";
+            _usgsUrl = configVals.BaseUSGSURL + "sites=";
         }
         
         public async Task<River> GetRiverDetailsAsync(string riverCode)
