@@ -36,8 +36,7 @@ namespace whitewaterfinder.api
         [OpenApiResponseBody(System.Net.HttpStatusCode.InternalServerError, "application/json", typeof(string))]
         [OpenApiResponseBody(System.Net.HttpStatusCode.BadRequest, "application/json", typeof(string))]
         public async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = null)] HttpRequest req,
-            ILogger log, ExecutionContext context)
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = null)] HttpRequest req, ExecutionContext context)
         {
             try 
             {
@@ -51,7 +50,7 @@ namespace whitewaterfinder.api
                     : new NoContentResult();
             }catch (Exception e )
             {
-                log.LogError(new EventId(), e.StackTrace);
+
                 throw;
             }
 
