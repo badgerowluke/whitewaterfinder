@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -16,9 +17,15 @@ namespace whitewaterfinder.Bot.Middleware
 
         public async Task OnTurnAsync(ITurnContext turnContext, NextDelegate next, CancellationToken cancellationToken = default(CancellationToken))
         {
-            var results = await _recognizer.RecognizeAsync(turnContext, cancellationToken);
-            turnContext.TurnState.Add("TopResult", string.Empty);
+            if(turnContext.Activity.Type == ActivityTypes.Message)
+            {
+                var results = await _recognizer.RecognizeAsync(turnContext, cancellationToken);
+                var topIntent = results.GetTopScoringIntent();
+                turnContext.TurnState.Add("TopResult", topIntent.intent);
+            }
+
             await next(cancellationToken);
+
         }
     }
 }

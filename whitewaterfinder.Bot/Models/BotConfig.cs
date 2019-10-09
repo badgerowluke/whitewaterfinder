@@ -10,6 +10,10 @@ namespace whitewaterfinder.Bot.Models
         public string QnAKnowledgebaseId { get; set; }
         public string QnAEndpointKey { get; set; }
         public string QnAEndpointHostName { get; set; }  
-        public string StateStore { get; set; }      
+        public string QnAConfidence { get; set; }
+        public string StateStore { get; set; }    
+        public string AppInsightsKey { get; set; }  
+        public string[] LoadedDialogs { get; set; }
+
     }
 }

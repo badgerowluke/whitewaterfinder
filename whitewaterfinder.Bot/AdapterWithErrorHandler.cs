@@ -11,12 +11,12 @@ namespace whitewaterfinder.Bot
 {
     public class AdapterWithErrorHandler : BotFrameworkHttpAdapter
     {
-        public AdapterWithErrorHandler(IConfiguration configuration, ILogger<BotFrameworkHttpAdapter> logger,IMiddleware middleware,  ConversationState conversationState = null)
+        public AdapterWithErrorHandler(IConfiguration configuration, ILogger<BotFrameworkHttpAdapter> logger,IMiddleware middleware, IBotTelemetryClient botTelemetery,  ConversationState conversationState = null)
             : base(configuration, logger)
         {
-            Use(middleware);
             OnTurnError = async (turnContext, exception) =>
             {
+                botTelemetery.TrackException(exception);
                 // Log any leaked exception from the application.
                 logger.LogError($"Exception caught : {exception.Message}");
 
@@ -39,6 +39,7 @@ namespace whitewaterfinder.Bot
                     }
                 }
             };
+            Use(middleware);
         }
 
     }

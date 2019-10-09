@@ -21,6 +21,7 @@ namespace whitewaterfinder.app.bot
                     logging.AddDebug();
                     logging.AddConsole();
                 })
+                .UseApplicationInsights()
                 .UseStartup<Startup>();
     }
 }

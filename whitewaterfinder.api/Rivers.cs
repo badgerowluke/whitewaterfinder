@@ -21,7 +21,7 @@ namespace whitewaterfinder.api
     public class Rivers
     {
         private readonly IRiverService _service;
-        public Rivers( IRiverService service, IConfiguration settings)
+        public Rivers( IRiverService service)
         {
 
             _service = service;
@@ -48,7 +48,7 @@ namespace whitewaterfinder.api
                 return rivers != null
                     ? (ActionResult)new OkObjectResult(rivers)
                     : new NoContentResult();
-            }catch (Exception e )
+            } catch (Exception e )
             {
 
                 throw;
