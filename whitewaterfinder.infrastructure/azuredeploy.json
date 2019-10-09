@@ -25,7 +25,8 @@
     "appName":{ "type": "string", "defaultValue" : "paddle-finder" },
     "appPlanName": {"type" : "string", "defaultValue" : "WaterFinderPlan" },
     "preferencesApp" : { "type" : "string" , "defaultValue" : "paddle-finder-preferences" },
-    "storageAccountName": { "type" : "string","defaultValue": "waterfinder" }
+    "storageAccountName": { "type" : "string","defaultValue": "waterfinder" },
+    "azureSearchName": { "type" : "string", "defaultValue": "waterfindersearch" }
   },
   "variables": {
 
@@ -349,6 +350,20 @@
         "properties" : {
             "Application_Type": "web",
             "Request_Source": "rest"
+        }
+    },
+    {
+        "type": "Microsoft.Search/searchServices",
+        "apiVersion": "2015-08-19",
+        "name": "[parameters('azureSearchName')]",
+        "location": "[parameters('location')]",
+        "sku": {
+            "name": "free"
+        }, 
+        "properties" : {
+            "replicaCount": 1,
+            "partitionCount": 1,
+            "hostingMode": "Default"
         }
     }  
     
