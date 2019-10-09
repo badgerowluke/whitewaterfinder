@@ -27,7 +27,8 @@
     "preferencesApp" : { "type" : "string" , "defaultValue" : "paddle-finder-preferences" },
     "storageAccountName": { "type" : "string","defaultValue": "waterfinder" },
     "luisName": { "type" : "string", "defaultValue": "webster-luis" },
-    "authoringName": { "type" : "string", "defaultValue" : "webster-luis-Authoring"}
+    "authoringName": { "type" : "string", "defaultValue" : "webster-luis-Authoring"},
+    "botAppName": { "type" : "string", "defaultValue": "WhitewaterWebster" }
   },
   "variables": {
 
@@ -387,7 +388,100 @@
             "dependsOn": [
                 "[resourceId('Microsoft.CognitiveServices/accounts', parameters('authoringName'))]"
             ]
+        },
+        {
+            "type": "Microsoft.BotService/botServices",
+            "apiVersion": "2018-07-12",
+            "name":"[parameters('botAppName')]",
+            "location": "global",
+            "sku": {
+                "name":"F0"
+            },
+            "kind":"sdk",
+            "properties": {
+                "displayName": "[parameters('botAppName')]",
+                "iconUrl": "https://docs.botframework.com/static/devportal/client/images/bot-framework-default.png",
+                "endpoint": "https://whitewaterwebster.azurewebsites.net/api/messages",
+                "msaAppId": "9bd4236c-716f-4bfc-8d8e-be99c19cca36",
+                "developerAppInsightKey": "",
+                "developerAppInsightsApplicationId": "",
+                "luisAppIds":[]
+            }
+        },
+        {
+            "type": "Microsoft.BotService/botServices/channels",
+            "apiVersion": "2018-07-12",
+            "name":"[concat(parameters('botAppName'),'/WebChatChannel')]",
+            "location": "global",
+            "properties":{},
+            "dependsOn": [
+                "[resourceId('Microsoft.BotService/botServices', parameters('botAppName'))]"
+            ]
+        },        
+        {
+            "type": "Microsoft.BotService/botServices/channels",
+            "apiVersion": "2018-07-12",
+            "name":"[concat(parameters('botAppName'), '/DirectLineChannel')]",
+            "location": "global",
+            "properties":{},
+            "dependsOn": [
+                "[resourceId('Microsoft.BotService/botServices', parameters('botAppName'))]"
+            ]
+        },        
+        {
+            "type": "Microsoft.BotService/botServices/channels",
+            "apiVersion": "2018-07-12",
+            "name":"[concat(parameters('botAppName'),'/SmsChannel')]",
+            "location": "global",
+            "properties":{},
+            "dependsOn": [
+                "[resourceId('Microsoft.BotService/botServices', parameters('botAppName'))]"
+            ]
+        },        
+        {
+            "type":"Microsoft.Web/serverfarms",
+            "apiVersion": "2016-09-01",
+            "name": "[parameters('botAppName')]",
+            "location": "[parameters('location')]",
+            "sku": {
+                "name": "F1",
+                "tier": "Free",
+                "size": "F1",
+                "family": "F",
+                "capacity": 0
+            },
+            "kind": "app",
+            "properties": {
+                "name": "[parameters('botAppName')]",
+                "perSiteScaling": false,
+                "reserved": false,
+                "targetWorkerCount": 0,
+                "targetWorkerSizeId": 0
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites",
+            "apiVersion": "2016-08-01",
+            "name": "[parameters('botAppName')]",
+            "location": "[parameters('location')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/serverFarms', parameters('botAppName'))]"
+            ],
+            "kind": "app",
+            "properties": {
+                "enabled": true,
+                "serverFarmId": "[resourceid('Microsoft.Web/serverfarms', parameters('botAppName'))]",
+                "reserved": false,
+                "scmSiteAlsoStopped": false,
+                "clientAffinityEnabled": true,
+                "clientCertEnabled": false,
+                "hostNamesDisabled": false,
+                "containerSize": 0,
+                "dailyMemoryTimeQuota": 0,
+                "httpsOnly": false
+            }
         }
+
     
   ],
   "outputs": { }

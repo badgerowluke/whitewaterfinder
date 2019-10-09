@@ -7,6 +7,7 @@
         "preferencesApp": { "value" : "paddle-finder-preferences" },
         "storageAccountName": { "value" : "waterfinder" },
         "luisName": { "value" : "webster-luis" },
-        "authoringName": { "value" : "webster-luis-Authoring" }
+        "authoringName": { "value" : "webster-luis-Authoring" },
+        "botAppName": { "value": "WhitewaterWebster" }
     }
 }
