@@ -13,11 +13,6 @@ namespace whitewaterfinder.Bot.Middleware
         private readonly IWebsterQnAMaker _qna;
         private readonly float _confidence;
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="maker">QnA Maker interface</param>
-        /// <param name="confidence">confidence score from configuration</param>
         public QnAMakerMiddleware(IWebsterQnAMaker maker, float confidence)
         {
 
@@ -25,13 +20,7 @@ namespace whitewaterfinder.Bot.Middleware
 
             _confidence = confidence;
         }
-        /// <summary>
-        /// handle QnAMaker responses
-        /// </summary>
-        /// <param name="turnContext"></param>
-        /// <param name="next"></param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
+
         public async Task OnTurnAsync(ITurnContext turnContext, NextDelegate next, CancellationToken cancellationToken = default(CancellationToken))
         {
             // only call qna on message activities if nothing has responded

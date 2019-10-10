@@ -23,7 +23,6 @@ namespace whitewaterfinder.Bot.Middleware
                 var result = turnContext.TurnState.Get<string>(LuisResults.TopResult.ToString());
                 if(!string.IsNullOrEmpty(result))
                 {
-                    
                     switch(result)
                     {
                         case "GetWeather":

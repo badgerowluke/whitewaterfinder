@@ -5,8 +5,13 @@ using Microsoft.Bot.Builder.Adapters;
 using Microsoft.Bot.Builder.Dialogs;
 using Xunit;
 using Moq;
-using whitewaterfinder.Bot.Language;
+using System.Threading;
+using whitewaterfinder.Bot.test.Fakes;
+
 using System.Threading.Tasks;
+using System;
+using whitewaterfinder.Bot.DialogStates;
+using whitewaterfinder.Bot.Dialogs;
 
 namespace whitewaterfinder.Bot.test.BotTests.Middleware
 {
@@ -18,6 +23,8 @@ namespace whitewaterfinder.Bot.test.BotTests.Middleware
         {
             mockRecognizer = new Mock<IRecognizer>();
             mockStateAccessor = new Mock<IStatePropertyAccessor<DialogState>>();
+            mockStateAccessor.Setup(x => x.GetAsync(It.IsAny<ITurnContext>(), It.IsAny<Func<DialogState>>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new DialogState());
         }
 
     }
@@ -27,16 +34,21 @@ namespace whitewaterfinder.Bot.test.BotTests.Middleware
         public async Task StartsWeatherDialog()
         {
             var dialogSet = new DialogSet(mockStateAccessor.Object);
+            var weatherState = new Mock<IStatePropertyAccessor<WeatherState>>();
+            dialogSet.Add(new GetWeather(weatherState.Object));
+
+
 
             var adapter = new TestAdapter()
-            .Use(new LuisRecognizerMiddleware(mockRecognizer.Object, 0.9))
+            .Use(new LuisMiddlewareFake("GetWeather"))
             .Use(new DialogDispatcher(dialogSet));
             
-            await new TestFlow(adapter, async(context, ct) =>
+            await new TestFlow(adapter, async (context, ct) =>
             {
                 
             }).Send("what's the weather")
-            .AssertReply("")
+            .AssertReply("I'm really going to need to get back to you on this")
+            .AssertReply("I'm still growing in what I'm capable of doing")
             .StartTestAsync();
 
         }
