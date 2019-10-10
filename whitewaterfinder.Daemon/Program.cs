@@ -13,6 +13,7 @@ using System.IO;
 using Newtonsoft.Json;
 using System.Linq;
 using whitewaterfinder.BusinessObjects.Configuration;
+using System.Threading.Tasks;
 
 namespace whitewaterfinder.Daemon
 {
@@ -38,7 +39,6 @@ namespace whitewaterfinder.Daemon
             repo.Register(config);
 
             var stuff = repo.GetRiversByState("WV").Result;
-            int three = 1;
 
             // var rivers = new List<River>();
             // using(var file = new FileStream(config.RiverFile, FileMode.Open))
@@ -64,7 +64,7 @@ namespace whitewaterfinder.Daemon
         }
         
         
-        static void LoadStates(RiverRepository azureRepo)
+        static async Task LoadStates(RiverRepository azureRepo)
         {
             var states = GetStateCodes();
             
@@ -89,7 +89,7 @@ namespace whitewaterfinder.Daemon
                     };
                     if(!stateRivers.ContainsKey(river.RiverId)){
                         stateRivers.Add(river.RiverId, river);
-                        azureRepo.InsertRiverData(river);
+                        await azureRepo.InsertRiverData(river);
                         Console.WriteLine($"{river.Name}, {river.RiverId} {river.State}");
                     }
                 }

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using whitewaterfinder.BusinessObjects.Rivers;
 using Xunit;
-namespace whitewaterfinder.test.BusinessobjectsTests
+namespace whitewaterfinder.BusinessObjects.test.BusinessobjectsTests
 {
     public class RiverExtensionTests
     {

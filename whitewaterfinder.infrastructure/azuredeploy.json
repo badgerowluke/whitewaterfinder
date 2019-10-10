@@ -25,7 +25,10 @@
     "appName":{ "type": "string", "defaultValue" : "paddle-finder" },
     "appPlanName": {"type" : "string", "defaultValue" : "WaterFinderPlan" },
     "preferencesApp" : { "type" : "string" , "defaultValue" : "paddle-finder-preferences" },
-    "storageAccountName": { "type" : "string","defaultValue": "waterfinder" }
+    "storageAccountName": { "type" : "string","defaultValue": "waterfinder" },
+    "luisName": { "type" : "string", "defaultValue": "webster-luis" },
+    "authoringName": { "type" : "string", "defaultValue" : "webster-luis-Authoring"},
+    "botAppName": { "type" : "string", "defaultValue": "WhitewaterWebster" }
   },
   "variables": {
 
@@ -116,7 +119,19 @@
         "properties": {
             "publicAccess": "Container"
         }
-    },  
+    }, 
+    {
+        "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+        "apiVersion": "2019-04-01",
+        "name": "[concat(parameters('storageAccountName'), '/default/botstore')]",
+        "dependsOn": [
+            "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccountName'), 'default')]",
+            "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName'))]"
+        ],
+        "properties": {
+            "publicAccess": "Container"
+        }
+    }, 
     {
         "type": "Microsoft.KeyVault/vaults",
         "apiVersion": "2016-10-01",
@@ -256,11 +271,11 @@
                         "value": "8.11.1"
                     },             
                     {
-                        "name": "blob-store",
+                        "name": "blobStore",
                         "value": "[concat('DefaultEndpointsProtocol=https;AccountName=',parameters('storageAccountName'),';AccountKey=',concat(listKeys(variables('storageAccountId'),'2015-05-01-preview').key1))]"
                     },
                     {
-                        "name":"azuresearch-key",
+                        "name":"azureSearchKey",
                         "value":"{%%azuresearch-key%%}"
                     },
                     {
@@ -272,7 +287,7 @@
                         "value":"{%%baseUSGSUrl%%}"
                     },
                     {
-                        "name":"searchUrl",
+                        "name":"azureSearchUrl",
                         "value":"{%%searchUrl%%}"
                     },
                     {
@@ -284,7 +299,6 @@
 
         }
     },
-    
     {
         "type":"Microsoft.Web/sites",
         "apiVersion":"2016-08-01",
@@ -320,7 +334,7 @@
             "siteConfig": {
                 "appSettings": [
                     {
-                        "name": "blob-store",
+                        "name": "blobStore",
                         "value": "[concat('DefaultEndpointsProtocol=https;AccountName=',parameters('storageAccountName'),';AccountKey=',concat(listKeys(variables('storageAccountId'),'2015-05-01-preview').key1))]"
                     },
                     {
@@ -350,7 +364,152 @@
             "Application_Type": "web",
             "Request_Source": "rest"
         }
-    }  
+    },
+        {
+            "type": "Microsoft.CognitiveServices/accounts",
+            "apiVersion": "2016-02-01-preview",
+            "name": "[parameters('authoringName')]",
+            "location": "westus",
+            "kind": "LUIS.Authoring",
+            "sku": {
+                "name": "F0"
+            }
+
+        },
+        {
+            "type": "Microsoft.CognitiveServices/accounts",
+            "apiVersion": "2016-02-01-preview",
+            "name": "[parameters('luisName')]",
+            "location": "[parameters('location')]",
+            "kind": "LUIS",
+            "sku": {
+                "name": "S0"
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.CognitiveServices/accounts', parameters('authoringName'))]"
+            ]
+        },
+        {
+            "type": "Microsoft.BotService/botServices",
+            "apiVersion": "2018-07-12",
+            "name":"[parameters('botAppName')]",
+            "location": "global",
+            "sku": {
+                "name":"F0"
+            },
+            "kind":"sdk",
+            "properties": {
+                "displayName": "[parameters('botAppName')]",
+                "iconUrl": "https://docs.botframework.com/static/devportal/client/images/bot-framework-default.png",
+                "endpoint": "https://whitewaterwebster.azurewebsites.net/api/messages",
+                "msaAppId": "9bd4236c-716f-4bfc-8d8e-be99c19cca36",
+                "developerAppInsightKey": "",
+                "developerAppInsightsApplicationId": "",
+                "luisAppIds":[]
+            }
+        },
+        {
+            "type": "Microsoft.BotService/botServices/channels",
+            "apiVersion": "2018-07-12",
+            "name":"[concat(parameters('botAppName'),'/WebChatChannel')]",
+            "location": "global",
+            "properties":{},
+            "dependsOn": [
+                "[resourceId('Microsoft.BotService/botServices', parameters('botAppName'))]"
+            ]
+        },        
+        {
+            "type": "Microsoft.BotService/botServices/channels",
+            "apiVersion": "2018-07-12",
+            "name":"[concat(parameters('botAppName'), '/DirectLineChannel')]",
+            "location": "global",
+            "properties":{},
+            "dependsOn": [
+                "[resourceId('Microsoft.BotService/botServices', parameters('botAppName'))]"
+            ]
+        },        
+        {
+            "type": "Microsoft.BotService/botServices/channels",
+            "apiVersion": "2018-07-12",
+            "name":"[concat(parameters('botAppName'),'/SmsChannel')]",
+            "location": "global",
+            "properties":{},
+            "dependsOn": [
+                "[resourceId('Microsoft.BotService/botServices', parameters('botAppName'))]"
+            ]
+        },        
+        {
+            "type":"Microsoft.Web/serverfarms",
+            "apiVersion": "2016-09-01",
+            "name": "[parameters('botAppName')]",
+            "location": "[parameters('location')]",
+            "sku": {
+                "name": "F1",
+                "tier": "Free",
+                "size": "F1",
+                "family": "F",
+                "capacity": 0
+            },
+            "kind": "app",
+            "properties": {
+                "name": "[parameters('botAppName')]",
+                "perSiteScaling": false,
+                "reserved": false,
+                "targetWorkerCount": 0,
+                "targetWorkerSizeId": 0
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites",
+            "apiVersion": "2016-08-01",
+            "name": "[parameters('botAppName')]",
+            "location": "[parameters('location')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/serverFarms', parameters('botAppName'))]"
+            ],
+            "kind": "app",
+            "properties": {
+                "enabled": true,
+                "serverFarmId": "[resourceid('Microsoft.Web/serverfarms', parameters('botAppName'))]",
+                "reserved": false,
+                "scmSiteAlsoStopped": false,
+                "clientAffinityEnabled": true,
+                "clientCertEnabled": false,
+                "hostNamesDisabled": false,
+                "containerSize": 0,
+                "dailyMemoryTimeQuota": 0,
+                "httpsOnly": false,
+                "siteConfig": {
+                    "appSettings":[
+                        {
+                            "name": "LuisAPIHostName",
+                            "value": "{%%LuisAPIHostName%%}"
+                        },
+                        {
+                            "name": "LuisAPIKey",
+                            "value": "{%%LuisAPIKey%%}"
+                        },
+                        {
+                            "name": "LuisAppId",
+                            "value": "{%%LuisAppId%%}"
+                        },
+                        {
+                            "name": "MicrosoftAppId",
+                            "value": "{%%msftAppId%%}"
+                        },
+                        {
+                            "name": "MicrosoftAppPassword",
+                            "value": "{%%msftAppPass%%}"
+                        },
+                        {
+                            "name": "WEBSITE_NODE_DEFAULT_VERSION",
+                            "value": "10.14.1"
+                        }
+                    ]
+                }
+            }
+        }
+
     
   ],
   "outputs": { }
