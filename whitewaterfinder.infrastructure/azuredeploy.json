@@ -478,7 +478,35 @@
                 "hostNamesDisabled": false,
                 "containerSize": 0,
                 "dailyMemoryTimeQuota": 0,
-                "httpsOnly": false
+                "httpsOnly": false,
+                "siteConfig": {
+                    "appSettings":[
+                        {
+                            "name": "LuisAPIHostName",
+                            "value": "{%%LuisAPIHostName%%}"
+                        },
+                        {
+                            "name": "LuisAPIKey",
+                            "value": "{%%LuisAPIKey%%}"
+                        },
+                        {
+                            "name": "LuisAppId",
+                            "value": "{%%LuisAppId%%}"
+                        },
+                        {
+                            "name": "MicrosoftAppId",
+                            "value": "{%%msftAppId%%}"
+                        },
+                        {
+                            "name": "MicrosoftAppPassword",
+                            "value": "{%%msftAppPass%%}"
+                        },
+                        {
+                            "name": "WEBSITE_NODE_DEFAULT_VERSION",
+                            "value": "10.14.1"
+                        }
+                    ]
+                }
             }
         }
 

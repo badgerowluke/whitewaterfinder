@@ -51,7 +51,7 @@ namespace whitewaterfinder.api
             } catch (Exception e )
             {
 
-                throw;
+                throw e;
             }
 
         }
