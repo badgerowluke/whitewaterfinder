@@ -365,70 +365,48 @@
             "Request_Source": "rest"
         }
     },
-        {
-            "type": "Microsoft.CognitiveServices/accounts",
-            "apiVersion": "2016-02-01-preview",
-            "name": "[parameters('authoringName')]",
-            "location": "westus",
-            "kind": "LUIS.Authoring",
-            "sku": {
-                "name": "F0"
-            }
-
-        },
-        {
-            "type": "Microsoft.CognitiveServices/accounts",
-            "apiVersion": "2016-02-01-preview",
-            "name": "[parameters('luisName')]",
-            "location": "[parameters('location')]",
-            "kind": "LUIS",
-            "sku": {
-                "name": "S0"
-            },
-            "dependsOn": [
-                "[resourceId('Microsoft.CognitiveServices/accounts', parameters('authoringName'))]"
-            ]
-        },
-        {
-            "type": "Microsoft.BotService/botServices",
-            "apiVersion": "2018-07-12",
-            "name":"[parameters('botAppName')]",
-            "location": "global",
-            "sku": {
-                "name":"F0"
-            },
-            "kind":"sdk",
-            "properties": {
-                "displayName": "[parameters('botAppName')]",
-
-                "msaAppId": "9bd4236c-716f-4bfc-8d8e-be99c19cca36",
-                "developerAppInsightKey": "",
-                "developerAppInsightsApplicationId": "",
-                "luisAppIds":[]
-            }
-        },       
-        {
-            "type":"Microsoft.Web/serverfarms",
-            "apiVersion": "2016-09-01",
-            "name": "[parameters('botAppName')]",
-            "location": "[parameters('location')]",
-            "sku": {
-                "name": "F1",
-                "tier": "Free",
-                "size": "F1",
-                "family": "F",
-                "capacity": 0
-            },
-            "kind": "app",
-            "properties": {
-                "name": "[parameters('botAppName')]",
-                "perSiteScaling": false,
-                "reserved": false,
-                "targetWorkerCount": 0,
-                "targetWorkerSizeId": 0
-            }
+    {
+        "type": "Microsoft.CognitiveServices/accounts",
+        "apiVersion": "2016-02-01-preview",
+        "name": "[parameters('authoringName')]",
+        "location": "westus",
+        "kind": "LUIS.Authoring",
+        "sku": {
+            "name": "F0"
         }
 
+    },
+    {
+        "type": "Microsoft.CognitiveServices/accounts",
+        "apiVersion": "2016-02-01-preview",
+        "name": "[parameters('luisName')]",
+        "location": "[parameters('location')]",
+        "kind": "LUIS",
+        "sku": {
+            "name": "S0"
+        },
+        "dependsOn": [
+            "[resourceId('Microsoft.CognitiveServices/accounts', parameters('authoringName'))]"
+        ]
+    },
+    {
+        "type": "Microsoft.BotService/botServices",
+        "apiVersion": "2018-07-12",
+        "name":"[parameters('botAppName')]",
+        "location": "global",
+        "sku": {
+            "name":"F0"
+        },
+        "kind":"sdk",
+        "properties": {
+            "displayName": "[parameters('botAppName')]",
+
+            "msaAppId": "9bd4236c-716f-4bfc-8d8e-be99c19cca36",
+            "developerAppInsightKey": "",
+            "developerAppInsightsApplicationId": "",
+            "luisAppIds":[]
+        }
+    }
 
     
   ],
