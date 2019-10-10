@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.AI.QnA;
 using Microsoft.Extensions.Configuration;
+using whitewaterfinder.Bot.Models;
 
 namespace whitewaterfinder.Bot.Language
 {
@@ -15,13 +16,13 @@ namespace whitewaterfinder.Bot.Language
     {
         private readonly QnAMaker _maker;
 
-        public WebsterQnAMaker(IConfiguration config, IHttpClientFactory client)
+        public WebsterQnAMaker(WebsterConfig config, IHttpClientFactory client)
         {
             _maker = new QnAMaker(new QnAMakerEndpoint
             {
-                KnowledgeBaseId = config["knowledgebaseId"],
-                EndpointKey = config["endpointKey"],
-                Host = config["hostName"]
+                KnowledgeBaseId = config.QnAKnowledgebaseId,
+                EndpointKey = config.QnAEndpointKey,
+                Host = config.QnAEndpointHostName
                 
             },
             null,
