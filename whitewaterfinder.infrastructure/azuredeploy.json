@@ -457,7 +457,7 @@
     },
     {
         "type": "Microsoft.CognitiveServices/accounts",
-        "apiVersion": "2016-02-01-preview",
+        "apiVersion": "2017-04-18",
         "name": "[parameters('authoringName')]",
         "location": "westus",
         "kind": "LUIS.Authoring",
