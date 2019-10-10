@@ -4,6 +4,8 @@ using Microsoft.Bot.Builder;
 using Microsoft.Bot.Schema;
 using Microsoft.Bot.Builder.Dialogs;
 using whitewaterfinder.Bot.Models;
+using whitewaterfinder.Bot.Dialogs;
+
 namespace whitewaterfinder.Bot.Middleware
 {
     public class DialogDispatcher : IMiddleware
@@ -19,19 +21,20 @@ namespace whitewaterfinder.Bot.Middleware
             {
                 var dialogContext = await _dialogs.CreateContextAsync(turnContext);
                 var result = turnContext.TurnState.Get<string>(LuisResults.TopResult.ToString());
-                await Stuff(dialogContext, result);
+                if(!string.IsNullOrEmpty(result))
+                {
+                    
+                    switch(result)
+                    {
+                        case "GetWeather":
+                            await dialogContext.BeginDialogAsync(nameof(GetWeather));
+                            break;
+                        default:
+                            break;
+                    }
+                }
             }
             await next(cancellationToken);
-        }
-        private async Task Stuff(DialogContext dc, string dialogResult)
-        {
-            if(!string.IsNullOrEmpty(dialogResult))
-            {
-                /* assuming here that the dialog and the luis result will match */
-                var newDialog = dc.FindDialog(dialogResult);
-                await newDialog.BeginDialogAsync(dc);
-            }
-
         }
     }
 }

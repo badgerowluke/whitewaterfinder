@@ -95,7 +95,7 @@ namespace whitewaterfinder.app.bot
                 .Use(new MembersAddedMiddleware())
                 .Use(new LuisRecognizerMiddleware(services.BuildServiceProvider().GetService<IRecognizer>(), myConfig.LuisConfidence))
                 .Use(new InterruptMiddleware(services.BuildServiceProvider().GetService<IStatePropertyAccessor<DialogState>>()))
-                /* Continue Dialog */
+                .Use(new ContinueDialogMiddleware(services.BuildServiceProvider().GetService<DialogSet>()))
                 .Use(new DialogDispatcher(services.BuildServiceProvider().GetService<DialogSet>()));
             
             // .Use(new QnAMakerMiddleware(services.BuildServiceProvider().GetService<IWebsterQnAMaker>(), float.Parse(myConfig.QnAConfidence)));
