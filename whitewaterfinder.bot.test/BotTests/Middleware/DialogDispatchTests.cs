@@ -1,6 +1,5 @@
 using whitewaterfinder.Bot.Middleware;
 using Microsoft.Bot.Builder;
-using Microsoft.Bot.Builder.Testing;
 using Microsoft.Bot.Builder.Adapters;
 using Microsoft.Bot.Builder.Dialogs;
 using Xunit;
@@ -37,8 +36,6 @@ namespace whitewaterfinder.Bot.test.BotTests.Middleware
             var weatherState = new Mock<IStatePropertyAccessor<WeatherState>>();
             dialogSet.Add(new GetWeather(weatherState.Object));
 
-
-
             var adapter = new TestAdapter()
             .Use(new LuisMiddlewareFake("GetWeather"))
             .Use(new DialogDispatcher(dialogSet));
@@ -46,7 +43,8 @@ namespace whitewaterfinder.Bot.test.BotTests.Middleware
             await new TestFlow(adapter, async (context, ct) =>
             {
                 
-            }).Send("what's the weather")
+            })
+            .Send("what's the weather")
             .AssertReply("I'm really going to need to get back to you on this")
             .AssertReply("I'm still growing in what I'm capable of doing")
             .StartTestAsync();
