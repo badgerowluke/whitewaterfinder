@@ -5,14 +5,16 @@ using Microsoft.Bot.Builder.AI.Luis;
 using Microsoft.Extensions.Configuration;
 using whitewaterfinder.Bot.Models;
 
-namespace whitewaterfinder.Bot
+namespace whitewaterfinder.Bot.Language
 {
     public class Recognizer : IRecognizer
     {
         private readonly LuisRecognizer _recognizer;
+        public double Confidence { get; set; }
         
         public Recognizer(WebsterConfig config)
         {
+            Confidence = config.LuisConfidence;
             var luisIsConfigured = !string.IsNullOrEmpty(config.LuisAppId) 
             && !string.IsNullOrEmpty(config.LuisAPIKey) 
             && !string.IsNullOrEmpty(config.LuisAPIHostName);

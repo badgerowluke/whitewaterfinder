@@ -3,7 +3,7 @@ using whitewaterfinder.Repo.Factories;
 using whitewaterfinder.BusinessObjects.USGSResponses;
 using whitewaterfinder.BusinessObjects.Rivers;
 using whitewaterfinder.BusinessObjects.Enumerations;
-namespace whitewaterfinder.test.BusinessobjectsTests
+namespace whitewaterfinder.BusinessObjects.test.BusinessobjectsTests
 {
     public class USGSParserTests 
     {

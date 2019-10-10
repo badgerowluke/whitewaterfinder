@@ -22,7 +22,6 @@ namespace whitewaterfinder.Bot
 
                 // Send a catch-all apology to the user.
                 await turnContext.SendActivityAsync("Sorry, it looks like something went wrong.");
-                await turnContext.SendActivityAsync("To run this sample make sure you have the LUIS and QnA models deployed.");
 
                 if (conversationState != null)
                 {

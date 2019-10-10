@@ -5,7 +5,7 @@ using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.AI.QnA;
 using Microsoft.Extensions.Configuration;
 
-namespace whitewaterfinder.Bot
+namespace whitewaterfinder.Bot.Language
 {
     public interface IWebsterQnAMaker
     {

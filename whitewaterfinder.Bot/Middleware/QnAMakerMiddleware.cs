@@ -4,7 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Schema;
-
+using whitewaterfinder.Bot.Language;
 
 namespace whitewaterfinder.Bot.Middleware
 {

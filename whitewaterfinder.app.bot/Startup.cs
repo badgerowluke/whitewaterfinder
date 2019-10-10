@@ -21,6 +21,7 @@ using System.Reflection;
 using System.Collections.Generic;
 using whitewaterfinder.Bot.Dialogs;
 using whitewaterfinder.Bot.DialogStates;
+using whitewaterfinder.Bot.Language;
 
 namespace whitewaterfinder.app.bot
 {
@@ -92,7 +93,7 @@ namespace whitewaterfinder.app.bot
             var set = new MiddlewareSet();
             set.Use(new AutoSaveStateMiddleware(new BotState[] { services.BuildServiceProvider().GetService<UserState>(), services.BuildServiceProvider().GetService<ConversationState>()}))
                 .Use(new MembersAddedMiddleware())
-                .Use(new LuisRecognizerMiddleware(services.BuildServiceProvider().GetService<IRecognizer>()))
+                .Use(new LuisRecognizerMiddleware(services.BuildServiceProvider().GetService<IRecognizer>(), myConfig.LuisConfidence))
                 .Use(new InterruptMiddleware(services.BuildServiceProvider().GetService<IStatePropertyAccessor<DialogState>>()))
                 /* Continue Dialog */
                 .Use(new DialogDispatcher(services.BuildServiceProvider().GetService<DialogSet>()));

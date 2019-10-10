@@ -7,6 +7,7 @@ namespace whitewaterfinder.Bot.Models
         public string LuisAppId { get; set; }
         public string LuisAPIKey { get; set; }
         public string LuisAPIHostName { get; set; }
+        public double LuisConfidence { get; set; }
         public string QnAKnowledgebaseId { get; set; }
         public string QnAEndpointKey { get; set; }
         public string QnAEndpointHostName { get; set; }  

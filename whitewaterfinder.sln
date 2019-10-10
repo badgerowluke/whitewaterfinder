@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "whitewaterfinder.Bot", "whi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "whitewaterfinder.app.bot", "whitewaterfinder.app.bot\whitewaterfinder.app.bot.csproj", "{70358AF1-2155-47A9-B5DA-CE016044C6EC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "whitewaterfinder.bot.test", "whitewaterfinder.bot.test\whitewaterfinder.bot.test.csproj", "{D895C7BE-DD94-4C1C-BE7C-FB34516AE41F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -154,5 +156,17 @@ Global
 		{70358AF1-2155-47A9-B5DA-CE016044C6EC}.Release|x64.Build.0 = Release|Any CPU
 		{70358AF1-2155-47A9-B5DA-CE016044C6EC}.Release|x86.ActiveCfg = Release|Any CPU
 		{70358AF1-2155-47A9-B5DA-CE016044C6EC}.Release|x86.Build.0 = Release|Any CPU
+		{D895C7BE-DD94-4C1C-BE7C-FB34516AE41F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D895C7BE-DD94-4C1C-BE7C-FB34516AE41F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D895C7BE-DD94-4C1C-BE7C-FB34516AE41F}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{D895C7BE-DD94-4C1C-BE7C-FB34516AE41F}.Debug|x64.Build.0 = Debug|Any CPU
+		{D895C7BE-DD94-4C1C-BE7C-FB34516AE41F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D895C7BE-DD94-4C1C-BE7C-FB34516AE41F}.Debug|x86.Build.0 = Debug|Any CPU
+		{D895C7BE-DD94-4C1C-BE7C-FB34516AE41F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D895C7BE-DD94-4C1C-BE7C-FB34516AE41F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D895C7BE-DD94-4C1C-BE7C-FB34516AE41F}.Release|x64.ActiveCfg = Release|Any CPU
+		{D895C7BE-DD94-4C1C-BE7C-FB34516AE41F}.Release|x64.Build.0 = Release|Any CPU
+		{D895C7BE-DD94-4C1C-BE7C-FB34516AE41F}.Release|x86.ActiveCfg = Release|Any CPU
+		{D895C7BE-DD94-4C1C-BE7C-FB34516AE41F}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
