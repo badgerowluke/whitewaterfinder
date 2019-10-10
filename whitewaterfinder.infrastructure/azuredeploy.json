@@ -400,8 +400,7 @@
             "kind":"sdk",
             "properties": {
                 "displayName": "[parameters('botAppName')]",
-                "iconUrl": "https://docs.botframework.com/static/devportal/client/images/bot-framework-default.png",
-                "endpoint": "https://whitewaterwebster.azurewebsites.net/api/messages",
+
                 "msaAppId": "9bd4236c-716f-4bfc-8d8e-be99c19cca36",
                 "developerAppInsightKey": "",
                 "developerAppInsightsApplicationId": "",
