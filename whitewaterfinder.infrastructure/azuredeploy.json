@@ -448,6 +448,10 @@
                         "value": "{%%msftAppPass%%}"
                     },
                     {
+                        "name":"ConnectionName",
+                        "value": "WhiteWaterWebster"
+                    },
+                    {
                         "name":"APPINSIGHTS_INSTRUMENTATIONKEY",
                         "value":"{%%aiKey%%}"
                     },

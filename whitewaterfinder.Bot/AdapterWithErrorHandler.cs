@@ -4,6 +4,7 @@
 using System;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Integration.AspNet.Core;
+using Microsoft.Bot.Connector.Authentication;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
@@ -11,8 +12,8 @@ namespace whitewaterfinder.Bot
 {
     public class AdapterWithErrorHandler : BotFrameworkHttpAdapter
     {
-        public AdapterWithErrorHandler(IConfiguration configuration, ILogger<BotFrameworkHttpAdapter> logger,IMiddleware middleware, IBotTelemetryClient botTelemetery,  ConversationState conversationState = null)
-            : base(configuration, logger)
+        public AdapterWithErrorHandler(ICredentialProvider creds, ILogger<BotFrameworkHttpAdapter> logger,IMiddleware middleware, IBotTelemetryClient botTelemetery,  ConversationState conversationState = null)
+            : base(creds, null, logger)
         {
             OnTurnError = async (turnContext, exception) =>
             {
