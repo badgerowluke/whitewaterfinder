@@ -4,6 +4,7 @@
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Configuration;
 
 namespace whitewaterfinder.app.bot
 {
@@ -22,6 +23,10 @@ namespace whitewaterfinder.app.bot
                     logging.AddConsole();
                 })
                 .UseApplicationInsights()
+                .ConfigureAppConfiguration((hostingContext, config) =>
+                {
+                    config.AddEnvironmentVariables();
+                })
                 .UseStartup<Startup>();
     }
 }

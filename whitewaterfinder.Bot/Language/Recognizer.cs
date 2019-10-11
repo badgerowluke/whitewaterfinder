@@ -25,7 +25,7 @@ namespace whitewaterfinder.Bot.Language
                 _recognizer = new LuisRecognizer(new LuisApplication(
                     config.LuisAppId,
                     config.LuisAPIKey,
-                    config.LuisAPIHostName), 
+                    $"https://{config.LuisAPIHostName}.api.cognitive.microsoft.com/"), 
                     new LuisPredictionOptions{IncludeAllIntents = true, IncludeInstanceData = true},
                     true);
             }              
