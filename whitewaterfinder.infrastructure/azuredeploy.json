@@ -491,7 +491,68 @@
         "dependsOn": [
             "[resourceId('Microsoft.BotService/botServices', parameters('botAppName'))]"
         ]
-    }  
+    },
+
+    {
+        "type": "Microsoft.BotService/botServices/channels",
+        "apiVersion": "2018-07-12",
+        "name":"[concat(parameters('botAppName'),'/WebChatChannel')]",
+        "location": "global",
+        "properties":{
+            "channelNme": "WebChatChannel"
+        },
+        "dependsOn": [
+            "[resourceId('Microsoft.BotService/botServices', parameters('botAppName'))]"
+        ]
+    },        
+    {
+        "type": "Microsoft.BotService/botServices/channels",
+        "apiVersion": "2018-07-12",
+        "name":"[concat(parameters('botAppName'), '/DirectLineChannel')]",
+        "location": "global",
+        "properties":{
+            "channelName": "DirectLineChannel"
+        },
+        "dependsOn": [
+            "[resourceId('Microsoft.BotService/botServices', parameters('botAppName'))]"
+        ]
+    },
+    {
+        "type": "Microsoft.BotService/botServices/channels",
+        "apiVersion": "2018-07-12",
+        "name":"[concat(parameters('botAppName'),'/SmsChannel')]",
+        "location": "global",
+        "properties":{
+            "channelName":"SmsChannel"
+        },
+        "dependsOn": [
+            "[resourceId('Microsoft.BotService/botServices', parameters('botAppName'))]"
+        ]
+    },
+    {
+        "type": "Microsoft.CognitiveServices/accounts",
+        "apiVersion": "2017-04-18",
+        "name": "[parameters('authoringName')]",
+        "location": "westus",
+        "kind": "LUIS.Authoring",
+        "sku": {
+            "name": "F0"
+        },
+        "properties":{}
+    }
+    // {
+    //     "type": "Microsoft.CognitiveServices/accounts",
+    //     "apiVersion": "2017-04-18",
+    //     "name": "[parameters('luisName')]",
+    //     "location": "[parameters('location')]",
+    //     "kind": "LUIS",
+    //     "sku": {
+    //         "name": "S0"
+    //     },
+    //     "dependsOn": [
+    //         "[resourceId('Microsoft.CognitiveServices/accounts', parameters('authoringName'))]"
+    //     ]
+    // }         
 
     
   ],
