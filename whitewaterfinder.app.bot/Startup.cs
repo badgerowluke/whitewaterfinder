@@ -43,8 +43,8 @@ namespace whitewaterfinder.app.bot
             services.AddHttpClient();
             var myConfig = Configuration.Get<WebsterConfig>();
             services.AddSingleton<WebsterConfig>(sp => myConfig);
-            // services.Add<ILogger>(_logger);
-            // services.AddApplicationInsightsTelemetry(myConfig.AppInsightsKey);
+            services.AddSingleton<ILogger>(_logFactory.CreateLogger<Webster>());
+            services.AddApplicationInsightsTelemetry(myConfig.AppInsightsKey);
             services.AddSingleton<IBotTelemetryClient, BotTelemetryClient>();
 
 
