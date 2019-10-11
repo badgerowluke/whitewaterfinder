@@ -429,7 +429,7 @@
                 "appSettings":[
                     {
                         "name": "LuisAPIHostName",
-                        "value": "https://{%%LuisAPIHostName%%}.api.cognitive.microsoft.com/"
+                        "value": "{%%LuisAPIHostName%%}"
                     },
                     {
                         "name": "LuisAPIKey",
