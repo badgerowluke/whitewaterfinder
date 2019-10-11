@@ -455,44 +455,6 @@
             }
         }
     },
-        {
-        "type": "Microsoft.BotService/botServices/channels",
-        "apiVersion": "2018-07-12",
-        "name":"[concat(parameters('botAppName'),'/WebChatChannel')]",
-        "location": "global",
-        "properties":{
-            "channelName": "WebChatChannel"
-
-        },
-        "dependsOn": [
-            "[resourceId('Microsoft.BotService/botServices', parameters('botAppName'))]"
-        ]
-    },        
-    {
-        "type": "Microsoft.BotService/botServices/channels",
-        "apiVersion": "2018-07-12",
-        "name":"[concat(parameters('botAppName'), '/DirectLineChannel')]",
-        "location": "global",
-        "properties":{
-            "channelName": "DirectLineChannel"
-        },
-        "dependsOn": [
-            "[resourceId('Microsoft.BotService/botServices', parameters('botAppName'))]"
-        ]
-    },        
-    {
-        "type": "Microsoft.BotService/botServices/channels",
-        "apiVersion": "2018-07-12",
-        "name":"[concat(parameters('botAppName'),'/SmsChannel')]",
-        "location": "global",
-        "properties":{
-            "channelName": "SmsChannel"
-        },
-        "dependsOn": [
-            "[resourceId('Microsoft.BotService/botServices', parameters('botAppName'))]"
-        ]
-    },
-
     {
         "type": "Microsoft.BotService/botServices/channels",
         "apiVersion": "2018-07-12",
