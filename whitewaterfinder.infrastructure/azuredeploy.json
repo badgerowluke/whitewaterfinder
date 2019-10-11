@@ -558,7 +558,7 @@
         "dependsOn": [
             "[resourceId('Microsoft.CognitiveServices/accounts', parameters('authoringName'))]"
         ]
-    // }         
+    }         
 
     
   ],
