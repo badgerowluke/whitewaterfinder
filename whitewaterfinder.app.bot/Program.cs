@@ -23,10 +23,6 @@ namespace whitewaterfinder.app.bot
                     logging.AddConsole();
                 })
                 .UseApplicationInsights()
-                .ConfigureAppConfiguration((hostingContext, config) =>
-                {
-                    config.AddEnvironmentVariables();
-                })
                 .UseStartup<Startup>();
     }
 }
