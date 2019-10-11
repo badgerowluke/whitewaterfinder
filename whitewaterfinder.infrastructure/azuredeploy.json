@@ -534,30 +534,30 @@
         "dependsOn": [
             "[resourceId('Microsoft.BotService/botServices', parameters('botAppName'))]"
         ]
-    }//,
-    // {
-    //     "type": "Microsoft.CognitiveServices/accounts",
-    //     "apiVersion": "2016-02-01-preview",
-    //     "name": "[parameters('authoringName')]",
-    //     "location": "westus",
-    //     "kind": "LUIS.Authoring",
-    //     "sku": {
-    //         "name": "F0"
-    //     },
-    //     "properties":{}
-    // }
-    // {
-    //     "type": "Microsoft.CognitiveServices/accounts",
-    //     "apiVersion": "2017-04-18",
-    //     "name": "[parameters('luisName')]",
-    //     "location": "[parameters('location')]",
-    //     "kind": "LUIS",
-    //     "sku": {
-    //         "name": "S0"
-    //     },
-    //     "dependsOn": [
-    //         "[resourceId('Microsoft.CognitiveServices/accounts', parameters('authoringName'))]"
-    //     ]
+    },
+    {
+        "type": "Microsoft.CognitiveServices/accounts",
+        "apiVersion": "2016-02-01-preview",
+        "name": "[parameters('authoringName')]",
+        "location": "westus",
+        "kind": "LUIS.Authoring",
+        "sku": {
+            "name": "F0"
+        },
+        "properties":{}
+    },
+    {
+        "type": "Microsoft.CognitiveServices/accounts",
+        "apiVersion": "2017-04-18",
+        "name": "[parameters('luisName')]",
+        "location": "[parameters('location')]",
+        "kind": "LUIS",
+        "sku": {
+            "name": "S0"
+        },
+        "dependsOn": [
+            "[resourceId('Microsoft.CognitiveServices/accounts', parameters('authoringName'))]"
+        ]
     // }         
 
     
