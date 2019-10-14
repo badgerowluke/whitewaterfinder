@@ -14,12 +14,15 @@ using Newtonsoft.Json;
 using System.Linq;
 using whitewaterfinder.BusinessObjects.Configuration;
 using System.Threading.Tasks;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace whitewaterfinder.Daemon
 {
     class Program
     {
         private const string connectionString = "";
+        private const string azureSearchBody = "{\"value\":%%content%%}";
         static void Main(string[] args)
         {
             var config = new ConfigurationBuilder()
@@ -38,19 +41,70 @@ namespace whitewaterfinder.Daemon
             var repo = new RiverRepository(azureFactory, client);
             repo.Register(config);
 
-            var stuff = repo.GetRiversByState("WV").Result;
-
-            // var rivers = new List<River>();
-            // using(var file = new FileStream(config.RiverFile, FileMode.Open))
-            // using(var reader = new StreamReader(file))
-            // {
-            //     var json = reader.ReadToEnd();
-            //     rivers = JsonConvert.DeserializeObject<List<River>>(json);
-            // }
+            var rivers = new List<RiverLite>();
+            using(var file = new FileStream(config.RiverFile, FileMode.Open))
+            using(var reader = new StreamReader(file))
+            {
+                var json = reader.ReadToEnd();
+                rivers = JsonConvert.DeserializeObject<List<RiverLite>>(json);
+            }
+            
+            
+            var states = rivers.Select((r, code) => r.StateCode).Distinct();
+            foreach(var state in states)
+            {
+                var stateRivers  = rivers.Where(x => x.StateCode.Equals(state)).Distinct();
+                stateRivers.ToList().ForEach(r =>
+                {
+                    using(var hasher = MD5.Create())
+                    {
+                        var bytes = hasher.ComputeHash(Encoding.UTF8.GetBytes($"{r.StateCode}{r.RiverId}"));
+                        var builder = new StringBuilder();
+                        for(var x =0; x < bytes.Length; x++)
+                        {
+                            builder.Append(bytes[x].ToString("x2"));
+                        }
+                        r.Id = builder.ToString();
+                    }
+                });
+                BuildAzureSearchIndex(stateRivers, client, config.AzureSearchAdminKey, config.AzureSearchAdminUrl).GetAwaiter().GetResult();
+            }
 
 
 
         }
+        static async Task BuildAzureSearchIndex(IEnumerable<IRiver> riverList, HttpClient client, string adminKey, string adminUrl)
+        {
+            if(riverList.Count() > 100)
+            {
+                int recordCount = 0;
+                do
+                {
+                    var partial = riverList.Skip(recordCount).Take(100);
+                    var content = JsonConvert.SerializeObject(partial);
+                    var batch = azureSearchBody.Replace("%%content%%", content);
+
+                    HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, adminUrl);
+                    request.Headers.Add("api-key", adminKey);
+                    request.Content = new StringContent(batch, Encoding.UTF8, "application/json");
+
+                    
+                    var response = await client.SendAsync(request);
+                    recordCount  = recordCount + partial.Count();
+
+
+                    var states = partial.Select((r, code) => r.StateCode).Distinct();
+
+                    Console.WriteLine($"{states.ToList()[0]} batch: {recordCount} records");
+
+
+                } while( recordCount < riverList.Count());
+            } else 
+            {
+
+            }
+        }
+
         static void LoadTableStore(AzureTableBuilder azureFactory, List<River> rivers)
         {
             var states = rivers.Select((r, code) => r.StateCode).Distinct();

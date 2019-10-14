@@ -294,6 +294,10 @@
                     {
                         "name":"riverTable",
                         "value":"{%%riverTable%%}"
+                    }, 
+                    {
+                        "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
+                        "value":"{%%aiKey%%}"
                     }
                 ]
             }

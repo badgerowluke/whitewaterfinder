@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Table;
+using Newtonsoft.Json;
+
 namespace whitewaterfinder.BusinessObjects.Rivers
 {
     public interface IRiver
@@ -14,6 +16,20 @@ namespace whitewaterfinder.BusinessObjects.Rivers
         string State { get; set; }
         string StateCode { get; set; }
     }
+    public class RiverLite : IRiver
+    {
+        [JsonProperty("@search.action")]
+        public const string SearchAction = "mergeOrUpload";
+        public string Id { get; set;}
+		public string Name { get; set; }
+		public string RiverId { get; set; }
+		public string Latitude { get; set; }
+		public string Longitude { get; set; }
+		public string Srs { get; set; }
+        public string State { get; set; }
+        public string StateCode { get; set; }
+
+    }
 
     public class River : IRiver
     {
@@ -23,11 +39,11 @@ namespace whitewaterfinder.BusinessObjects.Rivers
 		public string Latitude { get; set; }
 		public string Longitude { get; set; }
 		public string Srs { get; set; }
+        public string State { get; set; }
+        public string StateCode { get; set; }
         public RiverData[] Levels { get; set; }
         public RiverData[] Flow { get; set; }
         public RiverData[] RiverData { get; set; }
-        public string State { get; set; }
-        public string StateCode { get; set; }
 
 		public River() {
 		}
