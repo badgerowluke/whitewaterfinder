@@ -48,15 +48,15 @@ namespace whitewaterfinder.Daemon
                 var json = reader.ReadToEnd();
                 rivers = JsonConvert.DeserializeObject<List<RiverLite>>(json);
             }
-            
+            // LoadTableStore(repo, rivers);
             
             var states = rivers.Select((r, code) => r.StateCode).Distinct();
             foreach(var state in states)
             {
                 var stateRivers  = rivers.Where(x => x.StateCode.Equals(state)).Distinct();
-                stateRivers.ToList().ForEach(r =>
+                using(var hasher = MD5.Create())
                 {
-                    using(var hasher = MD5.Create())
+                    stateRivers.ToList().ForEach(r =>
                     {
                         var bytes = hasher.ComputeHash(Encoding.UTF8.GetBytes($"{r.StateCode}{r.RiverId}"));
                         var builder = new StringBuilder();
@@ -65,8 +65,8 @@ namespace whitewaterfinder.Daemon
                             builder.Append(bytes[x].ToString("x2"));
                         }
                         r.Id = builder.ToString();
-                    }
-                });
+                    });
+                }
                 BuildAzureSearchIndex(stateRivers, client, config.AzureSearchAdminKey, config.AzureSearchAdminUrl).GetAwaiter().GetResult();
             }
 
@@ -105,15 +105,28 @@ namespace whitewaterfinder.Daemon
             }
         }
 
-        static void LoadTableStore(AzureTableBuilder azureFactory, List<River> rivers)
+        static void LoadTableStore(RiverRepository azureFactory, List<River> rivers)
         {
             var states = rivers.Select((r, code) => r.StateCode).Distinct();
 
             foreach(var state in states)
             {
                 var stateRivers = rivers.Where(x => x.StateCode.Equals(state));
-                azureFactory.PartitionKey =  state;
-                var count = azureFactory.PostBatchAsync(stateRivers).GetAwaiter().GetResult();
+                using(var hasher = MD5.Create())
+                {
+                    stateRivers.ToList().ForEach(r =>{
+                        var bytes = hasher.ComputeHash(Encoding.UTF8.GetBytes($"{r.StateCode}{r.RiverId}"));
+                        var builder =new StringBuilder();
+                        for(var x =0; x < bytes.Length; x++)
+                        {
+                            builder.Append(bytes[x].ToString("x2"));
+                        }
+                        r.Id = builder.ToString();
+
+                    });
+                }
+
+                var count = azureFactory.InsertBatchData(stateRivers, state).GetAwaiter().GetResult();
             }
         }
         
