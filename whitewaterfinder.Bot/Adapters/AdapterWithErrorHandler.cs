@@ -8,7 +8,7 @@ using Microsoft.Bot.Connector.Authentication;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
-namespace whitewaterfinder.Bot
+namespace whitewaterfinder.Bot.Adapters
 {
     public class AdapterWithErrorHandler : BotFrameworkHttpAdapter
     {
@@ -28,9 +28,11 @@ namespace whitewaterfinder.Bot
                 {
                     try
                     {
-                        // Delete the conversationState for the current conversation to prevent the
-                        // bot from getting stuck in a error-loop caused by being in a bad state.
-                        // ConversationState should be thought of as similar to "cookie-state" in a Web pages.
+                        /*
+                         Delete the conversationState for the current conversation to prevent the
+                         bot from getting stuck in a error-loop caused by being in a bad state.
+                         ConversationState should be thought of as similar to "cookie-state" in a Web pages.
+                        */
                         await conversationState.DeleteAsync(turnContext);
                     }
                     catch (Exception e)

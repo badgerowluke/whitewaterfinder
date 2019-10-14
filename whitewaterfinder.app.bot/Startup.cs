@@ -22,6 +22,7 @@ using System.Collections.Generic;
 using whitewaterfinder.Bot.Dialogs;
 using whitewaterfinder.Bot.DialogStates;
 using whitewaterfinder.Bot.Language;
+using whitewaterfinder.Bot.Adapters;
 
 namespace whitewaterfinder.app.bot
 {
@@ -123,7 +124,6 @@ namespace whitewaterfinder.app.bot
 
             app.UseDefaultFiles();
             app.UseStaticFiles();
-
             //app.UseHttpsRedirection();
             app.UseMvc();
         }
