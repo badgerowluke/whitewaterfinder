@@ -7,5 +7,7 @@ namespace whitewaterfinder.BusinessObjects.Configuration
         public string AzureSearchKey { get; set; }
         public string AzureSearchUrl { get; set; }
         public string BlobStore { get; set; }
+        public string RiverFile { get; set; }
     }
+
 }

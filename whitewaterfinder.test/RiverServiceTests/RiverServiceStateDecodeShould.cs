@@ -4,7 +4,7 @@ using Xunit;
 using Moq;
 using System.Threading.Tasks;
 
-namespace whitewaterfinder.test.RiverServiceTests
+namespace whitewaterfinder.Core.test.RiverServiceTests
 {
     public class RiverServiceStateDecodeShould : BaseRiverServiceTests
     {

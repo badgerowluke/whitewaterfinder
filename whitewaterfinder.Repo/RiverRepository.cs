@@ -20,6 +20,7 @@ namespace whitewaterfinder.Repo
         Task<IEnumerable<River>> GetRiversAsync(string partName);
         Task<IEnumerable<River>> GetRiversByState(string stateCode);
         void Register(RiverRepositoryConfig configVals);
+        Task<int> InsertBatchData(IEnumerable<River> rivers, string partition);
 
     }
     public class RiverRepository : IRiverRepository
@@ -33,12 +34,12 @@ namespace whitewaterfinder.Repo
         public RiverRepository(IAzureStorage _folder, HttpClient client)
         {
             folders = _folder;
-            folders.CollectionName = _riverTable;
             _client = client;
         }
         public void Register(RiverRepositoryConfig configVals)
         {
             _riverTable = configVals.RiverTable;
+            folders.CollectionName = _riverTable;
             _baseUSGSUrl = configVals.BaseUSGSURL + "stateCd=";
 
             /*TODO: look into parameterizing the search */
@@ -100,6 +101,11 @@ namespace whitewaterfinder.Repo
         public async Task InsertRiverData(RiverEntity aRiver)
         {
             await folders.PostAsync(aRiver);
+        }
+        public async Task<int> InsertBatchData(IEnumerable<River> rivers, string partition)
+        {
+            folders.PartitionKey = partition;
+            return await folders.PostBatchAsync(rivers);
         }
     }
 }

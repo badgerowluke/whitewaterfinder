@@ -3,7 +3,7 @@ using whitewaterfinder.BusinessObjects.Configuration;
 using whitewaterfinder.Core;
 using whitewaterfinder.Repo;
 
-namespace whitewaterfinder.test.RiverServiceTests
+namespace whitewaterfinder.Core.test.RiverServiceTests
 {
     public abstract class BaseRiverServiceTests
     {
