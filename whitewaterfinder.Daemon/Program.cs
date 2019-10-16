@@ -49,6 +49,18 @@ namespace whitewaterfinder.Daemon
                 rivers = JsonConvert.DeserializeObject<List<RiverLite>>(json);
             }
             // LoadTableStore(repo, rivers);
+
+
+            // rivers.ForEach(r =>
+            // {
+            //     r.Id = r.BuildRiverIdHash();
+            // });
+            // var stuff = JsonConvert.SerializeObject(rivers);
+            // using(StreamWriter file = File.CreateText("../../../riverswithid.json"))
+            // {
+            //     JsonSerializer serializer = new JsonSerializer();
+            //     serializer.Serialize(file, stuff);
+            // }
             
             var states = rivers.Select((r, code) => r.StateCode).Distinct();
             foreach(var state in states)
@@ -67,7 +79,7 @@ namespace whitewaterfinder.Daemon
                         r.Id = builder.ToString();
                     });
                 }
-                BuildAzureSearchIndex(stateRivers, client, config.AzureSearchAdminKey, config.AzureSearchAdminUrl).GetAwaiter().GetResult();
+                // BuildAzureSearchIndex(stateRivers, client, config.AzureSearchAdminKey, config.AzureSearchAdminUrl).GetAwaiter().GetResult();
             }
 
 
