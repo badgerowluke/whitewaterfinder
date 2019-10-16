@@ -26,6 +26,13 @@ $body = @"
         {'name': 'Srs', 'type': 'Edm.String', 'searchable':false, 'filterable':false, 'retrievable': true, 'sortable':false, 'facetable':false, 'key':false},
         {'name': 'State', 'type': 'Edm.String', 'searchable':false, 'filterable':false, 'retrievable': true, 'sortable':false, 'facetable':false, 'key':false},
         {'name': 'StateCode', 'type': 'Edm.String', 'searchable':false, 'filterable':false, 'retrievable': true, 'sortable':false, 'facetable':false, 'key':false}
+    ],
+    'suggesters': [
+        {
+            'name':'RiverName',
+            'searchMode':'analyzingInfixMatching',
+            'sourceFields':['Name']
+        }
     ]
 }
 "@
