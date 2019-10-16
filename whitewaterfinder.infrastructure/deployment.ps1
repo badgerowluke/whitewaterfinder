@@ -1,7 +1,8 @@
 
-$keys = az search admin-key show -g waterfinder --service-name waterfindersearch | ConvertFrom-Json
 Write-Output 'pulling search keys'
+$keys = az search admin-key show -g waterfinder --service-name waterfindersearch | ConvertFrom-Json
 
+Write-Output 'Attempting to Build Index'
 $indexHeaders = @{
 
     'api-key' = $keys.primaryKey
@@ -54,7 +55,7 @@ $index = @{value = @()}
 
 $index.Value += ($rivers)
 
-Write-Output "attempting to POST to Azure Search"
+Write-Output "attempting to POST documents to Azure Search"
 
 $index = ConvertTo-Json -InputObject $index
 $updateUrl = "https://waterfindersearch.search.windows.net/indexes/riversearch-index/docs/index?api-version=2019-05-06"
