@@ -44,11 +44,6 @@ Invoke-RestMethod -Uri $url -Headers $indexHeaders -Method Put -Body $body
 
 Write-Output "building the actual index documents"
 
-$currDir = Get-Location
-
-$assemPath = $currDir.Path +'/bin/whitewaterfinder.BusinessObjects.dll'
-Add-Type -Path $assemPath
-
 
 $rivers =  Get-Content 'riverswithid.json' |  ConvertFrom-Json
 $index = @{value = @()}
