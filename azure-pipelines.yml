@@ -85,7 +85,7 @@ stages:
     - task: AzureResourceGroupDeployment@2
       displayName: 'Azure Deployment:Create Or Update Resource Group action on waterfinder'
       inputs:
-        azureSubscription: $(azureSubscription)'
+        azureSubscription: 'BurningRiverSolutions (1ae5ea57-70b7-4f89-baf7-816066b75d60)'
         resourceGroupName: waterfinder
         location: 'North Central US'
         csmFile: '$(System.DefaultWorkingDirectory)/_build api (azure functions)/infra/azuredeploy.json'
