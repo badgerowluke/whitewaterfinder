@@ -98,5 +98,5 @@ stages:
         azureSubscription: 'BurningRiverSolutions (1ae5ea57-70b7-4f89-baf7-816066b75d60)'
         appType: functionapp
         WebAppName: 'paddle-finder'
-        Package: 'whitewaterfinder.api/bin/release/netstandard2.0/'
+        Package: '$(System.DefaultWorkingDirectory)/_build api (azure functions)/riversfunc'
         TakeAppOfflineFlag: true        
