@@ -51,10 +51,11 @@ stages:
         rootFolderOrFile: whitewaterfinder.api/bin/release/netstandard2.0
         includeRootFolder: false
         archiveFile: riversfunc/app.zip
+
     - task: PublishBuildArtifacts@1
       displayName: 'Publish River Functions'
       inputs:
-        PathtoPublish: riversfunc/app.zip
+        PathtoPublish: whitewaterfinder.api/bin/release/netstandard2.0
         ArtifactName: 'riversfunc'
 
     - task: PublishBuildArtifacts@1
@@ -105,5 +106,5 @@ stages:
         azureSubscription: 'BurningRiverSolutions (1ae5ea57-70b7-4f89-baf7-816066b75d60)'
         appType: functionapp
         WebAppName: 'paddle-finder'
-        Package: 'riversfunc/app.zip'
+        Package: 'riversfunc'
         TakeAppOfflineFlag: true        
