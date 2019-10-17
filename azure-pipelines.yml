@@ -45,17 +45,24 @@ stages:
         projects: '**/*[Tt]est/*.csproj'
         arguments: '--configuration $(BuildConfiguration)'
 
-    - task: PublishBuildArtifacts@1
-      displayName: 'Publish River Functions'
-      inputs:
-        PathtoPublish: whitewaterfinder.api/bin/release/netstandard2.0
-        ArtifactName: 'riversfunc'
+    # - task: PublishBuildArtifacts@1
+    #   displayName: 'Publish River Functions'
+    #   inputs:
+    #     PathtoPublish: whitewaterfinder.api/bin/release/netstandard2.0
+    #     ArtifactName: 'riversfunc'
+    - task: ArchiveFiles@2
+      displayName: bundle api 
+      inputs: 
+        rootFolderOrFile: whitewaterfinder.api/bin/release/netstandard2.0
+        includeRootFolder: false
+        archiveFile: riversfunc/app.zip
 
     - task: PublishBuildArtifacts@1
       displayName: 'Copy ARM'
       inputs:
         PathtoPublish: whitewaterfinder.infrastructure
         ArtifactName: 'infra'
+
     - task: PublishBuildArtifacts@1
       displayName: 'Publish Bot App'
       inputs:
@@ -98,5 +105,5 @@ stages:
         azureSubscription: 'BurningRiverSolutions (1ae5ea57-70b7-4f89-baf7-816066b75d60)'
         appType: functionapp
         WebAppName: 'paddle-finder'
-        Package: '$(System.DefaultWorkingDirectory)/_build api (azure functions)/riversfunc'
+        Package: 'riversfunc/app.zip'
         TakeAppOfflineFlag: true        
