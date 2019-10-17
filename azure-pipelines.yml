@@ -77,7 +77,7 @@ stages:
     - task: qetza.replacetokens.replacetokens-task.replacetokens@3
       displayName: 'Replace tokens in azuredeploy.json'
       inputs:
-        rootDirectory: '$(System.DefaultWorkingDirectory)/_build api (azure functions)/infra'
+        rootDirectory: 'whitewaterfinder.infrastructure/'
         targetFiles: azuredeploy.json
         tokenPrefix: '{%%'
         tokenSuffix: '%%}'      
@@ -88,6 +88,6 @@ stages:
         azureSubscription: 'BurningRiverSolutions (1ae5ea57-70b7-4f89-baf7-816066b75d60)'
         resourceGroupName: waterfinder
         location: 'North Central US'
-        csmFile: '$(System.DefaultWorkingDirectory)/_build api (azure functions)/infra/azuredeploy.json'
-        csmParametersFile: '$(System.DefaultWorkingDirectory)/_build api (azure functions)/infra/parameters.json'
+        csmFile: 'whitewaterfinder.infrastructure/azuredeploy.json'
+        csmParametersFile: 'whitewaterfinder.infrastructure/parameters.json'
         overrideParameters: '-storageAccountType "Standard_LRS" -appName "paddle-finder" -appPlanName "WaterFinderPlan" -preferencesApp "paddle-finder-preferences" '        
