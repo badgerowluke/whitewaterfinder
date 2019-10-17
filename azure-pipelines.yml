@@ -4,9 +4,6 @@ trigger:
 variables:
   azureSubscription: '9f301a3d-0aac-4a64-a9b1-c5e553a4262e'
 
-
-
-
 stages: 
 - stage: Build
   jobs:
@@ -20,12 +17,12 @@ stages:
     #     versionSpec: '10.x'
     #   displayName: 'set node environment' 
 
-    - task: DotNetCoreCLI@2
-      displayName: Restore
-      inputs:
-        command: restore
-        projects: '**/*.csproj'
-        vstsFeed: 'e7750945-8da0-48c7-ad5d-6c474174e6d1'
+    # - task: DotNetCoreCLI@2
+    #   displayName: Restore
+    #   inputs:
+    #     command: restore
+    #     projects: '**/*.csproj'
+    #     vstsFeed: 'e7750945-8da0-48c7-ad5d-6c474174e6d1'
 
     # - script: npm install && npm run build
     #   displayName: 'build User Pref functions'
@@ -45,24 +42,24 @@ stages:
     #     projects: '**/*[Tt]est/*.csproj'
     #     arguments: '--configuration $(BuildConfiguration)'
 
-    # - task: ArchiveFiles@2
-    #   displayName: bundle api 
-    #   inputs: 
-    #     rootFolderOrFile: whitewaterfinder.api/bin/release/netstandard2.0
-    #     includeRootFolder: false
-    #     archiveFile: riversfunc/app.zip
+    - task: ArchiveFiles@2
+      displayName: bundle api 
+      inputs: 
+        rootFolderOrFile: whitewaterfinder.api/bin/release/netstandard2.0
+        includeRootFolder: false
+        archiveFile: riversfunc/app.zip
 
     - task: PublishBuildArtifacts@1
       displayName: 'Publish River Functions'
       inputs:
-        PathtoPublish: whitewaterfinder.api/bin/release/netstandard2.0
+        PathtoPublish: whitewaterfinder.api/bin/release/netstandard2.0/riversfunc/app.zip
         ArtifactName: 'riversfunc'
 
-    - task: PublishBuildArtifacts@1
-      displayName: 'Copy ARM'
-      inputs:
-        PathtoPublish: whitewaterfinder.infrastructure
-        ArtifactName: 'infra'
+    # - task: PublishBuildArtifacts@1
+    #   displayName: 'Copy ARM'
+    #   inputs:
+    #     PathtoPublish: whitewaterfinder.infrastructure
+    #     ArtifactName: 'infra'
 
     # - task: PublishBuildArtifacts@1
     #   displayName: 'Publish Bot App'
