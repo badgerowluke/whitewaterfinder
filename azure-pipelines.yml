@@ -15,10 +15,10 @@ stages:
       vmImage: 'Ubuntu-16.04'
     continueOnError: false
     steps:
-    - task: NodeTool@0
-      inputs:
-        versionSpec: '10.x'
-      displayName: 'set node environment' 
+    # - task: NodeTool@0
+    #   inputs:
+    #     versionSpec: '10.x'
+    #   displayName: 'set node environment' 
 
     - task: DotNetCoreCLI@2
       displayName: Restore
@@ -27,9 +27,9 @@ stages:
         projects: '**/*.csproj'
         vstsFeed: 'e7750945-8da0-48c7-ad5d-6c474174e6d1'
 
-    - script: npm install && npm run build
-      displayName: 'build User Pref functions'
-      workingDirectory: whitewaterfinder.api.user
+    # - script: npm install && npm run build
+    #   displayName: 'build User Pref functions'
+    #   workingDirectory: whitewaterfinder.api.user
 
     - task: DotNetCoreCLI@2
       displayName: Build
@@ -38,19 +38,19 @@ stages:
         projects: '**/*.csproj'
         arguments: '--configuration $(BuildConfiguration)'
 
-    - task: DotNetCoreCLI@2
-      displayName: Test
-      inputs:
-        command: test
-        projects: '**/*[Tt]est/*.csproj'
-        arguments: '--configuration $(BuildConfiguration)'
+    # - task: DotNetCoreCLI@2
+    #   displayName: Test
+    #   inputs:
+    #     command: test
+    #     projects: '**/*[Tt]est/*.csproj'
+    #     arguments: '--configuration $(BuildConfiguration)'
 
-    - task: ArchiveFiles@2
-      displayName: bundle api 
-      inputs: 
-        rootFolderOrFile: whitewaterfinder.api/bin/release/netstandard2.0
-        includeRootFolder: false
-        archiveFile: riversfunc/app.zip
+    # - task: ArchiveFiles@2
+    #   displayName: bundle api 
+    #   inputs: 
+    #     rootFolderOrFile: whitewaterfinder.api/bin/release/netstandard2.0
+    #     includeRootFolder: false
+    #     archiveFile: riversfunc/app.zip
 
     - task: PublishBuildArtifacts@1
       displayName: 'Publish River Functions'
@@ -64,17 +64,17 @@ stages:
         PathtoPublish: whitewaterfinder.infrastructure
         ArtifactName: 'infra'
 
-    - task: PublishBuildArtifacts@1
-      displayName: 'Publish Bot App'
-      inputs:
-        PathtoPublish: whitewaterfinder.app.bot/bin/release/netcoreapp2.1
-        ArtifactName: 'websterbot'
+    # - task: PublishBuildArtifacts@1
+    #   displayName: 'Publish Bot App'
+    #   inputs:
+    #     PathtoPublish: whitewaterfinder.app.bot/bin/release/netcoreapp2.1
+    #     ArtifactName: 'websterbot'
 
-    - task: PublishBuildArtifacts@1
-      displayName: 'Copy Preferences Functions'
-      inputs:
-        PathtoPublish: whitewaterfinder.api.user
-        ArtifactName: 'preferencesfunc'
+    # - task: PublishBuildArtifacts@1
+    #   displayName: 'Copy Preferences Functions'
+    #   inputs:
+    #     PathtoPublish: whitewaterfinder.api.user
+    #     ArtifactName: 'preferencesfunc'
 
 - stage: Deploy
   jobs:
@@ -82,23 +82,23 @@ stages:
     pool:
       vmImage: 'windows-latest'
     steps:
-    - task: qetza.replacetokens.replacetokens-task.replacetokens@3
-      displayName: 'Replace tokens in azuredeploy.json'
-      inputs:
-        rootDirectory: 'whitewaterfinder.infrastructure/'
-        targetFiles: azuredeploy.json
-        tokenPrefix: '{%%'
-        tokenSuffix: '%%}'      
+    # - task: qetza.replacetokens.replacetokens-task.replacetokens@3
+    #   displayName: 'Replace tokens in azuredeploy.json'
+    #   inputs:
+    #     rootDirectory: 'whitewaterfinder.infrastructure/'
+    #     targetFiles: azuredeploy.json
+    #     tokenPrefix: '{%%'
+    #     tokenSuffix: '%%}'      
 
-    - task: AzureResourceGroupDeployment@2
-      displayName: 'Azure Deployment:Create Or Update Resource Group action on waterfinder'
-      inputs:
-        azureSubscription: 'BurningRiverSolutions (1ae5ea57-70b7-4f89-baf7-816066b75d60)'
-        resourceGroupName: waterfinder
-        location: 'North Central US'
-        csmFile: 'whitewaterfinder.infrastructure/azuredeploy.json'
-        csmParametersFile: 'whitewaterfinder.infrastructure/parameters.json'
-        overrideParameters: '-storageAccountType "Standard_LRS" -appName "paddle-finder" -appPlanName "WaterFinderPlan" -preferencesApp "paddle-finder-preferences" '        
+    # - task: AzureResourceGroupDeployment@2
+    #   displayName: 'Azure Deployment:Create Or Update Resource Group action on waterfinder'
+    #   inputs:
+    #     azureSubscription: 'BurningRiverSolutions (1ae5ea57-70b7-4f89-baf7-816066b75d60)'
+    #     resourceGroupName: waterfinder
+    #     location: 'North Central US'
+    #     csmFile: 'whitewaterfinder.infrastructure/azuredeploy.json'
+    #     csmParametersFile: 'whitewaterfinder.infrastructure/parameters.json'
+    #     overrideParameters: '-storageAccountType "Standard_LRS" -appName "paddle-finder" -appPlanName "WaterFinderPlan" -preferencesApp "paddle-finder-preferences" '        
 
     - task: AzureRmWebAppDeployment@3
       displayName: 'Deploy Azure App Service'
