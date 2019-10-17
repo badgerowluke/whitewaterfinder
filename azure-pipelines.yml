@@ -34,6 +34,7 @@ stages:
         command: 'build'
         projects: '**/*.csproj'
         arguments: '--configuration $(BuildConfiguration)'
+        vstsFeed: 'e7750945-8da0-48c7-ad5d-6c474174e6d1'
 
     # - task: DotNetCoreCLI@2
     #   displayName: Test
