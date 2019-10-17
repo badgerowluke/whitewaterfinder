@@ -6,7 +6,16 @@ param (
 )
 Write-Output 'logging in'
 $cred = Get-Credential
-Connect-AzureRmAccount -Credential $cred -TenantId $tenantid -ServicePrincipal
+Write-Output 'got credentials'
+Write-Output 'Connecting to Azure RM'
+try 
+{
+    Connect-AzureRmAccount -Credential $cred -TenantId $tenantid -ServicePrincipal
+    
+} catch 
+{
+    Write-Output 'something went wrong'
+}
 
 
 Write-Output 'pulling search keys'
