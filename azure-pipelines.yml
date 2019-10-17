@@ -17,12 +17,12 @@ stages:
     #     versionSpec: '10.x'
     #   displayName: 'set node environment' 
 
-    # - task: DotNetCoreCLI@2
-    #   displayName: Restore
-    #   inputs:
-    #     command: restore
-    #     projects: '**/*.csproj'
-    #     vstsFeed: 'e7750945-8da0-48c7-ad5d-6c474174e6d1'
+    - task: DotNetCoreCLI@2
+      displayName: Restore
+      inputs:
+        command: restore
+        projects: '**/*.csproj'
+        vstsFeed: 'e7750945-8da0-48c7-ad5d-6c474174e6d1'
 
     # - script: npm install && npm run build
     #   displayName: 'build User Pref functions'
@@ -34,7 +34,6 @@ stages:
         command: 'build'
         projects: '**/*.csproj'
         arguments: '--configuration $(BuildConfiguration)'
-        vstsFeed: 'e7750945-8da0-48c7-ad5d-6c474174e6d1'
 
     # - task: DotNetCoreCLI@2
     #   displayName: Test
