@@ -5,8 +5,10 @@ param (
     [Parameter(Mandatory=$true)] $tenantid
 )
 Write-Output 'logging in'
+$cred = Get-Credential
+Connect-AzureRmAccount -Credential $cred -TenantId $tenantid -ServicePrincipal
 
-az login --service-principal --username $user --password $pass --tenant $tenantid
+
 Write-Output 'pulling search keys'
 $keys = az search admin-key show -g waterfinder --service-name waterfindersearch | ConvertFrom-Json
 
