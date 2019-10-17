@@ -1,70 +1,70 @@
-resources:
-
-- repo: self
-  clean: true
 
 trigger:
     - master  
+variables:
+  azureSubscription: '9f301a3d-0aac-4a64-a9b1-c5e553a4262e'
 
-queue:
-  name: Hosted Ubuntu 1604
+  vmImageName: 'vs2017-win2016'
 
 
+stages: 
+- stage: Build
+  jobs:
+  - job: Build
+    pool:
+      vmImage: 'Ubuntu-16.04'
+    continueOnError: false
+    steps:
+    - task: NodeTool@0
+      inputs:
+        versionSpec: '10.x'
+      displayName: 'set node environment' 
 
-jobs:
-- job: Build
-  pool:
-    vmImage: 'Ubuntu-16.04'
-  continueOnError: false
-  steps:
-  - task: NodeTool@0
-    inputs:
-      versionSpec: '10.x'
-    displayName: 'set node environment' 
+    - task: DotNetCoreCLI@2
+      displayName: Restore
+      inputs:
+        command: restore
+        projects: '**/*.csproj'
+        vstsFeed: 'e7750945-8da0-48c7-ad5d-6c474174e6d1'
 
-  - task: DotNetCoreCLI@2
-    displayName: Restore
-    inputs:
-      command: restore
-      projects: '**/*.csproj'
-      vstsFeed: 'e7750945-8da0-48c7-ad5d-6c474174e6d1'
+    - script: npm install && npm run build
+      displayName: 'build User Pref functions'
+      workingDirectory: whitewaterfinder.api.user
 
-  - script: npm install && npm run build
-    displayName: 'build User Pref functions'
-    workingDirectory: whitewaterfinder.api.user
+    - task: DotNetCoreCLI@2
+      displayName: Build
+      inputs:
+        command: 'build'
+        projects: '**/*.csproj'
+        arguments: '--configuration $(BuildConfiguration)'
 
-  - task: DotNetCoreCLI@2
-    displayName: Build
-    inputs:
-      projects: '**/*.csproj'
-      arguments: '--configuration $(BuildConfiguration)'
+    - task: DotNetCoreCLI@2
+      displayName: Test
+      inputs:
+        command: test
+        projects: '**/*[Tt]est/*.csproj'
+        arguments: '--configuration $(BuildConfiguration)'
 
-  - task: DotNetCoreCLI@2
-    displayName: Test
-    inputs:
-      command: test
-      projects: '**/*[Tt]est/*.csproj'
-      arguments: '--configuration $(BuildConfiguration)'
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publish River Functions'
+      inputs:
+        PathtoPublish: whitewaterfinder.api/bin/release/netstandard2.0
+        ArtifactName: 'riversfunc'
 
-  - task: PublishBuildArtifacts@1
-    displayName: 'Publish River Functions'
-    inputs:
-      PathtoPublish: whitewaterfinder.api/bin/release/netstandard2.0
-      ArtifactName: 'riversfunc'
+    - task: PublishBuildArtifacts@1
+      displayName: 'Copy ARM'
+      inputs:
+        PathtoPublish: whitewaterfinder.infrastructure
+        ArtifactName: 'infra'
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publish Bot App'
+      inputs:
+        PathtoPublish: whitewaterfinder.app.bot/bin/release/netcoreapp2.1
+        ArtifactName: 'websterbot'
 
-  - task: PublishBuildArtifacts@1
-    displayName: 'Copy ARM'
-    inputs:
-      PathtoPublish: whitewaterfinder.infrastructure
-      ArtifactName: 'infra'
-  - task: PublishBuildArtifacts@1
-    displayName: 'Publish Bot App'
-    inputs:
-      PathtoPublish: whitewaterfinder.app.bot/bin/release/netcoreapp2.1
-      ArtifactName: 'websterbot'
+    - task: PublishBuildArtifacts@1
+      displayName: 'Copy Preferences Functions'
+      inputs:
+        PathtoPublish: whitewaterfinder.api.user
+        ArtifactName: 'preferencesfunc'
 
-  - task: PublishBuildArtifacts@1
-    displayName: 'Copy Preferences Functions'
-    inputs:
-      PathtoPublish: whitewaterfinder.api.user
-      ArtifactName: 'preferencesfunc'
