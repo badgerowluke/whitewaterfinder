@@ -1,4 +1,12 @@
+param (
+    
+    [Parameter(Mandatory=$true)] $user,
+    [Parameter(Mandatory=$true)] $pass,
+    [Parameter(Mandatory=$true)] $tenantid
+)
+Write-Output 'logging in'
 
+az login --service-principal --username $user --password $pass --tenant $tenantid
 Write-Output 'pulling search keys'
 $keys = az search admin-key show -g waterfinder --service-name waterfindersearch | ConvertFrom-Json
 
