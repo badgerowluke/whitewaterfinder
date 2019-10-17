@@ -45,17 +45,17 @@ stages:
         projects: '**/*[Tt]est/*.csproj'
         arguments: '--configuration $(BuildConfiguration)'
 
-    # - task: PublishBuildArtifacts@1
-    #   displayName: 'Publish River Functions'
-    #   inputs:
-    #     PathtoPublish: whitewaterfinder.api/bin/release/netstandard2.0
-    #     ArtifactName: 'riversfunc'
     - task: ArchiveFiles@2
       displayName: bundle api 
       inputs: 
         rootFolderOrFile: whitewaterfinder.api/bin/release/netstandard2.0
         includeRootFolder: false
         archiveFile: riversfunc/app.zip
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publish River Functions'
+      inputs:
+        PathtoPublish: riversfunc/app.zip
+        ArtifactName: 'riversfunc'
 
     - task: PublishBuildArtifacts@1
       displayName: 'Copy ARM'
