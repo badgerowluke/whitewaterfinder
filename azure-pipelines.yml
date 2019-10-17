@@ -91,3 +91,12 @@ stages:
         csmFile: 'whitewaterfinder.infrastructure/azuredeploy.json'
         csmParametersFile: 'whitewaterfinder.infrastructure/parameters.json'
         overrideParameters: '-storageAccountType "Standard_LRS" -appName "paddle-finder" -appPlanName "WaterFinderPlan" -preferencesApp "paddle-finder-preferences" '        
+
+    - task: AzureRmWebAppDeployment@3
+      displayName: 'Deploy Azure App Service'
+      inputs:
+        azureSubscription: 'BurningRiverSolutions (1ae5ea57-70b7-4f89-baf7-816066b75d60)'
+        appType: functionapp
+        WebAppName: 'paddle-finder'
+        Package: 'whitewaterfinder.api/bin/release/netstandard2.0/'
+        TakeAppOfflineFlag: true        
