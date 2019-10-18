@@ -8,7 +8,7 @@ param (
 
 
 Write-Output 'logging out'
-az logout
+# az logout
 Write-Output 'logging in'
 # $cred = Get-Credential
 # Write-Output $cred~
@@ -18,7 +18,7 @@ try
 {
 
     # Connect-AzureRmAccount -Credential $cred -TenantId $tenantid -ServicePrincipal
-    az login --service-principal --username $user.Trim() --password $pass.Trim() --tenant $tenantid.Trim() 
+    # az login --service-principal --username $user.Trim() --password $pass.Trim() --tenant $tenantid.Trim() 
     
 } catch 
 {
