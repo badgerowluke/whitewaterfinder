@@ -5,17 +5,20 @@ param (
     [Parameter(Mandatory=$true)] $tenantid
 )
 
+
+
 Write-Output 'logging out'
 az logout
 Write-Output 'logging in'
-$cred = Get-Credential
+# $cred = Get-Credential
+# Write-Output $cred~
 Write-Output 'got credentials'
 Write-Output 'Connecting to Azure RM'
 try 
 {
 
-    Connect-AzureRmAccount -Credential $cred -TenantId $tenantid -ServicePrincipal
-    az login --service-principal --username $user --password $pass --tenant $tenantid 
+    # Connect-AzureRmAccount -Credential $cred -TenantId $tenantid -ServicePrincipal
+    az login --service-principal --username $user.Trim() --password $pass.Trim() --tenant $tenantid.Trim() 
     
 } catch 
 {
@@ -24,6 +27,8 @@ try
 
 try
 {
+
+
     Write-Output 'pulling search keys'
     $keys = az search admin-key show -g waterfinder --service-name waterfindersearch | ConvertFrom-Json
 
