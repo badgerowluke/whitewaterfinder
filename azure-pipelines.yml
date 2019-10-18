@@ -5,7 +5,7 @@ resources:
 
 trigger:
     - master  
-    - bug-cli-execution
+    - bug/cli-execution
 
 
 queue:

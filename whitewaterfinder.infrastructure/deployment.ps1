@@ -8,13 +8,14 @@ param (
 Write-Output 'logging out'
 az logout
 Write-Output 'logging in'
-
+$cred = Get-Credential
 Write-Output 'got credentials'
 Write-Output 'Connecting to Azure RM'
 try 
 {
-    az login --service-principal --username $user --password $pass --tenant $tenantid 
-
+    # az login --service-principal --username $user --password $pass --tenant $tenantid --allow-no-subscriptions
+    # az account set --subscription aea3a7b3-756a-48fd-8d43-52a0c6e3c877
+    Connect-AzureRmAccount -Credential $cred -TenantId $tenantid -ServicePrincipal
     
 } catch 
 {
