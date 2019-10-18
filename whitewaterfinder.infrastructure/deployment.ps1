@@ -4,13 +4,17 @@ param (
     [Parameter(Mandatory=$true)] $pass,
     [Parameter(Mandatory=$true)] $tenantid
 )
+
+Write-Output 'logging out'
+az logout
 Write-Output 'logging in'
-$cred = Get-Credential
+
 Write-Output 'got credentials'
 Write-Output 'Connecting to Azure RM'
 try 
 {
-    Connect-AzureRmAccount -Credential $cred -TenantId $tenantid -ServicePrincipal
+    az login --service-principal --username $user --password $pass --tenant $tenantid 
+
     
 } catch 
 {

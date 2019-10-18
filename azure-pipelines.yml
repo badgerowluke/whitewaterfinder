@@ -5,7 +5,7 @@ resources:
 
 trigger:
     - master  
-    - feature/ARM-template
+    - bug-cli-execution
 
 
 queue:
