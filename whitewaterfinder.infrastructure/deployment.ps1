@@ -1,41 +1,11 @@
 param (
     
-    [Parameter(Mandatory=$true)] $user,
-    [Parameter(Mandatory=$true)] $pass,
-    [Parameter(Mandatory=$true)] $tenantid
+    [Parameter(Mandatory=$true)] $key
+
 )
 
 
 
-Write-Output 'logging out'
-# az logout
-Write-Output 'logging in'
-# $cred = Get-Credential
-# Write-Output $cred~
-Write-Output 'got credentials'
-Write-Output 'Connecting to Azure RM'
-try 
-{
-
-    # Connect-AzureRmAccount -Credential $cred -TenantId $tenantid -ServicePrincipal
-    # az login --service-principal --username $user.Trim() --password $pass.Trim() --tenant $tenantid.Trim() 
-    
-} catch 
-{
-    Write-Output 'something went wrong'
-}
-
-try
-{
-
-
-    Write-Output 'pulling search keys'
-    $keys = az search admin-key show -g waterfinder --service-name waterfindersearch | ConvertFrom-Json
-
-} catch 
-{
-    Write-Output 'something went wrong'
-}
 
 Write-Output 'Attempting to Build Index'
 
@@ -67,12 +37,12 @@ $body = @"
 }
 "@
 
-if($keys.primaryKey)
+if($key)
 {
 
     $indexHeaders = @{
 
-        'api-key' = $keys.primaryKey
+        'api-key' = $key
         'Content-Type' = 'application/json'
         'Accept' = 'application/json'
     }
