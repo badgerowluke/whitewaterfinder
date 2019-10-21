@@ -1,6 +1,7 @@
 param (
     
-    [Parameter(Mandatory=$true)] $key
+    [Parameter(Mandatory=$true)] $key,
+    [Parameter(Mandatory=$true)] $path
 
 )
 
@@ -53,7 +54,7 @@ if($key)
     Write-Output "building the actual index documents"
 
 
-    $rivers =  Get-Content './riverswithid.json' |  ConvertFrom-Json
+    $rivers =  Get-Content $path |  ConvertFrom-Json
     $index = @{value = @()}
 
     $index.Value += ($rivers)
