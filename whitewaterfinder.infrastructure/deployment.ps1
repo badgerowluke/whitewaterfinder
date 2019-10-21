@@ -53,7 +53,7 @@ if($key)
     Write-Output "building the actual index documents"
 
 
-    $rivers =  Get-Content 'riverswithid.json' |  ConvertFrom-Json
+    $rivers =  Get-Content './riverswithid.json' |  ConvertFrom-Json
     $index = @{value = @()}
 
     $index.Value += ($rivers)
