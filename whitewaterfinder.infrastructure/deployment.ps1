@@ -1,33 +1,14 @@
 param (
     
-    [Parameter(Mandatory=$true)] $user,
-    [Parameter(Mandatory=$true)] $pass,
-    [Parameter(Mandatory=$true)] $tenantid
+    [Parameter(Mandatory=$true)] $key,
+    [Parameter(Mandatory=$true)] $path
+
 )
-Write-Output 'logging in'
-$cred = Get-Credential
-Write-Output 'got credentials'
-Write-Output 'Connecting to Azure RM'
-try 
-{
-    Connect-AzureRmAccount -Credential $cred -TenantId $tenantid -ServicePrincipal
-    
-} catch 
-{
-    Write-Output 'something went wrong'
-}
 
 
-Write-Output 'pulling search keys'
-$keys = az search admin-key show -g waterfinder --service-name waterfindersearch | ConvertFrom-Json
+
 
 Write-Output 'Attempting to Build Index'
-$indexHeaders = @{
-
-    'api-key' = $keys.primaryKey
-    'Content-Type' = 'application/json'
-    'Accept' = 'application/json'
-}
 
 $body = @"
 {
@@ -57,23 +38,38 @@ $body = @"
 }
 "@
 
-$url = "https://waterfindersearch.search.windows.net/indexes/riversearch-index?api-version=2019-05-06"
-Invoke-RestMethod -Uri $url -Headers $indexHeaders -Method Put -Body $body
+if($key)
+{
+
+    $indexHeaders = @{
+
+        'api-key' = $key
+        'Content-Type' = 'application/json'
+        'Accept' = 'application/json'
+    }
+    $url = "https://waterfindersearch.search.windows.net/indexes/riversearch-index?api-version=2019-05-06"
+    Invoke-RestMethod -Uri $url -Headers $indexHeaders -Method Put -Body $body
 
 
-Write-Output "building the actual index documents"
+    Write-Output "building the actual index documents"
 
 
-$rivers =  Get-Content 'riverswithid.json' |  ConvertFrom-Json
-$index = @{value = @()}
+    $rivers =  Get-Content $path |  ConvertFrom-Json
+    $index = @{value = @()}
 
-$index.Value += ($rivers)
+    $index.Value += ($rivers)
 
-Write-Output "attempting to POST documents to Azure Search"
+    Write-Output "attempting to POST documents to Azure Search"
 
-$index = ConvertTo-Json -InputObject $index
-$updateUrl = "https://waterfindersearch.search.windows.net/indexes/riversearch-index/docs/index?api-version=2019-05-06"
-Invoke-RestMethod -URi $updateUrl -Headers $indexHeaders -Method Post -Body $index
+    $index = ConvertTo-Json -InputObject $index
+    $updateUrl = "https://waterfindersearch.search.windows.net/indexes/riversearch-index/docs/index?api-version=2019-05-06"
+    Invoke-RestMethod -URi $updateUrl -Headers $indexHeaders -Method Post -Body $index
+} else {
+    Write-Output 'was not able to get search keys'
+}
+
+
+
 
 
 
