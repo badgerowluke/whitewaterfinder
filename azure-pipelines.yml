@@ -2,8 +2,6 @@
 trigger:
     - master  
 
-variables:
-  azureSubscription: '9f301a3d-0aac-4a64-a9b1-c5e553a4262e'
 
 stages: 
 - stage: Build
