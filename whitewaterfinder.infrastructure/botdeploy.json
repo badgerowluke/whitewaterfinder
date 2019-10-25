@@ -1,0 +1,171 @@
+{
+    "$schema":"https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters":{
+        "location": {
+        "type": "string",
+        "defaultValue": "[resourceGroup().location]", 
+        "metadata": {
+            "description": "Location for all resources."
+            }
+        },        
+        "luisName": { "type" : "string", "defaultValue": "webster-luis" },
+        "authoringName": { "type" : "string", "defaultValue" : "webster-luis-Authoring"},
+        "botAppName": { "type" : "string", "defaultValue": "WhitewaterWebster" }
+    },
+    "variables":{},
+    "resources":[
+        {
+            "kind": "LUIS.Authoring",
+            "type": "Microsoft.CognitiveServices/accounts",
+            "apiVersion": "2016-02-01-preview",
+            "name": "[parameters('authoringName')]",
+            "location": "westus",
+            "sku": {
+                "name": "F0"
+            }
+        },
+        {
+            "kind": "LUIS",
+            "type": "Microsoft.CognitiveServices/accounts",
+            "apiVersion": "2016-02-01-preview",
+            "name": "[parameters('luisName')]",
+            "location": "[parameters('location')]",
+            "sku": {
+                "name": "S0"
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.CognitiveServices/accounts', parameters('authoringName'))]"
+            ]
+        },   
+        {
+            "kind":"sdk",
+            "type": "Microsoft.BotService/botServices",
+            "apiVersion": "2018-07-12",
+            "name":"[parameters('botAppName')]",
+            "location": "global",
+            "sku": {
+                "name":"F0"
+            },
+            "properties": {
+                "displayName": "[parameters('botAppName')]",
+                "iconUrl": "https://docs.botframework.com/static/devportal/client/images/bot-framework-default.png",
+                "endpoint": "https://whitewaterwebster.azurewebsites.net/api/messages",
+                "msaAppId": "9bd4236c-716f-4bfc-8d8e-be99c19cca36",
+                "developerAppInsightKey": "",
+                "developerAppInsightsApplicationId": "",
+                "luisAppIds":[]
+            }
+        },
+              
+        {
+            "kind": "app",
+            "type":"Microsoft.Web/serverfarms",
+            "apiVersion": "2017-08-01",
+            "name": "[parameters('botAppName')]",
+            "location": "[parameters('location')]",
+            "sku": {
+                "name": "F1",
+                "tier": "Free",
+                "size": "F1",
+                "family": "F",
+                "capacity": 0
+            },
+            "properties": {
+                "name": "[parameters('botAppName')]",
+                "perSiteScaling": false,
+                "reserved": false,
+                "targetWorkerCount": 0,
+                "targetWorkerSizeId": 0
+            }
+        },
+        {
+            "apiVersion": "2018-11-01",
+            "name": "[parameters('botAppName')]",
+            "type": "Microsoft.Web/sites",
+            "location": "[parameters('location')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/serverFarms', parameters('botAppName'))]"
+            ],
+            "tags": null,
+            "properties": {
+                "name": "[parameters('botAppName')]",
+                "siteConfig": {
+                    "appSettings": [
+                        {
+                            "name": "stateStore",
+                            "value":"{%%stateStore%%}"
+                        },
+                        {
+                            "name": "LuisAPIHostName",
+                            "value": "{%%LuisAPIHostName%%}"
+                        },
+                        {
+                            "name": "LuisAPIKey",
+                            "value": "{%%LuisAPIKey%%}"
+                        },
+                        {
+                            "name": "LuisAppId",
+                            "value": "{%%LuisAppId%%}"
+                        },
+                        {
+                            "name": "MicrosoftAppId",
+                            "value": "{%%msftAppId%%}"
+                        },
+                        {
+                            "name": "MicrosoftAppPassword",
+                            "value": "{%%msftAppPass%%}"
+                        },                        
+                        {
+                            "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
+                            "value": "{%%aiKey%%}"
+                        },
+                        {
+                            "name": "ApplicationInsightsAgent_EXTENSION_VERSION",
+                            "value": "~2"
+                        },
+                        {
+                            "name": "XDT_MicrosoftApplicationInsights_Mode",
+                            "value": "default"
+                        },
+                        {
+                            "name": "DiagnosticServices_EXTENSION_VERSION",
+                            "value": "disabled"
+                        },
+                        {
+                            "name": "APPINSIGHTS_PROFILERFEATURE_VERSION",
+                            "value": "disabled"
+                        },
+                        {
+                            "name": "APPINSIGHTS_SNAPSHOTFEATURE_VERSION",
+                            "value": "disabled"
+                        },
+                        {
+                            "name": "InstrumentationEngine_EXTENSION_VERSION",
+                            "value": "disabled"
+                        },
+                        {
+                            "name": "SnapshotDebugger_EXTENSION_VERSION",
+                            "value": "disabled"
+                        },
+                        {
+                            "name": "XDT_MicrosoftApplicationInsights_BaseExtensions",
+                            "value": "disabled"
+                        }
+                    ],
+                    "metadata": [
+                        {
+                            "name": "CURRENT_STACK",
+                            "value": "dotnetcore"
+                        }
+                    ],
+                    "alwaysOn": false
+                },
+                "serverFarmId": "[concat('/subscriptions/', '{%%subscription%%}','/resourcegroups/', 'waterfinder', '/providers/Microsoft.Web/serverfarms/', parameters('botAppName'))]",
+                "hostingEnvironment": "",
+                "clientAffinityEnabled": true
+            }
+        }
+    ],
+    "outputs":{}
+}

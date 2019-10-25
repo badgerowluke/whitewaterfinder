@@ -1,21 +1,17 @@
 
 trigger:
     - master  
+    - feature/bot-deployment
 
 
 stages: 
 - stage: Build
   jobs:
-  - job: Build
+  - job: build_dotnet
     pool:
       vmImage: 'windows-latest'
     continueOnError: false
     steps:
-    - task: NodeTool@0
-      inputs:
-        versionSpec: '10.x'
-      displayName: 'set node environment' 
-
     - task: DotNetCoreCLI@2
       displayName: Restore
       inputs:
@@ -23,9 +19,13 @@ stages:
         projects: '**/*.csproj'
         vstsFeed: 'e7750945-8da0-48c7-ad5d-6c474174e6d1'
 
-    - script: npm install && npm run build
-      displayName: 'build User Pref functions'
-      workingDirectory: whitewaterfinder.api.user
+    - task: qetza.replacetokens.replacetokens-task.replacetokens@3
+      displayName: 'Replace tokens in bot app settings'
+      inputs:
+        rootDirectory: 'whitewaterfinder.app.bot/'
+        targetFiles: appsettings.json
+        tokenPrefix: '{%%'
+        tokenSuffix: '%%}'             
 
     - task: DotNetCoreCLI@2
       displayName: Build
@@ -39,6 +39,12 @@ stages:
       inputs:
         command: test
         projects: '**/*[Tt]est/*.csproj'
+        arguments: '--configuration $(BuildConfiguration)'
+    - task: DotNetCoreCLI@2
+      displayName: Publish bot app
+      inputs:
+        command: publish
+        projects: '**/whitewaterfinder.app.bot/whitewaterfinder.app.bot.csproj'
         arguments: '--configuration $(BuildConfiguration)'
 
     - task: ArchiveFiles@2
@@ -54,25 +60,32 @@ stages:
         PathtoPublish: $(Pipeline.Workspace)/riversfunc/app.zip
         ArtifactName: 'riversfunc'
 
+ 
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publish Bot App'
+      inputs:
+        PathtoPublish: whitewaterfinder.app.bot/bin/release/netcoreapp2.1/publish.zip
+        ArtifactName: 'websterbot'        
+
     - task: PublishBuildArtifacts@1
       displayName: 'Push infra scripts'
       inputs:
         PathtoPublish: 'whitewaterfinder.infrastructure/'
-        ArtifactName: infra
+        ArtifactName: infra        
 
-
-    - task: ArchiveFiles@2
-      displayName: 'bundle bot app' 
-      inputs: 
-        rootFolderOrFile: whitewaterfinder.app.bot/bin/release/netcoreapp2.1
-        includeRootFolder: false
-        archiveFile: $(Pipeline.Workspace)/websterbot/app.zip
-
-    - task: PublishBuildArtifacts@1
-      displayName: 'Publish Bot App'
+  - job: build_node
+    pool:
+      vmImage: 'windows-latest'
+    continueOnError: false
+    steps:
+    - task: NodeTool@0
       inputs:
-        PathtoPublish: $(Pipeline.Workspace)/websterbot/app.zip
-        ArtifactName: 'websterbot'
+        versionSpec: '10.x'
+      displayName: 'set node environment' 
+
+    - script: npm install && npm run build
+      displayName: 'build User Pref functions'
+      workingDirectory: whitewaterfinder.api.user
 
     - task: ArchiveFiles@2
       displayName: bundle preferences api 
@@ -89,7 +102,7 @@ stages:
 
 - stage: Deploy
   jobs:
-  - job: Deploy
+  - job: 'backend'
     pool:
       vmImage: 'windows-latest'
     steps:
@@ -104,8 +117,8 @@ stages:
         rootDirectory: 'whitewaterfinder.infrastructure/'
         targetFiles: azuredeploy.json
         tokenPrefix: '{%%'
-        tokenSuffix: '%%}'      
-
+        tokenSuffix: '%%}'    
+        
     - task: AzureResourceGroupDeployment@2
       displayName: 'Azure Deployment:Create Or Update Resource Group action on waterfinder'
       inputs:
@@ -148,5 +161,37 @@ stages:
       inputs:
         azureSubscription: 'whitewaterfinder-sp'
         ScriptPath: 'whitewaterfinder.infrastructure/deployment.ps1'
-        ScriptArguments: 'EB04EAC1B8CEC232A638FD852945180B "$(Pipeline.Workspace)/infra/riverswithid.json"'
+        ScriptArguments: '$(azuresearch-adminkey) "$(Pipeline.Workspace)/infra/riverswithid.json"'
         azurePowerShellVersion: LatestVersion     
+  
+  - job: 'bot'
+    pool:
+      vmImage: 'windows-latest'
+    steps:
+    - task: qetza.replacetokens.replacetokens-task.replacetokens@3
+      displayName: 'Replace tokens in botdeploy.json'
+      inputs:
+        rootDirectory: 'whitewaterfinder.infrastructure/'
+        targetFiles: botdeploy.json
+        tokenPrefix: '{%%'
+        tokenSuffix: '%%}'    
+
+    - task: AzureResourceGroupDeployment@2
+      displayName: 'Azure Deployment:Create Or Update Resource Group action on waterfinder'
+      inputs:
+        azureSubscription: 'whitewaterfinder-sp'
+        resourceGroupName: waterfinder
+        location: 'North Central US'
+        csmFile: 'whitewaterfinder.infrastructure/botdeploy.json'
+        csmParametersFile: 'whitewaterfinder.infrastructure/botparams.json'         
+
+    - download: current
+      artifact: websterbot    
+
+    - task: AzureRmWebAppDeployment@3
+      displayName: 'Deploy Bot App'
+      inputs:
+        azureSubscription: 'whitewaterfinder-sp'
+        appType: app
+        WebAppName: 'WhiteWaterWebster'
+        Package: '$(Pipeline.Workspace)/websterbot/publish.zip'

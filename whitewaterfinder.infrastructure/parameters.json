@@ -6,9 +6,6 @@
         "appPlanName": {"value": "WaterFinderPlan" },
         "preferencesApp": { "value" : "paddle-finder-preferences" },
         "storageAccountName": { "value" : "waterfinder" },
-        "azureSearchName" : { "value": "waterfindersearch" },
-        "luisName": { "value" : "webster-luis" },
-        "authoringName": { "value" : "webster-luis-Authoring" },
-        "botAppName": { "value": "WhitewaterWebster" }
+        "azureSearchName" : { "value": "waterfindersearch" }
     }
 }
