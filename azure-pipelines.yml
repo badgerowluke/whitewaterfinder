@@ -90,7 +90,7 @@ stages:
     - task: ArchiveFiles@2
       displayName: bundle preferences api 
       inputs: 
-        rootFolderOrFile: whitewaterfinder.api.user/dist
+        rootFolderOrFile: whitewaterfinder.api.user/
         includeRootFolder: false
         archiveFile: $(Pipeline.Workspace)/preferencesfunc/app.zip
 
