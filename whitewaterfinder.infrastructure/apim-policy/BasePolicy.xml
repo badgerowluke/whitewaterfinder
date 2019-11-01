@@ -1,0 +1,31 @@
+<policies>
+    <inbound>
+        <cors allow-credentials="true">
+            <allowed-origins>
+                <origin>http://localhost:5000</origin>
+                <origin>http:localhost:3000</origin>
+            </allowed-origins>
+            <allowed-methods preflight-result-max-age="300">
+                <method>GET</method>
+                <method>POST</method>
+                <method>PATCH</method>
+                <method>DELETE</method>
+                <method>OPTIONS</method>
+                <method>TRACE</method>
+                <method>PUT</method>
+            </allowed-methods>
+            <allowed-headers>
+                <header>*</header>
+            </allowed-headers>            
+        </cors>
+    </inbound>
+    <backend>
+        <forward-request/>
+    </backend>
+    <outbound>
+        <set-header name="Request-Id" exists-action="override">
+            <value>@(context.Response.Headers.GetValueOrDefault("x-ms-request-id"))</value>
+        </set-header>
+    </outbound>
+    <on-error/>
+</policies>

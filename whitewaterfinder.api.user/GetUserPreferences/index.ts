@@ -6,7 +6,7 @@ const httpTrigger: AzureFunction = function (context: Context, req: HttpRequest)
     context.log('HTTP trigger function processed a request.');
     const name = (req.query.name || (req.body && req.body.name));
 
-    const serve = new RiverService(process.env["blob-store"]);
+    const serve = new RiverService(process.env["blobStore"]);
     serve.getFromStorage(name).then((entities) =>{
         if(Array.isArray(entities)) {
             let returns = [];

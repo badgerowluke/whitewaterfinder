@@ -6,6 +6,6 @@
         "appPlanName": {"value": "WaterFinderPlan" },
         "preferencesApp": { "value" : "paddle-finder-preferences" },
         "storageAccountName": { "value" : "waterfinder" },
-        "azureSearchName" : { "value": "waterfindersearch" }
+        "azureSearchName" : { "value": "waterfindersearch" }    
     }
 }

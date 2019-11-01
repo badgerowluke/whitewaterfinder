@@ -26,10 +26,7 @@
     "appPlanName": {"type" : "string", "defaultValue" : "WaterFinderPlan" },
     "preferencesApp" : { "type" : "string" , "defaultValue" : "paddle-finder-preferences" },
     "storageAccountName": { "type" : "string","defaultValue": "waterfinder" },
-    "azureSearchName": { "type" : "string", "defaultValue": "waterfindersearch" },
-    "luisName": { "type" : "string", "defaultValue": "webster-luis" },
-    "authoringName": { "type" : "string", "defaultValue" : "webster-luis-Authoring"},
-    "botAppName": { "type" : "string", "defaultValue": "WhitewaterWebster" }
+    "azureSearchName": { "type" : "string", "defaultValue": "waterfindersearch" }
   },
   "variables": {
 
@@ -133,59 +130,6 @@
             "publicAccess": "Container"
         }
     }, 
-    {
-        "type": "Microsoft.KeyVault/vaults",
-        "apiVersion": "2016-10-01",
-        "name": "[parameters('appName')]",
-        "location": "[parameters('location')]",
-        "properties": {
-            "sku": {
-                "family": "A",
-                "name": "standard"
-            },
-            "tenantId": "{%%tenantId%%}",
-            "accessPolicies": [
-                {
-                    "tenantId": "{%%tenantId%%}",
-                    "objectId": "ec5b35fa-94ca-4733-96d5-416d3f5043ed",
-                    "permissions": {
-                        "keys": [
-                            "get",
-                            "list",
-                            "update",
-                            "create",
-                            "import",
-                            "delete",
-                            "recover",
-                            "backup",
-                            "restore"
-                        ],
-                        "secrets": [
-                            "get",
-                            "list",
-                            "set",
-                            "delete",
-                            "recover",
-                            "backup",
-                            "restore"
-                        ],
-                        "certificates": [
-                            "get",
-                            "list",
-                            "update",
-                            "create",
-                            "import",
-                            "delete",
-                            "recover"
-                        ]
-                    }
-                }
-            ],
-            "enabledForDeployment": false,
-            "enabledForDiskEncryption": false,
-            "enabledForTemplateDeployment": false
-        }
-    },
     {
         "type":"Microsoft.Web/serverfarms",
         "apiVersion":"2016-09-01",

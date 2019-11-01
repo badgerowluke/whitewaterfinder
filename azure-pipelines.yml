@@ -1,7 +1,7 @@
 
 trigger:
     - master  
-    - feature/bot-deployment
+
 
 
 stages: 
@@ -25,7 +25,7 @@ stages:
         rootDirectory: 'whitewaterfinder.app.bot/'
         targetFiles: appsettings.json
         tokenPrefix: '{%%'
-        tokenSuffix: '%%}'             
+        tokenSuffix: '%%}'    
 
     - task: DotNetCoreCLI@2
       displayName: Build
@@ -40,6 +40,7 @@ stages:
         command: test
         projects: '**/*[Tt]est/*.csproj'
         arguments: '--configuration $(BuildConfiguration)'
+
     - task: DotNetCoreCLI@2
       displayName: Publish bot app
       inputs:
@@ -117,17 +118,27 @@ stages:
         rootDirectory: 'whitewaterfinder.infrastructure/'
         targetFiles: azuredeploy.json
         tokenPrefix: '{%%'
-        tokenSuffix: '%%}'    
+        tokenSuffix: '%%}'                   
         
     - task: AzureResourceGroupDeployment@2
-      displayName: 'Azure Deployment:Create Or Update Resource Group action on waterfinder'
+      displayName: 'Deploy backend ARM Template'
       inputs:
         azureSubscription: 'whitewaterfinder-sp'
-        resourceGroupName: waterfinder
+        resourceGroupName: $(resourceGroup)
         location: 'North Central US'
         csmFile: 'whitewaterfinder.infrastructure/azuredeploy.json'
         csmParametersFile: 'whitewaterfinder.infrastructure/parameters.json'
         overrideParameters: '-storageAccountType "Standard_LRS" -appName "paddle-finder" -appPlanName "WaterFinderPlan" -preferencesApp "paddle-finder-preferences" '       
+    
+    - task: AzureResourceGroupDeployment@2
+      displayName: 'Deploy APIM to waterfinder'
+      inputs:
+        azureSubscription: 'whitewaterfinder-sp'
+        resourceGroupName: $(resourceGroup)
+        location: 'North Central US'
+        csmFile: 'whitewaterfinder.infrastructure/apimdeploy.json'  
+        csmParametersFile: 'whitewaterfinder.infrastructure/apimparameters.json'   
+        overrideParameters: -adminEmail "$(adminEmail)"   
 
     - download: current
       artifact: riversfunc
@@ -163,6 +174,16 @@ stages:
         ScriptPath: 'whitewaterfinder.infrastructure/deployment.ps1'
         ScriptArguments: '$(azuresearch-adminkey) "$(Pipeline.Workspace)/infra/riverswithid.json"'
         azurePowerShellVersion: LatestVersion     
+    
+    - task: AzureCLI@2
+      displayName: 'Configure APIM'
+      inputs:
+        azureSubscription: 'whitewaterfinder-sp'
+        scriptType: ps
+        scriptLocation: 'File path'
+        ScriptPath: '$(Pipeline.Workspace)/infra/apimdeploy.ps1'
+        azurePowerShellVersion: LatestVersion        
+        ScriptArguments: '$(resourceGroup) $(Pipeline.Workspace)\infra'            
   
   - job: 'bot'
     pool:
@@ -180,7 +201,7 @@ stages:
       displayName: 'Azure Deployment:Create Or Update Resource Group action on waterfinder'
       inputs:
         azureSubscription: 'whitewaterfinder-sp'
-        resourceGroupName: waterfinder
+        resourceGroupName: $(resourceGroup)
         location: 'North Central US'
         csmFile: 'whitewaterfinder.infrastructure/botdeploy.json'
         csmParametersFile: 'whitewaterfinder.infrastructure/botparams.json'         
@@ -195,3 +216,9 @@ stages:
         appType: app
         WebAppName: 'WhiteWaterWebster'
         Package: '$(Pipeline.Workspace)/websterbot/publish.zip'
+
+
+
+
+ 
+        

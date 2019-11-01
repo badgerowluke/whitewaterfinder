@@ -67,10 +67,3 @@ if($key)
 } else {
     Write-Output 'was not able to get search keys'
 }
-
-
-
-
-
-
-

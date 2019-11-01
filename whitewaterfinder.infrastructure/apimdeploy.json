@@ -1,0 +1,157 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "apimName": {"type": "string", "defaultValue": "whitewater-finder" },
+        "location": {
+            "type": "string",
+            "defaultValue": "[resourceGroup().location]", 
+            "metadata": {
+                "description": "Location for all resources."
+            }
+        }, 
+        "adminEmail":{ "type": "string", "defaultValue": "badgerow.luke@outlook.com" },
+        "orgName": { "type": "string", "defaultValue": "burning-river-geospatial-solutions" }
+    },
+    "resources": [
+        {
+            "type": "Microsoft.ApiManagement/service",
+            "apiVersion": "2019-01-01",
+            "name": "[parameters('apimName')]",
+            "location": "[parameters('location')]",
+            "sku": {
+                "name": "Consumption",
+                "capacity": 0
+            },
+            "properties": {
+                "publisherEmail": "[parameters('adminEmail')]",
+                "publisherName": "[parameters('orgName')]"
+            }
+        },
+        {
+            "type":"Microsoft.ApiManagement/service/apis",
+            "apiVersion": "2019-01-01",
+            "name": "[concat(parameters('apimName'), '/paddle-finder')]",
+            "dependsOn":[
+
+                "[resourceId('Microsoft.ApiManagement/service', parameters('apimName'))]"
+            ],
+            "properties":{
+                "displayName": "paddle-finder",
+                "protocols": [
+                    "https"
+                ],
+                "path": "Rivers",
+                "isCurrent": true,
+                "apiRevision": "1"
+            }
+        },
+        {
+            "type": "Microsoft.ApiManagement/service/apis/operations",
+            "apiVersion": "2019-01-01",
+            "name":"[concat(parameters('apimName'), '/paddle-finder/riverdetails')]",
+            "dependsOn":[
+                "[resourceId('Microsoft.ApiManagement/service', parameters('apimName'))]",
+                "[resourceId('Microsoft.ApiManagement/service/apis', parameters('apimName'), 'paddle-finder')]"
+
+            ],
+            "properties": {
+                "displayName": "RiverDetails",
+                "method": "GET",
+                "urlTemplate": "/RiverDetails",
+                "templateParameters": [],
+                "responses": []
+            }            
+        },
+        {
+            "type": "Microsoft.ApiManagement/service/apis/operations",
+            "apiVersion": "2019-01-01",
+            "name":"[concat(parameters('apimName'), '/paddle-finder/rivers')]",
+            "dependsOn":[
+                "[resourceId('Microsoft.ApiManagement/service', parameters('apimName'))]",
+                "[resourceId('Microsoft.ApiManagement/service/apis', parameters('apimName'), 'paddle-finder')]"
+
+            ],
+            "properties": {
+                "displayName": "Rivers",
+                "method": "GET",
+                "urlTemplate": "/Rivers",
+                "templateParameters": [],
+                "responses": []
+            }            
+        },
+        {
+            "type": "Microsoft.ApiManagement/service/apis/operations",
+            "apiVersion": "2019-01-01",
+            "name":"[concat(parameters('apimName'), '/paddle-finder/riversbystate')]",
+            "dependsOn":[
+                "[resourceId('Microsoft.ApiManagement/service', parameters('apimName'))]",
+                "[resourceId('Microsoft.ApiManagement/service/apis', parameters('apimName'), 'paddle-finder')]"
+
+            ],
+            "properties": {
+                "displayName": "RiversByState",
+                "method": "GET",
+                "urlTemplate": "/RiversByState",
+                "templateParameters": [],
+                "responses": []
+            }            
+        },
+        {
+            "type":"Microsoft.ApiManagement/service/apis",
+            "apiVersion": "2019-01-01",
+            "name": "[concat(parameters('apimName'), '/paddle-finder-preferences')]",
+            "dependsOn":[
+
+                "[resourceId('Microsoft.ApiManagement/service', parameters('apimName'))]"
+            ],
+            "properties":{
+                "displayName": "paddle-finder-preferences",
+                "protocols": [
+                    "https"
+                ],
+                "path": "paddle-finder-preferences",
+                "isCurrent": true,
+                "apiRevision": "1"
+            }
+        },
+        {
+            "type": "Microsoft.ApiManagement/service/apis/operations",
+            "apiVersion": "2019-01-01",
+            "name":"[concat(parameters('apimName'), '/paddle-finder-preferences/getuserpreferences')]",
+            "dependsOn":[
+                "[resourceId('Microsoft.ApiManagement/service', parameters('apimName'))]",
+                "[resourceId('Microsoft.ApiManagement/service/apis', parameters('apimName'), 'paddle-finder-preferences')]"
+
+            ],
+            "properties": {
+                "displayName": "GetUserPreferences",
+                "method": "GET",
+                "urlTemplate": "/GetUserPreferences",
+                "templateParameters": [],
+                "responses": []
+            }            
+        },           
+        {
+            "type": "Microsoft.ApiManagement/service/apis/operations",
+            "apiVersion": "2019-01-01",
+            "name":"[concat(parameters('apimName'), '/paddle-finder-preferences/postuserpreferences')]",
+            "dependsOn":[
+                "[resourceId('Microsoft.ApiManagement/service', parameters('apimName'))]",
+                "[resourceId('Microsoft.ApiManagement/service/apis', parameters('apimName'), 'paddle-finder-preferences')]"
+
+            ],
+            "properties": {
+                "displayName": "PostUserPreferences",
+                "method": "GET",
+                "urlTemplate": "/PostUserPreferences",
+                "templateParameters": [],
+                "responses": []
+            }            
+        }          
+
+
+    ],
+
+    "outputs":{ }
+}

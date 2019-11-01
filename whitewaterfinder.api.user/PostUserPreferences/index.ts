@@ -6,7 +6,7 @@ const httpTrigger: AzureFunction = async function (context: Context, req: HttpRe
     context.log('HTTP trigger function processed a request.');
     const name = (req.query.name || (req.body && req.body.name));
     
-    let service = new RiverService(process.env["blob-store"]);
+    let service = new RiverService(process.env["blobStore"]);
     service.postToQueue(req.body);
 
 
