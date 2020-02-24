@@ -51,7 +51,7 @@ stages:
     - task: ArchiveFiles@2
       displayName: bundle api 
       inputs: 
-        rootFolderOrFile: whitewaterfinder.api/bin/release/netstandard2.0
+        rootFolderOrFile: whitewaterfinder.api/bin/release/netcoreapp3.0
         includeRootFolder: false
         archiveFile: $(Pipeline.Workspace)/riversfunc/app.zip
 
