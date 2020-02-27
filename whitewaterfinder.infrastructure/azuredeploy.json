@@ -34,6 +34,35 @@
   },
   "resources": [
     {
+        "type": "Microsoft.Insights/components",
+        "apiVersion": "2015-05-01",
+        "name":"[parameters('appName')]",
+        "location":"[parameters('location')]", 
+        "tags": {
+            "hidden-link:/subscriptions/{%%subscription%%}/resourceGroups/waterfinder/providers/Microsoft.Web/sites/paddle-finder": "Resource",
+            "hidden-link:/subscriptions/{%%subscription%%}/resourceGroups/waterfinder/providers/Microsoft.Web/sites/paddle-finder-preferences": "Resource"
+        },        
+        "kind":"web",
+        "properties" : {
+            "Application_Type": "web",
+            "Request_Source": "rest"
+        }
+    },
+    {
+        "type": "Microsoft.Search/searchServices",
+        "apiVersion": "2015-08-19",
+        "name": "[parameters('azureSearchName')]",
+        "location": "[parameters('location')]",
+        "sku": {
+            "name": "free"
+        }, 
+        "properties" : {
+            "replicaCount": 1,
+            "partitionCount": 1,
+            "hostingMode": "Default"
+        }
+    }, 
+    {
       "type": "Microsoft.Storage/storageAccounts",
       "apiVersion": "2019-04-01",
       "name": "[parameters('storageAccountName')]",
@@ -241,7 +270,7 @@
                     }, 
                     {
                         "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
-                        "value":"[reference(resourceId('Microsoft.Insights/components',parameters('appName')), '2015-01-01').InstrumtationKey]"
+                        "value":"{%%aiKey%%}"
                     }
                 ]
             }
@@ -302,36 +331,8 @@
             }                     
 
         }
-    }, 
-    {
-        "type": "Microsoft.Insights/components",
-        "apiVersion": "2015-05-01",
-        "name":"[parameters('appName')]",
-        "location":"[parameters('location')]", 
-        "tags": {
-            "hidden-link:/subscriptions/{%%subscription%%}/resourceGroups/waterfinder/providers/Microsoft.Web/sites/paddle-finder": "Resource",
-            "hidden-link:/subscriptions/{%%subscription%%}/resourceGroups/waterfinder/providers/Microsoft.Web/sites/paddle-finder-preferences": "Resource"
-        },        
-        "kind":"web",
-        "properties" : {
-            "Application_Type": "web",
-            "Request_Source": "rest"
-        }
-    },
-    {
-        "type": "Microsoft.Search/searchServices",
-        "apiVersion": "2015-08-19",
-        "name": "[parameters('azureSearchName')]",
-        "location": "[parameters('location')]",
-        "sku": {
-            "name": "free"
-        }, 
-        "properties" : {
-            "replicaCount": 1,
-            "partitionCount": 1,
-            "hostingMode": "Default"
-        }
-    }  
+    }
+
     
   ],
   "outputs": { }
