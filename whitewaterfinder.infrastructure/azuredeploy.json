@@ -270,7 +270,7 @@
                     }, 
                     {
                         "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
-                        "value":"{%%aiKey%%}"
+                        "value":"[reference(resourceId('microsoft.insights/components/', parameters('appName')), '2015-05-01').InstrumentationKey]"
                     }
                 ]
             }
