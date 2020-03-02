@@ -118,7 +118,7 @@
                         },                        
                         {
                             "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
-                            "value": "{%%aiKey%%}"
+                         "value":"[reference(resourceId('microsoft.insights/components/', parameters('botAppName')), '2015-05-01').InstrumentationKey]"
                         },
                         {
                             "name": "ApplicationInsightsAgent_EXTENSION_VERSION",

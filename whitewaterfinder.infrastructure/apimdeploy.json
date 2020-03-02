@@ -60,7 +60,8 @@
                 "method": "GET",
                 "urlTemplate": "/RiverDetails",
                 "templateParameters": [],
-                "responses": []
+                "responses": [],
+                "operationId": "RiverDetails"
             }            
         },
         {

@@ -253,10 +253,6 @@
                         "value":"{%%azuresearch-key%%}"
                     },
                     {
-                        "name":"aiKey",
-                        "value":"{%%aiKey%%}"
-                    },
-                    {
                         "name":"baseUSGSUrl",
                         "value":"{%%baseUSGSUrl%%}"
                     },

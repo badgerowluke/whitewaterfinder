@@ -248,3 +248,4 @@ whitewaterfinder.Daemon/appsettings.json
 whitewaterfinder.app.bot/Webster.bot
 whitewaterfinder.bot.test/lcov.info
 whitewaterfinder.Repo/Nuget.config
+swagger.json
