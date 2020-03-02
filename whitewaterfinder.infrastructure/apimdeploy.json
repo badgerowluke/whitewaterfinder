@@ -11,7 +11,9 @@
             }
         }, 
         "adminEmail":{ "type": "string", "defaultValue": "badgerow.luke@outlook.com" },
-        "orgName": { "type": "string", "defaultValue": "burning-river-geospatial-solutions" }
+        "orgName": { "type": "string", "defaultValue": "burning-river-geospatial-solutions" },
+        "preferencesApp" : { "type" : "string" , "defaultValue" : "paddle-finder-preferences" },
+        "appName":{ "type": "string", "defaultValue" : "paddle-finder" }
     },
     "resources": [
         {
@@ -43,7 +45,8 @@
                 ],
                 "path": "Rivers",
                 "isCurrent": true,
-                "apiRevision": "1"
+                "apiRevision": "1",
+                "serviceUrl": "[concat('https://', parameters('appName'), '.azurewebsites.net/api')]"
             }
         },
         {
@@ -52,7 +55,7 @@
             "name":"[concat(parameters('apimName'), '/paddle-finder/riverdetails')]",
             "dependsOn":[
                 "[resourceId('Microsoft.ApiManagement/service', parameters('apimName'))]",
-                "[resourceId('Microsoft.ApiManagement/service/apis', parameters('apimName'), 'paddle-finder')]"
+                "[resourceId('Microsoft.ApiManagement/service/apis', parameters('apimName'), parameters('appName'))]"
 
             ],
             "properties": {
@@ -70,7 +73,7 @@
             "name":"[concat(parameters('apimName'), '/paddle-finder/rivers')]",
             "dependsOn":[
                 "[resourceId('Microsoft.ApiManagement/service', parameters('apimName'))]",
-                "[resourceId('Microsoft.ApiManagement/service/apis', parameters('apimName'), 'paddle-finder')]"
+                "[resourceId('Microsoft.ApiManagement/service/apis', parameters('apimName'), parameters('appName'))]"
 
             ],
             "properties": {
@@ -87,7 +90,7 @@
             "name":"[concat(parameters('apimName'), '/paddle-finder/riversbystate')]",
             "dependsOn":[
                 "[resourceId('Microsoft.ApiManagement/service', parameters('apimName'))]",
-                "[resourceId('Microsoft.ApiManagement/service/apis', parameters('apimName'), 'paddle-finder')]"
+                "[resourceId('Microsoft.ApiManagement/service/apis', parameters('apimName'), parameters('appName'))]"
 
             ],
             "properties": {
@@ -122,7 +125,7 @@
             "name":"[concat(parameters('apimName'), '/paddle-finder-preferences/getuserpreferences')]",
             "dependsOn":[
                 "[resourceId('Microsoft.ApiManagement/service', parameters('apimName'))]",
-                "[resourceId('Microsoft.ApiManagement/service/apis', parameters('apimName'), 'paddle-finder-preferences')]"
+                "[resourceId('Microsoft.ApiManagement/service/apis', parameters('apimName'), parameters('preferencesApp'))]"
 
             ],
             "properties": {
@@ -139,7 +142,7 @@
             "name":"[concat(parameters('apimName'), '/paddle-finder-preferences/postuserpreferences')]",
             "dependsOn":[
                 "[resourceId('Microsoft.ApiManagement/service', parameters('apimName'))]",
-                "[resourceId('Microsoft.ApiManagement/service/apis', parameters('apimName'), 'paddle-finder-preferences')]"
+                "[resourceId('Microsoft.ApiManagement/service/apis', parameters('apimName'), parameters('preferencesApp'))]"
 
             ],
             "properties": {

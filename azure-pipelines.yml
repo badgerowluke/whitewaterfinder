@@ -85,7 +85,7 @@ stages:
       displayName: 'set node environment' 
 
     - script: npm install && npm run build
-      displayName: 'build User Pref functions'
+      displayName: 'Build User Pref functions'
       workingDirectory: whitewaterfinder.api.user
 
     - task: ArchiveFiles@2
