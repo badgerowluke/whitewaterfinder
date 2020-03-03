@@ -118,7 +118,18 @@ stages:
         rootDirectory: 'whitewaterfinder.infrastructure/'
         targetFiles: azuredeploy.json
         tokenPrefix: '{%%'
-        tokenSuffix: '%%}'                   
+        tokenSuffix: '%%}'     
+        
+    - task: AzureResourceGroupDeployment@2
+      displayName: 'Deploy Shared Azure Resources'
+      inputs:
+        azureSubscription: 'whitewaterfinder-sp'
+        resourceGroupName: $(resourceGroup)
+        location: 'North Central US'
+        csmFile: 'whitewaterfinder.infrastructure/sharedresources.json'
+        csmParametersFile: 'whitewaterfinder.infrastructure/sharedresourcesparams.json'
+        overrideParameters: '-storageAccountType "Standard_LRS" -appName "paddle-finder" -appPlanName "WaterFinderPlan" -preferencesApp "paddle-finder-preferences" '       
+
         
     - task: AzureResourceGroupDeployment@2
       displayName: 'Deploy backend ARM Template'
