@@ -167,13 +167,13 @@ stages:
     - download: current
       artifact: infra
 
-    # - task: AzurePowerShell@3
-    #   displayName: 'Build Azure Search Index'
-    #   inputs:
-    #     azureSubscription: 'whitewaterfinder-sp'
-    #     ScriptPath: 'whitewaterfinder.infrastructure/deployment.ps1'
-    #     ScriptArguments: '$(azuresearch-adminkey) "$(Pipeline.Workspace)/infra/riverswithid.json"'
-    #     azurePowerShellVersion: LatestVersion     
+    - task: AzurePowerShell@3
+      displayName: 'Build Azure Search Index'
+      inputs:
+        azureSubscription: 'whitewaterfinder-sp'
+        ScriptPath: 'whitewaterfinder.infrastructure/deployment.ps1'
+        ScriptArguments: '$(resourceGroup) "$(Pipeline.Workspace)/infra/riverswithid.json"'
+        azurePowerShellVersion: LatestVersion     
     
     - task: AzureCLI@2
       displayName: 'Configure APIM'
