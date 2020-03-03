@@ -31,7 +31,7 @@
   "variables": {
 
     "storageAccountId": "[concat(resourceGroup().id,'/providers/Microsoft.Storage/storageAccounts/', parameters('storageAccountName'))]",
-    "azureSearchKey": "[concat(resourceGroup().Id,'/proviceers/Microsoft.Search/searchServices/', parameters('azureSearchName'))]"
+    "azureSearchKey": "[concat(resourceGroup().Id,  '/providers/Microsoft.Search/searchServices/', parameters('azureSearchName'))]"
   },
   "resources": [
     {
