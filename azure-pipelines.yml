@@ -128,7 +128,7 @@ stages:
         location: 'North Central US'
         csmFile: 'whitewaterfinder.infrastructure/sharedresources.json'
         csmParametersFile: 'whitewaterfinder.infrastructure/sharedresourcesparams.json'
-        overrideParameters: '-storageAccountType "Standard_LRS" -appName "paddle-finder" -appPlanName "WaterFinderPlan" -preferencesApp "paddle-finder-preferences" '       
+        overrideParameters: ' -appName "paddle-finder"  -preferencesApp "paddle-finder-preferences" '       
 
         
     - task: AzureResourceGroupDeployment@2
