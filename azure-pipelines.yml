@@ -103,14 +103,13 @@ stages:
 
 - stage: Deploy
   jobs:
-  - job: 'backend'
+  - job: 'shared'
     pool:
       vmImage: 'windows-latest'
     steps:
-
     - task: ExtractFiles@1
       inputs: 
-        destinationFolder: $(Pipeline.Workspace)/infra  
+        destinationFolder: $(Pipeline.Workspace)/infra        
 
     - task: qetza.replacetokens.replacetokens-task.replacetokens@3
       displayName: 'Replace tokens in azuredeploy.json'
@@ -119,6 +118,12 @@ stages:
         targetFiles: azuredeploy.json
         tokenPrefix: '{%%'
         tokenSuffix: '%%}'     
+
+  - job: 'backend'
+    dependsOn: 'shared'
+    pool:
+      vmImage: 'windows-latest'
+    steps:
         
     - task: AzureResourceGroupDeployment@2
       displayName: 'Deploy Shared Azure Resources'
@@ -129,6 +134,17 @@ stages:
         csmFile: 'whitewaterfinder.infrastructure/sharedresources.json'
         csmParametersFile: 'whitewaterfinder.infrastructure/sharedresourcesparams.json'
         overrideParameters: '-storageAccountType "Standard_LRS" -appName "paddle-finder" -preferencesApp "paddle-finder-preferences" '       
+    
+    - task: AzurePowerShell@3
+      displayName: 'Get Azure Seach Query Key'
+      inputs: 
+        azureSubscription: 'whitewaterfinder-sp'
+        ScriptPath: 'whitewaterfinder.infrastructure/getazuresearchkey.ps1'
+        ScriptArguments: '$resourceGroup'
+        azurePowerShellVersion: LatestVersion
+
+
+
 
         
     - task: AzureResourceGroupDeployment@2
@@ -186,17 +202,18 @@ stages:
         ScriptArguments: '$(resourceGroup) "$(Pipeline.Workspace)/infra/riverswithid.json"'
         azurePowerShellVersion: LatestVersion     
     
-    - task: AzureCLI@2
-      displayName: 'Configure APIM'
-      inputs:
-        azureSubscription: 'whitewaterfinder-sp'
-        scriptType: ps
-        scriptLocation: 'scriptPath'
-        ScriptPath: '$(Pipeline.Workspace)/infra/apimdeploy.ps1'
-        azurePowerShellVersion: LatestVersion        
-        ScriptArguments: '$(resourceGroup) $(Pipeline.Workspace)\infra'            
+    # - task: AzureCLI@2
+    #   displayName: 'Configure APIM'
+    #   inputs:
+    #     azureSubscription: 'whitewaterfinder-sp'
+    #     scriptType: ps
+    #     scriptLocation: 'scriptPath'
+    #     ScriptPath: '$(Pipeline.Workspace)/infra/apimdeploy.ps1'
+    #     azurePowerShellVersion: LatestVersion        
+    #     ScriptArguments: '$(resourceGroup) $(Pipeline.Workspace)\infra'            
   
   - job: 'bot'
+    dependsOn: 'backend'
     pool:
       vmImage: 'windows-latest'
     steps:
