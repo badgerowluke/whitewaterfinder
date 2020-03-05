@@ -119,12 +119,7 @@ stages:
         tokenPrefix: '{%%'
         tokenSuffix: '%%}'     
 
-  - job: 'backend'
-    dependsOn: 'shared'
-    pool:
-      vmImage: 'windows-latest'
-    steps:
-        
+
     - task: AzureResourceGroupDeployment@2
       displayName: 'Deploy Shared Azure Resources'
       inputs:
@@ -133,14 +128,22 @@ stages:
         location: 'North Central US'
         csmFile: 'whitewaterfinder.infrastructure/sharedresources.json'
         csmParametersFile: 'whitewaterfinder.infrastructure/sharedresourcesparams.json'
-        overrideParameters: '-storageAccountType "Standard_LRS" -appName "paddle-finder" -preferencesApp "paddle-finder-preferences" '       
+        overrideParameters: '-storageAccountType "Standard_LRS" -appName "paddle-finder" -preferencesApp "paddle-finder-preferences" '           
+
+  - job: 'backend'
+    dependsOn: 'shared'
+    pool:
+      vmImage: 'windows-latest'
+    steps:
+        
+    
     
     - task: AzurePowerShell@3
       displayName: 'Get Azure Seach Query Key'
       inputs: 
         azureSubscription: 'whitewaterfinder-sp'
         ScriptPath: 'whitewaterfinder.infrastructure/getazuresearchkey.ps1'
-        ScriptArguments: '$resourceGroup'
+        ScriptArguments: '$(resourceGroup)'
         azurePowerShellVersion: LatestVersion
 
 
