@@ -125,7 +125,7 @@
                     },
                     {
                         "name":"azureSearchKey",
-                        "value":"[listQueryKeys(variables('azureSearchKey'),'2015-08-19').value]"
+                        "value":""
                     },
                     {
                         "name":"baseUSGSUrl",
