@@ -146,9 +146,8 @@ stages:
         azureSubscription: 'whitewaterfinder-sp'
         scriptType: ps
         scriptLocation: 'scriptPath'
-        ScriptPath: '$(Pipeline.Workspace)/infra/getazuresearchkey.ps1'
+        ScriptPath: 'whitewaterfinder.infrastructure/getazuresearchkey.ps1'
         ScriptArguments: '$(resourceGroup)'
-        azurePowerShellVersion: LatestVersion
 
 
 
