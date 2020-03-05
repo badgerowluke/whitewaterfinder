@@ -135,7 +135,9 @@ stages:
     pool:
       vmImage: 'ubuntu-latest'
     steps:
-        
+    - task: ExtractFiles@1
+      inputs: 
+        destinationFolder: $(Pipeline.Workspace)/infra           
     
     
     - task: AzureCLI@2
