@@ -139,15 +139,27 @@ stages:
     
     
     - task: AzureCLI@2
-      displayName: 'Get Azure Seach Query Key'
+      displayName: 'Get Azure Search Query Key'
       inputs: 
         azureSubscription: 'whitewaterfinder-sp'
         scriptType: ps
         scriptLocation: 'scriptPath'
-        ScriptPath: 'whitewaterfinder.infrastructure/getazuresearchkey.ps1'
+        ScriptPath: '$(Pipeline.Workspace)/infra/getazuresearchkey.ps1'
         ScriptArguments: '$(resourceGroup)'
         azurePowerShellVersion: LatestVersion
 
+
+
+    # - task: AzureCLI@2
+    #   displayName: 'Configure APIM'
+    #   inputs:
+    #     azureSubscription: 'whitewaterfinder-sp'
+    #     scriptType: ps
+    #     scriptLocation: 'scriptPath'
+    #     ScriptPath: '$(Pipeline.Workspace)/infra/apimdeploy.ps1'
+    #     azurePowerShellVersion: LatestVersion        
+    #     ScriptArguments: '$(resourceGroup) $(Pipeline.Workspace)\infra'            
+  
 
 
 
