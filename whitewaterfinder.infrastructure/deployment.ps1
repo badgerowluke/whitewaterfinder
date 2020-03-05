@@ -7,6 +7,9 @@ param (
     
     )
     
+
+#TODO can't use the azure cli from within azdevops.
+
 $service = az search service list --resource-group $resourceGroup | ConvertFrom-Json
 Write-Output $service.name
 $keys = az search admin-key show --resource-group $resourceGroup --service-name $service.name | ConvertFrom-Json

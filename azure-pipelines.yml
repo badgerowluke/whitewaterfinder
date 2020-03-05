@@ -9,7 +9,7 @@ stages:
   jobs:
   - job: build_dotnet
     pool:
-      vmImage: 'windows-latest'
+      vmImage: 'ubuntu-latest'
     continueOnError: false
     steps:
     - task: DotNetCoreCLI@2
@@ -76,7 +76,7 @@ stages:
 
   - job: build_node
     pool:
-      vmImage: 'windows-latest'
+      vmImage: 'ubuntu-latest'
     continueOnError: false
     steps:
     - task: NodeTool@0
@@ -105,7 +105,7 @@ stages:
   jobs:
   - job: 'shared'
     pool:
-      vmImage: 'windows-latest'
+      vmImage: 'ubuntu-latest'
     steps:
     - task: ExtractFiles@1
       inputs: 
@@ -133,7 +133,7 @@ stages:
   - job: 'backend'
     dependsOn: 'shared'
     pool:
-      vmImage: 'windows-latest'
+      vmImage: 'ubuntu-latest'
     steps:
         
     
@@ -218,7 +218,7 @@ stages:
   - job: 'bot'
     dependsOn: 'backend'
     pool:
-      vmImage: 'windows-latest'
+      vmImage: 'ubuntu-latest'
     steps:
     - task: qetza.replacetokens.replacetokens-task.replacetokens@3
       displayName: 'Replace tokens in botdeploy.json'
