@@ -13,11 +13,11 @@ $service = az search service list --resource-group $resourceGroup | ConvertFrom-
 Write-Output $service.name
 
 $serviceName = $service.name
+$keys = az search admin-key show --output json --resource-group $resourceGroup --service-name "waterfindersearch"
 
 
 try 
 {
-    $keys = az search admin-key show --debug --output json --resource-group $resourceGroup --service-name $serviceName
 
 
 
