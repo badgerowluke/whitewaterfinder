@@ -96,6 +96,6 @@ if($key)
 
 } catch [System.Exception]
 {
-    ThrowEr
+    ThrowError
 
 }
