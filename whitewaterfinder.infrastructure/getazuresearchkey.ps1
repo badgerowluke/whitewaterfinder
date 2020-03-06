@@ -8,7 +8,7 @@ Write-Output $key.key
 
 
 $keyValue = $key.key
-Write-Host "##vso[task.setvariable variable=searchKey;]$keyValue"
+Write-Host "##vso[task.setvariable variable=AZURE_SEARCH_KEY;]$keyValue"
 Get-ChildItem Env:
 
 Write-Host "Key is: ($keyValue)"
