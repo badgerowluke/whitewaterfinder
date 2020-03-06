@@ -111,13 +111,6 @@ stages:
       inputs: 
         destinationFolder: $(Pipeline.Workspace)/infra        
 
-    - task: qetza.replacetokens.replacetokens-task.replacetokens@3
-      displayName: 'Replace tokens in azuredeploy.json'
-      inputs:
-        rootDirectory: 'whitewaterfinder.infrastructure/'
-        targetFiles: azuredeploy.json
-        tokenPrefix: '{%%'
-        tokenSuffix: '%%}'     
 
 
     - task: AzureResourceGroupDeployment@2
@@ -137,7 +130,16 @@ stages:
     steps:
     - task: ExtractFiles@1
       inputs: 
-        destinationFolder: $(Pipeline.Workspace)/infra           
+        destinationFolder: $(Pipeline.Workspace)/infra         
+        
+    - task: qetza.replacetokens.replacetokens-task.replacetokens@3
+      displayName: 'Replace tokens in azuredeploy.json'
+      inputs:
+        rootDirectory: 'whitewaterfinder.infrastructure/'
+        targetFiles: azuredeploy.json
+        tokenPrefix: '{%%'
+        tokenSuffix: '%%}'     
+        
     
     
     - task: AzureCLI@2
