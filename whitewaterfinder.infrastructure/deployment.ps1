@@ -13,8 +13,10 @@ param (
 $service = az search service list --resource-group $resourceGroup | ConvertFrom-Json
 Write-Output $service.name
 
+$serviceName = $service.name
 
-$keys = az search admin-key show --resource-group $resourceGroup --service-name $($service.name) 
+
+$keys = az search admin-key show --resource-group $resourceGroup --service-name $serviceName
 
 
 Write-Output $keys
