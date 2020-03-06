@@ -126,7 +126,7 @@
                     },
                     {
                         "name":"azureSearchKey",
-                        "value":"parameters('azureSearchKey')"
+                        "value":"[parameters('azureSearchKey')]"
                     },
                     {
                         "name":"baseUSGSUrl",
