@@ -16,7 +16,12 @@ Write-Output $service.name
 $serviceName = $service.name
 
 
-$keys = az search admin-key show --resource-group $resourceGroup --service-name $serviceName
+try 
+{
+    $keys = az search admin-key show --resource-group $resourceGroup --service-name $serviceName
+
+
+
 
 
 Write-Output $keys
@@ -86,4 +91,12 @@ if($key)
     Invoke-RestMethod -URi $updateUrl -Headers $indexHeaders -Method Post -Body $index
 } else {
     Write-Output 'was not able to get search keys'
+}
+
+
+
+} catch [System.Exception]
+{
+    Write-Output $_.ScriptStackTrace
+
 }
