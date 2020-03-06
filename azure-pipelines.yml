@@ -204,9 +204,11 @@ stages:
       inputs:
         azureSubscription: 'whitewaterfinder-sp'
         scriptType: ps
-        scriptLocation: 'scriptPath'
-        ScriptPath: 'whitewaterfinder.infrastructure/deployment.ps1'
-        ScriptArguments: '$(resourceGroup) "$(Pipeline.Workspace)/infra/riverswithid.json"'
+        scriptLocation: 'inlineScript'
+        inlineScript: "$service = az search service list --resource-group $(resourceGroup) | ConvertFrom-Json |
+        Write-Output $service.name"
+        # ScriptPath: 'whitewaterfinder.infrastructure/deployment.ps1'
+        # ScriptArguments: '$(resourceGroup) "$(Pipeline.Workspace)/infra/riverswithid.json"'
 
     
     # - task: AzureCLI@2
