@@ -8,7 +8,6 @@ param (
     )
     
 
-#TODO can't use the azure cli from within azdevops.
 
 $service = az search service list --resource-group $resourceGroup | ConvertFrom-Json
 Write-Output $service.name
@@ -97,6 +96,6 @@ if($key)
 
 } catch [System.Exception]
 {
-    Write-Output $_.ScriptStackTrace
+    Write-Output $_
 
 }

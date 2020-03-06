@@ -26,7 +26,8 @@
     "appPlanName": {"type" : "string", "defaultValue" : "WaterFinderPlan" },
     "preferencesApp" : { "type" : "string" , "defaultValue" : "paddle-finder-preferences" },
     "storageAccountName": { "type" : "string","defaultValue": "waterfinder" },
-    "azureSearchName": { "type" : "string", "defaultValue": "waterfindersearch" }
+    "azureSearchName": { "type" : "string", "defaultValue": "waterfindersearch" }, 
+    "azureSearchKey": {"type": "string" }
   },
   "variables": {
 
@@ -125,7 +126,7 @@
                     },
                     {
                         "name":"azureSearchKey",
-                        "value":""
+                        "value":"parameters('azureSearchKey')"
                     },
                     {
                         "name":"baseUSGSUrl",
