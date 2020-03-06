@@ -12,7 +12,8 @@ param (
 
 $service = az search service list --resource-group $resourceGroup | ConvertFrom-Json
 Write-Output $service.name
-$keys = az search admin-key show --resource-group $resourceGroup --service-name $service.name | ConvertFrom-Json
+$keys = az search admin-key show --resource-group $resourceGroup `
+--service-name $service.name | ConvertFrom-Json
 
 
 
@@ -70,7 +71,7 @@ if($key)
     $rivers =  Get-Content $path |  ConvertFrom-Json
     $index = @{value = @()}
 
-    $index.Value += ($rivers)
+    $index.value += ($rivers)
 
     Write-Output "attempting to POST documents to Azure Search"
 
