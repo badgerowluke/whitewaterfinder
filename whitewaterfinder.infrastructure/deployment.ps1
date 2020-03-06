@@ -14,8 +14,7 @@ $service = az search service list --resource-group $resourceGroup | ConvertFrom-
 Write-Output $service.name
 
 
-$keys = az search admin-key show --resource-group $resourceGroup `
---service-name $service.name 
+$keys = az search admin-key show --resource-group $resourceGroup --service-name $service.name 
 
 
 Write-Output $keys

@@ -27,12 +27,12 @@ stages:
         tokenPrefix: '{%%'
         tokenSuffix: '%%}'    
 
-    - task: DotNetCoreCLI@2
-      displayName: Build
-      inputs:
-        command: 'build'
-        projects: '**/*.csproj'
-        arguments: '--configuration $(BuildConfiguration)'
+    # - task: DotNetCoreCLI@2
+    #   displayName: Build
+    #   inputs:
+    #     command: 'build'
+    #     projects: '**/*.csproj'
+    #     arguments: '--configuration $(BuildConfiguration)'
 
     - task: DotNetCoreCLI@2
       displayName: Test
@@ -175,14 +175,14 @@ stages:
     - download: current
       artifact: riversfunc
 
-    - task: AzureRmWebAppDeployment@3
-      displayName: 'Deploy River API'
-      inputs:
-        azureSubscription: 'whitewaterfinder-sp'
-        appType: functionapp
-        WebAppName: 'paddle-finder'
-        Package: '$(Pipeline.Workspace)/riversfunc/app.zip'
-        TakeAppOfflineFlag: true      
+    # - task: AzureRmWebAppDeployment@3
+    #   displayName: 'Deploy River API'
+    #   inputs:
+    #     azureSubscription: 'whitewaterfinder-sp'
+    #     appType: functionapp
+    #     WebAppName: 'paddle-finder'
+    #     Package: '$(Pipeline.Workspace)/riversfunc/app.zip'
+    #     TakeAppOfflineFlag: true      
 
     - download: current
       artifact: preferencesfunc
