@@ -17,7 +17,7 @@ $serviceName = $service.name
 
 try 
 {
-    $keys = az search admin-key show --resource-group $resourceGroup --service-name $serviceName
+    $keys = az search admin-key show --debug --output json --resource-group $resourceGroup --service-name $serviceName
 
 
 
@@ -96,6 +96,6 @@ if($key)
 
 } catch [System.Exception]
 {
-    Write-Output $_
+    ThrowEr
 
 }
