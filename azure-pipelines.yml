@@ -229,11 +229,11 @@ stages:
           ScriptPath: '$(Pipeline.Workspace)/infra/apimdeploy.ps1'    
           ScriptArguments: '$(resourceGroup) $(Pipeline.Workspace)\infra'            
 
-  - job: 'bot'
-    dependsOn: 'backend_infra'
-    pool:
-      vmImage: 'windows-latest'
-    steps:
+  # - job: 'bot'
+  #   dependsOn: 'backend_infra'
+  #   pool:
+  #     vmImage: 'windows-latest'
+  #   steps:
   #   - task: qetza.replacetokens.replacetokens-task.replacetokens@3
   #     displayName: 'Replace tokens in botdeploy.json'
   #     inputs:
