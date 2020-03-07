@@ -116,7 +116,7 @@ stages:
         location: 'North Central US'
         csmFile: 'whitewaterfinder.infrastructure/sharedresources.json'
         csmParametersFile: 'whitewaterfinder.infrastructure/sharedresourcesparams.json'
-        overrideParameters: '-storageAccountType "Standard_LRS" -appName "paddle-finder" -preferencesApp "paddle-finder-preferences" '           
+        overrideParameters: '-storageAccountType "Standard_LRS" -appName "paddle-finder"'           
   
 
 
