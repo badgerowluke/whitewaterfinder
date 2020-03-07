@@ -43,7 +43,35 @@
                 "Application_Type": "web",
                 "Request_Source": "rest"
             }
-        },   
+        },
+        {
+            "type": "Microsoft.KeyVault/vaults",
+            "apiVersion": "2018-02-14",
+            "name": "[parameters('appName')]",
+            "location": "[parameters('location')]",
+            "tags": {},
+            "properties": {
+                "enabledForDeployment": true,
+                "enabledForTemplateDeployment": true,
+                "enabledForDiskEncryption": false,
+                "enableRbacAuthorization": true,
+
+                "sku": {
+                    "name": "Standard",
+                    "family": "A"
+                },
+                "enableSoftDelete": true,
+                "softDeleteRetentionInDays": 90,
+                "networkAcls": {
+                    "value": {
+                        "defaultAction": "allow",
+                        "bypass": "AzureServices",
+                        "ipRules":[],
+                        "virtualNetworkRules":[]
+                    }
+                }
+            }
+        },
         {
             "type": "Microsoft.Search/searchServices",
             "apiVersion": "2015-08-19",
