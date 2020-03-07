@@ -229,7 +229,7 @@ stages:
           scriptLocation: 'scriptPath'
           ScriptPath: '$(Pipeline.Workspace)/infra/apimdeploy.ps1'    
           azurePowerShellVersion: LatestVersion      
-          ScriptArguments: '$(resourceGroup) .\infra'            
+          ScriptArguments: '$(resourceGroup) $(Pipeline.Workspace)\infra'            
 
   # - job: 'bot'
   #   dependsOn: 'backend_infra'
