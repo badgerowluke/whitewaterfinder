@@ -121,14 +121,7 @@ stages:
         csmParametersFile: 'whitewaterfinder.infrastructure/sharedresourcesparams.json'
         overrideParameters: '-storageAccountType "Standard_LRS" -appName "paddle-finder" -preferencesApp "paddle-finder-preferences" '           
   
-    - task: AzureCLI@2
-      displayName: 'Get Azure Search Query Key'
-      inputs: 
-        azureSubscription: 'whitewaterfinder-sp'
-        scriptType: ps
-        scriptLocation: 'scriptPath'
-        ScriptPath: 'whitewaterfinder.infrastructure/getazuresearchkey.ps1'
-        ScriptArguments: '$(resourceGroup)'
+
 
   - job: 'backend'
     dependsOn: 'shared'
@@ -146,6 +139,17 @@ stages:
         targetFiles: azuredeploy.json
         tokenPrefix: '{%%'
         tokenSuffix: '%%}'     
+
+
+
+    - task: AzureCLI@2
+      displayName: 'Get Azure Search Query Key'
+      inputs: 
+        azureSubscription: 'whitewaterfinder-sp'
+        scriptType: ps
+        scriptLocation: 'scriptPath'
+        ScriptPath: 'whitewaterfinder.infrastructure/getazuresearchkey.ps1'
+        ScriptArguments: '$(resourceGroup)'        
 
     - task: AzureResourceGroupDeployment@2
       displayName: 'Deploy backend ARM Template'

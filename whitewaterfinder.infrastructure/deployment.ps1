@@ -74,12 +74,12 @@ try
         $putResult = Invoke-RestMethod -Uri $url -Headers $indexHeaders -Method Put -Body $body
 
 
-        Write-Host $putResult
 
         Write-Output "building the actual index documents"
 
 
         $rivers =  Get-Content $path |  ConvertFrom-Json
+
         $index = @{value = @()}
 
         $index.value += ($rivers)
@@ -91,7 +91,7 @@ try
 
         $index = ConvertTo-Json -InputObject $index
         $updateUrl = "https://waterfindersearch.search.windows.net/indexes/riversearch-index/docs/index?api-version=2019-05-06"
-        Invoke-RestMethod -URi $updateUrl -Headers $indexHeaders -Method Post -Body $index
+        Invoke-RestMethod -Uri $updateUrl -Headers $indexHeaders -Method Post -Body $index -TimeoutSec 300
 
 
         Write-Output "invoked REST"
