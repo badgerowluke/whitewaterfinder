@@ -71,8 +71,10 @@ try
             'Accept' = 'application/json'
         }
         $url = "https://waterfindersearch.search.windows.net/indexes/riversearch-index?api-version=2019-05-06"
-        Invoke-RestMethod -Uri $url -Headers $indexHeaders -Method Put -Body $body
+        $putResult = Invoke-RestMethod -Uri $url -Headers $indexHeaders -Method Put -Body $body
 
+
+        Write-Host $putResult
 
         Write-Output "building the actual index documents"
 
