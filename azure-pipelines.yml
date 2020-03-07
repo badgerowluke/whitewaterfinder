@@ -103,30 +103,30 @@ stages:
 
 - stage: Deploy
   jobs:
-  - job: 'shared'
-    pool:
-      vmImage: 'windows-latest'
-    steps:
-    - task: ExtractFiles@1
-      inputs: 
-        destinationFolder: $(Pipeline.Workspace)/infra        
+  # - job: 'shared'
+  #   pool:
+  #     vmImage: 'windows-latest'
+  #   steps:
+  #   - task: ExtractFiles@1
+  #     inputs: 
+  #       destinationFolder: $(Pipeline.Workspace)/infra        
 
 
 
-    - task: AzureResourceGroupDeployment@2
-      displayName: 'Deploy Shared Azure Resources'
-      inputs:
-        azureSubscription: 'whitewaterfinder-sp'
-        resourceGroupName: $(resourceGroup)
-        location: 'North Central US'
-        csmFile: 'whitewaterfinder.infrastructure/sharedresources.json'
-        csmParametersFile: 'whitewaterfinder.infrastructure/sharedresourcesparams.json'
-        overrideParameters: '-storageAccountType "Standard_LRS" -appName "paddle-finder" -preferencesApp "paddle-finder-preferences" '           
+  #   - task: AzureResourceGroupDeployment@2
+  #     displayName: 'Deploy Shared Azure Resources'
+  #     inputs:
+  #       azureSubscription: 'whitewaterfinder-sp'
+  #       resourceGroupName: $(resourceGroup)
+  #       location: 'North Central US'
+  #       csmFile: 'whitewaterfinder.infrastructure/sharedresources.json'
+  #       csmParametersFile: 'whitewaterfinder.infrastructure/sharedresourcesparams.json'
+  #       overrideParameters: '-storageAccountType "Standard_LRS" -appName "paddle-finder" -preferencesApp "paddle-finder-preferences" '           
 
   - job: 'backend'
-    dependsOn: 'shared'
+    # dependsOn: 'shared'
     pool:
-      vmImage: 'windows-latest'
+      vmImage: 'ubuntu-latest'
     steps:
     # - task: ExtractFiles@1
     #   inputs: 
@@ -142,14 +142,14 @@ stages:
         
     
     
-    # - task: AzureCLI@2
-    #   displayName: 'Get Azure Search Query Key'
-    #   inputs: 
-    #     azureSubscription: 'whitewaterfinder-sp'
-    #     scriptType: ps
-    #     scriptLocation: 'scriptPath'
-    #     ScriptPath: 'whitewaterfinder.infrastructure/getazuresearchkey.ps1'
-    #     ScriptArguments: '$(resourceGroup)'
+    - task: AzureCLI@2
+      displayName: 'Get Azure Search Query Key'
+      inputs: 
+        azureSubscription: 'whitewaterfinder-sp'
+        scriptType: ps
+        scriptLocation: 'scriptPath'
+        ScriptPath: 'whitewaterfinder.infrastructure/getazuresearchkey.ps1'
+        ScriptArguments: '$(resourceGroup)'
 
 
     # - task: AzureResourceGroupDeployment@2
@@ -204,12 +204,10 @@ stages:
       inputs:
         azureSubscription: 'whitewaterfinder-sp'
         scriptType: ps
-        scriptLocation: 'inlineScript'
-        inlineScript: "$service = az search service list --resource-group $(resourceGroup) | ConvertFrom-Json |
-        Write-Output $service.name"
-        # ScriptPath: 'whitewaterfinder.infrastructure/deployment.ps1'
-        # ScriptArguments: '$(resourceGroup) "$(Pipeline.Workspace)/infra/riverswithid.json"'
-
+        scriptLocation: 'scriptPath'
+        ScriptPath: 'whitewaterfinder.infrastructure/deployment.ps1'
+        ScriptArguments: '$(resourceGroup) "$(Pipeline.Workspace)/infra/riverswithid.json"'
+  
     
     # - task: AzureCLI@2
     #   displayName: 'Configure APIM'
