@@ -9,10 +9,10 @@ param (
     
 
 
-$service = az search service list --resource-group $resourceGroup | ConvertFrom-Json
-Write-Output $service.name
+# $service = az search service list --resource-group $resourceGroup | ConvertFrom-Json
+# Write-Output $service.name
 
-$serviceName = $service.name
+# $serviceName = $service.name
 
 
 
