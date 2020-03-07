@@ -111,7 +111,7 @@ stages:
   - job: 'shared'
     pool:
       vmImage: 'windows-latest'
-    steps:
+    # steps:
 
   #   - task: AzureResourceGroupDeployment@2
   #     displayName: 'Deploy Shared Azure Resources'
@@ -129,7 +129,7 @@ stages:
     dependsOn: 'shared'
     pool:
       vmImage: 'windows-latest'
-    steps:     
+    # steps:     
         
   #   - task: qetza.replacetokens.replacetokens-task.replacetokens@3
   #     displayName: 'Replace tokens in azuredeploy.json'
@@ -233,7 +233,7 @@ stages:
     dependsOn: 'backend_infra'
     pool:
       vmImage: 'windows-latest'
-  #   steps:
+    steps:
   #   - task: qetza.replacetokens.replacetokens-task.replacetokens@3
   #     displayName: 'Replace tokens in botdeploy.json'
   #     inputs:
