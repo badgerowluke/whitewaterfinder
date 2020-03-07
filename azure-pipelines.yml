@@ -206,7 +206,9 @@ stages:
       steps:
       - task: ExtractFiles@1
         inputs: 
-          destinationFolder: $(Pipeline.Workspace)/infra           
+          destinationFolder: $(Pipeline.Workspace)/infra   
+          
+          
       - task: AzureResourceGroupDeployment@2
         displayName: 'Deploy APIM to waterfinder'
         inputs:
@@ -216,6 +218,8 @@ stages:
           csmFile: 'whitewaterfinder.infrastructure/apimdeploy.json'  
           csmParametersFile: 'whitewaterfinder.infrastructure/apimparameters.json'   
           overrideParameters: -adminEmail "$(adminEmail)"   
+
+          
       - task: AzureCLI@2
         displayName: 'Configure APIM'
         inputs:
