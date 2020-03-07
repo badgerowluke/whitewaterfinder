@@ -226,7 +226,6 @@ stages:
         inputs:
           azureSubscription: 'whitewaterfinder-sp'
           scriptType: ps
-          scriptLocation: 'File path'
           ScriptPath: '$(Pipeline.Workspace)/infra/apimdeploy.ps1'    
           azurePowerShellVersion: LatestVersion      
           ScriptArguments: '$(resourceGroup) $(Pipeline.Workspace)\infra'            
