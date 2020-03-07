@@ -13,7 +13,8 @@ $service = az search service list --resource-group $resourceGroup | ConvertFrom-
 Write-Output $service.name
 
 $serviceName = $service.name
-$keys = az search admin-key show --output json --resource-group $resourceGroup --service-name "waterfindersearch"
+$keys = az search admin-key show --output json --resource-group $resourceGroup `
+        --service-name $serviceName
 
 
 try 

@@ -103,25 +103,32 @@ stages:
 
 - stage: Deploy
   jobs:
-  # - job: 'shared'
-  #   pool:
-  #     vmImage: 'windows-latest'
-  #   steps:
-  #   - task: ExtractFiles@1
-  #     inputs: 
-  #       destinationFolder: $(Pipeline.Workspace)/infra        
+  - job: 'shared'
+    pool:
+      vmImage: 'windows-latest'
+    steps:
+    # - task: ExtractFiles@1
+    #   inputs: 
+    #     destinationFolder: $(Pipeline.Workspace)/infra        
 
-
-
-  #   - task: AzureResourceGroupDeployment@2
-  #     displayName: 'Deploy Shared Azure Resources'
-  #     inputs:
-  #       azureSubscription: 'whitewaterfinder-sp'
-  #       resourceGroupName: $(resourceGroup)
-  #       location: 'North Central US'
-  #       csmFile: 'whitewaterfinder.infrastructure/sharedresources.json'
-  #       csmParametersFile: 'whitewaterfinder.infrastructure/sharedresourcesparams.json'
-  #       overrideParameters: '-storageAccountType "Standard_LRS" -appName "paddle-finder" -preferencesApp "paddle-finder-preferences" '           
+    - task: AzureResourceGroupDeployment@2
+      displayName: 'Deploy Shared Azure Resources'
+      inputs:
+        azureSubscription: 'whitewaterfinder-sp'
+        resourceGroupName: $(resourceGroup)
+        location: 'North Central US'
+        csmFile: 'whitewaterfinder.infrastructure/sharedresources.json'
+        csmParametersFile: 'whitewaterfinder.infrastructure/sharedresourcesparams.json'
+        overrideParameters: '-storageAccountType "Standard_LRS" -appName "paddle-finder" -preferencesApp "paddle-finder-preferences" '           
+  
+    - task: AzureCLI@2
+      displayName: 'Get Azure Search Query Key'
+      inputs: 
+        azureSubscription: 'whitewaterfinder-sp'
+        scriptType: ps
+        scriptLocation: 'scriptPath'
+        ScriptPath: 'whitewaterfinder.infrastructure/getazuresearchkey.ps1'
+        ScriptArguments: '$(resourceGroup)'
 
   - job: 'backend'
     # dependsOn: 'shared'
@@ -139,19 +146,7 @@ stages:
     #     targetFiles: azuredeploy.json
     #     tokenPrefix: '{%%'
     #     tokenSuffix: '%%}'     
-        
     
-    
-    - task: AzureCLI@2
-      displayName: 'Get Azure Search Query Key'
-      inputs: 
-        azureSubscription: 'whitewaterfinder-sp'
-        scriptType: ps
-        scriptLocation: 'scriptPath'
-        ScriptPath: 'whitewaterfinder.infrastructure/getazuresearchkey.ps1'
-        ScriptArguments: '$(resourceGroup)'
-
-
     # - task: AzureResourceGroupDeployment@2
     #   displayName: 'Deploy backend ARM Template'
     #   inputs:
