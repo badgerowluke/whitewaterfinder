@@ -3,7 +3,6 @@
 
 param (
         [Parameter(Mandatory=$true)] $resourceGroup,
-        [Parameter(Mandatory=$true)] $path,
         [Parameter(Mandatory=$true)] $jsonFile
     
     )
