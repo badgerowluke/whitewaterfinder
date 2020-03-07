@@ -227,7 +227,7 @@ stages:
           scriptType: ps
           scriptLocation: 'scriptPath'
           ScriptPath: 'whitewaterfinder.infrastructure/apimdeploy.ps1'    
-          ScriptArguments: '$(resourceGroup) "$(Pipeline.Workspace\infra"'            
+          ScriptArguments: '$(resourceGroup) "$(Pipeline.Workspace)\infra"'            
 
   # - job: 'bot'
   #   dependsOn: 'backend_infra'
