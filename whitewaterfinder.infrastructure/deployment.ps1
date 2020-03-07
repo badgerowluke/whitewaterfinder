@@ -8,15 +8,6 @@ param (
     
     )
     
-Import-Module $path\modules\getsearchservicename.psm1
-
-
-
-$serviceName = Get-AzureSearchServiceName($resourceGroup)
-Write-Host $serviceName
-
-
-
 $keys = az search admin-key show --output json --resource-group $resourceGroup `
         --service-name "waterfindersearch" | ConvertFrom-Json
 
