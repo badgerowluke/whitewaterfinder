@@ -203,7 +203,7 @@ stages:
   - job: 'backend_security'
     pool:
       vmImage: 'windows-latest'
-      steps:
+    steps:
       - task: ExtractFiles@1
         inputs: 
           destinationFolder: $(Pipeline.Workspace)/infra   
@@ -219,7 +219,7 @@ stages:
           csmParametersFile: 'whitewaterfinder.infrastructure/apimparameters.json'   
           overrideParameters: -adminEmail "$(adminEmail)"   
 
-          
+
       - task: AzureCLI@2
         displayName: 'Configure APIM'
         inputs:
