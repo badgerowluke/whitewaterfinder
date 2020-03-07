@@ -217,9 +217,9 @@ stages:
       - download: current
         artifact: infra
 
-      - task: ExtractFiles@1
-        inputs: 
-          destinationFolder: $(Pipeline.Workspace)/infra   
+      # - task: ExtractFiles@1
+      #   inputs: 
+      #     destinationFolder: $(Pipeline.Workspace)/infra   
 
       - task: AzureCLI@2
         displayName: 'Configure APIM'
