@@ -204,20 +204,20 @@ stages:
     pool:
       vmImage: 'windows-latest'
     steps:
-      # - task: ExtractFiles@1
-      #   inputs: 
-      #     destinationFolder: $(Pipeline.Workspace)/infra   
+      - task: ExtractFiles@1
+        inputs: 
+          destinationFolder: $(Pipeline.Workspace)/infra   
           
           
-      - task: AzureResourceGroupDeployment@2
-        displayName: 'Deploy APIM to waterfinder'
-        inputs:
-          azureSubscription: 'whitewaterfinder-sp'
-          resourceGroupName: $(resourceGroup)
-          location: 'North Central US'
-          csmFile: 'whitewaterfinder.infrastructure/apimdeploy.json'  
-          csmParametersFile: 'whitewaterfinder.infrastructure/apimparameters.json'   
-          overrideParameters: -adminEmail "$(adminEmail)"   
+      # - task: AzureResourceGroupDeployment@2
+      #   displayName: 'Deploy APIM to waterfinder'
+      #   inputs:
+      #     azureSubscription: 'whitewaterfinder-sp'
+      #     resourceGroupName: $(resourceGroup)
+      #     location: 'North Central US'
+      #     csmFile: 'whitewaterfinder.infrastructure/apimdeploy.json'  
+      #     csmParametersFile: 'whitewaterfinder.infrastructure/apimparameters.json'   
+      #     overrideParameters: -adminEmail "$(adminEmail)"   
 
 
       - task: AzureCLI@2
@@ -227,7 +227,7 @@ stages:
           scriptType: ps
           scriptLocation: 'scriptPath'
           ScriptPath: 'whitewaterfinder.infrastructure/apimdeploy.ps1'    
-          ScriptArguments: '$(resourceGroup) "whitewaterfinder.infrastructure/"'            
+          ScriptArguments: '$(resourceGroup) "$(Pipeline.Workspace\infra"'            
 
   # - job: 'bot'
   #   dependsOn: 'backend_infra'
