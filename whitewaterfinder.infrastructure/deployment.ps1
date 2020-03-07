@@ -51,15 +51,8 @@ $body = @"
 try 
 {
 
-
-
-
     $key = $keys.primaryKey
     Write-Output 'Attempting to Build Index'
-
-    Write-Host $keys.primaryKey
-
-
 
     if($key)
     {
@@ -86,7 +79,7 @@ try
 
         Write-Output "attempting to POST documents to Azure Search"
 
-
+        Start-Sleep 500
         Write-Host $index
 
         $index = ConvertTo-Json -InputObject $index

@@ -107,9 +107,6 @@ stages:
     pool:
       vmImage: 'windows-latest'
     steps:
-    # - task: ExtractFiles@1
-    #   inputs: 
-    #     destinationFolder: $(Pipeline.Workspace)/infra        
 
     - task: AzureResourceGroupDeployment@2
       displayName: 'Deploy Shared Azure Resources'
@@ -121,16 +118,20 @@ stages:
         csmParametersFile: 'whitewaterfinder.infrastructure/sharedresourcesparams.json'
         overrideParameters: '-storageAccountType "Standard_LRS" -appName "paddle-finder" -preferencesApp "paddle-finder-preferences" '           
   
-
+    - task: AzureCLI@2
+      displayName: 'Get Azure Search Query Key'
+      inputs: 
+        azureSubscription: 'whitewaterfinder-sp'
+        scriptType: ps
+        scriptLocation: 'scriptPath'
+        ScriptPath: 'whitewaterfinder.infrastructure/getazuresearchkey.ps1'
+        ScriptArguments: '$(resourceGroup)'      
 
   - job: 'backend'
     dependsOn: 'shared'
     pool:
       vmImage: 'windows-latest'
-    steps:
-    # - task: ExtractFiles@1
-    #   inputs: 
-    #     destinationFolder: $(Pipeline.Workspace)/infra         
+    steps:     
         
     - task: qetza.replacetokens.replacetokens-task.replacetokens@3
       displayName: 'Replace tokens in azuredeploy.json'
@@ -142,14 +143,7 @@ stages:
 
 
 
-    - task: AzureCLI@2
-      displayName: 'Get Azure Search Query Key'
-      inputs: 
-        azureSubscription: 'whitewaterfinder-sp'
-        scriptType: ps
-        scriptLocation: 'scriptPath'
-        ScriptPath: 'whitewaterfinder.infrastructure/getazuresearchkey.ps1'
-        ScriptArguments: '$(resourceGroup)'        
+  
 
     - task: AzureResourceGroupDeployment@2
       displayName: 'Deploy backend ARM Template'
