@@ -139,23 +139,23 @@ stages:
     #   inputs: 
     #     destinationFolder: $(Pipeline.Workspace)/infra         
         
-    # - task: qetza.replacetokens.replacetokens-task.replacetokens@3
-    #   displayName: 'Replace tokens in azuredeploy.json'
-    #   inputs:
-    #     rootDirectory: 'whitewaterfinder.infrastructure/'
-    #     targetFiles: azuredeploy.json
-    #     tokenPrefix: '{%%'
-    #     tokenSuffix: '%%}'     
-    
-    # - task: AzureResourceGroupDeployment@2
-    #   displayName: 'Deploy backend ARM Template'
-    #   inputs:
-    #     azureSubscription: 'whitewaterfinder-sp'
-    #     resourceGroupName: $(resourceGroup)
-    #     location: 'North Central US'
-    #     csmFile: 'whitewaterfinder.infrastructure/azuredeploy.json'
-    #     csmParametersFile: 'whitewaterfinder.infrastructure/parameters.json'
-    #     overrideParameters: '-storageAccountType "Standard_LRS" -appName "paddle-finder" -appPlanName "WaterFinderPlan" -preferencesApp "paddle-finder-preferences"  -azureSearchKey $(searchKey)'       
+    - task: qetza.replacetokens.replacetokens-task.replacetokens@3
+      displayName: 'Replace tokens in azuredeploy.json'
+      inputs:
+        rootDirectory: 'whitewaterfinder.infrastructure/'
+        targetFiles: azuredeploy.json
+        tokenPrefix: '{%%'
+        tokenSuffix: '%%}'     
+
+    - task: AzureResourceGroupDeployment@2
+      displayName: 'Deploy backend ARM Template'
+      inputs:
+        azureSubscription: 'whitewaterfinder-sp'
+        resourceGroupName: $(resourceGroup)
+        location: 'North Central US'
+        csmFile: 'whitewaterfinder.infrastructure/azuredeploy.json'
+        csmParametersFile: 'whitewaterfinder.infrastructure/parameters.json'
+        overrideParameters: '-storageAccountType "Standard_LRS" -appName "paddle-finder" -appPlanName "WaterFinderPlan" -preferencesApp "paddle-finder-preferences"  -azureSearchKey $(searchKey)'       
     
     # - task: AzureResourceGroupDeployment@2
     #   displayName: 'Deploy APIM to waterfinder'
