@@ -3,16 +3,17 @@
 
 param (
         [Parameter(Mandatory=$true)] $resourceGroup,
-        [Parameter(Mandatory=$true)] $path
+        [Parameter(Mandatory=$true)] $path,
+        [Parameter(Mandatory=$true)] $jsonFile
     
     )
     
+Import-Module $path\modules\getsearchservicename.psm1
 
 
-# $service = az search service list --resource-group $resourceGroup | ConvertFrom-Json
-# Write-Output $service.name
 
-# $serviceName = $service.name
+$serviceName = Get-AzureSearchServiceName($resourceGroup)
+Write-Host $serviceName
 
 
 
@@ -48,54 +49,45 @@ $body = @"
 "@
 
 
-try 
+$key = $keys.primaryKey
+Write-Output 'Attempting to Build Index'
+
+if($key)
 {
 
-    $key = $keys.primaryKey
-    Write-Output 'Attempting to Build Index'
+    $indexHeaders = @{
 
-    if($key)
-    {
-
-        $indexHeaders = @{
-
-            'api-key' = $key
-            'Content-Type' = 'application/json'
-            'Accept' = 'application/json'
-        }
-        $url = "https://waterfindersearch.search.windows.net/indexes/riversearch-index?api-version=2019-05-06"
-        $putResult = Invoke-RestMethod -Uri $url -Headers $indexHeaders -Method Put -Body $body
-
-
-
-        Write-Output "building the actual index documents"
-
-
-        $rivers =  Get-Content $path |  ConvertFrom-Json
-
-        $index = @{value = @()}
-
-        $index.value += ($rivers)
-
-        Write-Output "attempting to POST documents to Azure Search"
-
-        Start-Sleep 500
-        Write-Host $index
-
-        $index = ConvertTo-Json -InputObject $index
-        $updateUrl = "https://waterfindersearch.search.windows.net/indexes/riversearch-index/docs/index?api-version=2019-05-06"
-        Invoke-RestMethod -Uri $updateUrl -Headers $indexHeaders -Method Post -Body $index -TimeoutSec 300
-
-
-        Write-Output "invoked REST"
-    } else {
-        Write-Output 'was not able to get search keys'
+        'api-key' = $key
+        'Content-Type' = 'application/json'
+        'Accept' = 'application/json'
     }
+    $url = "https://waterfindersearch.search.windows.net/indexes/riversearch-index?api-version=2019-05-06"
+    $putResult = Invoke-RestMethod -Uri $url -Headers $indexHeaders -Method Put -Body $body
 
 
 
-} catch [System.Exception]
-{
+    Write-Output "building the actual index documents"
 
 
+    $filePath = $path + $jsonFile
+
+    $rivers =  Get-Content $filePath |  ConvertFrom-Json
+
+    $index = @{value = @()}
+
+    $index.value += ($rivers)
+
+    Write-Output "attempting to POST documents to Azure Search"
+
+
+
+    $index = ConvertTo-Json -InputObject $index
+    $updateUrl = "https://waterfindersearch.search.windows.net/indexes/riversearch-index/docs/index?api-version=2019-05-06"
+    Invoke-RestMethod -Uri $updateUrl -Headers $indexHeaders -Method Post -Body $index -TimeoutSec 300
+
+
+    Write-Output "invoked REST"
+} else {
+    Write-Output 'was not able to get search keys'
 }
+

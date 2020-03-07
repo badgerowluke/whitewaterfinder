@@ -199,7 +199,7 @@ stages:
         scriptType: ps
         scriptLocation: 'scriptPath'
         ScriptPath: 'whitewaterfinder.infrastructure/deployment.ps1'
-        ScriptArguments: '$(resourceGroup) "whitewaterfinder.infrastructure/riverswithid.json"'
+        ScriptArguments: '$(resourceGroup) "whitewaterfinder.infrastructure/" "riverswithid.json"'
   
     
     # - task: AzureCLI@2
