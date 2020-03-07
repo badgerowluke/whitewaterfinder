@@ -24,7 +24,7 @@
             }
         },
         "azureSearchName": { "type" : "string", "defaultValue": "waterfindersearch" },
-        // "preferencesApp" : { "type" : "string" , "defaultValue" : "paddle-finder-preferences" },
+        "preferencesApp" : { "type" : "string" , "defaultValue" : "paddle-finder-preferences" },
         "storageAccountName": { "type" : "string","defaultValue": "waterfinder" }
     },
     "variables":{},
