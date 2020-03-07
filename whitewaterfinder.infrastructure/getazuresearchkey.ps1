@@ -11,5 +11,3 @@ $keyValue = $key.key
 Write-Host "##vso[task.setvariable variable=searchKey;]$keyValue"
 
 Get-ChildItem Env:
-
-Write-Host "Key is: ($keyValue)"
