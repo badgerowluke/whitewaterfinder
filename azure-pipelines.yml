@@ -215,7 +215,7 @@ stages:
         azureSubscription: 'whitewaterfinder-sp'
         scriptType: ps
         scriptLocation: 'scriptPath'
-        ScriptPath: '$(Pipeline.Workspace)/infra/apimdeploy.ps1'    
+        ScriptPath: 'whitewaterfinder.infrastructure/apimdeploy.ps1'    
         ScriptArguments: '$(resourceGroup) whitewaterfinder.infrastructure'            
   
   # - job: 'bot'
