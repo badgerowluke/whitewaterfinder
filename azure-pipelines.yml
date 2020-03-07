@@ -113,6 +113,14 @@ stages:
       vmImage: 'windows-latest'
     steps:
 
+    - task: qetza.replacetokens.replacetokens-task.replacetokens@3
+      displayName: 'Replace tokens in azuredeploy.json'
+      inputs:
+        rootDirectory: 'whitewaterfinder.infrastructure/'
+        targetFiles: sharedresources.json
+        tokenPrefix: '{%%'
+        tokenSuffix: '%%}'          
+
     - task: AzureResourceGroupDeployment@2
       displayName: 'Deploy Shared Azure Resources'
       inputs:

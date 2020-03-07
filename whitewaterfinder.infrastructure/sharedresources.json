@@ -55,7 +55,7 @@
                 "enabledForTemplateDeployment": true,
                 "enabledForDiskEncryption": false,
                 "enableRbacAuthorization": true,
-
+                "tenantId":"{%%tenantId%%}",
                 "sku": {
                     "name": "Standard",
                     "family": "A"
