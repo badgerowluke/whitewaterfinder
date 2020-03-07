@@ -195,8 +195,6 @@ stages:
       #     Package: '$(Pipeline.Workspace)/preferencesfunc/app.zip'
       #     TakeAppOfflineFlag: true   
       
-      # - download: current
-      #   artifact: infra
       
             
             
@@ -218,7 +216,7 @@ stages:
         
       - download: current
         artifact: infra
-        
+
       - task: ExtractFiles@1
         inputs: 
           destinationFolder: $(Pipeline.Workspace)/infra   
@@ -230,7 +228,7 @@ stages:
           scriptType: ps
           scriptLocation: 'scriptPath'
           ScriptPath: 'whitewaterfinder.infrastructure/apimdeploy.ps1'    
-          ScriptArguments: '$(resourceGroup) "$(Pipeline.Workspace)/infra"'            
+          ScriptArguments: '$(resourceGroup) "$(Pipeline.Workspace)\infra"'            
 
   # - job: 'bot'
   #   dependsOn: 'backend_infra'
