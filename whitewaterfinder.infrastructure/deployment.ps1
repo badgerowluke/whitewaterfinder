@@ -9,10 +9,13 @@ param (
     
 
 
-# $service = az search service list --resource-group $resourceGroup | ConvertFrom-Json
-# Write-Output $service.name
+$service = az search service list --resource-group $resourceGroup | ConvertFrom-Json
+Write-Output $service.name
 
 $serviceName = $service.name
+
+
+
 $keys = az search admin-key show --output json --resource-group $resourceGroup `
         --service-name "waterfindersearch" | ConvertFrom-Json
 
@@ -81,9 +84,15 @@ try
 
         Write-Output "attempting to POST documents to Azure Search"
 
+
+        Write-Host $index
+
         $index = ConvertTo-Json -InputObject $index
         $updateUrl = "https://waterfindersearch.search.windows.net/indexes/riversearch-index/docs/index?api-version=2019-05-06"
         Invoke-RestMethod -URi $updateUrl -Headers $indexHeaders -Method Post -Body $index
+
+
+        Write-Output "invoked REST"
     } else {
         Write-Output 'was not able to get search keys'
     }

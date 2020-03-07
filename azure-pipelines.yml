@@ -131,7 +131,7 @@ stages:
         ScriptArguments: '$(resourceGroup)'
 
   - job: 'backend'
-    # dependsOn: 'shared'
+    dependsOn: 'shared'
     pool:
       vmImage: 'windows-latest'
     steps:
