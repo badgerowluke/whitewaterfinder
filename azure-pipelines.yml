@@ -108,10 +108,10 @@ stages:
 
 - stage: Deploy
   jobs:
-  # - job: 'shared'
-  #   pool:
-  #     vmImage: 'windows-latest'
-  #   steps:
+  - job: 'shared'
+    pool:
+      vmImage: 'windows-latest'
+    steps:
 
   #   - task: AzureResourceGroupDeployment@2
   #     displayName: 'Deploy Shared Azure Resources'
@@ -125,11 +125,11 @@ stages:
   
 
 
-  # - job: 'backend_infra'
-  #   dependsOn: 'shared'
-  #   pool:
-  #     vmImage: 'windows-latest'
-  #   steps:     
+  - job: 'backend_infra'
+    dependsOn: 'shared'
+    pool:
+      vmImage: 'windows-latest'
+    steps:     
         
   #   - task: qetza.replacetokens.replacetokens-task.replacetokens@3
   #     displayName: 'Replace tokens in azuredeploy.json'
@@ -226,13 +226,13 @@ stages:
           azureSubscription: 'whitewaterfinder-sp'
           scriptType: ps
           scriptLocation: 'scriptPath'
-          ScriptPath: 'whitewaterfinder.infrastructure/apimdeploy.ps1'    
-          ScriptArguments: '$(resourceGroup) "$(Pipeline.Workspace)\infra"'            
+          ScriptPath: '$(Pipeline.Workspace)/infra/apimdeploy.ps1'    
+          ScriptArguments: '$(resourceGroup) $(Pipeline.Workspace)\infra'            
 
-  # - job: 'bot'
-  #   dependsOn: 'backend_infra'
-  #   pool:
-  #     vmImage: 'windows-latest'
+  - job: 'bot'
+    dependsOn: 'backend_infra'
+    pool:
+      vmImage: 'windows-latest'
   #   steps:
   #   - task: qetza.replacetokens.replacetokens-task.replacetokens@3
   #     displayName: 'Replace tokens in botdeploy.json'
