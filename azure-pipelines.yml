@@ -18,110 +18,110 @@ stages:
           PathtoPublish: 'whitewaterfinder.infrastructure/'
           ArtifactName: infra        
 
-  # - job: build_dotnet
-  #   pool:
-  #     vmImage: 'windows-latest'
-  #   continueOnError: false
-  #   steps:
-  #   - task: DotNetCoreCLI@2
-  #     displayName: Restore
-  #     inputs:
-  #       command: restore
-  #       projects: '**/*.csproj'
-  #       vstsFeed: 'e7750945-8da0-48c7-ad5d-6c474174e6d1'
+  - job: build_dotnet
+    pool:
+      vmImage: 'windows-latest'
+    continueOnError: false
+    steps:
+    - task: DotNetCoreCLI@2
+      displayName: Restore
+      inputs:
+        command: restore
+        projects: '**/*.csproj'
+        vstsFeed: 'e7750945-8da0-48c7-ad5d-6c474174e6d1'
 
-  #   - task: qetza.replacetokens.replacetokens-task.replacetokens@3
-  #     displayName: 'Replace tokens in bot app settings'
-  #     inputs:
-  #       rootDirectory: 'whitewaterfinder.app.bot/'
-  #       targetFiles: appsettings.json
-  #       tokenPrefix: '{%%'
-  #       tokenSuffix: '%%}'    
+    - task: qetza.replacetokens.replacetokens-task.replacetokens@3
+      displayName: 'Replace tokens in bot app settings'
+      inputs:
+        rootDirectory: 'whitewaterfinder.app.bot/'
+        targetFiles: appsettings.json
+        tokenPrefix: '{%%'
+        tokenSuffix: '%%}'    
 
-  #   - task: DotNetCoreCLI@2
-  #     displayName: Build
-  #     inputs:
-  #       command: 'build'
-  #       projects: '**/*.csproj'
-  #       arguments: '--configuration $(BuildConfiguration)'
+    - task: DotNetCoreCLI@2
+      displayName: Build
+      inputs:
+        command: 'build'
+        projects: '**/*.csproj'
+        arguments: '--configuration $(BuildConfiguration)'
 
-  #   - task: DotNetCoreCLI@2
-  #     displayName: Test
-  #     inputs:
-  #       command: test
-  #       projects: '**/*[Tt]est/*.csproj'
-  #       arguments: '--configuration $(BuildConfiguration)'
+    - task: DotNetCoreCLI@2
+      displayName: Test
+      inputs:
+        command: test
+        projects: '**/*[Tt]est/*.csproj'
+        arguments: '--configuration $(BuildConfiguration)'
 
-  #   - task: DotNetCoreCLI@2
-  #     displayName: Publish bot app
-  #     inputs:
-  #       command: publish
-  #       projects: '**/whitewaterfinder.app.bot/whitewaterfinder.app.bot.csproj'
-  #       arguments: '--configuration $(BuildConfiguration)'
+    - task: DotNetCoreCLI@2
+      displayName: Publish bot app
+      inputs:
+        command: publish
+        projects: '**/whitewaterfinder.app.bot/whitewaterfinder.app.bot.csproj'
+        arguments: '--configuration $(BuildConfiguration)'
 
-  #   - task: ArchiveFiles@2
-  #     displayName: bundle api 
-  #     inputs: 
-  #       rootFolderOrFile: whitewaterfinder.api/bin/release/netcoreapp3.0
-  #       includeRootFolder: false
-  #       archiveFile: $(Pipeline.Workspace)/riversfunc/app.zip
+    - task: ArchiveFiles@2
+      displayName: bundle api 
+      inputs: 
+        rootFolderOrFile: whitewaterfinder.api/bin/release/netcoreapp3.0
+        includeRootFolder: false
+        archiveFile: $(Pipeline.Workspace)/riversfunc/app.zip
 
-  #   - task: PublishBuildArtifacts@1
-  #     displayName: 'Publish River Functions'
-  #     inputs:
-  #       PathtoPublish: $(Pipeline.Workspace)/riversfunc/app.zip
-  #       ArtifactName: 'riversfunc'
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publish River Functions'
+      inputs:
+        PathtoPublish: $(Pipeline.Workspace)/riversfunc/app.zip
+        ArtifactName: 'riversfunc'
 
  
-  #   - task: PublishBuildArtifacts@1
-  #     displayName: 'Publish Bot App'
-  #     inputs:
-  #       PathtoPublish: whitewaterfinder.app.bot/bin/release/netcoreapp2.1/publish.zip
-  #       ArtifactName: 'websterbot'        
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publish Bot App'
+      inputs:
+        PathtoPublish: whitewaterfinder.app.bot/bin/release/netcoreapp2.1/publish.zip
+        ArtifactName: 'websterbot'        
 
-  # - job: build_node
-  #   pool:
-  #     vmImage: 'windows-latest'
-  #   continueOnError: false
-  #   steps:
-  #   - task: NodeTool@0
-  #     inputs:
-  #       versionSpec: '10.x'
-  #     displayName: 'set node environment' 
+  - job: build_node
+    pool:
+      vmImage: 'windows-latest'
+    continueOnError: false
+    steps:
+    - task: NodeTool@0
+      inputs:
+        versionSpec: '10.x'
+      displayName: 'set node environment' 
 
-  #   - script: npm install && npm run build
-  #     displayName: 'Build User Pref functions'
-  #     workingDirectory: whitewaterfinder.api.user
+    - script: npm install && npm run build
+      displayName: 'Build User Pref functions'
+      workingDirectory: whitewaterfinder.api.user
 
-  #   - task: ArchiveFiles@2
-  #     displayName: bundle preferences api 
-  #     inputs: 
-  #       rootFolderOrFile: whitewaterfinder.api.user/
-  #       includeRootFolder: false
-  #       archiveFile: $(Pipeline.Workspace)/preferencesfunc/app.zip
+    - task: ArchiveFiles@2
+      displayName: bundle preferences api 
+      inputs: 
+        rootFolderOrFile: whitewaterfinder.api.user/
+        includeRootFolder: false
+        archiveFile: $(Pipeline.Workspace)/preferencesfunc/app.zip
 
-  #   - task: PublishBuildArtifacts@1
-  #     displayName: 'Copy Preferences Functions'
-  #     inputs:
-  #       PathtoPublish: $(Pipeline.Workspace)/preferencesfunc/app.zip
-  #       ArtifactName: 'preferencesfunc'
+    - task: PublishBuildArtifacts@1
+      displayName: 'Copy Preferences Functions'
+      inputs:
+        PathtoPublish: $(Pipeline.Workspace)/preferencesfunc/app.zip
+        ArtifactName: 'preferencesfunc'
 
 - stage: Deploy
   jobs:
   - job: 'shared'
     pool:
       vmImage: 'windows-latest'
-    # steps:
+    steps:
 
-  #   - task: AzureResourceGroupDeployment@2
-  #     displayName: 'Deploy Shared Azure Resources'
-  #     inputs:
-  #       azureSubscription: 'whitewaterfinder-sp'
-  #       resourceGroupName: $(resourceGroup)
-  #       location: 'North Central US'
-  #       csmFile: 'whitewaterfinder.infrastructure/sharedresources.json'
-  #       csmParametersFile: 'whitewaterfinder.infrastructure/sharedresourcesparams.json'
-  #       overrideParameters: '-storageAccountType "Standard_LRS" -appName "paddle-finder" -preferencesApp "paddle-finder-preferences" '           
+    - task: AzureResourceGroupDeployment@2
+      displayName: 'Deploy Shared Azure Resources'
+      inputs:
+        azureSubscription: 'whitewaterfinder-sp'
+        resourceGroupName: $(resourceGroup)
+        location: 'North Central US'
+        csmFile: 'whitewaterfinder.infrastructure/sharedresources.json'
+        csmParametersFile: 'whitewaterfinder.infrastructure/sharedresourcesparams.json'
+        overrideParameters: '-storageAccountType "Standard_LRS" -appName "paddle-finder" -preferencesApp "paddle-finder-preferences" '           
   
 
 
@@ -129,97 +129,101 @@ stages:
     dependsOn: 'shared'
     pool:
       vmImage: 'windows-latest'
-    # steps:     
+    steps:     
         
-  #   - task: qetza.replacetokens.replacetokens-task.replacetokens@3
-  #     displayName: 'Replace tokens in azuredeploy.json'
-  #     inputs:
-  #       rootDirectory: 'whitewaterfinder.infrastructure/'
-  #       targetFiles: azuredeploy.json
-  #       tokenPrefix: '{%%'
-  #       tokenSuffix: '%%}'     
+    - task: qetza.replacetokens.replacetokens-task.replacetokens@3
+      displayName: 'Replace tokens in azuredeploy.json'
+      inputs:
+        rootDirectory: 'whitewaterfinder.infrastructure/'
+        targetFiles: azuredeploy.json
+        tokenPrefix: '{%%'
+        tokenSuffix: '%%}'     
 
 
-  #   - task: AzureCLI@2
-  #     displayName: 'Get Azure Search Query Key'
-  #     inputs: 
-  #       azureSubscription: 'whitewaterfinder-sp'
-  #       scriptType: ps
-  #       scriptLocation: 'scriptPath'
-  #       ScriptPath: 'whitewaterfinder.infrastructure/getazuresearchkey.ps1'
-  #       ScriptArguments: '$(resourceGroup)'      
+    - task: AzureCLI@2
+      displayName: 'Get Azure Search Query Key'
+      inputs: 
+        azureSubscription: 'whitewaterfinder-sp'
+        scriptType: ps
+        scriptLocation: 'scriptPath'
+        ScriptPath: 'whitewaterfinder.infrastructure/getazuresearchkey.ps1'
+        ScriptArguments: '$(resourceGroup)'      
   
 
-  #   - task: AzureResourceGroupDeployment@2
-  #     displayName: 'Deploy backend ARM Template'
-  #     inputs:
-  #       azureSubscription: 'whitewaterfinder-sp'
-  #       resourceGroupName: $(resourceGroup)
-  #       location: 'North Central US'
-  #       csmFile: 'whitewaterfinder.infrastructure/azuredeploy.json'
-  #       csmParametersFile: 'whitewaterfinder.infrastructure/parameters.json'
-  #       overrideParameters: '-storageAccountType "Standard_LRS" -appName "paddle-finder" -appPlanName "WaterFinderPlan" -preferencesApp "paddle-finder-preferences"  -azureSearchKey $(searchKey)'       
+    - task: AzureResourceGroupDeployment@2
+      displayName: 'Deploy backend ARM Template'
+      inputs:
+        azureSubscription: 'whitewaterfinder-sp'
+        resourceGroupName: $(resourceGroup)
+        location: 'North Central US'
+        csmFile: 'whitewaterfinder.infrastructure/azuredeploy.json'
+        csmParametersFile: 'whitewaterfinder.infrastructure/parameters.json'
+        overrideParameters: '-storageAccountType "Standard_LRS" -appName "paddle-finder" -appPlanName "WaterFinderPlan" -preferencesApp "paddle-finder-preferences"  -azureSearchKey $(searchKey)'       
         
-  #   - task: AzureCLI@2
-  #     displayName: 'Build Azure Search Index'
-  #     inputs:
-  #       azureSubscription: 'whitewaterfinder-sp'
-  #       scriptType: ps
-  #       scriptLocation: 'scriptPath'
-  #       ScriptPath: 'whitewaterfinder.infrastructure/deployment.ps1'
-  #       ScriptArguments: '$(resourceGroup) "whitewaterfinder.infrastructure/riverswithid.json"'
+    - task: AzureCLI@2
+      displayName: 'Build Azure Search Index'
+      inputs:
+        azureSubscription: 'whitewaterfinder-sp'
+        scriptType: ps
+        scriptLocation: 'scriptPath'
+        ScriptPath: 'whitewaterfinder.infrastructure/deployment.ps1'
+        ScriptArguments: '$(resourceGroup) "whitewaterfinder.infrastructure/riverswithid.json"'
 
 
         
-    # - download: current
-    #   artifact: riversfunc
+
+      
+      
+            
+  - job: 'backend_app_deployment'
+    pool:
+      vmImage: 'windows-latest'
+    steps:
+    - download: current
+      displayName: 'download river apis'
+      artifact: riversfunc
     
-    # - task: AzureRmWebAppDeployment@3
-    #   displayName: 'Deploy River API'
-    #   inputs:
-    #       azureSubscription: 'whitewaterfinder-sp'
-    #       appType: functionapp
-    #       WebAppName: 'paddle-finder'
-    #       Package: '$(Pipeline.Workspace)/riversfunc/app.zip'
-    #       TakeAppOfflineFlag: true      
+    - task: AzureRmWebAppDeployment@3
+      displayName: 'Deploy River API'
+      inputs:
+          azureSubscription: 'whitewaterfinder-sp'
+          appType: functionapp
+          WebAppName: 'paddle-finder'
+          Package: '$(Pipeline.Workspace)/riversfunc/app.zip'
+          TakeAppOfflineFlag: true      
           
-    # - download: current
-    #   artifact: preferencesfunc
+    - download: current
+      displayName: 'download preferences apis'
+      artifact: preferencesfunc
     
-    # - task: AzureRmWebAppDeployment@3
-    #   displayName: 'Deploy Preferences API'
-    #   inputs:
-      #     azureSubscription: 'whitewaterfinder-sp'
-      #     appType: functionapp
-      #     WebAppName: 'paddle-finder-preferences'
-      #     Package: '$(Pipeline.Workspace)/preferencesfunc/app.zip'
-      #     TakeAppOfflineFlag: true   
-      
-      
-            
-            
+    - task: AzureRmWebAppDeployment@3
+      displayName: 'Deploy Preferences API'
+      inputs:
+          azureSubscription: 'whitewaterfinder-sp'
+          appType: functionapp
+          WebAppName: 'paddle-finder-preferences'
+          Package: '$(Pipeline.Workspace)/preferencesfunc/app.zip'
+          TakeAppOfflineFlag: true   
+
+
   - job: 'backend_security'
     pool:
       vmImage: 'windows-latest'
     steps:
       
       
-      # - task: AzureResourceGroupDeployment@2
-      #   displayName: 'Deploy APIM to waterfinder'
-      #   inputs:
-        #     azureSubscription: 'whitewaterfinder-sp'
-        #     resourceGroupName: $(resourceGroup)
-        #     location: 'North Central US'
-        #     csmFile: 'whitewaterfinder.infrastructure/apimdeploy.json'  
-        #     csmParametersFile: 'whitewaterfinder.infrastructure/apimparameters.json'   
-        #     overrideParameters: -adminEmail "$(adminEmail)"   
+      - task: AzureResourceGroupDeployment@2
+        displayName: 'Deploy APIM to waterfinder'
+        inputs:
+            azureSubscription: 'whitewaterfinder-sp'
+            resourceGroupName: $(resourceGroup)
+            location: 'North Central US'
+            csmFile: 'whitewaterfinder.infrastructure/apimdeploy.json'  
+            csmParametersFile: 'whitewaterfinder.infrastructure/apimparameters.json'   
+            overrideParameters: -adminEmail "$(adminEmail)"   
         
       - download: current
         artifact: infra
-
-      # - task: ExtractFiles@1
-      #   inputs: 
-      #     destinationFolder: $(Pipeline.Workspace)/infra   
 
       - task: AzureCLI@2
         displayName: 'Configure APIM'
@@ -231,38 +235,38 @@ stages:
           azurePowerShellVersion: LatestVersion      
           ScriptArguments: '$(resourceGroup) $(Pipeline.Workspace)\infra'            
 
-  # - job: 'bot'
-  #   dependsOn: 'backend_infra'
-  #   pool:
-  #     vmImage: 'windows-latest'
-  #   steps:
-  #   - task: qetza.replacetokens.replacetokens-task.replacetokens@3
-  #     displayName: 'Replace tokens in botdeploy.json'
-  #     inputs:
-  #       rootDirectory: 'whitewaterfinder.infrastructure/'
-  #       targetFiles: botdeploy.json
-  #       tokenPrefix: '{%%'
-  #       tokenSuffix: '%%}'    
+  - job: 'bot'
+    dependsOn: 'backend_infra'
+    pool:
+      vmImage: 'windows-latest'
+    steps:
+    - task: qetza.replacetokens.replacetokens-task.replacetokens@3
+      displayName: 'Replace tokens in botdeploy.json'
+      inputs:
+        rootDirectory: 'whitewaterfinder.infrastructure/'
+        targetFiles: botdeploy.json
+        tokenPrefix: '{%%'
+        tokenSuffix: '%%}'    
 
-  #   - task: AzureResourceGroupDeployment@2
-  #     displayName: 'Azure Deployment:Create Or Update Resource Group action on waterfinder'
-  #     inputs:
-  #       azureSubscription: 'whitewaterfinder-sp'
-  #       resourceGroupName: $(resourceGroup)
-  #       location: 'North Central US'
-  #       csmFile: 'whitewaterfinder.infrastructure/botdeploy.json'
-  #       csmParametersFile: 'whitewaterfinder.infrastructure/botparams.json'         
+    - task: AzureResourceGroupDeployment@2
+      displayName: 'Azure Deployment:Create Or Update Resource Group action on waterfinder'
+      inputs:
+        azureSubscription: 'whitewaterfinder-sp'
+        resourceGroupName: $(resourceGroup)
+        location: 'North Central US'
+        csmFile: 'whitewaterfinder.infrastructure/botdeploy.json'
+        csmParametersFile: 'whitewaterfinder.infrastructure/botparams.json'         
 
-  #   - download: current
-  #     artifact: websterbot    
+    - download: current
+      artifact: websterbot    
 
-  #   - task: AzureRmWebAppDeployment@3
-  #     displayName: 'Deploy Bot App'
-  #     inputs:
-  #       azureSubscription: 'whitewaterfinder-sp'
-  #       appType: app
-  #       WebAppName: 'WhiteWaterWebster'
-  #       Package: '$(Pipeline.Workspace)/websterbot/publish.zip'
+    - task: AzureRmWebAppDeployment@3
+      displayName: 'Deploy Bot App'
+      inputs:
+        azureSubscription: 'whitewaterfinder-sp'
+        appType: app
+        WebAppName: 'WhiteWaterWebster'
+        Package: '$(Pipeline.Workspace)/websterbot/publish.zip'
 
 
 
