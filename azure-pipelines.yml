@@ -226,9 +226,9 @@ stages:
         inputs:
           azureSubscription: 'whitewaterfinder-sp'
           scriptType: ps
-          ScriptPath: '$(Pipeline.Workspace)/infra/apimdeploy.ps1'    
+          ScriptPath: 'infra/apimdeploy.ps1'    
           azurePowerShellVersion: LatestVersion      
-          ScriptArguments: '$(resourceGroup) $(Pipeline.Workspace)\infra'            
+          ScriptArguments: '$(resourceGroup) .\infra'            
 
   # - job: 'bot'
   #   dependsOn: 'backend_infra'
