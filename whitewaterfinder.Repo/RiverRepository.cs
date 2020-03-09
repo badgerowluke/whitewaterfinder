@@ -85,17 +85,18 @@ namespace whitewaterfinder.Repo
         {
             if(string.IsNullOrEmpty(_riverTable)) { throw new ArgumentNullException("Table name cannot be null"); }
             if(string.IsNullOrEmpty(stateCode)) { throw new ArgumentNullException("State you're searching for cannot be null"); }
-            folders.CollectionName = _riverTable;
 
-            var entities = await folders.GetAsync<RiverEntity>(r => r.PartitionKey.Equals(stateCode));
-            var outList = new List<River>();
-            foreach(var entity in entities)
+                        HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get,
+            _azureSearchUrl + stateCode);
+            request.Headers.Add("api-key", _azureSearchKey);
+
+            using(HttpResponseMessage response = await _client.SendAsync(request))
             {
-                var river = entity.ToRiver();
-                outList.Add(river);
+                var data = await response.Content.ReadAsStringAsync();
+                var objs = JObject.Parse(data);
+                var vals = objs["value"];
+                return vals.ToObject<IEnumerable<River>>();
             }
-
-            return outList;
         }
 
         public async Task InsertRiverData(RiverEntity aRiver)
