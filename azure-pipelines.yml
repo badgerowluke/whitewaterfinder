@@ -2,8 +2,6 @@
 trigger:
     - master  
 
-
-
 stages: 
 - stage: Build
   jobs:
@@ -186,6 +184,7 @@ stages:
   - job: 'backend_app_deployment'
     pool:
       vmImage: 'windows-latest'
+    dependsOn: 'backend_infra'
     steps:
     - download: current
       displayName: 'download river apis'
