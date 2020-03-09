@@ -181,7 +181,7 @@
         {
             "type": "Microsoft.ApiManagement/service/apis/operations/policies",
             "apiVersion":"2019-01-01",
-            "name":"[concat(parameters('apimName'), '/paddle-finder/getuserpreferences/policy')]",
+            "name":"[concat(parameters('apimName'), '/paddle-finder-preferences/getuserpreferences/policy')]",
             "dependsOn":[
                 "[resourceId('Microsoft.ApiManagement/service', parameters('apimName'))]",
                 "[resourceId('Microsoft.ApiManagement/service/apis', parameters('apimName'), parameters('preferencesApp'))]",
@@ -212,7 +212,7 @@
         {
             "type": "Microsoft.ApiManagement/service/apis/operations/policies",
             "apiVersion":"2019-01-01",
-            "name":"[concat(parameters('apimName'), '/paddle-finder/postuserpreeferences/policy')]",
+            "name":"[concat(parameters('apimName'), '/paddle-finder-preferences/postuserpreferences/policy')]",
             "dependsOn":[
                 "[resourceId('Microsoft.ApiManagement/service', parameters('apimName'))]",
                 "[resourceId('Microsoft.ApiManagement/service/apis', parameters('apimName'), parameters('preferencesApp'))]",
