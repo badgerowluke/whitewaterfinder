@@ -44,7 +44,6 @@ foreach($name in $apps.GetEnumerator())
                     if($retryCount -ge 5)
                     {
                         Write-Output "$($func.name) failed to pull keys, please try again.  This appears to be an intermittent failure"
-                        Write-Output $newInboundPolicy
                         throw
                     } else 
                     {

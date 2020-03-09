@@ -99,6 +99,20 @@
             }            
         },
         {
+            "type": "Microsoft.ApiManagement/service/apis/operations/policies",
+            "apiVersion":"2019-01-01",
+            "name":"[concat(parameters('apimName'), '/paddle-finder/riverdetails/policy')]",
+            "dependsOn":[
+                "[resourceId('Microsoft.ApiManagement/service', parameters('apimName'))]",
+                "[resourceId('Microsoft.ApiManagement/service/apis', parameters('apimName'), parameters('appName'))]",
+                "[resourceId('Microsoft.Apimanagement/service/apis/operations', parameters('apimName'), parameters('appName'), 'rivers')]"
+            ],
+            "properties":{
+                "value":"<policies></policies>",
+                "format":"xml"
+            }         
+        },        
+        {
             "type": "Microsoft.ApiManagement/service/apis/operations",
             "apiVersion": "2019-01-01",
             "name":"[concat(parameters('apimName'), '/paddle-finder/riversbystate')]",
@@ -115,6 +129,20 @@
                 "responses": []
             }            
         },
+        {
+            "type": "Microsoft.ApiManagement/service/apis/operations/policies",
+            "apiVersion":"2019-01-01",
+            "name":"[concat(parameters('apimName'), '/paddle-finder/riverdetails/policy')]",
+            "dependsOn":[
+                "[resourceId('Microsoft.ApiManagement/service', parameters('apimName'))]",
+                "[resourceId('Microsoft.ApiManagement/service/apis', parameters('apimName'), parameters('appName'))]",
+                "[resourceId('Microsoft.Apimanagement/service/apis/operations', parameters('apimName'), parameters('appName'), 'riversbystate')]"
+            ],
+            "properties":{
+                "value":"<policies></policies>",
+                "format":"xml"
+            }         
+        },        
         {
             "type":"Microsoft.ApiManagement/service/apis",
             "apiVersion": "2019-01-01",
@@ -149,7 +177,21 @@
                 "templateParameters": [],
                 "responses": []
             }            
-        },           
+        },  
+        {
+            "type": "Microsoft.ApiManagement/service/apis/operations/policies",
+            "apiVersion":"2019-01-01",
+            "name":"[concat(parameters('apimName'), '/paddle-finder/riverdetails/policy')]",
+            "dependsOn":[
+                "[resourceId('Microsoft.ApiManagement/service', parameters('apimName'))]",
+                "[resourceId('Microsoft.ApiManagement/service/apis', parameters('apimName'), parameters('preferencesApp'))]",
+                "[resourceId('Microsoft.Apimanagement/service/apis/operations', parameters('apimName'), parameters('preferencesApp'), 'getuserpreferences')]"
+            ],
+            "properties":{
+                "value":"<policies></policies>",
+                "format":"xml"
+            }         
+        },                 
         {
             "type": "Microsoft.ApiManagement/service/apis/operations",
             "apiVersion": "2019-01-01",
@@ -166,7 +208,21 @@
                 "templateParameters": [],
                 "responses": []
             }            
-        }          
+        },
+        {
+            "type": "Microsoft.ApiManagement/service/apis/operations/policies",
+            "apiVersion":"2019-01-01",
+            "name":"[concat(parameters('apimName'), '/paddle-finder/riverdetails/policy')]",
+            "dependsOn":[
+                "[resourceId('Microsoft.ApiManagement/service', parameters('apimName'))]",
+                "[resourceId('Microsoft.ApiManagement/service/apis', parameters('apimName'), parameters('preferencesApp'))]",
+                "[resourceId('Microsoft.Apimanagement/service/apis/operations', parameters('apimName'), parameters('preferencesApp'), 'postuserpreferences')]"
+            ],
+            "properties":{
+                "value":"<policies></policies>",
+                "format":"xml"
+            }         
+        },                   
 
 
     ],
