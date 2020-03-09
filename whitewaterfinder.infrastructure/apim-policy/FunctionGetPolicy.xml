@@ -1,6 +1,10 @@
 <policies>
     <inbound>
         <base />
+        <rewrite-uri template="?" copy-unmatched-params="true" />
+        <set-header name="x-functions-clientid" exists-action="override">
+            <value>default</value>
+        </set-header>
         <set-header name="x-functions-key" exists-action="override">
             <value>{{funcCode}}</value>
         </set-header>
