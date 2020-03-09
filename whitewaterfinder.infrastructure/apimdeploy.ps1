@@ -9,7 +9,7 @@ Import-Module $fullPath\modules\apim-policies.psm1
 
 # ===== start here =====
 Write-Output "Getting Functions"
-$apps = az functionapp list --query "[?resourceGroup=='waterfinder'].name" | ConvertFrom-Json
+$apps = az functionapp list --query "[?resourceGroup=='$($resourceGroup)'].name" | ConvertFrom-Json
 Write-Output "Load template policy"
 $functionGetInbound = Get-Content $fullPath\apim-policy\FunctionGetPolicy.xml -Raw
 
@@ -19,6 +19,7 @@ foreach($name in $apps.GetEnumerator())
     $rg = $resourceGroup
     
     $creds = Get-KuduCredentials $name $rg
+
     $functions = Get-Functions $name $creds
     Write-Output "Loop Functions in App"
     foreach($func in $functions)
