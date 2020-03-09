@@ -222,9 +222,7 @@
                 "value":"<policies></policies>",
                 "format":"xml"
             }         
-        },                   
-
-
+        }                 
     ],
 
     "outputs":{ }
