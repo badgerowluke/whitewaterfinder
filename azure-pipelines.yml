@@ -216,6 +216,7 @@ stages:
   - job: 'backend_security'
     pool:
       vmImage: 'windows-latest'
+    dependsOn: 'backend_app_deployment'
     steps:
       
       
