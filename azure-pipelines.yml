@@ -3,7 +3,7 @@ trigger:
     - master  
 
 stages: 
-- template: templates/build.yml
+- template: build.yml
 
 - stage: Deploy
   jobs:
