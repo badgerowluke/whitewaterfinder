@@ -1,15 +1,55 @@
 stages:
 - stage: Deploy
   jobs:
-    - template: 'pipeline-templates/deploy/global-services.yml'        
+  - job: 'shared'
+    pool:
+      vmImage: 'windows-latest'
+    steps:
+
+   
+
+    - task: AzureResourceGroupDeployment@2
+      condition: startsWith(variables['build.sourceBranch'], 'refs/tags/prod')
+      displayName: 'Deploy Prod: Shared Azure Resources'
+      inputs:
+        azureSubscription: 'whitewaterfinder-sp'
+        resourceGroupName: $(resourceGroup)
+        location: '$(azureRegion)'
+        csmFile: 'whitewaterfinder.infrastructure/sharedresources.json'
+        csmParametersFile: 'whitewaterfinder.infrastructure/sharedresourcesparams.json'
+        overrideParameters: '-storageAccountType "Standard_LRS" -appName "paddle-finder" -preferencesApp "paddle-finder-preferences" '           
+    
+    - task: AzureResourceGroupDeployment@2
+      condition: startsWith(variables['build.sourceBranch'], 'refs/tags/dev')
+      displayName: 'Deploy Dev: Shared Azure Resources'
+      inputs:
+        azureSubscription: 'whitewaterfinder-sp'
+        resourceGroupName: $(resourceGroup)
+        location: '$(azureRegion)'
+        csmFile: 'whitewaterfinder.infrastructure/sharedresources.json'
+        csmParametersFile: 'whitewaterfinder.infrastructure/sharedresourcesparams.json'
+        overrideParameters: '-storageAccountType "Standard_LRS" -appName "paddle-finder" -preferencesApp "paddle-finder-preferences" '           
 
   - job: 'backend_infra'
     dependsOn: 'shared'
     pool:
       vmImage: 'windows-latest'
-    steps:
+    steps:     
+        
+   
+
+
+    - task: AzureCLI@2
+      displayName: 'Get Azure Search Query Key'
+      inputs: 
+        azureSubscription: 'whitewaterfinder-sp'
+        scriptType: ps
+        scriptLocation: 'scriptPath'
+        ScriptPath: 'whitewaterfinder.infrastructure/getazuresearchkey.ps1'
+        ScriptArguments: '$(resourceGroup)'      
+  
+
     - task: AzureResourceGroupDeployment@2
-      condition: startsWith(variables['build.sourceBranch'], 'refs/tags/prod')
       displayName: 'Deploy backend ARM Template'
       inputs:
         azureSubscription: 'whitewaterfinder-sp'
@@ -20,7 +60,6 @@ stages:
         overrideParameters: '-storageAccountType "Standard_LRS" -appName "paddle-finder" -appPlanName "WaterFinderPlan" -preferencesApp "paddle-finder-preferences"  -azureSearchKey $(searchKey)'       
         
     - task: AzureCLI@2
-      condition: startsWith(variables['build.sourceBranch'], 'refs/tags/prod')        
       displayName: 'Build Azure Search Index'
       inputs:
         azureSubscription: 'whitewaterfinder-sp'
