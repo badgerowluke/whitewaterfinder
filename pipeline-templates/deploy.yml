@@ -7,10 +7,7 @@ stages:
     dependsOn: 'shared'
     pool:
       vmImage: 'windows-latest'
-    steps:     
-
-  
-
+    steps:
     - task: AzureResourceGroupDeployment@2
       condition: startsWith(variables['build.sourceBranch'], 'refs/tags/prod')
       displayName: 'Deploy backend ARM Template'
