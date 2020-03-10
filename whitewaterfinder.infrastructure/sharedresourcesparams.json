@@ -4,7 +4,7 @@
     "parameters": {
         "appName":{"value": "paddle-finder" },
         "preferencesApp": { "value" : "paddle-finder-preferences" },
-        "storageAccountName": { "value" : "waterfinder" },
-        "azureSearchName" : { "value": "waterfindersearch" }    
+        "storageAccountName": { "value" : "waterfinder" }
+
     }
 }
