@@ -9,6 +9,7 @@ stages:
    
 
     - task: AzureResourceGroupDeployment@2
+      condition: startsWith(variables['build.sourceBranch'], 'refs/tags/prod')
       displayName: 'Deploy Shared Azure Resources'
       inputs:
         azureSubscription: 'whitewaterfinder-sp'

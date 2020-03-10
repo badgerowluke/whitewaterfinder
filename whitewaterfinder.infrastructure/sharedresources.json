@@ -23,7 +23,7 @@
                 "description": "Location for all resources."
             }
         },
-        "azureSearchName": { "type" : "string", "defaultValue": "waterfindersearch" },
+
         "preferencesApp" : { "type" : "string" , "defaultValue" : "paddle-finder-preferences" },
         "storageAccountName": { "type" : "string","defaultValue": "waterfinder" }
     },
@@ -34,28 +34,11 @@
             "apiVersion": "2015-05-01",
             "name":"[parameters('appName')]",
             "location":"[parameters('location')]", 
-            "tags": {
-                "hidden-link:/subscriptions/{%%subscription%%}/resourceGroups/waterfinder/providers/Microsoft.Web/sites/paddle-finder": "Resource",
-                "hidden-link:/subscriptions/{%%subscription%%}/resourceGroups/waterfinder/providers/Microsoft.Web/sites/paddle-finder-preferences": "Resource"
-            },        
+     
             "kind":"web",
             "properties" : {
                 "Application_Type": "web",
                 "Request_Source": "rest"
-            }
-        },
-        {
-            "type": "Microsoft.Search/searchServices",
-            "apiVersion": "2015-08-19",
-            "name": "[parameters('azureSearchName')]",
-            "location": "[parameters('location')]",
-            "sku": {
-                "name": "free"
-            }, 
-            "properties" : {
-                "replicaCount": 1,
-                "partitionCount": 1,
-                "hostingMode": "Default"
             }
         },
         {
