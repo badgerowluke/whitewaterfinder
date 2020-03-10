@@ -1,7 +1,7 @@
 stages:
 - stage: Deploy
   jobs:
-    - template: 'deploy/global-services.yml'        
+    - template: 'pipeline-templates/deploy/global-services.yml'        
 
   - job: 'backend_infra'
     dependsOn: 'shared'
