@@ -1,4 +1,4 @@
-steps:
+
 - task: AzureResourceGroupDeployment@2
     displayName: 'Deploy Shared Azure Resources'
     inputs:
