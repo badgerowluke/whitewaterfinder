@@ -6,59 +6,25 @@ stages:
       vmImage: 'windows-latest'
     steps:
 
-   
-
     - task: AzureResourceGroupDeployment@2
-      condition: startsWith(variables['build.sourceBranch'], 'refs/tags/prod')
-      displayName: 'Deploy Prod: Shared Azure Resources'
+      displayName: 'Deploy Shared Azure Resources'
       inputs:
         azureSubscription: 'whitewaterfinder-sp'
-        resourceGroupName: $(resourceGroup)
+        resourceGroupName: $(resourceGroupDev)
         location: '$(azureRegion)'
         csmFile: 'whitewaterfinder.infrastructure/sharedresources.json'
         csmParametersFile: 'whitewaterfinder.infrastructure/sharedresourcesparams.json'
-        overrideParameters: '-storageAccountType "Standard_LRS" -appName "paddle-finder" -preferencesApp "paddle-finder-preferences" '           
+        overrideParameters: '-storageAccountType "Standard_LRS" -appName "dev-paddle-finder" -preferencesApp "dev-paddle-finder-preferences" '                 
     
     - task: AzureResourceGroupDeployment@2
-      condition: startsWith(variables['build.sourceBranch'], 'refs/tags/dev')
-      displayName: 'Deploy Dev: Shared Azure Resources'
+      displayName: 'Build Global (Search) Resources'
       inputs:
         azureSubscription: 'whitewaterfinder-sp'
-        resourceGroupName: $(resourceGroup)
+        resourceGroupName: 'brgs-global' #this is a thing that needs to be addressed.
         location: '$(azureRegion)'
-        csmFile: 'whitewaterfinder.infrastructure/sharedresources.json'
-        csmParametersFile: 'whitewaterfinder.infrastructure/sharedresourcesparams.json'
-        overrideParameters: '-storageAccountType "Standard_LRS" -appName "paddle-finder" -preferencesApp "paddle-finder-preferences" '           
+        csmFile: 'whitewaterfinder.infrastructure/global-services.json'
+        csmParameetersFile: 'whitewaterfinder.infrastructure/global-services-params.json'
 
-  - job: 'backend_infra'
-    dependsOn: 'shared'
-    pool:
-      vmImage: 'windows-latest'
-    steps:     
-        
-   
-
-
-    - task: AzureCLI@2
-      displayName: 'Get Azure Search Query Key'
-      inputs: 
-        azureSubscription: 'whitewaterfinder-sp'
-        scriptType: ps
-        scriptLocation: 'scriptPath'
-        ScriptPath: 'whitewaterfinder.infrastructure/getazuresearchkey.ps1'
-        ScriptArguments: '$(resourceGroup)'      
-  
-
-    - task: AzureResourceGroupDeployment@2
-      displayName: 'Deploy backend ARM Template'
-      inputs:
-        azureSubscription: 'whitewaterfinder-sp'
-        resourceGroupName: $(resourceGroup)
-        location: '$(azureRegion)'
-        csmFile: 'whitewaterfinder.infrastructure/azuredeploy.json'
-        csmParametersFile: 'whitewaterfinder.infrastructure/parameters.json'
-        overrideParameters: '-storageAccountType "Standard_LRS" -appName "paddle-finder" -appPlanName "WaterFinderPlan" -preferencesApp "paddle-finder-preferences"  -azureSearchKey $(searchKey)'       
-        
     - task: AzureCLI@2
       displayName: 'Build Azure Search Index'
       inputs:
@@ -66,7 +32,35 @@ stages:
         scriptType: ps
         scriptLocation: 'scriptPath'
         ScriptPath: 'whitewaterfinder.infrastructure/deployment.ps1'
-        ScriptArguments: '$(resourceGroup) "whitewaterfinder.infrastructure/riverswithid.json"'
+        ScriptArguments: '$(resourceGroup) "whitewaterfinder.infrastructure/riverswithid.json"'          
+
+  - job: 'backend_infra'
+    dependsOn: 'shared'
+    pool:
+      vmImage: 'windows-latest'
+    steps:     
+    
+    - task: AzureCLI@2
+      displayName: 'Get Azure Search Query Key'
+      inputs: 
+        azureSubscription: 'whitewaterfinder-sp'
+        scriptType: ps
+        scriptLocation: 'scriptPath'
+        ScriptPath: 'whitewaterfinder.infrastructure/getazuresearchkey.ps1'
+        ScriptArguments: '$(resourceGroup)'   
+
+
+    - task: AzureResourceGroupDeployment@2
+      displayName: 'Deploy backend ARM Template'
+      inputs:
+        azureSubscription: 'whitewaterfinder-sp'
+        resourceGroupName: $(resourceGroupDev)
+        location: '$(azureRegion)'
+        csmFile: 'whitewaterfinder.infrastructure/azuredeploy.json'
+        csmParametersFile: 'whitewaterfinder.infrastructure/parameters.json'
+        overrideParameters: '-storageAccountType "Standard_LRS" -appName "devpaddle-finder" -appPlanName "WaterFinderPlan" -preferencesApp "paddle-finder-preferences"  -azureSearchKey $(searchKey)'       
+        
+
       
   - job: 'backend_app_deployment'
     pool:
