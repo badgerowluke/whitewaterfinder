@@ -1,6 +1,5 @@
 steps:
 - task: AzureResourceGroupDeployment@2
-    condition: startsWith(variables['build.sourceBranch'], 'refs/tags/prod')
     displayName: 'Deploy Shared Azure Resources'
     inputs:
     azureSubscription: 'whitewaterfinder-sp'
@@ -11,7 +10,6 @@ steps:
     overrideParameters: '-storageAccountType "Standard_LRS" -appName "paddle-finder" -preferencesApp "paddle-finder-preferences" '           
 
 - task: AzureCLI@2
-    condition: startsWith(variables['build.sourceBranch'], 'refs/tags/prod')
     displayName: 'Get Azure Search Query Key'
     inputs: 
     azureSubscription: 'whitewaterfinder-sp'
