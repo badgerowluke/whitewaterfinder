@@ -10,7 +10,23 @@ stages:
         displayName: 'Push infra scripts'
         inputs:
           PathtoPublish: 'whitewaterfinder.infrastructure/'
-          ArtifactName: infra        
+          ArtifactName: infra      
+          
+    - task: qetza.replacetokens.replacetokens-task.replacetokens@3
+      displayName: 'Replace tokens in azuredeploy.json'
+      inputs:
+        rootDirectory: 'whitewaterfinder.infrastructure/'
+        targetFiles: sharedresources.json
+        tokenPrefix: '{%%'
+        tokenSuffix: '%%}'    
+
+    - task: qetza.replacetokens.replacetokens-task.replacetokens@3
+      displayName: 'Replace tokens in azuredeploy.json'
+      inputs:
+        rootDirectory: 'whitewaterfinder.infrastructure/'
+        targetFiles: azuredeploy.json
+        tokenPrefix: '{%%'
+        tokenSuffix: '%%}'                         
 
   - job: build_dotnet
     pool:
