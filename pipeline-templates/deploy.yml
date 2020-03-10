@@ -1,17 +1,16 @@
 stages:
 - stage: Deploy
   jobs:
-  - job: 'shared'
-    pool:
-      vmImage: 'windows-latest'
-    steps:
-    - template: deploy/global-services.yml     
+    - template: 'deploy/global-services.yml'        
 
   - job: 'backend_infra'
     dependsOn: 'shared'
     pool:
       vmImage: 'windows-latest'
     steps:     
+
+  
+
     - task: AzureResourceGroupDeployment@2
       condition: startsWith(variables['build.sourceBranch'], 'refs/tags/prod')
       displayName: 'Deploy backend ARM Template'
