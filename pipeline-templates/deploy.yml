@@ -5,7 +5,6 @@ stages:
     pool:
       vmImage: 'windows-latest'
     steps:
-    condition: startsWith(variables['build.sourceBranch'], 'refs/tags/prod')
     - template: deploy/global-services.yml     
 
   - job: 'backend_infra'
