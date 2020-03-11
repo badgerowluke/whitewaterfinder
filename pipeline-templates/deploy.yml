@@ -105,7 +105,7 @@ stages:
         displayName: 'Deploy APIM to waterfinder'
         inputs:
             azureSubscription: 'whitewaterfinder-sp'
-            resourceGroupName: $(resourceGroupDEv)
+            resourceGroupName: $(resourceGroupDev)
             location: '$(azureRegion)'
             csmFile: 'whitewaterfinder.infrastructure/apimdeploy.json'  
             csmParametersFile: 'whitewaterfinder.infrastructure/apimparameters.json'   
