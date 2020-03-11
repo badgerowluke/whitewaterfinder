@@ -161,7 +161,7 @@
                     ],
                     "alwaysOn": false
                 },
-                "serverFarmId": "[concat('/subscriptions/', '{%%subscription%%}','/resourcegroups/', 'waterfinder', '/providers/Microsoft.Web/serverfarms/', parameters('botAppName'))]",
+                "serverFarmId": "[concat('/subscriptions/', '{%%subscription%%}','/resourcegroups/', 'dev-waterfinder', '/providers/Microsoft.Web/serverfarms/', parameters('botAppName'))]",
                 "hostingEnvironment": "",
                 "clientAffinityEnabled": true
             }
