@@ -32,7 +32,7 @@ stages:
         scriptType: ps
         scriptLocation: 'scriptPath'
         ScriptPath: 'whitewaterfinder.infrastructure/deployment.ps1'
-        ScriptArguments: '$(resourceGroup) "whitewaterfinder.infrastructure/riverswithid.json"'          
+        ScriptArguments: 'brgs-global "whitewaterfinder.infrastructure/riverswithid.json"'          
 
   - job: 'backend_infra'
     dependsOn: 'shared'
@@ -47,7 +47,7 @@ stages:
         scriptType: ps
         scriptLocation: 'scriptPath'
         ScriptPath: 'whitewaterfinder.infrastructure/getazuresearchkey.ps1'
-        ScriptArguments: '$(resourceGroup)'   
+        ScriptArguments: 'brgs-global'   
 
 
     - task: AzureResourceGroupDeployment@2
