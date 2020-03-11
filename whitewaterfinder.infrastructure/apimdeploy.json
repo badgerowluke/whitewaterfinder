@@ -52,7 +52,7 @@
         {
             "type": "Microsoft.ApiManagement/service/apis/operations",
             "apiVersion": "2019-01-01",
-            "name":"[concat(parameters('apimName'), '/paddle-finder/riverdetails')]",
+            "name":"[concat(parameters('apimName'), '/dev-paddle-finder/riverdetails')]",
             "dependsOn":[
                 "[resourceId('Microsoft.ApiManagement/service', parameters('apimName'))]",
                 "[resourceId('Microsoft.ApiManagement/service/apis', parameters('apimName'), parameters('appName'))]"
@@ -70,7 +70,7 @@
         {
             "type": "Microsoft.ApiManagement/service/apis/operations/policies",
             "apiVersion":"2019-01-01",
-            "name":"[concat(parameters('apimName'), '/paddle-finder/riverdetails/policy')]",
+            "name":"[concat(parameters('apimName'), '/dev-paddle-finder/riverdetails/policy')]",
             "dependsOn":[
                 "[resourceId('Microsoft.ApiManagement/service', parameters('apimName'))]",
                 "[resourceId('Microsoft.ApiManagement/service/apis', parameters('apimName'), parameters('appName'))]",
@@ -84,7 +84,7 @@
         {
             "type": "Microsoft.ApiManagement/service/apis/operations",
             "apiVersion": "2019-01-01",
-            "name":"[concat(parameters('apimName'), '/paddle-finder/rivers')]",
+            "name":"[concat(parameters('apimName'), '/dev-paddle-finder/rivers')]",
             "dependsOn":[
                 "[resourceId('Microsoft.ApiManagement/service', parameters('apimName'))]",
                 "[resourceId('Microsoft.ApiManagement/service/apis', parameters('apimName'), parameters('appName'))]"
@@ -101,7 +101,7 @@
         {
             "type": "Microsoft.ApiManagement/service/apis/operations/policies",
             "apiVersion":"2019-01-01",
-            "name":"[concat(parameters('apimName'), '/paddle-finder/rivers/policy')]",
+            "name":"[concat(parameters('apimName'), '/dev-paddle-finder/rivers/policy')]",
             "dependsOn":[
                 "[resourceId('Microsoft.ApiManagement/service', parameters('apimName'))]",
                 "[resourceId('Microsoft.ApiManagement/service/apis', parameters('apimName'), parameters('appName'))]",
@@ -115,7 +115,7 @@
         {
             "type": "Microsoft.ApiManagement/service/apis/operations",
             "apiVersion": "2019-01-01",
-            "name":"[concat(parameters('apimName'), '/paddle-finder/riversbystate')]",
+            "name":"[concat(parameters('apimName'), '/dev-paddle-finder/riversbystate')]",
             "dependsOn":[
                 "[resourceId('Microsoft.ApiManagement/service', parameters('apimName'))]",
                 "[resourceId('Microsoft.ApiManagement/service/apis', parameters('apimName'), parameters('appName'))]"
@@ -132,7 +132,7 @@
         {
             "type": "Microsoft.ApiManagement/service/apis/operations/policies",
             "apiVersion":"2019-01-01",
-            "name":"[concat(parameters('apimName'), '/paddle-finder/riversbystate/policy')]",
+            "name":"[concat(parameters('apimName'), '/dev-paddle-finder/riversbystate/policy')]",
             "dependsOn":[
                 "[resourceId('Microsoft.ApiManagement/service', parameters('apimName'))]",
                 "[resourceId('Microsoft.ApiManagement/service/apis', parameters('apimName'), parameters('appName'))]",
@@ -146,7 +146,7 @@
         {
             "type":"Microsoft.ApiManagement/service/apis",
             "apiVersion": "2019-01-01",
-            "name": "[concat(parameters('apimName'), '/paddle-finder-preferences')]",
+            "name": "[concat(parameters('apimName'), '/dev-paddle-finder-preferences')]",
             "dependsOn":[
 
                 "[resourceId('Microsoft.ApiManagement/service', parameters('apimName'))]"
@@ -164,7 +164,7 @@
         {
             "type": "Microsoft.ApiManagement/service/apis/operations",
             "apiVersion": "2019-01-01",
-            "name":"[concat(parameters('apimName'), '/paddle-finder-preferences/getuserpreferences')]",
+            "name":"[concat(parameters('apimName'), '/dev-paddle-finder-preferences/getuserpreferences')]",
             "dependsOn":[
                 "[resourceId('Microsoft.ApiManagement/service', parameters('apimName'))]",
                 "[resourceId('Microsoft.ApiManagement/service/apis', parameters('apimName'), parameters('preferencesApp'))]"
@@ -181,7 +181,7 @@
         {
             "type": "Microsoft.ApiManagement/service/apis/operations/policies",
             "apiVersion":"2019-01-01",
-            "name":"[concat(parameters('apimName'), '/paddle-finder-preferences/getuserpreferences/policy')]",
+            "name":"[concat(parameters('apimName'), '/dev-paddle-finder-preferences/getuserpreferences/policy')]",
             "dependsOn":[
                 "[resourceId('Microsoft.ApiManagement/service', parameters('apimName'))]",
                 "[resourceId('Microsoft.ApiManagement/service/apis', parameters('apimName'), parameters('preferencesApp'))]",
@@ -195,7 +195,7 @@
         {
             "type": "Microsoft.ApiManagement/service/apis/operations",
             "apiVersion": "2019-01-01",
-            "name":"[concat(parameters('apimName'), '/paddle-finder-preferences/postuserpreferences')]",
+            "name":"[concat(parameters('apimName'), '/dev-paddle-finder-preferences/postuserpreferences')]",
             "dependsOn":[
                 "[resourceId('Microsoft.ApiManagement/service', parameters('apimName'))]",
                 "[resourceId('Microsoft.ApiManagement/service/apis', parameters('apimName'), parameters('preferencesApp'))]"
@@ -212,7 +212,7 @@
         {
             "type": "Microsoft.ApiManagement/service/apis/operations/policies",
             "apiVersion":"2019-01-01",
-            "name":"[concat(parameters('apimName'), '/paddle-finder-preferences/postuserpreferences/policy')]",
+            "name":"[concat(parameters('apimName'), '/dev-paddle-finder-preferences/postuserpreferences/policy')]",
             "dependsOn":[
                 "[resourceId('Microsoft.ApiManagement/service', parameters('apimName'))]",
                 "[resourceId('Microsoft.ApiManagement/service/apis', parameters('apimName'), parameters('preferencesApp'))]",
