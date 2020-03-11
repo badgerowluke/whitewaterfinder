@@ -76,7 +76,7 @@ stages:
       inputs:
           azureSubscription: 'whitewaterfinder-sp'
           appType: functionapp
-          WebAppName: 'paddle-finder'
+          WebAppName: 'dev-paddle-finder'
           Package: '$(Pipeline.Workspace)/riversfunc/app.zip'
           TakeAppOfflineFlag: true      
           
@@ -89,7 +89,7 @@ stages:
       inputs:
           azureSubscription: 'whitewaterfinder-sp'
           appType: functionapp
-          WebAppName: 'paddle-finder-preferences'
+          WebAppName: 'dev-paddle-finder-preferences'
           Package: '$(Pipeline.Workspace)/preferencesfunc/app.zip'
           TakeAppOfflineFlag: true   
 
