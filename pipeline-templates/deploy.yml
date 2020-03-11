@@ -58,7 +58,7 @@ stages:
         location: '$(azureRegion)'
         csmFile: 'whitewaterfinder.infrastructure/azuredeploy.json'
         csmParametersFile: 'whitewaterfinder.infrastructure/parameters.json'
-        overrideParameters: '-storageAccountType "Standard_LRS" -appName "devpaddle-finder" -appPlanName "WaterFinderPlan" -preferencesApp "paddle-finder-preferences"  -azureSearchKey $(searchKey)'       
+        overrideParameters: '-storageAccountType "Standard_LRS" -appName "dev-paddle-finder" -appPlanName "WaterFinderPlan" -preferencesApp "dev-paddle-finder-preferences"  -azureSearchKey $(searchKey)'       
         
 
       
@@ -105,7 +105,7 @@ stages:
         displayName: 'Deploy APIM to waterfinder'
         inputs:
             azureSubscription: 'whitewaterfinder-sp'
-            resourceGroupName: $(resourceGroup)
+            resourceGroupName: $(resourceGroupDEv)
             location: '$(azureRegion)'
             csmFile: 'whitewaterfinder.infrastructure/apimdeploy.json'  
             csmParametersFile: 'whitewaterfinder.infrastructure/apimparameters.json'   
@@ -122,26 +122,20 @@ stages:
           scriptLocation: 'scriptPath'
           ScriptPath: '$(Pipeline.Workspace)/infra/apimdeploy.ps1'    
           azurePowerShellVersion: LatestVersion      
-          ScriptArguments: '$(resourceGroup) $(Pipeline.Workspace)\infra'            
+          ScriptArguments: '$(resourceGroupDev) $(Pipeline.Workspace)\infra'            
 
   - job: 'bot'
     dependsOn: 'backend_infra'
     pool:
       vmImage: 'windows-latest'
     steps:
-    - task: qetza.replacetokens.replacetokens-task.replacetokens@3
-      displayName: 'Replace tokens in botdeploy.json'
-      inputs:
-        rootDirectory: 'whitewaterfinder.infrastructure/'
-        targetFiles: botdeploy.json
-        tokenPrefix: '{%%'
-        tokenSuffix: '%%}'    
+
 
     - task: AzureResourceGroupDeployment@2
       displayName: 'Azure Deployment:Create Or Update Resource Group action on waterfinder'
       inputs:
         azureSubscription: 'whitewaterfinder-sp'
-        resourceGroupName: $(resourceGroup)
+        resourceGroupName: $(resourceGroupDev)
         location: '$(azureRegion)'
         csmFile: 'whitewaterfinder.infrastructure/botdeploy.json'
         csmParametersFile: 'whitewaterfinder.infrastructure/botparams.json'         

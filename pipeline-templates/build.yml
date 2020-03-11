@@ -26,7 +26,15 @@ stages:
           rootDirectory: 'whitewaterfinder.infrastructure/'
           targetFiles: azuredeploy.json
           tokenPrefix: '{%%'
-          tokenSuffix: '%%}'                         
+          tokenSuffix: '%%}'     
+
+      - task: qetza.replacetokens.replacetokens-task.replacetokens@3
+        displayName: 'Replace tokens in botdeploy.json'
+        inputs:
+          rootDirectory: 'whitewaterfinder.infrastructure/'
+          targetFiles: botdeploy.json
+          tokenPrefix: '{%%'
+          tokenSuffix: '%%}'                                  
 
   - job: build_dotnet
     pool:
