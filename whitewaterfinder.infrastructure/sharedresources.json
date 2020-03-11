@@ -34,10 +34,7 @@
             "apiVersion": "2015-05-01",
             "name":"[parameters('appName')]",
             "location":"[parameters('location')]", 
-            "tags": {
-                "hidden-link:/subscriptions/{%%subscription%%}/resourceGroups/waterfinder/providers/Microsoft.Web/sites/paddle-finder": "Resource",
-                "hidden-link:/subscriptions/{%%subscription%%}/resourceGroups/waterfinder/providers/Microsoft.Web/sites/paddle-finder-preferences": "Resource"
-            },        
+     
             "kind":"web",
             "properties" : {
                 "Application_Type": "web",

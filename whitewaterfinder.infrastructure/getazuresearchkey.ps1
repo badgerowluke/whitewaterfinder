@@ -4,9 +4,8 @@ param (
 
 
 
-$searchService = $resourceGroup + "search"
-Write-Output $searchService
-$key = az search query-key list --resource-group $resourceGroup --service-name $searchService | ConvertFrom-Json
+
+$key = az search query-key list --resource-group $resourceGroup --service-name 'waterfindersearch' | ConvertFrom-Json
 Write-Output $key.key
 
 

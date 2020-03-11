@@ -6,47 +6,25 @@ stages:
       vmImage: 'windows-latest'
     steps:
 
-   
-
     - task: AzureResourceGroupDeployment@2
       displayName: 'Deploy Shared Azure Resources'
       inputs:
         azureSubscription: 'whitewaterfinder-sp'
-        resourceGroupName: $(resourceGroup)
+        resourceGroupName: $(resourceGroupDev)
         location: '$(azureRegion)'
         csmFile: 'whitewaterfinder.infrastructure/sharedresources.json'
         csmParametersFile: 'whitewaterfinder.infrastructure/sharedresourcesparams.json'
-        overrideParameters: '-storageAccountType "Standard_LRS" -appName "paddle-finder" -preferencesApp "paddle-finder-preferences" '           
-
-  - job: 'backend_infra'
-    dependsOn: 'shared'
-    pool:
-      vmImage: 'windows-latest'
-    steps:     
-        
-   
-
-
-    - task: AzureCLI@2
-      displayName: 'Get Azure Search Query Key'
-      inputs: 
-        azureSubscription: 'whitewaterfinder-sp'
-        scriptType: ps
-        scriptLocation: 'scriptPath'
-        ScriptPath: 'whitewaterfinder.infrastructure/getazuresearchkey.ps1'
-        ScriptArguments: '$(resourceGroup)'      
-  
-
+        overrideParameters: '-storageAccountType "Standard_LRS" -appName "dev-paddle-finder" -preferencesApp "dev-paddle-finder-preferences" '                 
+    
     - task: AzureResourceGroupDeployment@2
-      displayName: 'Deploy backend ARM Template'
+      displayName: 'Build Global (Search) Resources'
       inputs:
         azureSubscription: 'whitewaterfinder-sp'
-        resourceGroupName: $(resourceGroup)
+        resourceGroupName: 'brgs-global' #this is a thing that needs to be addressed.
         location: '$(azureRegion)'
-        csmFile: 'whitewaterfinder.infrastructure/azuredeploy.json'
-        csmParametersFile: 'whitewaterfinder.infrastructure/parameters.json'
-        overrideParameters: '-storageAccountType "Standard_LRS" -appName "paddle-finder" -appPlanName "WaterFinderPlan" -preferencesApp "paddle-finder-preferences"  -azureSearchKey $(searchKey)'       
-        
+        csmFile: 'whitewaterfinder.infrastructure/global-services.json'
+        csmParameetersFile: 'whitewaterfinder.infrastructure/global-services-params.json'
+
     - task: AzureCLI@2
       displayName: 'Build Azure Search Index'
       inputs:
@@ -54,7 +32,35 @@ stages:
         scriptType: ps
         scriptLocation: 'scriptPath'
         ScriptPath: 'whitewaterfinder.infrastructure/deployment.ps1'
-        ScriptArguments: '$(resourceGroup) "whitewaterfinder.infrastructure/riverswithid.json"'
+        ScriptArguments: 'brgs-global "whitewaterfinder.infrastructure/riverswithid.json"'          
+
+  - job: 'backend_infra'
+    dependsOn: 'shared'
+    pool:
+      vmImage: 'windows-latest'
+    steps:     
+    
+    - task: AzureCLI@2
+      displayName: 'Get Azure Search Query Key'
+      inputs: 
+        azureSubscription: 'whitewaterfinder-sp'
+        scriptType: ps
+        scriptLocation: 'scriptPath'
+        ScriptPath: 'whitewaterfinder.infrastructure/getazuresearchkey.ps1'
+        ScriptArguments: 'brgs-global'   
+
+
+    - task: AzureResourceGroupDeployment@2
+      displayName: 'Deploy backend ARM Template'
+      inputs:
+        azureSubscription: 'whitewaterfinder-sp'
+        resourceGroupName: $(resourceGroupDev)
+        location: '$(azureRegion)'
+        csmFile: 'whitewaterfinder.infrastructure/azuredeploy.json'
+        csmParametersFile: 'whitewaterfinder.infrastructure/parameters.json'
+        overrideParameters: '-storageAccountType "Standard_LRS" -appName "dev-paddle-finder" -appPlanName "WaterFinderPlan" -preferencesApp "dev-paddle-finder-preferences"  -azureSearchKey $(searchKey)'       
+        
+
       
   - job: 'backend_app_deployment'
     pool:
@@ -70,7 +76,7 @@ stages:
       inputs:
           azureSubscription: 'whitewaterfinder-sp'
           appType: functionapp
-          WebAppName: 'paddle-finder'
+          WebAppName: 'dev-paddle-finder'
           Package: '$(Pipeline.Workspace)/riversfunc/app.zip'
           TakeAppOfflineFlag: true      
           
@@ -83,7 +89,7 @@ stages:
       inputs:
           azureSubscription: 'whitewaterfinder-sp'
           appType: functionapp
-          WebAppName: 'paddle-finder-preferences'
+          WebAppName: 'dev-paddle-finder-preferences'
           Package: '$(Pipeline.Workspace)/preferencesfunc/app.zip'
           TakeAppOfflineFlag: true   
 
@@ -99,7 +105,7 @@ stages:
         displayName: 'Deploy APIM to waterfinder'
         inputs:
             azureSubscription: 'whitewaterfinder-sp'
-            resourceGroupName: $(resourceGroup)
+            resourceGroupName: $(resourceGroupDev)
             location: '$(azureRegion)'
             csmFile: 'whitewaterfinder.infrastructure/apimdeploy.json'  
             csmParametersFile: 'whitewaterfinder.infrastructure/apimparameters.json'   
@@ -116,26 +122,20 @@ stages:
           scriptLocation: 'scriptPath'
           ScriptPath: '$(Pipeline.Workspace)/infra/apimdeploy.ps1'    
           azurePowerShellVersion: LatestVersion      
-          ScriptArguments: '$(resourceGroup) $(Pipeline.Workspace)\infra'            
+          ScriptArguments: '$(resourceGroupDev) $(Pipeline.Workspace)\infra'            
 
   - job: 'bot'
     dependsOn: 'backend_infra'
     pool:
       vmImage: 'windows-latest'
     steps:
-    - task: qetza.replacetokens.replacetokens-task.replacetokens@3
-      displayName: 'Replace tokens in botdeploy.json'
-      inputs:
-        rootDirectory: 'whitewaterfinder.infrastructure/'
-        targetFiles: botdeploy.json
-        tokenPrefix: '{%%'
-        tokenSuffix: '%%}'    
+
 
     - task: AzureResourceGroupDeployment@2
       displayName: 'Azure Deployment:Create Or Update Resource Group action on waterfinder'
       inputs:
         azureSubscription: 'whitewaterfinder-sp'
-        resourceGroupName: $(resourceGroup)
+        resourceGroupName: $(resourceGroupDev)
         location: '$(azureRegion)'
         csmFile: 'whitewaterfinder.infrastructure/botdeploy.json'
         csmParametersFile: 'whitewaterfinder.infrastructure/botparams.json'         
