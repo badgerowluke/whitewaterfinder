@@ -109,7 +109,7 @@ stages:
             location: '$(azureRegion)'
             csmFile: 'whitewaterfinder.infrastructure/apimdeploy.json'  
             csmParametersFile: 'whitewaterfinder.infrastructure/apimparameters.json'   
-            overrideParameters: -adminEmail "$(adminEmail)"   
+            overrideParameters: -adminEmail "$(adminEmail)"" -appName "dev-paddle-finder" -preferencesApp "dev-paddle-finder-preferences"   
         
       - download: current
         artifact: infra

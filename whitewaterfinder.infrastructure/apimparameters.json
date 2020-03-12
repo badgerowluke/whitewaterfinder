@@ -3,6 +3,8 @@
     "contentVersion":"1.0.0.0",
     "parameters":{
         "adminEmail": { "value": "" },
-        "orgName": { "value": "burning-river-geospatial-solutions" }
+        "orgName": { "value": "burning-river-geospatial-solutions" },
+        "preferencesApp": { "value": "paddle-finder-preferences" },
+        "appName": { "value": "paddle-finder" }
     }
 }
