@@ -139,7 +139,7 @@ stages:
         location: '$(azureRegion)'
         csmFile: 'whitewaterfinder.infrastructure/botdeploy.json'
         csmParametersFile: 'whitewaterfinder.infrastructure/botparams.json' 
-        overrideParameters: '-botInsightsName "dev-paddle-finder" -botAppName "dev-whitewaterwebster"'        
+        overrideParameters: '-botInsightsName "dev-paddle-finder"'        
 
     - download: current
       artifact: websterbot    
