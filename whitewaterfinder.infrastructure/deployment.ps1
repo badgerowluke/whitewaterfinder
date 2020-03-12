@@ -52,7 +52,7 @@ if($key)
         'Accept' = 'application/json'
     }
     $url = "https://waterfindersearch.search.windows.net/indexes/riversearch-index?api-version=2019-05-06"
-    $putResult = Invoke-RestMethod -Uri $url -Headers $indexHeaders -Method Put -Body $body
+    Invoke-RestMethod -Uri $url -Headers $indexHeaders -Method Put -Body $body
 
 
 
