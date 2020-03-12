@@ -1,5 +1,5 @@
 stages:
-- stage: Deploy Global
+- stage: Deploy_Global
   jobs:
   - job: 'shared'
     pool:
