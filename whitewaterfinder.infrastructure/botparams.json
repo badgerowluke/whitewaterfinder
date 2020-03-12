@@ -4,6 +4,7 @@
     "parameters":{
         "luisName": { "value" : "webster-luis" },
         "authoringName": { "value" : "webster-luis-Authoring" },
-        "botAppName": { "value": "WhitewaterWebster" }        
+        "botAppName": { "value": "WhitewaterWebster" },
+        "botInsightsName": { "value": "paddle-finder" }      
     }    
 }

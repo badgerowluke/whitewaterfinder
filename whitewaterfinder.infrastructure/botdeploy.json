@@ -11,7 +11,8 @@
         },        
         "luisName": { "type" : "string", "defaultValue": "webster-luis" },
         "authoringName": { "type" : "string", "defaultValue" : "webster-luis-Authoring"},
-        "botAppName": { "type" : "string", "defaultValue": "WhitewaterWebster" }
+        "botAppName": { "type" : "string", "defaultValue": "WhitewaterWebster" },
+        "botInsightsName": { "type": "string", "defaultValue": "paddle-finder" }
     },
     "variables":{},
     "resources":[
@@ -118,7 +119,7 @@
                         },                        
                         {
                             "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
-                         "value":"[reference(resourceId('microsoft.insights/components/', 'paddle-finder'), '2015-05-01').InstrumentationKey]"
+                            "value":"[reference(resourceId('microsoft.insights/components/', parameters('botInsightsName')), '2015-05-01').InstrumentationKey]"
                         },
                         {
                             "name": "ApplicationInsightsAgent_EXTENSION_VERSION",
