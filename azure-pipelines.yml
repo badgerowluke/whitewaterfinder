@@ -18,10 +18,10 @@ stages:
   parameters:
     stageTitle: "DevAppDeploy"
     appName: 'dev-paddle-finder'
-    resourceGroup: '$(resrourceGroupDev)'
+    resourceGroup: '$(resourceGroupDev)'
     region: '$(azureRegion)'
   
-
+## Begin Production Deployment
 # - template: 'pipeline-templates/deployInfra.yml'
 #   parameters:
 #     stageTitle: 'DeployProdInfrastructure'
