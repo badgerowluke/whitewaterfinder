@@ -25,7 +25,16 @@ stages:
     pool:
       vmImage: 'windows-latest'
     steps:     
-    
+    - task: AzureResourceGroupDeployment@2
+      displayName: 'Deploy Shared Azure Resources'
+      inputs:
+        azureSubscription: 'whitewaterfinder-sp'
+        resourceGroupName: '${{parameters.resourceGroup}}'
+        location: '${{parameters.region}}'
+        csmFile: 'whitewaterfinder.infrastructure/sharedresources.json'
+        csmParametersFile: 'whitewaterfinder.infrastructure/sharedresourcesparams.json'
+        overrideParameters: '-storageAccountType "${{parameters.storageAccountType}}" -appName "${{parameters.appName}}" -preferencesApp "${{parameters.appName}}-preferences" -storageAccountName "${{parameters.storageAccountName}}"'           
+
     - task: AzureCLI@2
       displayName: 'Get Azure Search Query Key'
       inputs: 
@@ -51,7 +60,7 @@ stages:
         location: '${{parameters.region}}'
         csmFile: 'whitewaterfinder.infrastructure/azuredeploy.json'
         csmParametersFile: 'whitewaterfinder.infrastructure/parameters.json'
-        overrideParameters: '-storageAccountName ${{parameters.storageAccountName}} -storageAccountType "${{parameters.storageAccountType}}" -appName "${{parameters.appName}}" -appPlanName "WaterFinderPlan" -preferencesApp "dev-paddle-finder-preferences"  -azureSearchKey $(searchKey)'       
+        overrideParameters: '-storageAccountName ${{parameters.storageAccountName}} -storageAccountType "${{parameters.storageAccountType}}" -appName "${{parameters.appName}}" -appPlanName "WaterFinderPlan" -preferencesApp "${{parameters.appName}}-preferences"  -azureSearchKey $(searchKey)'       
 
     - task: AzureResourceGroupDeployment@2
       displayName: 'Deploy AKV'
