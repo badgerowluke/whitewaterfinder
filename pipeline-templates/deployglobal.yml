@@ -14,7 +14,7 @@ stages:
         location: '$(azureRegion)'
         csmFile: 'whitewaterfinder.infrastructure/sharedresources.json'
         csmParametersFile: 'whitewaterfinder.infrastructure/sharedresourcesparams.json'
-        overrideParameters: '-storageAccountType "Standard_LRS" -appName "dev-paddle-finder" -preferencesApp "dev-paddle-finder-preferences" -storageAccountName "dev-waterfinder"'                 
+        overrideParameters: '-storageAccountType "Standard_LRS" -appName "dev-paddle-finder" -preferencesApp "dev-paddle-finder-preferences" -storageAccountName "devwaterfinder"'                 
     
     - task: AzureResourceGroupDeployment@2
       displayName: 'Build Global (Search) Resources'
