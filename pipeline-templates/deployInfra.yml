@@ -66,35 +66,7 @@ stages:
 
 
 
-  - job: 'backend_security'
-    pool:
-      vmImage: 'windows-latest'
-    dependsOn: 'backend_app_deployment'
-    steps:
-      
-      
-      - task: AzureResourceGroupDeployment@2
-        displayName: 'Deploy APIM to waterfinder'
-        inputs:
-            azureSubscription: 'whitewaterfinder-sp'
-            resourceGroupName: ${{parameters.resourceGroup}}
-            location: '${{parameters.region}}'
-            csmFile: 'whitewaterfinder.infrastructure/apimdeploy.json'  
-            csmParametersFile: 'whitewaterfinder.infrastructure/apimparameters.json'   
-            overrideParameters: '-adminEmail "$(adminEmail)" -appName "${{parameters.appName}}" -preferencesApp "dev-paddle-finder-preferences"'   
-        
-      - download: current
-        artifact: infra
-
-      - task: AzureCLI@2
-        displayName: 'Configure APIM'
-        inputs:
-          azureSubscription: 'whitewaterfinder-sp'
-          scriptType: ps
-          scriptLocation: 'scriptPath'
-          ScriptPath: '$(Pipeline.Workspace)/infra/apimdeploy.ps1'    
-          azurePowerShellVersion: LatestVersion      
-          ScriptArguments: '${{parameters.resourceGroup}} $(Pipeline.Workspace)\infra'            
+     
 
   - job: 'bot'
     dependsOn: 'backend_infra'

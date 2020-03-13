@@ -15,10 +15,12 @@ stages:
     storageAccountName: "devwaterfinder"
     appName: "dev-paddle-finder"
 
-- template: 'pipeline-templates/deployDevApp.yml'
+- template: 'pipeline-templates/deployApp.yml'
   parameters:
     stageTitle: "DevAppDeploy"
     appName: 'dev-paddle-finder'
+    resourceGroup: '$(resrourceGroupDev)'
+    region: '$(azureRegion)'
 
 
 
