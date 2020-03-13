@@ -4,6 +4,12 @@ parameters:
 - name: 'appName'
   type: string
   default: ''
+- name: 'resourceGroup'
+  type: string
+  default: ''
+- name: 'region'
+  type: string
+  default: 'North Central US'  
 
 stages:
 - stage: ${{parameters.stageTitle}}
