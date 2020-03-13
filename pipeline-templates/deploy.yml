@@ -2,7 +2,6 @@ stages:
 - stage: Deploy Dev
   jobs:
   - job: 'backend_infra'
-    dependsOn: 'shared'
     pool:
       vmImage: 'windows-latest'
     steps:     
@@ -33,7 +32,7 @@ stages:
         csmFile: 'whitewaterfinder.infrastructure/azuredeploy.json'
         csmParametersFile: 'whitewaterfinder.infrastructure/parameters.json'
         overrideParameters: '-storageAccountType "Standard_LRS" -appName "dev-paddle-finder" -appPlanName "WaterFinderPlan" -preferencesApp "dev-paddle-finder-preferences"  -azureSearchKey $(searchKey)'       
-        
+
   - job: 'backend_app_deployment'
     pool:
       vmImage: 'windows-latest'
