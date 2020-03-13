@@ -1,9 +1,12 @@
 parameters:
-- name: storageAccountName
+- name: 'storageAccountName'
+  type: string
   default: ''
-- name: storageAccountType
+- name: 'storageAccountType'
+  type: string
   default: 'Standard_LRS'
-- name: appName
+- name: 'appName'
+  type: string
   default: ''
 
 stages:
@@ -39,7 +42,7 @@ stages:
         location: '$(azureRegion)'
         csmFile: 'whitewaterfinder.infrastructure/azuredeploy.json'
         csmParametersFile: 'whitewaterfinder.infrastructure/parameters.json'
-        overrideParameters: '-storageAccountName "${{storageAccountName}}" -storageAccountType "${{storageAccountType}}" -appName "${{appName}}" -appPlanName "WaterFinderPlan" -preferencesApp "dev-paddle-finder-preferences"  -azureSearchKey $(searchKey)'       
+        overrideParameters: '-storageAccountName ${{parameters.storageAccountName}} -storageAccountType "${{parameters.storageAccountType}}" -appName "${{parameters.appName}}" -appPlanName "WaterFinderPlan" -preferencesApp "dev-paddle-finder-preferences"  -azureSearchKey $(searchKey)'       
 
     - task: AzureResourceGroupDeployment@2
       displayName: 'Deploy AKV'
