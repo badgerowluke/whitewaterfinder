@@ -6,6 +6,9 @@ stages:
 - template: 'pipeline-templates/build.yml'
 - template: 'pipeline-templates/deployglobal.yml'
 - template: 'pipeline-templates/deploy.yml'
+  parameters:
+    storageAccountName: "devwaterfinder"
+    appName: "dev-paddle-finder"
 
 
 
