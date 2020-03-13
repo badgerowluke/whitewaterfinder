@@ -33,6 +33,16 @@ stages:
         csmParametersFile: 'whitewaterfinder.infrastructure/parameters.json'
         overrideParameters: '-storageAccountType "Standard_LRS" -appName "dev-paddle-finder" -appPlanName "WaterFinderPlan" -preferencesApp "dev-paddle-finder-preferences"  -azureSearchKey $(searchKey)'       
 
+    - task: AzureResourceGoupDeployment@2
+      displayName: 'Deploy AKV'
+      inputs:
+        azureSubscription: 'whitewaterfinder-sp'
+        resourceGroupName: $(resourceGroupDev)
+        location: '$(azureRegion)'
+        csmFile: 'whitewaterfinder.infrastructure/kvtemplate.json'
+        csmParametersFile: 'whitewaterfinder.infrastructure/kvparameters.json'
+        overrideParameters: '-tenantId "$(tenantId)" -adminId "$(adminId)"'
+
   - job: 'backend_app_deployment'
     pool:
       vmImage: 'windows-latest'
