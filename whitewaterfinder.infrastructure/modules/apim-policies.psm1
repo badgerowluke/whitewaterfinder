@@ -11,8 +11,6 @@ function Set-OperationPolicy([string]$resourceGroup, [string] $name, [string]$ap
     $policy = $policy -replace '"', "\"""
     $policy = $policy -replace "`n", " " -replace "`r", " "
 
-
-    Write-Output "whitewater-finder/apis/$app/operations/$name/policies/policy"
     az resource update `
             -g $resourceGroup `
             -n "whitewater-finder/apis/$app/operations/$name/policies/policy" `
