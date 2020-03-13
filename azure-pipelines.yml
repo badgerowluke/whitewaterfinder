@@ -5,10 +5,20 @@ trigger:
 stages: 
 - template: 'pipeline-templates/build.yml'
 - template: 'pipeline-templates/deployglobal.yml'
-- template: 'pipeline-templates/deploy.yml'
+
+
+- template: 'pipeline-templates/deployInfra.yml'
   parameters:
+    stageTitle: 'DeployDevInfrastructure'
+    resourceGroup: '$(resrourceGroupDev)'
+    region: '$(azureRegion)'
     storageAccountName: "devwaterfinder"
     appName: "dev-paddle-finder"
+
+- template: 'pipeline-templates/deployDevApp.yml'
+  parameters:
+    stageTitle: "DevAppDeploy"
+    appName: 'dev-paddle-finder'
 
 
 

@@ -1,4 +1,13 @@
 parameters:
+- name: 'stageTitle'
+  type: string
+  default: ''
+- name: 'resourceGroup'
+  type: string
+  default: ''
+- name: 'region'
+  type: string
+  default: 'North Central US'
 - name: 'storageAccountName'
   type: string
   default: ''
@@ -10,7 +19,7 @@ parameters:
   default: ''
 
 stages:
-- stage: DeployDev
+- stage: ${{parameters.stageTitle}}
   jobs:
   - job: 'backend_infra'
     pool:
@@ -38,8 +47,8 @@ stages:
       displayName: 'Deploy backend ARM Template'
       inputs:
         azureSubscription: 'whitewaterfinder-sp'
-        resourceGroupName: $(resourceGroupDev)
-        location: '$(azureRegion)'
+        resourceGroupName: ${{parameters.resourceGroup}}
+        location: '${{parameters.region}}'
         csmFile: 'whitewaterfinder.infrastructure/azuredeploy.json'
         csmParametersFile: 'whitewaterfinder.infrastructure/parameters.json'
         overrideParameters: '-storageAccountName ${{parameters.storageAccountName}} -storageAccountType "${{parameters.storageAccountType}}" -appName "${{parameters.appName}}" -appPlanName "WaterFinderPlan" -preferencesApp "dev-paddle-finder-preferences"  -azureSearchKey $(searchKey)'       
@@ -48,42 +57,13 @@ stages:
       displayName: 'Deploy AKV'
       inputs:
         azureSubscription: 'whitewaterfinder-sp'
-        resourceGroupName: $(resourceGroupDev)
-        location: '$(azureRegion)'
+        resourceGroupName: ${{parameters.resourceGroup}}
+        location: '${{parameters.region}}'
         csmFile: 'whitewaterfinder.infrastructure/kvtemplate.json'
         csmParametersFile: 'whitewaterfinder.infrastructure/kvparameters.json'
         overrideParameters: '-tenantId "$(tenantId)" -adminId "$(adminId)"'
 
-  - job: 'backend_app_deployment'
-    pool:
-      vmImage: 'windows-latest'
-    dependsOn: 'backend_infra'
-    steps:
-    - download: current
-      displayName: 'download river apis'
-      artifact: riversfunc
-    
-    - task: AzureRmWebAppDeployment@3
-      displayName: 'Deploy River API'
-      inputs:
-          azureSubscription: 'whitewaterfinder-sp'
-          appType: functionapp
-          WebAppName: 'dev-paddle-finder'
-          Package: '$(Pipeline.Workspace)/riversfunc/app.zip'
-          TakeAppOfflineFlag: true      
-          
-    - download: current
-      displayName: 'download preferences apis'
-      artifact: preferencesfunc
-    
-    - task: AzureRmWebAppDeployment@3
-      displayName: 'Deploy Preferences API'
-      inputs:
-          azureSubscription: 'whitewaterfinder-sp'
-          appType: functionapp
-          WebAppName: 'dev-paddle-finder-preferences'
-          Package: '$(Pipeline.Workspace)/preferencesfunc/app.zip'
-          TakeAppOfflineFlag: true   
+
 
 
   - job: 'backend_security'
@@ -97,11 +77,11 @@ stages:
         displayName: 'Deploy APIM to waterfinder'
         inputs:
             azureSubscription: 'whitewaterfinder-sp'
-            resourceGroupName: $(resourceGroupDev)
-            location: '$(azureRegion)'
+            resourceGroupName: ${{parameters.resourceGroup}}
+            location: '${{parameters.region}}'
             csmFile: 'whitewaterfinder.infrastructure/apimdeploy.json'  
             csmParametersFile: 'whitewaterfinder.infrastructure/apimparameters.json'   
-            overrideParameters: '-adminEmail "$(adminEmail)" -appName "dev-paddle-finder" -preferencesApp "dev-paddle-finder-preferences"'   
+            overrideParameters: '-adminEmail "$(adminEmail)" -appName "${{parameters.appName}}" -preferencesApp "dev-paddle-finder-preferences"'   
         
       - download: current
         artifact: infra
@@ -114,7 +94,7 @@ stages:
           scriptLocation: 'scriptPath'
           ScriptPath: '$(Pipeline.Workspace)/infra/apimdeploy.ps1'    
           azurePowerShellVersion: LatestVersion      
-          ScriptArguments: '$(resourceGroupDev) $(Pipeline.Workspace)\infra'            
+          ScriptArguments: '${{parameters.resourceGroup}} $(Pipeline.Workspace)\infra'            
 
   - job: 'bot'
     dependsOn: 'backend_infra'
@@ -133,8 +113,8 @@ stages:
       displayName: 'Azure Deployment:Create Or Update Resource Group action on waterfinder'
       inputs:
         azureSubscription: 'whitewaterfinder-sp'
-        resourceGroupName: $(resourceGroupDev)
-        location: '$(azureRegion)'
+        resourceGroupName: ${{parameters.resourceGroup}}
+        location: '${{parameters.region}}'
         csmFile: 'whitewaterfinder.infrastructure/botdeploy.json'
         csmParametersFile: 'whitewaterfinder.infrastructure/botparams.json' 
         overrideParameters: '-botInsightsName "dev-paddle-finder"'        
