@@ -60,7 +60,7 @@ stages:
             location: '${{parameters.region}}'
             csmFile: 'whitewaterfinder.infrastructure/apimdeploy.json'  
             csmParametersFile: 'whitewaterfinder.infrastructure/apimparameters.json'   
-            overrideParameters: '-adminEmail "$(adminEmail)" -appName "${{parameters.appName}}" -preferencesApp "${{parametes.appName}}-preferences"'   
+            overrideParameters: '-adminEmail "$(adminEmail)" -appName "${{parameters.appName}}" -preferencesApp "${{parameters.appName}}-preferences"'   
         
       - download: current
         artifact: infra
