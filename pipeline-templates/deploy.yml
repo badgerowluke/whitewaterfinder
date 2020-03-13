@@ -1,5 +1,5 @@
 stages:
-- stage: Deploy Dev
+- stage: DeployDev
   jobs:
   - job: 'backend_infra'
     pool:
