@@ -3,6 +3,7 @@
     "contentVersion":"1.0.0.0",
     "parameters": {
         "tenantId": { "value": "not-supplied-currently" },
-        "adminId": { "value": "Luke" }
+        "adminId": { "value": "Luke" },
+        "kvName": { "value": ""}
     }
 }

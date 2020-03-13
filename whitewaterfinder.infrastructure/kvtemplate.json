@@ -10,14 +10,15 @@
             }
         },
         "tenantId": { "type": "string" }, 
-        "adminId": { "type": "string" }
+        "adminId": { "type": "string" },
+        "kvName": { "type": "string"}
     }, 
     "variables":{},
     "resources": [
         {
             "type":"Microsoft.KeyVault/vaults",
             "apiVersion": "2018-02-14", 
-            "name": "dev-waterfinder",
+            "name": "[parameters('kvName')]",
             "location":"[parameters('location')]",
             "properties": {
                 "sku": {

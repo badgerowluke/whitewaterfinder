@@ -70,29 +70,29 @@ stages:
         location: '${{parameters.region}}'
         csmFile: 'whitewaterfinder.infrastructure/kvtemplate.json'
         csmParametersFile: 'whitewaterfinder.infrastructure/kvparameters.json'
-        overrideParameters: '-tenantId "$(tenantId)" -adminId "$(adminId)"'
+        overrideParameters: '-tenantId "$(tenantId)" -adminId "$(adminId)" -kvName "${{parameters.resourceGroup}}"'
 
-  - job: 'bot'
-    dependsOn: 'backend_infra'
-    pool:
-      vmImage: 'windows-latest'
-    steps:
-    - task: qetza.replacetokens.replacetokens-task.replacetokens@3
-      displayName: 'Replace tokens in botdeploy.json'
-      inputs:
-        rootDirectory: 'whitewaterfinder.infrastructure/'
-        targetFiles: botdeploy.json
-        tokenPrefix: '{%%'
-        tokenSuffix: '%%}'    
+  # - job: 'bot'
+  #   dependsOn: 'backend_infra'
+  #   pool:
+  #     vmImage: 'windows-latest'
+  #   steps:
+  #   - task: qetza.replacetokens.replacetokens-task.replacetokens@3
+  #     displayName: 'Replace tokens in botdeploy.json'
+  #     inputs:
+  #       rootDirectory: 'whitewaterfinder.infrastructure/'
+  #       targetFiles: botdeploy.json
+  #       tokenPrefix: '{%%'
+  #       tokenSuffix: '%%}'    
 
-    - task: AzureResourceGroupDeployment@2
-      displayName: 'Azure Deployment:Create Or Update Resource Group action on waterfinder'
-      inputs:
-        azureSubscription: 'whitewaterfinder-sp'
-        resourceGroupName: '${{parameters.resourceGroup}}'
-        location: '${{parameters.region}}'
-        csmFile: 'whitewaterfinder.infrastructure/botdeploy.json'
-        csmParametersFile: 'whitewaterfinder.infrastructure/botparams.json' 
-        overrideParameters: '-botInsightsName "dev-paddle-finder"'        
+  #   - task: AzureResourceGroupDeployment@2
+  #     displayName: 'Azure Deployment:Create Or Update Resource Group action on waterfinder'
+  #     inputs:
+  #       azureSubscription: 'whitewaterfinder-sp'
+  #       resourceGroupName: '${{parameters.resourceGroup}}'
+  #       location: '${{parameters.region}}'
+  #       csmFile: 'whitewaterfinder.infrastructure/botdeploy.json'
+  #       csmParametersFile: 'whitewaterfinder.infrastructure/botparams.json' 
+  #       overrideParameters: '-botInsightsName "dev-paddle-finder"'        
 
 
