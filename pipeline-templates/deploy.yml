@@ -31,7 +31,7 @@ stages:
         location: '$(azureRegion)'
         csmFile: 'whitewaterfinder.infrastructure/azuredeploy.json'
         csmParametersFile: 'whitewaterfinder.infrastructure/parameters.json'
-        overrideParameters: '-storageAccountType "Standard_LRS" -appName "dev-paddle-finder" -appPlanName "WaterFinderPlan" -preferencesApp "dev-paddle-finder-preferences"  -azureSearchKey $(searchKey)'       
+        overrideParameters: '-storageAccountName "devwaterfinder" -storageAccountType "Standard_LRS" -appName "dev-paddle-finder" -appPlanName "WaterFinderPlan" -preferencesApp "dev-paddle-finder-preferences"  -azureSearchKey $(searchKey)'       
 
     - task: AzureResourceGroupDeployment@2
       displayName: 'Deploy AKV'
