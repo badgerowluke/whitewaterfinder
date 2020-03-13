@@ -14,21 +14,21 @@ stages:
     storageAccountName: "devwaterfinder"
     appName: "dev-paddle-finder"
 
-# - template: 'pipeline-templates/deployApp.yml'
-#   parameters:
-#     stageTitle: "DevAppDeploy"
-#     appName: 'dev-paddle-finder'
-#     resourceGroup: '$(resrourceGroupDev)'
-#     region: '$(azureRegion)'
+- template: 'pipeline-templates/deployApp.yml'
+  parameters:
+    stageTitle: "DevAppDeploy"
+    appName: 'dev-paddle-finder'
+    resourceGroup: '$(resrourceGroupDev)'
+    region: '$(azureRegion)'
   
 
-- template: 'pipeline-templates/deployInfra.yml'
-  parameters:
-    stageTitle: 'DeployProdInfrastructure'
-    resourceGroup: '$(resourceGroup)'
-    region: '$(azureRegion)'
-    storageAccountName: "waterfinder"
-    appName: "paddle-finder"
+# - template: 'pipeline-templates/deployInfra.yml'
+#   parameters:
+#     stageTitle: 'DeployProdInfrastructure'
+#     resourceGroup: '$(resourceGroup)'
+#     region: '$(azureRegion)'
+#     storageAccountName: "waterfinder"
+#     appName: "paddle-finder"
 
 
 
