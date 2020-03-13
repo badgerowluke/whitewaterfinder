@@ -47,7 +47,7 @@ stages:
       displayName: 'Deploy backend ARM Template'
       inputs:
         azureSubscription: 'whitewaterfinder-sp'
-        resourceGroupName: ${{parameters.resourceGroup}}
+        resourceGroupName: '${{parameters.resourceGroup}}'
         location: '${{parameters.region}}'
         csmFile: 'whitewaterfinder.infrastructure/azuredeploy.json'
         csmParametersFile: 'whitewaterfinder.infrastructure/parameters.json'
@@ -57,7 +57,7 @@ stages:
       displayName: 'Deploy AKV'
       inputs:
         azureSubscription: 'whitewaterfinder-sp'
-        resourceGroupName: ${{parameters.resourceGroup}}
+        resourceGroupName: '${{parameters.resourceGroup}}'
         location: '${{parameters.region}}'
         csmFile: 'whitewaterfinder.infrastructure/kvtemplate.json'
         csmParametersFile: 'whitewaterfinder.infrastructure/kvparameters.json'
@@ -85,7 +85,7 @@ stages:
       displayName: 'Azure Deployment:Create Or Update Resource Group action on waterfinder'
       inputs:
         azureSubscription: 'whitewaterfinder-sp'
-        resourceGroupName: ${{parameters.resourceGroup}}
+        resourceGroupName: '${{parameters.resourceGroup}}'
         location: '${{parameters.region}}'
         csmFile: 'whitewaterfinder.infrastructure/botdeploy.json'
         csmParametersFile: 'whitewaterfinder.infrastructure/botparams.json' 
