@@ -9,7 +9,7 @@ stages:
 - template: 'pipeline-templates/deployInfra.yml'
   parameters:
     stageTitle: 'DeployDevInfrastructure'
-    resourceGroup: '$(resrourceGroupDev)'
+    resourceGroup: '$(resourceGroupDev)'
     region: '$(azureRegion)'
     storageAccountName: "devwaterfinder"
     appName: "dev-paddle-finder"
@@ -17,7 +17,7 @@ stages:
 - template: 'pipeline-templates/deployInfra.yml'
   parameters:
     stageTitle: 'DeployProdInfrastructure'
-    resourceGroup: '$(resrourceGroup)'
+    resourceGroup: '$(resourceGroup)'
     region: '$(azureRegion)'
     storageAccountName: "waterfinder"
     appName: "paddle-finder"

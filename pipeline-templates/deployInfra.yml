@@ -63,11 +63,6 @@ stages:
         csmParametersFile: 'whitewaterfinder.infrastructure/kvparameters.json'
         overrideParameters: '-tenantId "$(tenantId)" -adminId "$(adminId)"'
 
-
-
-
-     
-
   - job: 'bot'
     dependsOn: 'backend_infra'
     pool:
@@ -91,13 +86,4 @@ stages:
         csmParametersFile: 'whitewaterfinder.infrastructure/botparams.json' 
         overrideParameters: '-botInsightsName "dev-paddle-finder"'        
 
-    - download: current
-      artifact: websterbot    
 
-    - task: AzureRmWebAppDeployment@3
-      displayName: 'Deploy Bot App'
-      inputs:
-        azureSubscription: 'whitewaterfinder-sp'
-        appType: app
-        WebAppName: 'WhiteWaterWebster'
-        Package: '$(Pipeline.Workspace)/websterbot/publish.zip'
