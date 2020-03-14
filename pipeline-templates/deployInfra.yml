@@ -75,40 +75,21 @@ stages:
         csmParametersFile: 'whitewaterfinder.infrastructure/kvparameters.json'
         overrideParameters: '-tenantId "$(tenantId)" -adminId "$(adminId)" -kvName "${{parameters.resourceGroup}}"'
 
-  # - job: 'bot'
-  #   dependsOn: 'backend_infra'
-  #   pool:
-  #     vmImage: 'windows-latest'
-  #   steps:
-  #   - task: AzureResourceGroupDeployment@2
-  #     displayName: 'Deploy Cognitive Services'
-  #     inputs:
-  #       azureSubscription: 'whitewaterfinder-sp'
-  #       resourceGroupName: '${{parameters.resourceGroup}}'
-  #       location: '${{parameters.region}}'
-  #       csmFile: 'whitewaterfinder.infrastructure/cognitiveservices.json'
-  #       csmParamtersFile: 'whitewaterfinder.infrastructure/cogservicesparams.json'
-  #       overrideParameters: '-luisName "dev-webster-luis" -authoringName "dev-webster-luis-authoring"'
-
-
-  - deployment: 'bot'
-    displayName: 'deploy cog services'
+  - job: 'bot'
+    dependsOn: 'backend_infra'
     pool:
       vmImage: 'windows-latest'
-    environment: '${{parameters.environment}}'
-    strategy:
-      runOnce:
-        deploy:
-          steps:
-          - task: AzureResourceGroupDeployment@2
-            displayName: 'Deploy Cognitive Services'
-            inputs:
-              azureSubscription: 'whitewaterfinder-sp'
-              resourceGroupName: '${{parameters.resourceGroup}}'
-              location: '${{parameters.region}}'
-              csmFile: 'whitewaterfinder.infrastructure/cognitiveservices.json'
-              csmParametersFile: '$(Pipeline.Workspace)/cogservicesparams.json'
-              overrideParameters: '-luisName "dev-webster-luis" -authoringName "dev-webster-luis-authoring"'      
+    steps:
+    - task: AzureResourceGroupDeployment@2
+      displayName: 'Deploy Cognitive Services'
+      inputs:
+        azureSubscription: 'whitewaterfinder-sp'
+        resourceGroupName: '${{parameters.resourceGroup}}'
+        location: '${{parameters.region}}'
+        csmFile: 'whitewaterfinder.infrastructure/cognitiveservices.json'
+        csmParametersFile: 'whitewaterfinder.infrastructure/cogservicesparams.json'
+        overrideParameters: '-luisName "dev-webster-luis" -authoringName "dev-webster-luis-authoring"'
+  
 
     # - task: qetza.replacetokens.replacetokens-task.replacetokens@3
     #   displayName: 'Replace tokens in botdeploy.json'
