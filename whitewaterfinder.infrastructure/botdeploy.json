@@ -9,36 +9,12 @@
             "description": "Location for all resources."
             }
         },        
-        "luisName": { "type" : "string", "defaultValue": "webster-luis" },
-        "authoringName": { "type" : "string", "defaultValue" : "webster-luis-Authoring"},
+
         "botAppName": { "type" : "string", "defaultValue": "WhitewaterWebster" },
         "botInsightsName": { "type": "string", "defaultValue": "paddle-finder" }
     },
     "variables":{},
     "resources":[
-        {
-            "kind": "LUIS.Authoring",
-            "type": "Microsoft.CognitiveServices/accounts",
-            "apiVersion": "2016-02-01-preview",
-            "name": "[parameters('authoringName')]",
-            "location": "westus",
-            "sku": {
-                "name": "F0"
-            }
-        },
-        {
-            "kind": "LUIS",
-            "type": "Microsoft.CognitiveServices/accounts",
-            "apiVersion": "2016-02-01-preview",
-            "name": "[parameters('luisName')]",
-            "location": "[parameters('location')]",
-            "sku": {
-                "name": "S0"
-            },
-            "dependsOn": [
-                "[resourceId('Microsoft.CognitiveServices/accounts', parameters('authoringName'))]"
-            ]
-        },   
         {
             "kind":"sdk",
             "type": "Microsoft.BotService/botServices",
@@ -57,8 +33,7 @@
                 "developerAppInsightsApplicationId": "",
                 "luisAppIds":[]
             }
-        },
-              
+        },     
         {
             "kind": "app",
             "type":"Microsoft.Web/serverfarms",
