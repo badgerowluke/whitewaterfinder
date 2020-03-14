@@ -92,20 +92,23 @@ stages:
 
 
   - deployment: 'bot'
-    environment: '${{parameters.environment}}'
+    displayName: 'deploy cog services'
     pool:
       vmImage: 'windows-latest'
-
-    steps:
-    - task: AzureResourceGroupDeployment@2
-      displayName: 'Deploy Cognitive Services'
-      inputs:
-        azureSubscription: 'whitewaterfinder-sp'
-        resourceGroupName: '${{parameters.resourceGroup}}'
-        location: '${{parameters.region}}'
-        csmFile: 'whitewaterfinder.infrastructure/cognitiveservices.json'
-        csmParamtersFile: 'whitewaterfinder.infrastructure/cogservicesparams.json'
-        overrideParameters: '-luisName "dev-webster-luis" -authoringName "dev-webster-luis-authoring"'      
+    environment: '${{parameters.environment}}'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: AzureResourceGroupDeployment@2
+            displayName: 'Deploy Cognitive Services'
+            inputs:
+              azureSubscription: 'whitewaterfinder-sp'
+              resourceGroupName: '${{parameters.resourceGroup}}'
+              location: '${{parameters.region}}'
+              csmFile: 'whitewaterfinder.infrastructure/cognitiveservices.json'
+              csmParamtersFile: 'whitewaterfinder.infrastructure/cogservicesparams.json'
+              overrideParameters: '-luisName "dev-webster-luis" -authoringName "dev-webster-luis-authoring"'      
 
     # - task: qetza.replacetokens.replacetokens-task.replacetokens@3
     #   displayName: 'Replace tokens in botdeploy.json'
