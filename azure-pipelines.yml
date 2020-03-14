@@ -3,32 +3,34 @@ trigger:
     - master  
 
 stages: 
-- template: 'pipeline-templates/build.yml'
+# - template: 'pipeline-templates/build.yml'
 - template: 'pipeline-templates/deployglobal.yml'
 
 - template: 'pipeline-templates/deployInfra.yml'
   parameters:
+    environment: 'development'
     stageTitle: 'DeployDevInfrastructure'
     resourceGroup: '$(resourceGroupDev)'
     region: '$(azureRegion)'
     storageAccountName: "devwaterfinder"
     appName: "dev-paddle-finder"
 
-- template: 'pipeline-templates/deployApp.yml'
-  parameters:
-    stageTitle: "DevAppDeploy"
-    appName: 'dev-paddle-finder'
-    resourceGroup: '$(resourceGroupDev)'
-    region: '$(azureRegion)'
+# - template: 'pipeline-templates/deployApp.yml'
+#   parameters:
+#     stageTitle: "DevAppDeploy"
+#     appName: 'dev-paddle-finder'
+#     resourceGroup: '$(resourceGroupDev)'
+#     region: '$(azureRegion)'
   
 ## Begin Production Deployment
-# - template: 'pipeline-templates/deployInfra.yml'
-#   parameters:
-#     stageTitle: 'DeployProdInfrastructure'
-#     resourceGroup: '$(resourceGroup)'
-#     region: '$(azureRegion)'
-#     storageAccountName: "waterfinder"
-#     appName: "paddle-finder"
+- template: 'pipeline-templates/deployInfra.yml'
+  parameters:
+    environment: 'production'
+    stageTitle: 'DeployProdInfrastructure'
+    resourceGroup: '$(resourceGroup)'
+    region: '$(azureRegion)'
+    storageAccountName: "waterfinder"
+    appName: "paddle-finder"
 
 
 
