@@ -107,7 +107,7 @@ stages:
               resourceGroupName: '${{parameters.resourceGroup}}'
               location: '${{parameters.region}}'
               csmFile: 'whitewaterfinder.infrastructure/cognitiveservices.json'
-              csmParametersFile: 'whitewaterfinder.infrastructure/cogservicesparams.json'
+              csmParametersFile: '$(Pipeline.Workspace)/cogservicesparams.json'
               overrideParameters: '-luisName "dev-webster-luis" -authoringName "dev-webster-luis-authoring"'      
 
     # - task: qetza.replacetokens.replacetokens-task.replacetokens@3
