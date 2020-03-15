@@ -14,6 +14,8 @@ stages:
     region: '$(azureRegion)'
     storageAccountName: "devwaterfinder"
     appName: "dev-paddle-finder"
+    luisEndpointName: 'dev-webster-luis'
+    authoringName: 'dev-webster-luis-authoring'
 
 # - template: 'pipeline-templates/deployApp.yml'
 #   parameters:
@@ -31,6 +33,8 @@ stages:
     region: '$(azureRegion)'
     storageAccountName: "waterfinder"
     appName: "paddle-finder"
+    luisEndpointName: 'webster-luis'
+    authoringName: 'webster-luis-authoring'    
 
 
 

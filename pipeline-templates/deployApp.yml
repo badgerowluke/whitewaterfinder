@@ -1,4 +1,7 @@
 parameters:
+- name: 'environment'
+  type: string
+  default: ''
 - name: 'stageTitle'
   type: string
 - name: 'appName'
