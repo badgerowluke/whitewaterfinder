@@ -15,7 +15,7 @@ stages:
     storageAccountName: "devwaterfinder"
     appName: "dev-paddle-finder"
     luisEndpointName: 'dev-webster-luis'
-    authoringName: 'dev-webster-luis-authoring'
+    luisAuthoring: 'dev-webster-luis-authoring'
 
 # - template: 'pipeline-templates/deployApp.yml'
 #   parameters:
