@@ -80,7 +80,7 @@ stages:
         csmParametersFile: 'whitewaterfinder.infrastructure/kvparameters.json'
         overrideParameters: '-tenantId "$(tenantId)" -adminId "$(adminId)" -kvName "${{parameters.resourceGroup}}"'
 
-  - deplyment: 'bot'
+  - deployment: 'bot'
     dependsOn: 'backend_infra'
     pool:
       vmImage: 'windows-latest'
