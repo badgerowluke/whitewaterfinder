@@ -85,7 +85,7 @@ stages:
     pool:
       vmImage: 'windows-latest'
     environment: ${{ parameters.environment }}
-    stategy:
+    strategy:
       runOnce:
         deploy:
           steps:
