@@ -97,7 +97,7 @@ stages:
               location: '${{parameters.region}}'
               csmFile: 'whitewaterfinder.infrastructure/cognitiveservices.json'
               csmParametersFile: 'whitewaterfinder.infrastructure/cogservicesparams.json'
-              overrideParameters: '-luisName "${{parameters.luisEndpointName}}" -authoringName "${{parameters.authoringName}}"'
+              overrideParameters: '-luisName "${{parameters.luisEndpointName}}" -authoringName "${{parameters.luisAuthoring}}"'
   
 
     # - task: qetza.replacetokens.replacetokens-task.replacetokens@3

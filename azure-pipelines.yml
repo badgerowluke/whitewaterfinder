@@ -34,7 +34,7 @@ stages:
     storageAccountName: "waterfinder"
     appName: "paddle-finder"
     luisEndpointName: 'webster-luis'
-    authoringName: 'webster-luis-authoring'    
+    luisAuthoring: 'webster-luis-authoring'    
 
 
 
