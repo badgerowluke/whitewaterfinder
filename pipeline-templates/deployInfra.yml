@@ -96,8 +96,8 @@ stages:
   #       overrideParameters: '-luisName "${{parameters.luisEndpointName}}" -authoringName "${{parameters.authoringName}}"'
   
 
-
-
+- stage: "TestDeploy"
+  jobs:
   - deployment: 'bot'
     dependsOn: 'backend_infra'
     pool:
