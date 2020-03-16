@@ -96,27 +96,25 @@ stages:
   #       overrideParameters: '-luisName "${{parameters.luisEndpointName}}" -authoringName "${{parameters.authoringName}}"'
   
 
-- stage: "boogers"
-  jobs:
-  - deployment: 'bot'
-    dependsOn: 'backend_infra'
-    pool:
-      vmImage: 'windows-latest'
-    environment: ${{ parameters.environment }}
-    strategy:
-      runOnce:
-        deploy:
-          steps:
-          - task: AzureResourceGroupDeployment@2
-            displayName: 'Deploy Cognitive Services'
-            inputs:
-              azureSubscription: 'whitewaterfinder-sp'
-              resourceGroupName: '${{parameters.resourceGroup}}'
-              templateLocation: 'Linked artifact'
-              location: '${{parameters.region}}'
-              csmFile: './whitewaterfinder.infrastructure/cognitiveservices.json'
-              csmParametersFile: './whitewaterfinder.infrastructure/cogservicesparams.json'
-              overrideParameters: '-luisName "${{parameters.luisEndpointName}}" -authoringName "${{parameters.luisAuthoring}}"'  
+    - deployment: 'bot'
+      dependsOn: 'backend_infra'
+      pool:
+        vmImage: 'windows-latest'
+      environment: ${{ parameters.environment }}
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+            - task: AzureResourceGroupDeployment@2
+              displayName: 'Deploy Cognitive Services'
+              inputs:
+                azureSubscription: 'whitewaterfinder-sp'
+                resourceGroupName: '${{parameters.resourceGroup}}'
+                templateLocation: 'Linked artifact'
+                location: '${{parameters.region}}'
+                csmFile: '$(Pipeline.Workspace)/cognitiveservices.json'
+                csmParametersFile: './whitewaterfinder.infrastructure/cogservicesparams.json'
+                overrideParameters: '-luisName "${{parameters.luisEndpointName}}" -authoringName "${{parameters.luisAuthoring}}"'  
 
     # - task: qetza.replacetokens.replacetokens-task.replacetokens@3
     #   displayName: 'Replace tokens in botdeploy.json'
