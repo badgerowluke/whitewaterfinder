@@ -80,25 +80,24 @@ stages:
         csmParametersFile: 'whitewaterfinder.infrastructure/kvparameters.json'
         overrideParameters: '-tenantId "$(tenantId)" -adminId "$(adminId)" -kvName "${{parameters.resourceGroup}}"'
 
-  - deployment: 'bot'
+  - job: 'bot'
     dependsOn: 'backend_infra'
     pool:
       vmImage: 'windows-latest'
-    environment: ${{ parameters.environment }}
-    strategy:
-      runOnce:
-        deploy:
-          steps:
-          - task: AzureResourceGroupDeployment@2
-            displayName: 'Deploy Cognitive Services'
-            inputs:
-              azureSubscription: 'whitewaterfinder-sp'
-              resourceGroupName: '${{parameters.resourceGroup}}'
-              location: '${{parameters.region}}'
-              csmFile: 'whitewaterfinder.infrastructure/cognitiveservices.json'
-              csmParametersFile: 'whitewaterfinder.infrastructure/cogservicesparams.json'
-              overrideParameters: '-luisName "${{parameters.luisEndpointName}}" -authoringName "${{parameters.luisAuthoring}}"'
-  
+    steps:
+    - task: AzureResourceGroupDeployment@2
+      displayName: 'Deploy Cognitive Services'
+      inputs:
+        azureSubscription: 'whitewaterfinder-sp'
+        resourceGroupName: '${{parameters.resourceGroup}}'
+        location: '${{parameters.region}}'
+        csmFile: 'whitewaterfinder.infrastructure/cognitiveservices.json'
+        csmParametersFile: 'whitewaterfinder.infrastructure/cogservicesparams.json'
+        overrideParameters: '-luisName "${{parameters.luisEndpointName}}" -authoringName "${{parameters.luisAuthoring}}"'
+
+
+
+
 
     # - task: qetza.replacetokens.replacetokens-task.replacetokens@3
     #   displayName: 'Replace tokens in botdeploy.json'
