@@ -107,14 +107,16 @@ stages:
       runOnce:
         deploy:
           steps:
+          - download: current
+            artifact: infra
           - task: AzureResourceGroupDeployment@2
             displayName: 'Deploy Cognitive Services'
             inputs:
               azureSubscription: 'whitewaterfinder-sp'
               resourceGroupName: '${{parameters.resourceGroup}}'
               location: '${{parameters.region}}'
-              csmFile: 'whitewaterfinder.infrastructure/cognitiveservices.json'
-              csmParametersFile: 'whitewaterfinder.infrastructure/cogservicesparams.json'
+              csmFile: '$(Pipeline.Workspace)/infra/cognitiveservices.json'
+              csmParametersFile: '$(Pipeline.Workspace)/infra/cogservicesparams.json'
               overrideParameters: '-luisName "${{parameters.luisEndpointName}}" -authoringName "${{parameters.luisAuthoring}}"'  
 
     # - task: qetza.replacetokens.replacetokens-task.replacetokens@3
