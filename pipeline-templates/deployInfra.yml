@@ -112,7 +112,7 @@ stages:
             inputs:
               azureSubscription: 'whitewaterfinder-sp'
               resourceGroupName: '${{parameters.resourceGroup}}'
-              templateLocation: 'Linked Artifact'
+              templateLocation: 'Linked artifact'
               location: '${{parameters.region}}'
               csmFile: './whitewaterfinder.infrastructure/cognitiveservices.json'
               csmParametersFile: './whitewaterfinder.infrastructure/cogservicesparams.json'
