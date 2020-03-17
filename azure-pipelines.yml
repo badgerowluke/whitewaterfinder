@@ -5,6 +5,8 @@ trigger:
 stages: 
 - template: 'pipeline-templates/build.yml'
 - template: 'pipeline-templates/deployglobal.yml'
+  parameters:
+    environment: 'development'
 
 - template: 'pipeline-templates/deployInfra.yml'
   parameters:
