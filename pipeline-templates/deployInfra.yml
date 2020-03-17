@@ -47,8 +47,8 @@ stages:
               azureSubscription: 'whitewaterfinder-sp'
               resourceGroupName: '${{parameters.resourceGroup}}'
               location: '${{parameters.region}}'
-              csmFile: 'whitewaterfinder.infrastructure/sharedresources.json'
-              csmParametersFile: 'whitewaterfinder.infrastructure/sharedresourcesparams.json'
+              csmFile: '$(Pipeline.Workspace)/infra/sharedresources.json'
+              csmParametersFile: '$(Pipeline.Workspace)/infra/sharedresourcesparams.json'
               overrideParameters: '-storageAccountType "${{parameters.storageAccountType}}" -appName "${{parameters.appName}}" -preferencesApp "${{parameters.appName}}-preferences" -storageAccountName "${{parameters.storageAccountName}}"'           
 
           - task: AzureCLI@2
