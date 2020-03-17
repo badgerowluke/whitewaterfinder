@@ -63,7 +63,7 @@ stages:
           - task: qetza.replacetokens.replacetokens-task.replacetokens@3
             displayName: 'Replace tokens in azuredeploy.json'
             inputs:
-              rootDirectory: 'whitewaterfinder.infrastructure/'
+              rootDirectory: '$(Pipeline.Workspace)/'
               targetFiles: azuredeploy.json
               tokenPrefix: '{%%'
               tokenSuffix: '%%}'     
@@ -74,8 +74,8 @@ stages:
               azureSubscription: 'whitewaterfinder-sp'
               resourceGroupName: '${{parameters.resourceGroup}}'
               location: '${{parameters.region}}'
-              csmFile: 'whitewaterfinder.infrastructure/azuredeploy.json'
-              csmParametersFile: 'whitewaterfinder.infrastructure/parameters.json'
+              csmFile: '$(Pipeline.Workspace)/infra/azuredeploy.json'
+              csmParametersFile: '$(Pipeline.Workspace)/infra/parameters.json'
               overrideParameters: '-storageAccountName ${{parameters.storageAccountName}} -storageAccountType "${{parameters.storageAccountType}}" -appName "${{parameters.appName}}" -appPlanName "WaterFinderPlan" -preferencesApp "${{parameters.appName}}-preferences"  -azureSearchKey $(searchKey)'       
 
           - task: AzureResourceGroupDeployment@2
@@ -84,8 +84,8 @@ stages:
               azureSubscription: 'whitewaterfinder-sp'
               resourceGroupName: '${{parameters.resourceGroup}}'
               location: '${{parameters.region}}'
-              csmFile: 'whitewaterfinder.infrastructure/kvtemplate.json'
-              csmParametersFile: 'whitewaterfinder.infrastructure/kvparameters.json'
+              csmFile: '$(Pipeline.Workspace)/infrakvtemplate.json'
+              csmParametersFile: '$(Pipeline.Workspace)/infra/kvparameters.json'
               overrideParameters: '-tenantId "$(tenantId)" -adminId "$(adminId)" -kvName "${{parameters.resourceGroup}}"'
 
   - deployment: 'bot'
