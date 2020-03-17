@@ -57,7 +57,7 @@ stages:
               azureSubscription: 'whitewaterfinder-sp'
               scriptType: ps
               scriptLocation: 'scriptPath'
-              ScriptPath: 'whitewaterfinder.infrastructure/getazuresearchkey.ps1'
+              ScriptPath: '$(Pipeline.Workspace)/infra/getazuresearchkey.ps1'
               ScriptArguments: 'brgs-global'   
 
           - task: qetza.replacetokens.replacetokens-task.replacetokens@3
@@ -84,7 +84,7 @@ stages:
               azureSubscription: 'whitewaterfinder-sp'
               resourceGroupName: '${{parameters.resourceGroup}}'
               location: '${{parameters.region}}'
-              csmFile: '$(Pipeline.Workspace)/infrakvtemplate.json'
+              csmFile: '$(Pipeline.Workspace)/infra/kvtemplate.json'
               csmParametersFile: '$(Pipeline.Workspace)/infra/kvparameters.json'
               overrideParameters: '-tenantId "$(tenantId)" -adminId "$(adminId)" -kvName "${{parameters.resourceGroup}}"'
 
