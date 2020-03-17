@@ -26,77 +26,67 @@ parameters:
 - name: 'luisAuthoring'
   type: string
   default: ''
+
+
+
+
 stages:
 - stage: ${{parameters.stageTitle}}
   jobs:
-  - job: 'backend_infra'
+  - deployment: 'backend_infra'
     pool:
       vmImage: 'windows-latest'
-    steps:     
-    - task: AzureResourceGroupDeployment@2
-      displayName: 'Deploy Shared Azure Resources'
-      inputs:
-        azureSubscription: 'whitewaterfinder-sp'
-        resourceGroupName: '${{parameters.resourceGroup}}'
-        location: '${{parameters.region}}'
-        csmFile: 'whitewaterfinder.infrastructure/sharedresources.json'
-        csmParametersFile: 'whitewaterfinder.infrastructure/sharedresourcesparams.json'
-        overrideParameters: '-storageAccountType "${{parameters.storageAccountType}}" -appName "${{parameters.appName}}" -preferencesApp "${{parameters.appName}}-preferences" -storageAccountName "${{parameters.storageAccountName}}"'           
+    environment: ${{parameters.environment}}
+    strategy:
+      runOnce:
+        deploy:
+          steps:     
+          - task: AzureResourceGroupDeployment@2
+            displayName: 'Deploy Shared Azure Resources'
+            inputs:
+              azureSubscription: 'whitewaterfinder-sp'
+              resourceGroupName: '${{parameters.resourceGroup}}'
+              location: '${{parameters.region}}'
+              csmFile: 'whitewaterfinder.infrastructure/sharedresources.json'
+              csmParametersFile: 'whitewaterfinder.infrastructure/sharedresourcesparams.json'
+              overrideParameters: '-storageAccountType "${{parameters.storageAccountType}}" -appName "${{parameters.appName}}" -preferencesApp "${{parameters.appName}}-preferences" -storageAccountName "${{parameters.storageAccountName}}"'           
 
-    - task: AzureCLI@2
-      displayName: 'Get Azure Search Query Key'
-      inputs: 
-        azureSubscription: 'whitewaterfinder-sp'
-        scriptType: ps
-        scriptLocation: 'scriptPath'
-        ScriptPath: 'whitewaterfinder.infrastructure/getazuresearchkey.ps1'
-        ScriptArguments: 'brgs-global'   
+          - task: AzureCLI@2
+            displayName: 'Get Azure Search Query Key'
+            inputs: 
+              azureSubscription: 'whitewaterfinder-sp'
+              scriptType: ps
+              scriptLocation: 'scriptPath'
+              ScriptPath: 'whitewaterfinder.infrastructure/getazuresearchkey.ps1'
+              ScriptArguments: 'brgs-global'   
 
-    - task: qetza.replacetokens.replacetokens-task.replacetokens@3
-      displayName: 'Replace tokens in azuredeploy.json'
-      inputs:
-        rootDirectory: 'whitewaterfinder.infrastructure/'
-        targetFiles: azuredeploy.json
-        tokenPrefix: '{%%'
-        tokenSuffix: '%%}'     
+          - task: qetza.replacetokens.replacetokens-task.replacetokens@3
+            displayName: 'Replace tokens in azuredeploy.json'
+            inputs:
+              rootDirectory: 'whitewaterfinder.infrastructure/'
+              targetFiles: azuredeploy.json
+              tokenPrefix: '{%%'
+              tokenSuffix: '%%}'     
 
-    - task: AzureResourceGroupDeployment@2
-      displayName: 'Deploy backend ARM Template'
-      inputs:
-        azureSubscription: 'whitewaterfinder-sp'
-        resourceGroupName: '${{parameters.resourceGroup}}'
-        location: '${{parameters.region}}'
-        csmFile: 'whitewaterfinder.infrastructure/azuredeploy.json'
-        csmParametersFile: 'whitewaterfinder.infrastructure/parameters.json'
-        overrideParameters: '-storageAccountName ${{parameters.storageAccountName}} -storageAccountType "${{parameters.storageAccountType}}" -appName "${{parameters.appName}}" -appPlanName "WaterFinderPlan" -preferencesApp "${{parameters.appName}}-preferences"  -azureSearchKey $(searchKey)'       
+          - task: AzureResourceGroupDeployment@2
+            displayName: 'Deploy backend ARM Template'
+            inputs:
+              azureSubscription: 'whitewaterfinder-sp'
+              resourceGroupName: '${{parameters.resourceGroup}}'
+              location: '${{parameters.region}}'
+              csmFile: 'whitewaterfinder.infrastructure/azuredeploy.json'
+              csmParametersFile: 'whitewaterfinder.infrastructure/parameters.json'
+              overrideParameters: '-storageAccountName ${{parameters.storageAccountName}} -storageAccountType "${{parameters.storageAccountType}}" -appName "${{parameters.appName}}" -appPlanName "WaterFinderPlan" -preferencesApp "${{parameters.appName}}-preferences"  -azureSearchKey $(searchKey)'       
 
-    - task: AzureResourceGroupDeployment@2
-      displayName: 'Deploy AKV'
-      inputs:
-        azureSubscription: 'whitewaterfinder-sp'
-        resourceGroupName: '${{parameters.resourceGroup}}'
-        location: '${{parameters.region}}'
-        csmFile: 'whitewaterfinder.infrastructure/kvtemplate.json'
-        csmParametersFile: 'whitewaterfinder.infrastructure/kvparameters.json'
-        overrideParameters: '-tenantId "$(tenantId)" -adminId "$(adminId)" -kvName "${{parameters.resourceGroup}}"'
-
-  # - job: 'bot'
-  #   dependsOn: 'backend_infra'
-  #   pool:
-  #     vmImage: 'windows-latest'
-  #   steps:
-  #   - task: AzureResourceGroupDeployment@2
-  #     displayName: 'Deploy Cognitive Services'
-  #     inputs:
-  #       azureSubscription: 'whitewaterfinder-sp'
-  #       resourceGroupName: '${{parameters.resourceGroup}}'
-  #       location: '${{parameters.region}}'
-  #       csmFile: 'whitewaterfinder.infrastructure/cognitiveservices.json'
-  #       csmParametersFile: 'whitewaterfinder.infrastructure/cogservicesparams.json'
-  #       overrideParameters: '-luisName "${{parameters.luisEndpointName}}" -authoringName "${{parameters.authoringName}}"'
-  
-
-
+          - task: AzureResourceGroupDeployment@2
+            displayName: 'Deploy AKV'
+            inputs:
+              azureSubscription: 'whitewaterfinder-sp'
+              resourceGroupName: '${{parameters.resourceGroup}}'
+              location: '${{parameters.region}}'
+              csmFile: 'whitewaterfinder.infrastructure/kvtemplate.json'
+              csmParametersFile: 'whitewaterfinder.infrastructure/kvparameters.json'
+              overrideParameters: '-tenantId "$(tenantId)" -adminId "$(adminId)" -kvName "${{parameters.resourceGroup}}"'
 
   - deployment: 'bot'
     dependsOn: 'backend_infra'
