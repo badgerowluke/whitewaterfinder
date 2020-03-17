@@ -31,4 +31,4 @@ stages:
               scriptType: ps
               scriptLocation: 'scriptPath'
               ScriptPath: '$(Pipeline.Workspace)/infra//deployment.ps1'
-              ScriptArguments: 'brgs-global "$(Pipeline.Workspace)/infra//riverswithid.json"'     
+              ScriptArguments: 'brgs-global "$(Pipeline.Workspace)/infra/riverswithid.json"'     
