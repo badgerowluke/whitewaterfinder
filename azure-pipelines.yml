@@ -18,6 +18,7 @@ stages:
     appName: "dev-paddle-finder"
     luisEndpointName: 'dev-webster-luis'
     luisAuthoring: 'dev-webster-luis-authoring'
+    botName: 'WhiteWaterWebsterDev'
 
 # - template: 'pipeline-templates/deployApp.yml'
 #   parameters:
@@ -36,7 +37,8 @@ stages:
     storageAccountName: "waterfinder"
     appName: "paddle-finder"
     luisEndpointName: 'webster-luis'
-    luisAuthoring: 'webster-luis-authoring'    
+    luisAuthoring: 'webster-luis-authoring'   
+    botName: 'WhitewaterWebster' 
 
 
 

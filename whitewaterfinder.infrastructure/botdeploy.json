@@ -11,7 +11,8 @@
         },        
 
         "botAppName": { "type" : "string", "defaultValue": "WhitewaterWebster" },
-        "botInsightsName": { "type": "string", "defaultValue": "paddle-finder" }
+        "botInsightsName": { "type": "string", "defaultValue": "paddle-finder" },
+        "msftAppId": { "type": "string" } 
     },
     "variables":{},
     "resources":[
@@ -86,7 +87,7 @@
                         },
                         {
                             "name": "MicrosoftAppId",
-                            "value": "{%%msftAppId%%}"
+                            "value": "[parameters('msftAppId')]"
                         },
                         {
                             "name": "MicrosoftAppPassword",

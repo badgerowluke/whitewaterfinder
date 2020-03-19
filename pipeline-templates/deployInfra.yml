@@ -26,6 +26,9 @@ parameters:
 - name: 'luisAuthoring'
   type: string
   default: ''
+- name: 'botName'
+  type: string
+  default: ''
 
 
 
@@ -108,7 +111,15 @@ stages:
               csmFile: '$(Pipeline.Workspace)/infra/cognitiveservices.json'
               csmParametersFile: '$(Pipeline.Workspace)/infra/cogservicesparams.json'
               overrideParameters: '-luisName "${{parameters.luisEndpointName}}" -authoringName "${{parameters.luisAuthoring}}"'  
-
+          - task: AzureCli@2
+            displayName: 'create or pull MSFT App ID'
+            inputs:
+              azureSubsciption: 'whitewaterfinder-sp'
+              scriptType: ps
+              scriptLocation: 'scriptPath'
+              ScriptPath: '$(Pipeline.Workspace)/infra/app-registration-create.ps1'
+              ScriptArguments: '${{parameters.botName}}'
+              
           - task: qetza.replacetokens.replacetokens-task.replacetokens@3
             displayName: 'Replace tokens in botdeploy.json'
             inputs:
@@ -125,6 +136,5 @@ stages:
               location: '${{parameters.region}}'
               csmFile: '$(Pipeline.Workspace)/infra/botdeploy.json'
               csmParametersFile: '$(Pipeline.Workspace)/infra/botparams.json' 
-              overrideParameters: '-botInsightsName "dev-paddle-finder"'        
 
 
