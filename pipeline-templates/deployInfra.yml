@@ -114,7 +114,7 @@ stages:
           - task: AzureCli@2
             displayName: 'create or pull MSFT App ID'
             inputs:
-              azureSubsciption: 'whitewaterfinder-sp'
+              azureSubscription: 'whitewaterfinder-sp'
               scriptType: ps
               scriptLocation: 'scriptPath'
               ScriptPath: '$(Pipeline.Workspace)/infra/app-registration-create.ps1'
