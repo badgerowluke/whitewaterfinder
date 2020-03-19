@@ -112,7 +112,7 @@ stages:
           - task: qetza.replacetokens.replacetokens-task.replacetokens@3
             displayName: 'Replace tokens in botdeploy.json'
             inputs:
-              rootDirectory: 'whitewaterfinder.infrastructure/'
+              rootDirectory: '$(Pipeline.Workspace)/infra/'
               targetFiles: botdeploy.json
               tokenPrefix: '{%%'
               tokenSuffix: '%%}'    
@@ -123,8 +123,8 @@ stages:
               azureSubscription: 'whitewaterfinder-sp'
               resourceGroupName: '${{parameters.resourceGroup}}'
               location: '${{parameters.region}}'
-              csmFile: 'whitewaterfinder.infrastructure/botdeploy.json'
-              csmParametersFile: 'whitewaterfinder.infrastructure/botparams.json' 
+              csmFile: '$(Pipeline.Workspace)/infra/botdeploy.json'
+              csmParametersFile: '$(Pipeline.Workspace)/infra/botparams.json' 
               overrideParameters: '-botInsightsName "dev-paddle-finder"'        
 
 
