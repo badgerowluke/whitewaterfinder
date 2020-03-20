@@ -3,6 +3,7 @@
     "contentVersion":"1.0.0.0",
     "parameters":{
         "botAppName": { "value": "WhitewaterWebster" },
-        "botInsightsName": { "value": "paddle-finder" }      
+        "botInsightsName": { "value": "paddle-finder" },
+        "msftAppId" : { "value" : "" }    
     }    
 }
