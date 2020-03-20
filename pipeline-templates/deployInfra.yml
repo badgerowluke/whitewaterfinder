@@ -118,7 +118,7 @@ stages:
               scriptType: ps
               scriptLocation: 'scriptPath'
               ScriptPath: '$(Pipeline.Workspace)/infra/app-registration-create.ps1'
-              ScriptArguments: '${{parameters.botName}}'
+              ScriptArguments: '"${{parameters.botName}}-ar"'
               
           - task: qetza.replacetokens.replacetokens-task.replacetokens@3
             displayName: 'Replace tokens in botdeploy.json'
