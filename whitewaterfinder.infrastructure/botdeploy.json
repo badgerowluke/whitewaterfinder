@@ -20,25 +20,7 @@
         "storageAccountId": "[concat(resourceGroup().id,'/providers/Microsoft.Storage/storageAccounts/', parameters('storageAccountName'))]"
     },
     "resources":[
-        {
-            "kind":"sdk",
-            "type": "Microsoft.BotService/botServices",
-            "apiVersion": "2018-07-12",
-            "name":"[parameters('botAppName')]",
-            "location": "global",
-            "sku": {
-                "name":"F0"
-            },
-            "properties": {
-                "displayName": "[parameters('botAppName')]",
-                "iconUrl": "https://docs.botframework.com/static/devportal/client/images/bot-framework-default.png",
-                "endpoint": "https://whitewaterwebster.azurewebsites.net/api/messages",
-                "msaAppId": "[parameters('msftAppId')]",
-                "developerAppInsightKey": "",
-                "developerAppInsightsApplicationId": "",
-                "luisAppIds":[]
-            }
-        },     
+   
         {
             "kind": "app",
             "type":"Microsoft.Web/serverfarms",
@@ -146,7 +128,27 @@
                 "hostingEnvironment": "",
                 "clientAffinityEnabled": true
             }
-        }
+            
+        },
+        {
+            "kind":"sdk",
+            "type": "Microsoft.BotService/botServices",
+            "apiVersion": "2018-07-12",
+            "name":"[parameters('botAppName')]",
+            "location": "global",
+            "sku": {
+                "name":"F0"
+            },
+            "properties": {
+                "displayName": "[parameters('botAppName')]",
+                "iconUrl": "https://docs.botframework.com/static/devportal/client/images/bot-framework-default.png",
+                "endpoint": "https://whitewaterwebster.azurewebsites.net/api/messages",
+                "msaAppId": "[resourceId('Microsoft.Web/sites', parameters('botAppName'))]",
+                "developerAppInsightKey": "",
+                "developerAppInsightsApplicationId": "",
+                "luisAppIds":[]
+            }
+        }  
     ],
     "outputs":{}
 }
