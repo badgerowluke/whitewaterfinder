@@ -12,9 +12,13 @@
 
         "botAppName": { "type" : "string", "defaultValue": "WhitewaterWebster" },
         "botInsightsName": { "type": "string", "defaultValue": "paddle-finder" },
-        "msftAppId": { "type": "string" } 
+        "msftAppId": { "type": "string" },
+        "storageAccountName": { "type": "string" }
     },
-    "variables":{},
+    "variables":{
+
+        "storageAccountId": "[concat(resourceGroup().id,'/providers/Microsoft.Storage/storageAccounts/', parameters('storageAccountName'))]"
+    },
     "resources":[
         {
             "kind":"sdk",
@@ -29,7 +33,7 @@
                 "displayName": "[parameters('botAppName')]",
                 "iconUrl": "https://docs.botframework.com/static/devportal/client/images/bot-framework-default.png",
                 "endpoint": "https://whitewaterwebster.azurewebsites.net/api/messages",
-                "msaAppId": "9bd4236c-716f-4bfc-8d8e-be99c19cca36",
+                "msaAppId": "[parameters('msftAppId')]",
                 "developerAppInsightKey": "",
                 "developerAppInsightsApplicationId": "",
                 "luisAppIds":[]
@@ -71,7 +75,7 @@
                     "appSettings": [
                         {
                             "name": "stateStore",
-                            "value":"{%%stateStore%%}"
+                            "value":"[concat('DefaultEndpointsProtocol=https;AccountName=',parameters('storageAccountName'),';AccountKey=',concat(listKeys(variables('storageAccountId'),'2015-05-01-preview').key1))]"
                         },
                         {
                             "name": "LuisAPIHostName",

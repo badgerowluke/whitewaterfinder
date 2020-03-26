@@ -4,6 +4,7 @@
     "parameters":{
         "botAppName": { "value": "WhitewaterWebster" },
         "botInsightsName": { "value": "paddle-finder" },
-        "msftAppId" : { "value" : "" }    
+        "msftAppId" : { "value" : "de74ca0a-35ab-4002-8f6b-b7ed6b9d9145" },
+        "storageAccountName" : { "value": "" }    
     }    
 }
