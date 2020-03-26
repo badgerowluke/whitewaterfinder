@@ -29,4 +29,5 @@ if($doCreate)
 
 
 $newAppId =  $val.appId
-Write-Host "##vso[task.setvariable variable=searchKey;]$newAppId"
+Write-Host $newAppId
+Write-Host "##vso[task.setvariable variable=newAppId;]$newAppId"
