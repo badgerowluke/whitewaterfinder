@@ -144,7 +144,7 @@
                 "iconUrl": "https://docs.botframework.com/static/devportal/client/images/bot-framework-default.png",
                 "endpoint": "[concat('https://', parameters('botAppName'), '.azurewebsites.net/api/messages')]",
                 "msaAppId": "[reference(resourceId('Microsoft.Web/sites', parameters('botAppName')),'2015-05-01', 'Full').identity.id]",
-                "developerAppInsightKey": "[reference(resourceId('microsoft.insights/components/', parameters('botInsightsName')), '2015-05-01',).InstrumentationKey]",
+                "developerAppInsightKey": "[reference(resourceId('microsoft.insights/components/', parameters('botInsightsName')), '2015-05-01').InstrumentationKey]",
                 "developerAppInsightsApplicationId": "[reference(resourceId('microsoft.insights/components', parameters('botInsightsName')), '2015-05-01').appId]",
                 "luisAppIds":[]
             }
