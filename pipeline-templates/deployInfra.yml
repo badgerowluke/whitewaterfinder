@@ -92,7 +92,7 @@ stages:
   #             overrideParameters: '-tenantId "$(tenantId)" -adminId "$(adminId)" -kvName "${{parameters.resourceGroup}}"'
 
   - deployment: 'bot'
-    dependsOn: 'backend_infra'
+    # dependsOn: 'backend_infra'
     pool:
       vmImage: 'windows-latest'
     environment: ${{ parameters.environment }}
