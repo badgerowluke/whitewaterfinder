@@ -13,6 +13,9 @@ parameters:
 - name: 'region'
   type: string
   default: 'North Central US'  
+- name: 'botapp'
+  type: string
+  default: ''
 
 stages:
 - stage: ${{parameters.stageTitle}}
@@ -90,5 +93,5 @@ stages:
         inputs:
           azureSubscription: 'whitewaterfinder-sp'
           appType: app
-          WebAppName: 'WhiteWaterWebster'
+          WebAppName: '${{parameters.botapp}}'
           Package: '$(Pipeline.Workspace)/websterbot/publish.zip'                     
