@@ -51,6 +51,10 @@
                 "[resourceId('Microsoft.Web/serverFarms', parameters('botAppName'))]"
             ],
             "tags": null,
+            "identity": {
+                "type": "SystemAssigned"
+
+            },          
             "properties": {
                 "name": "[parameters('botAppName')]",
                 "siteConfig": {
@@ -143,7 +147,7 @@
                 "displayName": "[parameters('botAppName')]",
                 "iconUrl": "https://docs.botframework.com/static/devportal/client/images/bot-framework-default.png",
                 "endpoint": "[concat('https://', parameters('botAppName'), '.azurewebsites.net/api/messages')]",
-                "msaAppId": "[reference(resourceId('Microsoft.Web/sites', parameters('botAppName')),'2015-05-01', 'Full').identity.id]",
+                "msaAppId": "[reference(resourceId('Microsoft.Web/sites', parameters('botAppName')), '2015-05-01', 'Full').identity.principalId]",
                 "developerAppInsightKey": "[reference(resourceId('microsoft.insights/components/', parameters('botInsightsName')), '2015-05-01').InstrumentationKey]",
                 "developerAppInsightsApplicationId": "[reference(resourceId('microsoft.insights/components', parameters('botInsightsName')), '2015-05-01').appId]",
                 "luisAppIds":[]

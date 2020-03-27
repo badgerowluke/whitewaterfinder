@@ -4,9 +4,9 @@ trigger:
 
 stages: 
 - template: 'pipeline-templates/build.yml'
-# - template: 'pipeline-templates/deployglobal.yml'
-#   parameters:
-#     environment: 'development'
+- template: 'pipeline-templates/deployglobal.yml'
+  parameters:
+    environment: 'development'
 
 - template: 'pipeline-templates/deployInfra.yml'
   parameters:
@@ -20,12 +20,12 @@ stages:
     luisAuthoring: 'dev-webster-luis-authoring'
     botName: 'WhiteWaterWebsterDev'
 
-# - template: 'pipeline-templates/deployApp.yml'
-#   parameters:
-#     stageTitle: "DevAppDeploy"
-#     appName: 'dev-paddle-finder'
-#     resourceGroup: '$(resourceGroupDev)'
-#     region: '$(azureRegion)'
+- template: 'pipeline-templates/deployApp.yml'
+  parameters:
+    stageTitle: "DevAppDeploy"
+    appName: 'dev-paddle-finder'
+    resourceGroup: '$(resourceGroupDev)'
+    region: '$(azureRegion)'
   
 ## Begin Production Deployment
 # - template: 'pipeline-templates/deployInfra.yml'

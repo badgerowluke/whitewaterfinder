@@ -5,6 +5,6 @@
         "botAppName": { "value": "WhitewaterWebsterDev" },
         "botInsightsName": { "value": "dev-paddle-finder" },
         "msftAppId" : { "value" : "a0c50ab4-0ffa-4606-8e9a-ee209f2f210f" },
-        "storageAccountName" : { "value": "" }    
+        "storageAccountName" : { "value": "devwaterfinder" }    
     }    
 }
