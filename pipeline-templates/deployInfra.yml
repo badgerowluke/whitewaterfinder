@@ -36,14 +36,14 @@ parameters:
 stages:
 - stage: ${{parameters.stageTitle}}
   jobs:
-  - deployment: 'backend_infra'
-    pool:
-      vmImage: 'windows-latest'
-    environment: ${{parameters.environment}}
-    strategy:
-      runOnce:
-        deploy:
-          steps:     
+  # - deployment: 'backend_infra'
+  #   pool:
+  #     vmImage: 'windows-latest'
+  #   environment: ${{parameters.environment}}
+  #   strategy:
+  #     runOnce:
+  #       deploy:
+  #         steps:     
           # - task: AzureResourceGroupDeployment@2
           #   displayName: 'Deploy Shared Azure Resources'
           #   inputs:
