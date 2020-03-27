@@ -4,9 +4,9 @@ trigger:
 
 stages: 
 - template: 'pipeline-templates/build.yml'
-- template: 'pipeline-templates/deployglobal.yml'
-  parameters:
-    environment: 'development'
+# - template: 'pipeline-templates/deployglobal.yml'
+#   parameters:
+#     environment: 'development'
 
 - template: 'pipeline-templates/deployInfra.yml'
   parameters:
@@ -28,17 +28,17 @@ stages:
 #     region: '$(azureRegion)'
   
 ## Begin Production Deployment
-- template: 'pipeline-templates/deployInfra.yml'
-  parameters:
-    environment: 'production'
-    stageTitle: 'DeployProdInfrastructure'
-    resourceGroup: '$(resourceGroup)'
-    region: '$(azureRegion)'
-    storageAccountName: "waterfinder"
-    appName: "paddle-finder"
-    luisEndpointName: 'webster-luis'
-    luisAuthoring: 'webster-luis-authoring'   
-    botName: 'WhitewaterWebster' 
+# - template: 'pipeline-templates/deployInfra.yml'
+#   parameters:
+#     environment: 'production'
+#     stageTitle: 'DeployProdInfrastructure'
+#     resourceGroup: '$(resourceGroup)'
+#     region: '$(azureRegion)'
+#     storageAccountName: "waterfinder"
+#     appName: "paddle-finder"
+#     luisEndpointName: 'webster-luis'
+#     luisAuthoring: 'webster-luis-authoring'   
+#     botName: 'WhitewaterWebster' 
 
 
 

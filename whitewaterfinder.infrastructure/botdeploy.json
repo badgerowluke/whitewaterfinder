@@ -142,10 +142,10 @@
             "properties": {
                 "displayName": "[parameters('botAppName')]",
                 "iconUrl": "https://docs.botframework.com/static/devportal/client/images/bot-framework-default.png",
-                "endpoint": "https://whitewaterwebster.azurewebsites.net/api/messages",
-                "msaAppId": "[parameters('msftAppId')]",
-                "developerAppInsightKey": "",
-                "developerAppInsightsApplicationId": "",
+                "endpoint": "[concat('https://', parameters('botAppName'), '.azurewebsites.net/api/messages')]",
+                "msaAppId": "[reference(resourceId('Microsoft.Web/sites', parameters('botAppName')),'2015-05-01').appId]",
+                "developerAppInsightKey": "[reference(resourceId('microsoft.insights/components/', parameters('botInsightsName')), '2015-05-01').InstrumentationKey]",
+                "developerAppInsightsApplicationId": "[reference(resourceId('microsoft.insights/components', parameters('botInsightsName')), '2015-05-01').appId]",
                 "luisAppIds":[]
             }
         }  
