@@ -44,52 +44,52 @@ stages:
       runOnce:
         deploy:
           steps:     
-          - task: AzureResourceGroupDeployment@2
-            displayName: 'Deploy Shared Azure Resources'
-            inputs:
-              azureSubscription: 'whitewaterfinder-sp'
-              resourceGroupName: '${{parameters.resourceGroup}}'
-              location: '${{parameters.region}}'
-              csmFile: '$(Pipeline.Workspace)/infra/sharedresources.json'
-              csmParametersFile: '$(Pipeline.Workspace)/infra/sharedresourcesparams.json'
-              overrideParameters: '-storageAccountType "${{parameters.storageAccountType}}" -appName "${{parameters.appName}}" -preferencesApp "${{parameters.appName}}-preferences" -storageAccountName "${{parameters.storageAccountName}}"'           
+          # - task: AzureResourceGroupDeployment@2
+          #   displayName: 'Deploy Shared Azure Resources'
+          #   inputs:
+          #     azureSubscription: 'whitewaterfinder-sp'
+          #     resourceGroupName: '${{parameters.resourceGroup}}'
+          #     location: '${{parameters.region}}'
+          #     csmFile: '$(Pipeline.Workspace)/infra/sharedresources.json'
+          #     csmParametersFile: '$(Pipeline.Workspace)/infra/sharedresourcesparams.json'
+          #     overrideParameters: '-storageAccountType "${{parameters.storageAccountType}}" -appName "${{parameters.appName}}" -preferencesApp "${{parameters.appName}}-preferences" -storageAccountName "${{parameters.storageAccountName}}"'           
 
-          - task: AzureCLI@2
-            displayName: 'Get Azure Search Query Key'
-            inputs: 
-              azureSubscription: 'whitewaterfinder-sp'
-              scriptType: ps
-              scriptLocation: 'scriptPath'
-              ScriptPath: '$(Pipeline.Workspace)/infra/getazuresearchkey.ps1'
-              ScriptArguments: 'brgs-global'   
+          # - task: AzureCLI@2
+          #   displayName: 'Get Azure Search Query Key'
+          #   inputs: 
+          #     azureSubscription: 'whitewaterfinder-sp'
+          #     scriptType: ps
+          #     scriptLocation: 'scriptPath'
+          #     ScriptPath: '$(Pipeline.Workspace)/infra/getazuresearchkey.ps1'
+          #     ScriptArguments: 'brgs-global'   
 
-          - task: qetza.replacetokens.replacetokens-task.replacetokens@3
-            displayName: 'Replace tokens in azuredeploy.json'
-            inputs:
-              rootDirectory: '$(Pipeline.Workspace)/'
-              targetFiles: azuredeploy.json
-              tokenPrefix: '{%%'
-              tokenSuffix: '%%}'     
+          # - task: qetza.replacetokens.replacetokens-task.replacetokens@3
+          #   displayName: 'Replace tokens in azuredeploy.json'
+          #   inputs:
+          #     rootDirectory: '$(Pipeline.Workspace)/'
+          #     targetFiles: azuredeploy.json
+          #     tokenPrefix: '{%%'
+          #     tokenSuffix: '%%}'     
 
-          - task: AzureResourceGroupDeployment@2
-            displayName: 'Deploy backend ARM Template'
-            inputs:
-              azureSubscription: 'whitewaterfinder-sp'
-              resourceGroupName: '${{parameters.resourceGroup}}'
-              location: '${{parameters.region}}'
-              csmFile: '$(Pipeline.Workspace)/infra/azuredeploy.json'
-              csmParametersFile: '$(Pipeline.Workspace)/infra/parameters.json'
-              overrideParameters: '-storageAccountName ${{parameters.storageAccountName}} -storageAccountType "${{parameters.storageAccountType}}" -appName "${{parameters.appName}}" -appPlanName "WaterFinderPlan" -preferencesApp "${{parameters.appName}}-preferences"  -azureSearchKey $(searchKey)'       
+          # - task: AzureResourceGroupDeployment@2
+          #   displayName: 'Deploy backend ARM Template'
+          #   inputs:
+          #     azureSubscription: 'whitewaterfinder-sp'
+          #     resourceGroupName: '${{parameters.resourceGroup}}'
+          #     location: '${{parameters.region}}'
+          #     csmFile: '$(Pipeline.Workspace)/infra/azuredeploy.json'
+          #     csmParametersFile: '$(Pipeline.Workspace)/infra/parameters.json'
+          #     overrideParameters: '-storageAccountName ${{parameters.storageAccountName}} -storageAccountType "${{parameters.storageAccountType}}" -appName "${{parameters.appName}}" -appPlanName "WaterFinderPlan" -preferencesApp "${{parameters.appName}}-preferences"  -azureSearchKey $(searchKey)'       
 
-          - task: AzureResourceGroupDeployment@2
-            displayName: 'Deploy AKV'
-            inputs:
-              azureSubscription: 'whitewaterfinder-sp'
-              resourceGroupName: '${{parameters.resourceGroup}}'
-              location: '${{parameters.region}}'
-              csmFile: '$(Pipeline.Workspace)/infra/kvtemplate.json'
-              csmParametersFile: '$(Pipeline.Workspace)/infra/kvparameters.json'
-              overrideParameters: '-tenantId "$(tenantId)" -adminId "$(adminId)" -kvName "${{parameters.resourceGroup}}"'
+          # - task: AzureResourceGroupDeployment@2
+          #   displayName: 'Deploy AKV'
+          #   inputs:
+          #     azureSubscription: 'whitewaterfinder-sp'
+          #     resourceGroupName: '${{parameters.resourceGroup}}'
+          #     location: '${{parameters.region}}'
+          #     csmFile: '$(Pipeline.Workspace)/infra/kvtemplate.json'
+          #     csmParametersFile: '$(Pipeline.Workspace)/infra/kvparameters.json'
+          #     overrideParameters: '-tenantId "$(tenantId)" -adminId "$(adminId)" -kvName "${{parameters.resourceGroup}}"'
 
   - deployment: 'bot'
     dependsOn: 'backend_infra'
