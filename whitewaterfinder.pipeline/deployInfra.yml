@@ -50,7 +50,7 @@ stages:
               azureSubscription: 'whitewaterfinder-sp'
               resourceGroupName: '${{parameters.resourceGroup}}'
               location: '${{parameters.region}}'
-              csmFile: '$(Pipeline.Workspace)/infra/sharedresources.json'
+              csmFile: '$(Pipeline.Workspace)/infra/storage/sharedresources.json'
               csmParametersFile: '$(Pipeline.Workspace)/infra/sharedresourcesparams.json'
               overrideParameters: '-storageAccountType "${{parameters.storageAccountType}}" -appName "${{parameters.appName}}" -preferencesApp "${{parameters.appName}}-preferences" -storageAccountName "${{parameters.storageAccountName}}"'           
 
@@ -60,7 +60,7 @@ stages:
               azureSubscription: 'whitewaterfinder-sp'
               scriptType: ps
               scriptLocation: 'scriptPath'
-              ScriptPath: '$(Pipeline.Workspace)/infra/getazuresearchkey.ps1'
+              ScriptPath: '$(Pipeline.Workspace)/infra/search/getazuresearchkey.ps1'
               ScriptArguments: 'brgs-global'   
 
           - task: qetza.replacetokens.replacetokens-task.replacetokens@3
@@ -87,8 +87,8 @@ stages:
               azureSubscription: 'whitewaterfinder-sp'
               resourceGroupName: '${{parameters.resourceGroup}}'
               location: '${{parameters.region}}'
-              csmFile: '$(Pipeline.Workspace)/infra/kvtemplate.json'
-              csmParametersFile: '$(Pipeline.Workspace)/infra/kvparameters.json'
+              csmFile: '$(Pipeline.Workspace)/infra/keyvault/kvtemplate.json'
+              csmParametersFile: '$(Pipeline.Workspace)/infra/keyvault/kvparameters.json'
               overrideParameters: '-tenantId "$(tenantId)" -adminId "$(adminId)" -kvName "${{parameters.resourceGroup}}"'
 
   - deployment: 'bot'
@@ -108,8 +108,8 @@ stages:
               azureSubscription: 'whitewaterfinder-sp'
               resourceGroupName: '${{parameters.resourceGroup}}'
               location: '${{parameters.region}}'
-              csmFile: '$(Pipeline.Workspace)/infra/cognitiveservices.json'
-              csmParametersFile: '$(Pipeline.Workspace)/infra/cogservicesparams.json'
+              csmFile: '$(Pipeline.Workspace)/infra/cognitiveservices/cognitiveservices.json'
+              csmParametersFile: '$(Pipeline.Workspace)/infra/cognitiveservices/cogservicesparams.json'
               overrideParameters: '-luisName "${{parameters.luisEndpointName}}" -authoringName "${{parameters.luisAuthoring}}"'  
  
           - task: AzureCli@2
@@ -124,7 +124,7 @@ stages:
           - task: qetza.replacetokens.replacetokens-task.replacetokens@3
             displayName: 'Replace tokens in botdeploy.json'
             inputs:
-              rootDirectory: '$(Pipeline.Workspace)/infra/'
+              rootDirectory: '$(Pipeline.Workspace)/infra/cognitiveservices/'
               targetFiles: botdeploy.json
               tokenPrefix: '{%%'
               tokenSuffix: '%%}'    
@@ -135,8 +135,8 @@ stages:
               azureSubscription: 'whitewaterfinder-sp'
               resourceGroupName: '${{parameters.resourceGroup}}'
               location: '${{parameters.region}}'
-              csmFile: '$(Pipeline.Workspace)/infra/botdeploy.json'
-              csmParametersFile: '$(Pipeline.Workspace)/infra/botparams.json' 
+              csmFile: '$(Pipeline.Workspace)/infra/ognitiveservices/botdeploy.json'
+              csmParametersFile: '$(Pipeline.Workspace)/infra/ognitiveservices/botparams.json' 
               overrideParameters: '-botInsightsName "${{ parameters.appName }}" -botAppName "${{parameters.botName}}" -msftAppId "$(newAppId)" -storageAccountName ${{parameters.storageAccountName}}'        
 
 

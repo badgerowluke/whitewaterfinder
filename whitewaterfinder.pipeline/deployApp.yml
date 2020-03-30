@@ -64,8 +64,8 @@ stages:
             azureSubscription: 'whitewaterfinder-sp'
             resourceGroupName: '${{parameters.resourceGroup}}'
             location: '${{parameters.region}}'
-            csmFile: 'whitewaterfinder.infrastructure/apimdeploy.json'  
-            csmParametersFile: 'whitewaterfinder.infrastructure/apimparameters.json'   
+            csmFile: 'whitewaterfinder.infrastructure/apim/apimdeploy.json'  
+            csmParametersFile: 'whitewaterfinder.infrastructure/apim/apimparameters.json'   
             overrideParameters: '-adminEmail "$(adminEmail)" -appName "${{parameters.appName}}" -preferencesApp "${{parameters.appName}}-preferences"'   
         
       - download: current
@@ -77,7 +77,7 @@ stages:
           azureSubscription: 'whitewaterfinder-sp'
           scriptType: ps
           scriptLocation: 'scriptPath'
-          ScriptPath: '$(Pipeline.Workspace)/infra/apimdeploy.ps1'    
+          ScriptPath: '$(Pipeline.Workspace)/infra/apim/apimdeploy.ps1'    
           azurePowerShellVersion: LatestVersion      
           ScriptArguments: '${{parameters.resourceGroup}} $(Pipeline.Workspace)\infra'      
 

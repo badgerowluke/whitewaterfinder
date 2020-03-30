@@ -21,8 +21,8 @@ stages:
               azureSubscription: 'whitewaterfinder-sp'
               resourceGroupName: 'brgs-global' #this is a thing that needs to be addressed.
               location: '$(azureRegion)'
-              csmFile: '$(Pipeline.Workspace)/infra/global-services.json'
-              csmParameetersFile: 'whitewaterfinder.infrastructure/global-services-params.json'
+              csmFile: '$(Pipeline.Workspace)/infra/search/global-services.json'
+              csmParameetersFile: 'whitewaterfinder.infrastructure/search/global-services-params.json'
 
           - task: AzureCLI@2
             displayName: 'Build Azure Search Index'
@@ -30,5 +30,5 @@ stages:
               azureSubscription: 'whitewaterfinder-sp'
               scriptType: ps
               scriptLocation: 'scriptPath'
-              ScriptPath: '$(Pipeline.Workspace)/infra//deployment.ps1'
+              ScriptPath: '$(Pipeline.Workspace)/infra/deployment.ps1'
               ScriptArguments: 'brgs-global "$(Pipeline.Workspace)/infra/riverswithid.json"'     
