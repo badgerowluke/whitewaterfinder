@@ -51,7 +51,7 @@ stages:
               resourceGroupName: '${{parameters.resourceGroup}}'
               location: '${{parameters.region}}'
               csmFile: '$(Pipeline.Workspace)/infra/storage/sharedresources.json'
-              csmParametersFile: '$(Pipeline.Workspace)/infra/sharedresourcesparams.json'
+              csmParametersFile: '$(Pipeline.Workspace)/infra/storage/sharedresourcesparams.json'
               overrideParameters: '-storageAccountType "${{parameters.storageAccountType}}" -appName "${{parameters.appName}}" -preferencesApp "${{parameters.appName}}-preferences" -storageAccountName "${{parameters.storageAccountName}}"'           
 
           - task: AzureCLI@2
@@ -135,7 +135,7 @@ stages:
               azureSubscription: 'whitewaterfinder-sp'
               resourceGroupName: '${{parameters.resourceGroup}}'
               location: '${{parameters.region}}'
-              csmFile: '$(Pipeline.Workspace)/infra/ognitiveservices/botdeploy.json'
+              csmFile: '$(Pipeline.Workspace)/infra/cognitiveservices/botdeploy.json'
               csmParametersFile: '$(Pipeline.Workspace)/infra/ognitiveservices/botparams.json' 
               overrideParameters: '-botInsightsName "${{ parameters.appName }}" -botAppName "${{parameters.botName}}" -msftAppId "$(newAppId)" -storageAccountName ${{parameters.storageAccountName}}'        
 
