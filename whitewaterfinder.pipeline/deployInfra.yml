@@ -136,7 +136,7 @@ stages:
               resourceGroupName: '${{parameters.resourceGroup}}'
               location: '${{parameters.region}}'
               csmFile: '$(Pipeline.Workspace)/infra/cognitiveservices/botdeploy.json'
-              csmParametersFile: '$(Pipeline.Workspace)/infra/ognitiveservices/botparams.json' 
+              csmParametersFile: '$(Pipeline.Workspace)/infra/cognitiveservices/botparams.json' 
               overrideParameters: '-botInsightsName "${{ parameters.appName }}" -botAppName "${{parameters.botName}}" -msftAppId "$(newAppId)" -storageAccountName ${{parameters.storageAccountName}}'        
 
 
