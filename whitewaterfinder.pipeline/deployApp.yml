@@ -31,32 +31,14 @@ stages:
         appType: functionapp
         principal: 'whitewaterfinder-sp'
         appName: "${{parameters.appName}}"
-    # - download: current
-    #   displayName: 'download river apis'
-    #   artifact: riversfunc
-    
-    # - task: AzureRmWebAppDeployment@3
-    #   displayName: 'Deploy River API'
-    #   inputs:
-    #       azureSubscription: 'whitewaterfinder-sp'
-    #       appType: functionapp
-    #       WebAppName: '${{parameters.appName}}'
-    #       Package: '$(Pipeline.Workspace)/riversfunc/app.zip'
-    #       TakeAppOfflineFlag: true      
-          
-    - download: current
-      displayName: 'download preferences apis'
-      artifact: preferencesfunc
-    
-    - task: AzureRmWebAppDeployment@3
-      displayName: 'Deploy Preferences API'
-      inputs:
-          azureSubscription: 'whitewaterfinder-sp'
-          appType: functionapp
-          WebAppName: '${{parameters.appName}}-preferences'
-          Package: '$(Pipeline.Workspace)/preferencesfunc/app.zip'
-          TakeAppOfflineFlag: true   
 
+    - template: 'downloadAndDeploy.yml'
+      parameters:
+        artifact: preferencesfunc
+        appType: functionapp
+        principal: 'whitewaterfinder-sp'
+        appName: '${{parameters.appName}}-preferences'      
+          
   - job: 'backend_security'
     pool:
       vmImage: 'windows-latest'
