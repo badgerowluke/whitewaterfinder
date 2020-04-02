@@ -25,18 +25,23 @@ stages:
       vmImage: 'windows-latest'
 
     steps:
-    - download: current
-      displayName: 'download river apis'
-      artifact: riversfunc
+    - template: 'downloadAndDeploy.yml'
+      parameters:
+        artifact: riversfunc
+        appType: functionapp
+        principal: 'whitewaterfinder-sp'
+    # - download: current
+    #   displayName: 'download river apis'
+    #   artifact: riversfunc
     
-    - task: AzureRmWebAppDeployment@3
-      displayName: 'Deploy River API'
-      inputs:
-          azureSubscription: 'whitewaterfinder-sp'
-          appType: functionapp
-          WebAppName: '${{parameters.appName}}'
-          Package: '$(Pipeline.Workspace)/riversfunc/app.zip'
-          TakeAppOfflineFlag: true      
+    # - task: AzureRmWebAppDeployment@3
+    #   displayName: 'Deploy River API'
+    #   inputs:
+    #       azureSubscription: 'whitewaterfinder-sp'
+    #       appType: functionapp
+    #       WebAppName: '${{parameters.appName}}'
+    #       Package: '$(Pipeline.Workspace)/riversfunc/app.zip'
+    #       TakeAppOfflineFlag: true      
           
     - download: current
       displayName: 'download preferences apis'
