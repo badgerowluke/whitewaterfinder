@@ -1,0 +1,40 @@
+parameters:
+- name: 'storageAccountType'
+  type: string
+  default: ''
+  
+- name: 'region'
+  type: string
+  default: 'North Central US'  
+- name: 'resourceGroup'
+  type: string
+  default: ''  
+
+- name: 'appName'
+  type: string
+  default: ''
+
+- name: 'storageAccountName'
+  type: string
+  default: ''  
+
+
+steps:
+- task: AzureResourceGroupDeployment@2
+  displayName: 'Deploy Shared Azure Resources'
+  inputs:
+    azureSubscription: 'whitewaterfinder-sp'
+    resourceGroupName: '${{parameters.resourceGroup}}'
+    location: '${{parameters.region}}'
+    csmFile: '$(Pipeline.Workspace)/infra/storage/sharedresources.json'
+    csmParametersFile: '$(Pipeline.Workspace)/infra/storage/sharedresourcesparams.json'
+    overrideParameters: '-storageAccountType "${{parameters.storageAccountType}}" -appName "${{parameters.appName}}" -preferencesApp "${{parameters.appName}}-preferences" -storageAccountName "${{parameters.storageAccountName}}"'           
+
+- task: AzureCLI@2
+  displayName: 'Get Azure Search Query Key'
+  inputs: 
+    azureSubscription: 'whitewaterfinder-sp'
+    scriptType: ps
+    scriptLocation: 'scriptPath'
+    ScriptPath: '$(Pipeline.Workspace)/infra/search/getazuresearchkey.ps1'
+    ScriptArguments: 'brgs-global'   

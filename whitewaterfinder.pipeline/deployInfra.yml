@@ -43,25 +43,14 @@ stages:
     strategy:
       runOnce:
         deploy:
-          steps:     
-          - task: AzureResourceGroupDeployment@2
-            displayName: 'Deploy Shared Azure Resources'
-            inputs:
-              azureSubscription: 'whitewaterfinder-sp'
-              resourceGroupName: '${{parameters.resourceGroup}}'
-              location: '${{parameters.region}}'
-              csmFile: '$(Pipeline.Workspace)/infra/storage/sharedresources.json'
-              csmParametersFile: '$(Pipeline.Workspace)/infra/storage/sharedresourcesparams.json'
-              overrideParameters: '-storageAccountType "${{parameters.storageAccountType}}" -appName "${{parameters.appName}}" -preferencesApp "${{parameters.appName}}-preferences" -storageAccountName "${{parameters.storageAccountName}}"'           
+          steps:   
+          - template:  'whitewaterfinder.pipeline/buildSearch.yml'
+            storageAccountType: "${{parameters.storageAccountType}}"
+            storageAccountName: "${{parameters.storageAccountName}}"
+            appName: "${{parameters.appName}}"
+            resourceGroup: "${{parameters.resourceGroup}}"
+            region: "${{parameters.region}}"
 
-          - task: AzureCLI@2
-            displayName: 'Get Azure Search Query Key'
-            inputs: 
-              azureSubscription: 'whitewaterfinder-sp'
-              scriptType: ps
-              scriptLocation: 'scriptPath'
-              ScriptPath: '$(Pipeline.Workspace)/infra/search/getazuresearchkey.ps1'
-              ScriptArguments: 'brgs-global'   
 
           - task: qetza.replacetokens.replacetokens-task.replacetokens@3
             displayName: 'Replace tokens in azuredeploy.json'
