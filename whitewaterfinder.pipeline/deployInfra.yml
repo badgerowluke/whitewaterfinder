@@ -45,11 +45,12 @@ stages:
         deploy:
           steps:   
           - template:  'whitewaterfinder.pipeline/buildSearch.yml'
-            storageAccountType: ${{parameters.storageAccountType}}
-            storageAccountName: ${{parameters.storageAccountName}}
-            appName: ${{parameters.appName}}
-            resourceGroup: ${{parameters.resourceGroup}}
-            region: ${{parameters.region}}
+            parameters:
+              storageAccountType: ${{parameters.storageAccountType}}
+              storageAccountName: ${{parameters.storageAccountName}}
+              appName: ${{parameters.appName}}
+              resourceGroup: ${{parameters.resourceGroup}}
+              region: ${{parameters.region}}
 
 
           - task: qetza.replacetokens.replacetokens-task.replacetokens@3
