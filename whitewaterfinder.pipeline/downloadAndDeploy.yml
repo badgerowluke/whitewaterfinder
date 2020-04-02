@@ -8,6 +8,9 @@ parameters:
 - name: appType
   type: string
   default: ''
+- name: appName
+  type: string
+  default: ''
 
 steps:
 - download: current
