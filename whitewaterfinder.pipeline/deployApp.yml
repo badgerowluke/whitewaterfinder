@@ -30,6 +30,7 @@ stages:
         artifact: riversfunc
         appType: functionapp
         principal: 'whitewaterfinder-sp'
+        appName: "${{parameters.appName}}"
     # - download: current
     #   displayName: 'download river apis'
     #   artifact: riversfunc
