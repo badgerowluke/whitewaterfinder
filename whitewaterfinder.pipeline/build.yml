@@ -82,7 +82,7 @@ stages:
     - task: PublishBuildArtifacts@1
       displayName: 'Publish Bot App'
       inputs:
-        PathtoPublish: whitewaterfinder.app.bot/bin/release/netcoreapp2.1/app.zip
+        PathtoPublish: whitewaterfinder.app.bot/bin/release/netcoreapp2.1/publish.zip
         ArtifactName: 'websterbot'        
 
   - job: build_node
