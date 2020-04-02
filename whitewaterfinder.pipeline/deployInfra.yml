@@ -44,7 +44,7 @@ stages:
       runOnce:
         deploy:
           steps:   
-          - template:  'whitewaterfinder.pipeline/buildSearch.yml'
+          - template:  'buildSearch.yml'
             parameters:
               storageAccountType: ${{parameters.storageAccountType}}
               storageAccountName: ${{parameters.storageAccountName}}
