@@ -44,8 +44,6 @@ stages:
       vmImage: 'windows-latest'
     dependsOn: 'backend_app_deployment'
     steps:
-      
-      
       - task: AzureResourceGroupDeployment@2
         displayName: 'Deploy APIM to waterfinder'
         inputs:
@@ -55,7 +53,7 @@ stages:
             csmFile: 'whitewaterfinder.infrastructure/apim/apimdeploy.json'  
             csmParametersFile: 'whitewaterfinder.infrastructure/apim/apimparameters.json'   
             overrideParameters: '-adminEmail "$(adminEmail)" -appName "${{parameters.appName}}" -preferencesApp "${{parameters.appName}}-preferences"'   
-        
+
       - download: current
         artifact: infra
 
@@ -73,13 +71,9 @@ stages:
     pool:
       vmImage: 'windows-latest'
     steps:
-      - download: current
-        artifact: websterbot    
-
-      - task: AzureRmWebAppDeployment@3
-        displayName: 'Deploy Bot App'
-        inputs:
-          azureSubscription: 'whitewaterfinder-sp'
+      - template: 'downloadAndDeploy.yml'
+        parameters: 
+          artifact: websterbot
           appType: app
-          WebAppName: '${{parameters.botapp}}'
-          Package: '$(Pipeline.Workspace)/websterbot/publish.zip'                     
+          principal: 'whitewaterfinder-sp'
+          appName: '${{parameters.botapp}}'                     
