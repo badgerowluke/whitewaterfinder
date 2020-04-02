@@ -15,9 +15,11 @@ steps:
   artifact: ${{ parameters.artifact }}
 
 - task: AzureRmWebAppDeployment@3
-  displayName: 'Deploy ${{ parameters.artifact }}'
-  azureSubscription: '${{parameters.principal}}'
-  appType: '${{parameters.appType}}'
-  WebAppName: '${{ parameters.appName }}'
-  Package: '$(Pipeline.Workspace)/${{parameters.artifact}}/app.zip'
-  TakeAppOfflineFlag: true
+  displayName: 'Deploy App'
+  inputs:
+    displayName: 'Deploy ${{ parameters.artifact }}'
+    azureSubscription: '${{parameters.principal}}'
+    appType: '${{parameters.appType}}'
+    WebAppName: '${{ parameters.appName }}'
+    Package: '$(Pipeline.Workspace)/${{parameters.artifact}}/app.zip'
+    TakeAppOfflineFlag: true
