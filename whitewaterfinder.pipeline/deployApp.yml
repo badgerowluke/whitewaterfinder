@@ -76,4 +76,14 @@ stages:
           artifact: websterbot
           appType: app
           principal: 'whitewaterfinder-sp'
-          appName: '${{parameters.botapp}}'                     
+          appName: '${{parameters.botapp}}'    
+      # - download: current
+      #   artifact: websterbot    
+
+      # - task: AzureRmWebAppDeployment@3
+      #   displayName: 'Deploy Bot App'
+      #   inputs:
+      #     azureSubscription: 'whitewaterfinder-sp'
+      #     appType: app
+      #     WebAppName: '${{parameters.botapp}}'
+      #     Package: '$(Pipeline.Workspace)/websterbot/publish.zip'                     
