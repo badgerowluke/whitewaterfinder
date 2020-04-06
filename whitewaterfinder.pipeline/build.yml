@@ -1,7 +1,4 @@
-parameters:
-- name: vstsFeed
-  type: string
-  default: ''
+
 stages:
 - stage: Build
   jobs:
@@ -15,7 +12,12 @@ stages:
         inputs:
           PathtoPublish: 'whitewaterfinder.infrastructure/'
           ArtifactName: infra      
+
+
+
+
                               
+
   - job: build_dotnet
     pool:
       vmImage: 'windows-latest'
