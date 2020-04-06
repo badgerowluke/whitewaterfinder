@@ -21,14 +21,76 @@ stages:
       vmImage: 'windows-latest'
     continueOnError: false
     steps:
-    - template: 'buildDotnet.yml'
-      parameters:
-        vstsFeed: '${{parameters.vstsFeed}}'
+    - task: DotNetCoreCLI@2
+      displayName: Restore
+      inputs:
+        command: restore
+        projects: '${{parameters.vstsFeed}}'
+  
+    - task: DotNetCoreCLI@2
+      displayName: Build
+      inputs:
+        command: 'build'
+        projects: '**/*.csproj'
+        arguments: '--configuration $(BuildConfiguration)'
+
+    - task: DotNetCoreCLI@2
+      displayName: Test
+      inputs:
+        command: test
+        projects: '**/*[Tt]est/*.csproj'
+        arguments: '--configuration $(BuildConfiguration)'
+
+    - task: DotNetCoreCLI@2
+      displayName: Publish bot app
+      inputs:
+        command: publish
+        projects: '**/whitewaterfinder.app.bot/whitewaterfinder.app.bot.csproj'
+        arguments: '--configuration $(BuildConfiguration)'
+
+    - task: ArchiveFiles@2
+      displayName: bundle api 
+      inputs: 
+        rootFolderOrFile: whitewaterfinder.api/bin/release/netcoreapp3.0
+        includeRootFolder: false
+        archiveFile: $(Pipeline.Workspace)/riversfunc/app.zip
+
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publish River Functions'
+      inputs:
+        PathtoPublish: $(Pipeline.Workspace)/riversfunc/app.zip
+        ArtifactName: 'riversfunc'
+
+ 
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publish Bot App'
+      inputs:
+        PathtoPublish: whitewaterfinder.app.bot/bin/release/netcoreapp2.1/publish.zip
+        ArtifactName: 'websterbot'        
 
   - job: build_node
     pool:
       vmImage: 'windows-latest'
     continueOnError: false
     steps:
-    - template: 'buildNode.yml'
+    - task: NodeTool@0
+      inputs:
+        versionSpec: '10.x'
+      displayName: 'set node environment' 
 
+    - script: npm install && npm run build
+      displayName: 'Build User Pref functions'
+      workingDirectory: whitewaterfinder.api.user
+
+    - task: ArchiveFiles@2
+      displayName: bundle preferences api 
+      inputs: 
+        rootFolderOrFile: whitewaterfinder.api.user/
+        includeRootFolder: false
+        archiveFile: $(Pipeline.Workspace)/preferencesfunc/app.zip
+
+    - task: PublishBuildArtifacts@1
+      displayName: 'Copy Preferences Functions'
+      inputs:
+        PathtoPublish: $(Pipeline.Workspace)/preferencesfunc/app.zip
+        ArtifactName: 'preferencesfunc'
