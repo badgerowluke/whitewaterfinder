@@ -1,0 +1,22 @@
+steps:
+- task: NodeTool@0
+  inputs:
+    versionSpec: '10.x'
+  displayName: 'set node environment' 
+
+- script: npm install && npm run build
+  displayName: 'Build User Pref functions'
+  workingDirectory: whitewaterfinder.api.user
+
+- task: ArchiveFiles@2
+  displayName: bundle preferences api 
+  inputs: 
+    rootFolderOrFile: whitewaterfinder.api.user/
+    includeRootFolder: false
+    archiveFile: $(Pipeline.Workspace)/preferencesfunc/app.zip
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Copy Preferences Functions'
+  inputs:
+    PathtoPublish: $(Pipeline.Workspace)/preferencesfunc/app.zip
+    ArtifactName: 'preferencesfunc'

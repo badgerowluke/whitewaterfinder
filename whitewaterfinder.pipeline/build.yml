@@ -1,3 +1,7 @@
+parameters:
+- name: vstsFeed
+  type: string
+  default: ''
 stages:
 - stage: Build
   jobs:
@@ -6,23 +10,11 @@ stages:
       vmImage: 'windows-latest'
     continueOnError: false
     steps:
-      - task: PublishBuildArtifacts@1
-        displayName: 'Push infra scripts'
-        inputs:
-          PathtoPublish: 'whitewaterfinder.infrastructure/'
-          ArtifactName: infra      
-
-      - task: qetza.replacetokens.replacetokens-task.replacetokens@3
-        displayName: 'Replace tokens in azuredeploy.json'
-        inputs:
-          rootDirectory: 'whitewaterfinder.infrastructure/'
-          targetFiles: sharedresources.json
-          tokenPrefix: '{%%'
-          tokenSuffix: '%%}'    
-
-
-
-                              
+    - task: PublishBuildArtifacts@1
+      displayName: 'Push infra scripts'
+      inputs:
+        PathtoPublish: 'whitewaterfinder.infrastructure/'
+        ArtifactName: infra      
 
   - job: build_dotnet
     pool:
@@ -82,7 +74,7 @@ stages:
     - task: PublishBuildArtifacts@1
       displayName: 'Publish Bot App'
       inputs:
-        PathtoPublish: whitewaterfinder.app.bot/bin/release/netcoreapp2.1/publish.zip
+        PathtoPublish: whitewaterfinder.app.bot/bin/release/netcoreapp2.1/app.zip
         ArtifactName: 'websterbot'        
 
   - job: build_node
@@ -90,24 +82,4 @@ stages:
       vmImage: 'windows-latest'
     continueOnError: false
     steps:
-    - task: NodeTool@0
-      inputs:
-        versionSpec: '10.x'
-      displayName: 'set node environment' 
-
-    - script: npm install && npm run build
-      displayName: 'Build User Pref functions'
-      workingDirectory: whitewaterfinder.api.user
-
-    - task: ArchiveFiles@2
-      displayName: bundle preferences api 
-      inputs: 
-        rootFolderOrFile: whitewaterfinder.api.user/
-        includeRootFolder: false
-        archiveFile: $(Pipeline.Workspace)/preferencesfunc/app.zip
-
-    - task: PublishBuildArtifacts@1
-      displayName: 'Copy Preferences Functions'
-      inputs:
-        PathtoPublish: $(Pipeline.Workspace)/preferencesfunc/app.zip
-        ArtifactName: 'preferencesfunc'
+    - template: 'buildNode.yml'
