@@ -4,30 +4,32 @@ trigger:
 
 stages: 
 - template: 'whitewaterfinder.pipeline/build.yml'
+  parameters: 
+    vstsFeed: 'e7750945-8da0-48c7-ad5d-6c474174e6d1'
     
 - template: 'whitewaterfinder.pipeline/deployglobal.yml'
   parameters:
     environment: 'development'
 
-# - template: 'whitewaterfinder.pipeline/deployInfra.yml'
-#   parameters:
-#     environment: 'development'
-#     stageTitle: 'DeployDevInfrastructure'
-#     resourceGroup: '$(resourceGroupDev)'
-#     region: '$(azureRegion)'
-#     storageAccountName: "devwaterfinder"
-#     appName: "dev-paddle-finder"
-#     luisEndpointName: 'dev-webster-luis'
-#     luisAuthoring: 'dev-webster-luis-authoring'
-#     botName: 'WhiteWaterWebsterDev'
+- template: 'whitewaterfinder.pipeline/deployInfra.yml'
+  parameters:
+    environment: 'development'
+    stageTitle: 'DeployDevInfrastructure'
+    resourceGroup: '$(resourceGroupDev)'
+    region: '$(azureRegion)'
+    storageAccountName: "devwaterfinder"
+    appName: "dev-paddle-finder"
+    luisEndpointName: 'dev-webster-luis'
+    luisAuthoring: 'dev-webster-luis-authoring'
+    botName: 'WhiteWaterWebsterDev'
 
-# - template: 'whitewaterfinder.pipeline/deployApp.yml'
-#   parameters:
-#     stageTitle: "DevAppDeploy"
-#     appName: 'dev-paddle-finder'
-#     resourceGroup: '$(resourceGroupDev)'
-#     region: '$(azureRegion)'
-#     botapp: 'WhiteWaterWebsterDev'
+- template: 'whitewaterfinder.pipeline/deployApp.yml'
+  parameters:
+    stageTitle: "DevAppDeploy"
+    appName: 'dev-paddle-finder'
+    resourceGroup: '$(resourceGroupDev)'
+    region: '$(azureRegion)'
+    botapp: 'WhiteWaterWebsterDev'
   
 ## Begin Production Deployment
 # - template: 'whitewaterfinder.pipeline/deployInfra.yml'
