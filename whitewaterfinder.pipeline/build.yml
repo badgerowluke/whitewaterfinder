@@ -1,4 +1,3 @@
-
 stages:
 - stage: Build
   jobs:
@@ -13,6 +12,13 @@ stages:
           PathtoPublish: 'whitewaterfinder.infrastructure/'
           ArtifactName: infra      
 
+      - task: qetza.replacetokens.replacetokens-task.replacetokens@3
+        displayName: 'Replace tokens in azuredeploy.json'
+        inputs:
+          rootDirectory: 'whitewaterfinder.infrastructure/'
+          targetFiles: sharedresources.json
+          tokenPrefix: '{%%'
+          tokenSuffix: '%%}'    
 
 
 
@@ -29,7 +35,15 @@ stages:
         command: restore
         projects: '**/*.csproj'
         vstsFeed: 'e7750945-8da0-48c7-ad5d-6c474174e6d1'
-  
+
+    - task: qetza.replacetokens.replacetokens-task.replacetokens@3
+      displayName: 'Replace tokens in bot app settings'
+      inputs:
+        rootDirectory: 'whitewaterfinder.app.bot/'
+        targetFiles: appsettings.json
+        tokenPrefix: '{%%'
+        tokenSuffix: '%%}'    
+
     - task: DotNetCoreCLI@2
       displayName: Build
       inputs:
