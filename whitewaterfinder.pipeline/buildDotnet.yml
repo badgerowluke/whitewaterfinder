@@ -8,7 +8,7 @@ steps:
   inputs:
     command: restore
     projects: '**/*.csproj'
-    vstsFeed: 'e7750945-8da0-48c7-ad5d-6c474174e6d1'
+    vstsFeed: '${{parameters.vstsFeed}}'
 
 - task: DotNetCoreCLI@2
   displayName: Build
