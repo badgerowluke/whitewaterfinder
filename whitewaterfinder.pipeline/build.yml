@@ -21,9 +21,61 @@ stages:
       vmImage: 'windows-latest'
     continueOnError: false
     steps:
-    - template: 'buildDotnet.yml'
-      parameters:
-        vstsFeed: ${{parameters.vstsFeed}}
+    - task: DotNetCoreCLI@2
+      displayName: Restore
+      inputs:
+        command: restore
+        projects: '**/*.csproj'
+        vstsFeed: 'e7750945-8da0-48c7-ad5d-6c474174e6d1'
+
+    - task: qetza.replacetokens.replacetokens-task.replacetokens@3
+      displayName: 'Replace tokens in bot app settings'
+      inputs:
+        rootDirectory: 'whitewaterfinder.app.bot/'
+        targetFiles: appsettings.json
+        tokenPrefix: '{%%'
+        tokenSuffix: '%%}'    
+
+    - task: DotNetCoreCLI@2
+      displayName: Build
+      inputs:
+        command: 'build'
+        projects: '**/*.csproj'
+        arguments: '--configuration $(BuildConfiguration)'
+
+    - task: DotNetCoreCLI@2
+      displayName: Test
+      inputs:
+        command: test
+        projects: '**/*[Tt]est/*.csproj'
+        arguments: '--configuration $(BuildConfiguration)'
+
+    - task: DotNetCoreCLI@2
+      displayName: Publish bot app
+      inputs:
+        command: publish
+        projects: '**/whitewaterfinder.app.bot/whitewaterfinder.app.bot.csproj'
+        arguments: '--configuration $(BuildConfiguration)'
+
+    - task: ArchiveFiles@2
+      displayName: bundle api 
+      inputs: 
+        rootFolderOrFile: whitewaterfinder.api/bin/release/netcoreapp3.0
+        includeRootFolder: false
+        archiveFile: $(Pipeline.Workspace)/riversfunc/app.zip
+
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publish River Functions'
+      inputs:
+        PathtoPublish: $(Pipeline.Workspace)/riversfunc/app.zip
+        ArtifactName: 'riversfunc'
+
+ 
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publish Bot App'
+      inputs:
+        PathtoPublish: whitewaterfinder.app.bot/bin/release/netcoreapp2.1/app.zip
+        ArtifactName: 'websterbot'        
 
   - job: build_node
     pool:
