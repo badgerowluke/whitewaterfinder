@@ -10,23 +10,17 @@ stages:
       vmImage: 'windows-latest'
     continueOnError: false
     steps:
-      - task: PublishBuildArtifacts@1
-        displayName: 'Push infra scripts'
-        inputs:
-          PathtoPublish: 'whitewaterfinder.infrastructure/'
-          ArtifactName: infra      
-
-
-
-
-                              
+    - task: PublishBuildArtifacts@1
+      displayName: 'Push infra scripts'
+      inputs:
+        PathtoPublish: 'whitewaterfinder.infrastructure/'
+        ArtifactName: infra      
 
   - job: build_dotnet
     pool:
       vmImage: 'windows-latest'
     continueOnError: false
     steps:
-    
     - template: 'buildDotnet.yml'
       parameters:
         vstsFeed: ${{parameters.vstsFeed}}
