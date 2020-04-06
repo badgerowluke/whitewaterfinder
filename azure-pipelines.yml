@@ -4,6 +4,9 @@ trigger:
 
 stages: 
 - template: 'whitewaterfinder.pipeline/build.yml'
+  parameters: 
+    vstsFeed: 'e7750945-8da0-48c7-ad5d-6c474174e6d1'
+    
 - template: 'whitewaterfinder.pipeline/deployglobal.yml'
   parameters:
     environment: 'development'
