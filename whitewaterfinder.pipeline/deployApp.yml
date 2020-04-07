@@ -16,6 +16,9 @@ parameters:
 - name: 'botapp'
   type: string
   default: ''
+- name: 'principal'
+  type: string
+  default: ''
 
 stages:
 - stage: ${{parameters.stageTitle}}
@@ -29,14 +32,14 @@ stages:
       parameters:
         artifact: riversfunc
         appType: functionapp
-        principal: 'whitewaterfinder-sp'
+        principal: '${{parameters.principal}}'
         appName: "${{parameters.appName}}"
 
     - template: 'downloadAndDeploy.yml'
       parameters:
         artifact: preferencesfunc
         appType: functionapp
-        principal: 'whitewaterfinder-sp'
+        principal: '${{parameters.principal}}'
         appName: '${{parameters.appName}}-preferences'      
           
   - job: 'backend_security'
@@ -60,7 +63,7 @@ stages:
     - task: AzureCLI@2
       displayName: 'Configure APIM'
       inputs:
-        azureSubscription: 'whitewaterfinder-sp'
+        azureSubscription: '${{parameters.principal}}'
         scriptType: ps
         scriptLocation: 'scriptPath'
         ScriptPath: '$(Pipeline.Workspace)/infra/apim/apimdeploy.ps1'    
@@ -75,5 +78,5 @@ stages:
         parameters: 
           artifact: websterbot
           appType: app
-          principal: 'whitewaterfinder-sp'
+          principal: '${{parameters.principal}}'
           appName: '${{parameters.botapp}}'                     

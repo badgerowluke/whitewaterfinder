@@ -30,6 +30,7 @@ stages:
     resourceGroup: '$(resourceGroupDev)'
     region: '$(azureRegion)'
     botapp: 'WhiteWaterWebsterDev'
+    principal: 'whitewaterfinder-sp'
   
 ## Begin Production Deployment
 - template: 'whitewaterfinder.pipeline/deployInfra.yml'
@@ -52,6 +53,7 @@ stages:
     resourceGroup: '$(resourceGroupDev)'
     region: '$(azureRegion)'
     botapp: 'WhiteWaterWebster'
+    principal: 'whitewaterfinder-sp'
 
 
 
