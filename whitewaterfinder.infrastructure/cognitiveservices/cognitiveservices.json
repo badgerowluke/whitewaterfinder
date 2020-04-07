@@ -19,7 +19,7 @@
             "type": "Microsoft.CognitiveServices/accounts",
             "apiVersion": "2016-02-01-preview",
             "name": "[parameters('authoringName')]",
-            "location": "[parameters('location')]",
+            "location": "westus",
             "sku": {
                 "name": "F0"
             }
