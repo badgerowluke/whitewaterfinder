@@ -32,26 +32,26 @@ stages:
     botapp: 'WhiteWaterWebsterDev'
   
 ## Begin Production Deployment
-# - template: 'whitewaterfinder.pipeline/deployInfra.yml'
-#   parameters:
-#     environment: 'production'
-#     stageTitle: 'DeployProdInfrastructure'
-#     resourceGroup: '$(resourceGroup)'
-#     region: '$(azureRegion)'
-#     storageAccountName: "waterfinder"
-#     appName: "paddle-finder"
-#     luisEndpointName: 'webster-luis'
-#     luisAuthoring: 'webster-luis-authoring'   
-#     botName: 'WhitewaterWebster' 
+- template: 'whitewaterfinder.pipeline/deployInfra.yml'
+  parameters:
+    environment: 'production'
+    stageTitle: 'DeployProdInfrastructure'
+    resourceGroup: '$(resourceGroup)'
+    region: '$(azureRegion)'
+    storageAccountName: "waterfinder"
+    appName: "paddle-finder"
+    luisEndpointName: 'webster-luis'
+    luisAuthoring: 'webster-luis-authoring'   
+    botName: 'WhitewaterWebster' 
 
-# - template: 'whitewaterfinder.pipeline/deployApp.yml'
-#   parameters:
-#     environment: 'production'
-#     stageTitle: "ProdAppDeploy"
-#     appName: 'paddle-finder'
-#     resourceGroup: '$(resourceGroupDev)'
-#     region: '$(azureRegion)'
-#     botapp: 'WhiteWaterWebster'
+- template: 'whitewaterfinder.pipeline/deployApp.yml'
+  parameters:
+    environment: 'production'
+    stageTitle: "ProdAppDeploy"
+    appName: 'paddle-finder'
+    resourceGroup: '$(resourceGroupDev)'
+    region: '$(azureRegion)'
+    botapp: 'WhiteWaterWebster'
 
 
 
