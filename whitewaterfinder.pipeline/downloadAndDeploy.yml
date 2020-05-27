@@ -11,9 +11,7 @@ parameters:
 - name: appName
   type: string
   default: ''
-- name: 'principal'
-  type: string
-  default: ''  
+
 
 steps:
 - download: current
