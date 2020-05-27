@@ -11,7 +11,9 @@ stages:
   parameters:
     environment: 'development'
     sharedRg: 'brgs-global'
-
+    principal: '$(principal)'
+    
+    
 - template: 'whitewaterfinder.pipeline/deployInfra.yml'
   parameters:
     environment: 'development'
@@ -23,6 +25,7 @@ stages:
     luisEndpointName: 'dev-webster-luis'
     luisAuthoring: 'dev-webster-luis-authoring'
     botName: 'WhiteWaterWebsterDev'
+    principal: '$(principal)'
 
 - template: 'whitewaterfinder.pipeline/deployApp.yml'
   parameters:
