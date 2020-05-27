@@ -21,7 +21,7 @@ stages:
               azureSubscription: 'whitewaterfinder-sp'
               resourceGroupName: 'brgs-global' #this is a thing that needs to be addressed.
               location: '$(azureRegion)'
-              csmFile: '$(Pipeline.Workspace)/infra/search/global-services.json'
+              csmFile: '$(Pipeline.Workspace)/infra/global/global-services.json'
               csmParameetersFile: 'whitewaterfinder.infrastructure/search/global-services-params.json'
 
           - task: AzureCLI@2
