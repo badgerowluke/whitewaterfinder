@@ -10,7 +10,7 @@ stages:
 - template: 'whitewaterfinder.pipeline/deployglobal.yml'
   parameters:
     environment: 'development'
-    shared-rg: 'brgs-global'
+    sharedRg: 'brgs-global'
 
 - template: 'whitewaterfinder.pipeline/deployInfra.yml'
   parameters:
