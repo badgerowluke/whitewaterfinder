@@ -3,12 +3,12 @@ parameters:
   type: string
   default: ''
 steps:
-- task: DotNetCoreCLI@2
-  displayName: Restore
-  inputs:
-    command: restore
-    projects: '**/*.csproj'
-    vstsFeed: '${{parameters.vstsFeed}}'
+# - task: DotNetCoreCLI@2
+#   displayName: Restore
+#   inputs:
+#     command: restore
+#     projects: '**/*.csproj'
+#     vstsFeed: '${{parameters.vstsFeed}}'
 
 - task: DotNetCoreCLI@2
   displayName: Build
@@ -16,13 +16,14 @@ steps:
     command: 'build'
     projects: '**/*.csproj'
     arguments: '--configuration $(BuildConfiguration)'
+    vstsFeed: '${{parameters.vstsFeed}}'
 
 - task: DotNetCoreCLI@2
   displayName: Test
   inputs:
     command: test
     projects: '**/*[Tt]est/*.csproj'
-    arguments: '--configuration $(BuildConfiguration) --logger trx'
+    arguments: '--configuration $(BuildConfiguration) --no-build --logger trx /p:CollectCoverage=true  /p:CoverletOutputFormat=cobertura   /p:CoverletOutput=$(Build.SourcesDirectory)/TestResults/Coverage/'
 
 
 - task: DotNetCoreCLI@2
