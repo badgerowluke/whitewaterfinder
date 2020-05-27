@@ -50,7 +50,7 @@ stages:
     - task: AzureResourceGroupDeployment@2
       displayName: 'Deploy APIM to waterfinder'
       inputs:
-          azureSubscription: 'whitewaterfinder-sp'
+          azureSubscription: '${{parameters.principal}}'
           resourceGroupName: '${{parameters.resourceGroup}}'
           location: '${{parameters.region}}'
           csmFile: 'whitewaterfinder.infrastructure/apim/apimdeploy.json'  

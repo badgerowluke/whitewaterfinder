@@ -29,6 +29,9 @@ parameters:
 - name: 'botName'
   type: string
   default: ''
+- name: 'principal'
+  type: string
+  default: ''  
 
 
 
@@ -64,7 +67,7 @@ stages:
           - task: AzureResourceGroupDeployment@2
             displayName: 'Deploy backend ARM Template'
             inputs:
-              azureSubscription: 'whitewaterfinder-sp'
+              azureSubscription: '${{ parameters.principal }}'
               resourceGroupName: '${{parameters.resourceGroup}}'
               location: '${{parameters.region}}'
               csmFile: '$(Pipeline.Workspace)/infra/azuredeploy.json'
@@ -74,7 +77,7 @@ stages:
           - task: AzureResourceGroupDeployment@2
             displayName: 'Deploy AKV'
             inputs:
-              azureSubscription: 'whitewaterfinder-sp'
+              azureSubscription: '${{ parameters.principal }}'
               resourceGroupName: '${{parameters.resourceGroup}}'
               location: '${{parameters.region}}'
               csmFile: '$(Pipeline.Workspace)/infra/keyvault/kvtemplate.json'
@@ -95,7 +98,7 @@ stages:
           - task: AzureResourceGroupDeployment@2
             displayName: 'Deploy Cognitive Services'
             inputs:
-              azureSubscription: 'whitewaterfinder-sp'
+              azureSubscription: '${{ parameters.principal }}'
               resourceGroupName: '${{parameters.resourceGroup}}'
               location: '${{parameters.region}}'
               csmFile: '$(Pipeline.Workspace)/infra/cognitiveservices/cognitiveservices.json'
@@ -105,7 +108,7 @@ stages:
           - task: AzureCli@2
             displayName: 'create or pull MSFT App ID'
             inputs:
-              azureSubscription: 'whitewaterfinder-sp'
+              azureSubscription: '${{ parameters.principal }}'
               scriptType: ps
               scriptLocation: 'scriptPath'
               ScriptPath: '$(Pipeline.Workspace)/infra/app-registration-create.ps1'
@@ -122,7 +125,7 @@ stages:
           - task: AzureResourceGroupDeployment@2
             displayName: 'Azure Deployment:Create Or Update Resource Group action on waterfinder'
             inputs:
-              azureSubscription: 'whitewaterfinder-sp'
+              azureSubscription: '${{ parameters.principal }}'
               resourceGroupName: '${{parameters.resourceGroup}}'
               location: '${{parameters.region}}'
               csmFile: '$(Pipeline.Workspace)/infra/cognitiveservices/botdeploy.json'

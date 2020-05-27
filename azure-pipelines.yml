@@ -10,6 +10,7 @@ stages:
 - template: 'whitewaterfinder.pipeline/deployglobal.yml'
   parameters:
     environment: 'development'
+    shared-rg: 'brgs-global'
 
 - template: 'whitewaterfinder.pipeline/deployInfra.yml'
   parameters:
@@ -30,7 +31,7 @@ stages:
     resourceGroup: '$(resourceGroupDev)'
     region: '$(azureRegion)'
     botapp: 'WhiteWaterWebsterDev'
-    principal: 'whitewaterfinder-sp'
+    principal: '$(principal)'
   
 ## Begin Production Deployment
 # - template: 'whitewaterfinder.pipeline/deployInfra.yml'
@@ -53,7 +54,7 @@ stages:
 #     resourceGroup: '$(resourceGroupDev)'
 #     region: '$(azureRegion)'
 #     botapp: 'WhiteWaterWebster'
-#     principal: 'whitewaterfinder-sp'
+#     principal: '$(principal)'
 
 
 

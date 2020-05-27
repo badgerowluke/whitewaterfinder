@@ -11,6 +11,9 @@ parameters:
 - name: appName
   type: string
   default: ''
+- name: 'principal'
+  type: string
+  default: ''  
 
 steps:
 - download: current
@@ -21,7 +24,7 @@ steps:
   displayName: 'Deploy App'
   inputs:
     displayName: 'Deploy ${{ parameters.artifact }}'
-    azureSubscription: 'whitewaterfinder-sp'
+    azureSubscription: '${{ parameters.principal }}'
     appType: '${{parameters.appType}}'
     WebAppName: '${{ parameters.appName }}'
     Package: '$(Pipeline.Workspace)/${{parameters.artifact}}/*.zip'

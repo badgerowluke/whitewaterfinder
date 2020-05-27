@@ -2,7 +2,14 @@ parameters:
 - name: 'environment'
   type: string
   default: ''
+- name: 'shared-rg'
+  type: string
+  default: 'shared'
 
+- name: 'principal'
+  type: string
+  default: ''  
+  
 stages:
 - stage: DeployGlobal
   jobs:
@@ -18,8 +25,8 @@ stages:
           - task: AzureResourceGroupDeployment@2
             displayName: 'Build Global (Search) Resources'
             inputs:
-              azureSubscription: 'whitewaterfinder-sp'
-              resourceGroupName: 'brgs-global' #this is a thing that needs to be addressed.
+              azureSubscription: '${{ parameters.principal }}'
+              resourceGroupName: '${{parameters.shared-rg}}'
               location: '$(azureRegion)'
               csmFile: '$(Pipeline.Workspace)/infra/global/global-service.json'
               csmParameetersFile: '$(Pipeline.Workspace)/infra/global/global-service-params.json'
@@ -27,7 +34,7 @@ stages:
           - task: AzureCLI@2
             displayName: 'Build Azure Search Index'
             inputs:
-              azureSubscription: 'whitewaterfinder-sp'
+              azureSubscription: '${{ parameters.principal }}'
               scriptType: ps
               scriptLocation: 'scriptPath'
               ScriptPath: '$(Pipeline.Workspace)/infra/deployment.ps1'

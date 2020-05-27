@@ -18,12 +18,16 @@ parameters:
   type: string
   default: ''  
 
+- name: 'principal'
+  type: string
+  default: ''    
+
 
 steps:
 - task: AzureResourceGroupDeployment@2
   displayName: 'Deploy Shared Azure Resources'
   inputs:
-    azureSubscription: 'whitewaterfinder-sp'
+    azureSubscription: '${{ parameters.principal }}'
     resourceGroupName: '${{parameters.resourceGroup}}'
     location: '${{parameters.region}}'
     csmFile: '$(Pipeline.Workspace)/infra/storage/sharedresources.json'
@@ -33,8 +37,8 @@ steps:
 - task: AzureCLI@2
   displayName: 'Get Azure Search Query Key'
   inputs: 
-    azureSubscription: 'whitewaterfinder-sp'
+    azureSubscription: '${{ parameters.principal }}'
     scriptType: ps
     scriptLocation: 'scriptPath'
-    ScriptPath: '$(Pipeline.Workspace)/infra/search/getazuresearchkey.ps1'
+    ScriptPath: '$(Pipeline.Workspace)/infra/global/getazuresearchkey.ps1'
     ScriptArguments: 'brgs-global'   
