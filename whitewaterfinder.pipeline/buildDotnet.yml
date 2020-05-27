@@ -25,6 +25,12 @@ steps:
     projects: '**/*[Tt]est/*.csproj'
     arguments: '--configuration $(BuildConfiguration) --no-build --logger trx /p:CollectCoverage=true  /p:CoverletOutputFormat=cobertura   /p:CoverletOutput=$(Build.SourcesDirectory)/TestResults/Coverage/'
 
+- task: PublishTestResults@2
+  inputs:
+    testResultsFormat: 'XUnit'
+    testResultsFiles: '**/*.trx'
+    mergeTestResults: true
+    failTaskOnFailedTests: true    
 
 - task: DotNetCoreCLI@2
   displayName: Publish bot app
