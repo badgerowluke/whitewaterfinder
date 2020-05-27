@@ -27,45 +27,6 @@
                 "partitionCount": 1,
                 "hostingMode": "Default"
             }
-        },
-        {
-            "type": "Microsoft.DocumentDB/databaseAccounts",
-            "apiVersion": "2020-03-01",
-            "name": "[parameters('cosmosDbName')]",
-            "location": "[parameters('location')]",
-            "tags": {
-                "defaultExperience": "Cassandra",
-                "hidden-cosmos-mmspecial": "",
-                "CosmosAccountType": "Non-Production"
-            },
-            "kind": "GlobalDocumentDB",
-            "properties": {
-                "publicNetworkAccess": "Enabled",
-                "enableAutomaticFailover": false,
-                "enableMultipleWriteLocations": false,
-                "isVirtualNetworkFilterEnabled": false,
-                "virtualNetworkRules": [],
-                "disableKeyBasedMetadataWriteAccess": false,
-                "databaseAccountOfferType": "Standard",
-                "consistencyPolicy": {
-                    "defaultConsistencyLevel": "Session",
-                    "maxIntervalInSeconds": 5,
-                    "maxStalenessPrefix": 100
-                },
-                "locations": [
-                    {
-                        "locationName": "[parameters('location')]",
-                        "provisioningState": "Succeeded",
-                        "failoverPriority": 0,
-                        "isZoneRedundant": false
-                    }
-                ],
-                "capabilities": [
-                    {
-                        "name": "EnableCassandra"
-                    }
-                ]
-            }
-        }        
+        }      
     ]
 }
