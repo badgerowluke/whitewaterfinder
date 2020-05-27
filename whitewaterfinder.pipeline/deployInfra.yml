@@ -54,6 +54,7 @@ stages:
               appName: ${{parameters.appName}}
               resourceGroup: ${{parameters.resourceGroup}}
               region: ${{parameters.region}}
+              principal: ${{ parameters.principal }}
 
 
           - task: qetza.replacetokens.replacetokens-task.replacetokens@3
