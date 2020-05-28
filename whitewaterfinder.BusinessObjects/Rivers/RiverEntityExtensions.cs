@@ -19,5 +19,14 @@ namespace whitewaterfinder.BusinessObjects.Rivers
                 Srs = entity.Srs
             };
         }
+        public static IEnumerable<River> ToRivers(this IEnumerable<RiverEntity> entities)
+        {
+            var outEnumerable = new List<River>();
+            foreach(var entity in entities)
+            {
+                outEnumerable.Add(entity.ToRiver());
+            }
+            return outEnumerable;
+        }
     }
 }
