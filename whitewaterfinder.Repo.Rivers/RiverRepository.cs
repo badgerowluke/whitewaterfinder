@@ -12,7 +12,7 @@ using com.brgs.orm.Azure;
 using Newtonsoft.Json.Linq;
 
 
-namespace whitewaterfinder.Repo
+namespace whitewaterfinder.Repo.Rivers
 {
     public interface IRiverRepository 
     {

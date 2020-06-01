@@ -1,7 +1,7 @@
 using Moq;
 using whitewaterfinder.BusinessObjects.Configuration;
 using whitewaterfinder.Core;
-using whitewaterfinder.Repo;
+using whitewaterfinder.Repo.Rivers;
 
 namespace whitewaterfinder.Core.test.RiverServiceTests
 {

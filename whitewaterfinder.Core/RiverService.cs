@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 
 using whitewaterfinder.Core.Data;
-using whitewaterfinder.Repo;
+using whitewaterfinder.Repo.Rivers;
 using whitewaterfinder.BusinessObjects.Rivers;
 using System.Threading.Tasks;
 using whitewaterfinder.BusinessObjects.Configuration;

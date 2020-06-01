@@ -21,6 +21,8 @@
     <ProjectReference Include="..\whitewaterfinder.BusinessObjects\whitewaterfinder.BusinessObjects.csproj" />
     <ProjectReference Include="..\whitewaterfinder.Core\whitewaterfinder.Core.csproj" />
     <ProjectReference Include="..\whitewaterfinder.Repo\whitewaterfinder.Repo.csproj" />
+    <ProjectReference Include="..\whitewaterfinder.Repo.Rivers\whitewaterfinder.Repo.Rivers.csproj" />
+
 
   </ItemGroup>
 

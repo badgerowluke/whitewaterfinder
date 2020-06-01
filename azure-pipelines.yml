@@ -1,6 +1,5 @@
 
-trigger:
-    - master  
+trigger: none
 
 stages: 
 - template: 'whitewaterfinder.pipeline/build.yml'

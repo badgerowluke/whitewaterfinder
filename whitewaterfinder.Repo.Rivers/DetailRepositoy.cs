@@ -8,7 +8,7 @@ using whitewaterfinder.BusinessObjects.USGSResponses;
 using whitewaterfinder.BusinessObjects.Enumerations;
 using whitewaterfinder.BusinessObjects.Configuration;
 
-namespace whitewaterfinder.Repo
+namespace whitewaterfinder.Repo.Rivers
 {
     public interface IRiverDetailRepository
     {

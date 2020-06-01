@@ -6,6 +6,7 @@ using Microsoft.Extensions.Http;
 using System;
 using whitewaterfinder.Core;
 using whitewaterfinder.Repo;
+using whitewaterfinder.Repo.Rivers;
 using whitewaterfinder.BusinessObjects.Configuration;
 
 [assembly: FunctionsStartup(typeof(whitewaterfinder.api.Startup))]
