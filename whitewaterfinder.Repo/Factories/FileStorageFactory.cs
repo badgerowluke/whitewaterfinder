@@ -15,6 +15,16 @@ namespace whitewaterfinder.Repo.Factories
         {
             folder = _path;
         }
+        public string Get(string filename)
+        {
+            var stream = new FileStream(Path.Combine(folder, filename), FileMode.Open);
+
+            
+            using(StreamReader reader = new StreamReader(stream)){
+                return reader.ReadToEnd();
+
+            }
+        }
         public IEnumerable<T> GetMultiple<T>( string filename)
         {
             var stream = new FileStream(Path.Combine(folder, filename), FileMode.Open);

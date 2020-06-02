@@ -86,7 +86,7 @@ namespace whitewaterfinder.Repo.Rivers
             if(string.IsNullOrEmpty(_riverTable)) { throw new ArgumentNullException("Table name cannot be null"); }
             if(string.IsNullOrEmpty(stateCode)) { throw new ArgumentNullException("State you're searching for cannot be null"); }
 
-                        HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get,
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get,
             _azureSearchUrl + stateCode);
             request.Headers.Add("api-key", _azureSearchKey);
 

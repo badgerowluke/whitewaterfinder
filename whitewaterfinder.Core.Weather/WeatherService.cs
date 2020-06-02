@@ -2,8 +2,6 @@
 
 namespace whitewaterfinder.Core.Weather
 {
-    public class WeatherService
-    {
         /*
             https://www.weather.gov/documentation/services-web-api#
 
@@ -18,5 +16,28 @@ namespace whitewaterfinder.Core.Weather
             "https://api.weather.gov/gridpoints/ILN/37,37/forecast",
             "https://api.weather.gov/stations/KLUK/observations/current"
         */
+    public interface IWeatherService
+    {
+
+    }
+
+    public class WeatherService : IWeatherService
+    {
+        public WeatherService()
+        {
+            
+        }
+        public object GetForecast(string latitude, string longitude)
+        {
+            /*
+            1. 
+            */
+            return null;
+        }
+
+        public object GetCurrentConditions(string latitude, string longitude)
+        {
+            return null;
+        }
     }
 }
