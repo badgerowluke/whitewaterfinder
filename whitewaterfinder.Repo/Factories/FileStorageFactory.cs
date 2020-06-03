@@ -7,6 +7,7 @@ using Microsoft.WindowsAzure.Storage.Table;
 
 namespace whitewaterfinder.Repo.Factories
 {
+    [Obsolete("this entire nanmespace has been superceeded by NOSQLORM/com.brgs.orm")]
     public class FileStorageFactory: IStorageFactory
     {
         private readonly string folder;

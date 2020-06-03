@@ -1,7 +1,9 @@
 using Microsoft.WindowsAzure.Storage.Table;
+using System;
 using System.Collections.Generic;
 namespace whitewaterfinder.Repo.Factories
 {
+    [Obsolete("this entire nanmespace has been superceeded by NOSQLORM/com.brgs.orm")]
     public interface IStorageFactory
     {
         string CollectionName { get; set; }
