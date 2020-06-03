@@ -52,7 +52,7 @@ namespace whitewaterfinder.Core.Weather
         {
             //TODO:  This needs to know what your nearest station is.
             var station = string.Empty;
-            var location = _repo.GetNWSOfficeAsync(station);
+
             return null;
         }
     }

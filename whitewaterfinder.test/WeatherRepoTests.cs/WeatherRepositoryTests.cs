@@ -1,35 +1,31 @@
 using Xunit;
-using System;
-using System.Net;
+
 using System.Net.Http;
-using System.Web.Http;
+
 using System.Threading.Tasks;
 using Moq;
-using whitewaterfinder.Repo.Weather;
-using whitewaterfinder.Repo.Factories;
 
-namespace whitewaterfinder.test
+
+using whitewaterfinder.BusinessObjects.Weather;
+using FluentAssertions;
+
+namespace whitewaterfinder.test.ForecastRepositoryTests
 {
-    public class Stuff
+
+    public class ForecastRepositoryShould: BaseForecastRepositoryTests
     {
         [Fact]
-        public void DoStuff()
+        public async Task ReturnsNWSOffice()
         {
-            var fac = new FileStorageFactory("data");
-            
             var content = fac.Get("weatherdata.json");
-            var handler = new DelegatingHandlerStub((request, cancellationToken) => {
-                request.SetConfiguration(new HttpConfiguration());
-                var response = request.CreateResponse(HttpStatusCode.OK);
-                response.Content = new StringContent(content);
 
-                return Task.FromResult(response);
-            });
+            FactoryMock.Setup(f => f.CreateClient(It.IsAny<string>()))
+                        .Returns(GetHttpClient(content));
 
-            var client = new HttpClient(handler);
+            var stuff = await repository.GetNWSOfficeAsync("41.782", "-80.858");
 
-            var sut = new WeatherRepository(client);
-            var stuff = sut.GetNWSLocationAsync("41.782", "-80.858");
+            stuff.Should().NotBeNull().And
+                            .BeOfType(typeof(NWSLocation));
 
         }
     }

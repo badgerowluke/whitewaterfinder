@@ -5,6 +5,7 @@ using Newtonsoft.Json.Linq;
 using System.Threading.Tasks;
 using whitewaterfinder.BusinessObjects.Weather;
 using System.Collections.Generic;
+using whitewaterfinder.Repo.Extensions;
 
 namespace whitewaterfinder.Repo.Weather
 {
@@ -13,6 +14,7 @@ namespace whitewaterfinder.Repo.Weather
         Task<NWSLocation> GetNWSOfficeAsync(string latitude, string longitude);
         Task<IEnumerable<NWSPeriod>> GetForecast(string url);
         Task<IEnumerable<NWSPeriod>> GetForecast(string station, string gridX, string gridY);
+        Task<NWSCurrentConditions> GetCurrentConditions(string station);
     }
 
     public class ForecastRepository :  IForecastRepository
@@ -23,33 +25,38 @@ namespace whitewaterfinder.Repo.Weather
         public ForecastRepository(IHttpClientFactory client, WeatherRepositoryConfig config)
         {
             _factory = client;
+            _config = config;
         }
+
+        internal async Task<T> MakeThatHttpCall<T>(HttpRequestMessage message, string prop1, string prop2 = "", string prop3 = "")
+        {
+            var client = _factory.CreateClient();
+            var response = await client.SendAsync(message);
+            var data = await response.Content.ReadAsStringAsync();
+            var objs = JObject.Parse(data);
+
+            var vals = objs.ParseByIndexes(prop1, prop2, prop3);
+
+            return vals.ToObject<T>();
+        }
+
 
         public async Task<NWSLocation> GetNWSOfficeAsync(string latitude, string longitude)
         {
 
             var request = new HttpRequestMessage(HttpMethod.Get, 
             $"{_config.BaseNWSURL}/points/{latitude},{longitude}");
-            request.Headers.Add("User-Agent", "(paddle-finder.com, badgerow.luke@outlook.com)");
-            var client = _factory.CreateClient();
-            var response = await client.SendAsync(request);
-
-            var data = await response.Content.ReadAsStringAsync();
-            var objs = JObject.Parse(data);
-            var vals = objs["properties"];
-
-            return vals.ToObject<NWSLocation>();
-
+            request.Headers.Add("User-Agent", _config.UserAgent);
+            
+            return await MakeThatHttpCall<NWSLocation>(request, "properties");
         }   
         
         public async Task<IEnumerable<NWSPeriod>> GetForecast(string url)
         {
             var request = new HttpRequestMessage(HttpMethod.Get, url);
-            request.Headers.Add("User-Agent", "(paddle-finder.com, badgerow.luke@outlook.com)");
-            var client = _factory.CreateClient();
-            var response = await client.SendAsync(request);
-            
-            return await ProcessForecastResponse<IEnumerable<NWSPeriod>>(response);
+            request.Headers.Add("User-Agent", _config.UserAgent);
+
+            return await MakeThatHttpCall<IEnumerable<NWSPeriod>>(request, "properties", "periods");
 
         }
 
@@ -57,20 +64,9 @@ namespace whitewaterfinder.Repo.Weather
         {
             var request = new HttpRequestMessage(HttpMethod.Get, 
             $"{_config.BaseNWSURL}/gridpoints/{station}/{gridX},{gridY}/forecast");
-            request.Headers.Add("User-Agent", "(paddle-finder.com, badgerow.luke@outlook.com)");
-            var client = _factory.CreateClient();
-            var response = await client.SendAsync(request);
+            request.Headers.Add("User-Agent", _config.UserAgent);
 
-            return await ProcessForecastResponse<IEnumerable<NWSPeriod>>(response);
-        }
-
-        private async Task<T> ProcessForecastResponse<T>(HttpResponseMessage message)
-        {
-            var data = await message.Content.ReadAsStringAsync();
-            var objs = JObject.Parse(data);
-            var vals = objs["properties"]["periods"];
-
-            return vals.ToObject<T>();
+            return await MakeThatHttpCall<IEnumerable<NWSPeriod>>(request, "properties", "periods");
         }
 
         public async Task<NWSCurrentConditions> GetCurrentConditions(string station)
@@ -78,13 +74,10 @@ namespace whitewaterfinder.Repo.Weather
             
             var request = new HttpRequestMessage(HttpMethod.Get, 
             $"{_config.BaseNWSURL}/stations/{station}/observations/current");
-
-            var client = _factory.CreateClient();
-
-            var response = await client.SendAsync(request);
             
-            return null;
+            return await MakeThatHttpCall<NWSCurrentConditions>(request, "properties");
         }
+
 
     }
 }
