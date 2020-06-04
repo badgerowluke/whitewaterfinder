@@ -5,6 +5,7 @@ using Microsoft.WindowsAzure.Storage.Table;
 
 namespace whitewaterfinder.Repo.Helpers
 {
+    [Obsolete("this entire nanmespace has been superceeded by NOSQLORM/com.brgs.orm")]
     internal static class AzureFormatHelpers
     {
         public static object RecastEntity(DynamicTableEntity entity, Type type)

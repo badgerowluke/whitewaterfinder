@@ -1,0 +1,92 @@
+{
+    "@context": [
+        "https://raw.githubusercontent.com/geojson/geojson-ld/master/contexts/geojson-base.jsonld",
+        {
+            "wx": "https://api.weather.gov/ontology#",
+            "s": "https://schema.org/",
+            "geo": "http://www.opengis.net/ont/geosparql#",
+            "unit": "http://codes.wmo.int/common/unit/",
+            "@vocab": "https://api.weather.gov/ontology#",
+            "geometry": {
+                "@id": "s:GeoCoordinates",
+                "@type": "geo:wktLiteral"
+            },
+            "city": "s:addressLocality",
+            "state": "s:addressRegion",
+            "distance": {
+                "@id": "s:Distance",
+                "@type": "s:QuantitativeValue"
+            },
+            "bearing": {
+                "@type": "s:QuantitativeValue"
+            },
+            "value": {
+                "@id": "s:value"
+            },
+            "unitCode": {
+                "@id": "s:unitCode",
+                "@type": "@id"
+            },
+            "forecastOffice": {
+                "@type": "@id"
+            },
+            "forecastGridData": {
+                "@type": "@id"
+            },
+            "publicZone": {
+                "@type": "@id"
+            },
+            "county": {
+                "@type": "@id"
+            }
+        }
+    ],
+    "id": "https://api.weather.gov/points/39.8609,-82.8955",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            -82.895499999999998,
+            39.860900000000001
+        ]
+    },
+    "properties": {
+        "@id": "https://api.weather.gov/points/39.8609,-82.8955",
+        "@type": "wx:Point",
+        "cwa": "ILN",
+        "forecastOffice": "https://api.weather.gov/offices/ILN",
+        "gridX": 88,
+        "gridY": 76,
+        "forecast": "https://api.weather.gov/gridpoints/ILN/88,76/forecast",
+        "forecastHourly": "https://api.weather.gov/gridpoints/ILN/88,76/forecast/hourly",
+        "forecastGridData": "https://api.weather.gov/gridpoints/ILN/88,76",
+        "observationStations": "https://api.weather.gov/gridpoints/ILN/88,76/stations",
+        "relativeLocation": {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -82.891407000000001,
+                    39.857965999999998
+                ]
+            },
+            "properties": {
+                "city": "Groveport",
+                "state": "OH",
+                "distance": {
+                    "value": 478.00530547911342,
+                    "unitCode": "unit:m"
+                },
+                "bearing": {
+                    "value": 313,
+                    "unitCode": "unit:degrees_true"
+                }
+            }
+        },
+        "forecastZone": "https://api.weather.gov/zones/forecast/OHZ055",
+        "county": "https://api.weather.gov/zones/county/OHC049",
+        "fireWeatherZone": "https://api.weather.gov/zones/fire/OHZ055",
+        "timeZone": "America/New_York",
+        "radarStation": "KILN"
+    }
+}

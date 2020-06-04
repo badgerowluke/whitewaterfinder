@@ -11,8 +11,10 @@ using Microsoft.WindowsAzure.Storage.Table;
 using whitewaterfinder.Repo.Helpers;
 using System.Reflection;
 
+
 namespace whitewaterfinder.Repo.Factories
 {
+    [Obsolete("this entire nanmespace has been superceeded by NOSQLORM/com.brgs.orm")]
     public class AzureStorageFactory: IStorageFactory
     {
         private CloudStorageAccount account;

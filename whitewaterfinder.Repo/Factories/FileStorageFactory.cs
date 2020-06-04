@@ -7,6 +7,7 @@ using Microsoft.WindowsAzure.Storage.Table;
 
 namespace whitewaterfinder.Repo.Factories
 {
+    [Obsolete("this entire nanmespace has been superceeded by NOSQLORM/com.brgs.orm")]
     public class FileStorageFactory: IStorageFactory
     {
         private readonly string folder;
@@ -14,6 +15,16 @@ namespace whitewaterfinder.Repo.Factories
         public FileStorageFactory(string _path)
         {
             folder = _path;
+        }
+        public string Get(string filename)
+        {
+            var stream = new FileStream(Path.Combine(folder, filename), FileMode.Open);
+
+            
+            using(StreamReader reader = new StreamReader(stream)){
+                return reader.ReadToEnd();
+
+            }
         }
         public IEnumerable<T> GetMultiple<T>( string filename)
         {

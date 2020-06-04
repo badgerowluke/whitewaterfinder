@@ -10,6 +10,7 @@ using whitewaterfinder.BusinessObjects.USGSResponses;
 using whitewaterfinder.BusinessObjects.Configuration;
 using com.brgs.orm.Azure;
 using Newtonsoft.Json.Linq;
+using whitewaterfinder.Repo.Extensions;
 
 
 namespace whitewaterfinder.Repo.Rivers
@@ -55,9 +56,9 @@ namespace whitewaterfinder.Repo.Rivers
 
             using (HttpResponseMessage response = await _client.SendAsync(request))
             {
-                var vals = response.Content.ReadAsStringAsync().Result;
-                USGSRiverResponse obj = JsonConvert.DeserializeObject<USGSRiverResponse>(vals);
-                return obj;
+                var vals = await response.Content.ReadAsStringAsync();
+
+                return JsonConvert.DeserializeObject<USGSRiverResponse>(vals);
             }
         }
         public IEnumerable<River> GetRivers()
@@ -77,7 +78,7 @@ namespace whitewaterfinder.Repo.Rivers
             {
                 var data = await response.Content.ReadAsStringAsync();
                 var objs = JObject.Parse(data);
-                var vals = objs["value"];
+                var vals = objs.ParseByIndexes("value");
                 return vals.ToObject<IEnumerable<River>>();
             }
         }
@@ -86,7 +87,7 @@ namespace whitewaterfinder.Repo.Rivers
             if(string.IsNullOrEmpty(_riverTable)) { throw new ArgumentNullException("Table name cannot be null"); }
             if(string.IsNullOrEmpty(stateCode)) { throw new ArgumentNullException("State you're searching for cannot be null"); }
 
-                        HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get,
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get,
             _azureSearchUrl + stateCode);
             request.Headers.Add("api-key", _azureSearchKey);
 
