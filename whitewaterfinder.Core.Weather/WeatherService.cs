@@ -6,23 +6,10 @@ using System.Collections.Generic;
 
 namespace whitewaterfinder.Core.Weather
 {
-        /*
-            https://www.weather.gov/documentation/services-web-api#
-
-            1. get location
-                https://api.weather.gov/points/39.8522449,-82.8868636
-            
-            2. get forecast for that location
-                https://api.weather.gov/gridpoints/ILN/88,76/forecast
-            
-
-
-            "https://api.weather.gov/gridpoints/ILN/37,37/forecast",
-            "https://api.weather.gov/stations/KLUK/observations/current"
-        */
     public interface IWeatherService
     {
-
+        Task<IEnumerable<NWSPeriod>> GetForecast(string latitude, string longitude);
+        Task<object> GetCurrentConditions(string latitude, string longitude);
     }
 
     public class WeatherService : IWeatherService
@@ -57,6 +44,19 @@ namespace whitewaterfinder.Core.Weather
             var station = string.Empty;
             var location = await _repo.GetNWSOfficeAsync(latitude, longitude);
             var stations = await _repo.GetOfficeStations(location.CWA, location.GridX, location.GridY);
+
+            var map = new SortedDictionary<double, string>();
+            foreach(var site in stations)
+            {
+                var stationName = site.Properties.StationIdentifier;
+                var coords = site.Geometry.Coordinates;
+                var distance = new Haversine(Convert.ToDouble(latitude), 
+                                            Convert.ToDouble(longitude), 
+                                            coords[0], 
+                                            coords[1]).Distance;
+                map.Add(distance, stationName);
+            }
+            
 
             return station;
         }
