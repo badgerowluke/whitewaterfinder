@@ -4,6 +4,7 @@ using whitewaterfinder.BusinessObjects.Weather;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Linq;
+using whitewaterfinder.Core.Weather.Extensions;
 
 namespace whitewaterfinder.Core.Weather
 {
@@ -41,27 +42,13 @@ namespace whitewaterfinder.Core.Weather
 
         public async Task<NWSCurrentConditions> GetCurrentConditions(string latitude, string longitude)
         {
-            //TODO:  This needs to know what your nearest station is.
-            var station = string.Empty;
+
             var location = await _repo.GetNWSOfficeAsync(latitude, longitude);
             var stations = await _repo.GetOfficeStations(location.CWA, location.GridX, location.GridY);
 
-            var map = new SortedDictionary<double, string>();
-            foreach(var site in stations)
-            {
-                var stationName = site.Properties.StationIdentifier;
-                var coords = site.Geometry.Coordinates;
-                var distance = new Haversine(Convert.ToDouble(latitude), 
-                                            Convert.ToDouble(longitude), 
-                                            coords[1], 
-                                            coords[0]).Distance;
-                map.Add(distance, stationName);
-            }
-            station = map.First().Value;
+            var station = stations.NearestObservationStation(latitude, longitude);
 
-            var conditions = await _repo.GetCurrentConditions(station);
-
-            return conditions;
+            return await _repo.GetCurrentConditions(station.Properties.StationIdentifier);
         }
     }
 }
