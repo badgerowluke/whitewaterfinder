@@ -12,9 +12,11 @@ namespace whitewaterfinder.Repo.Weather
     public interface IForecastRepository
     {
         Task<NWSLocation> GetNWSOfficeAsync(string latitude, string longitude);
+        Task<IEnumerable<NWSStation>> GetOfficeStations(string station, string gridX, string gridY);
         Task<IEnumerable<NWSPeriod>> GetForecast(string url);
         Task<IEnumerable<NWSPeriod>> GetForecast(string station, string gridX, string gridY);
         Task<NWSCurrentConditions> GetCurrentConditions(string station);
+
     }
 
     public class ForecastRepository :  IForecastRepository
@@ -40,7 +42,6 @@ namespace whitewaterfinder.Repo.Weather
             return vals.ToObject<T>();
         }
 
-
         public async Task<NWSLocation> GetNWSOfficeAsync(string latitude, string longitude)
         {
 
@@ -49,7 +50,16 @@ namespace whitewaterfinder.Repo.Weather
             request.Headers.Add("User-Agent", _config.UserAgent);
             
             return await MakeThatHttpCall<NWSLocation>(request, "properties");
-        }   
+        }  
+
+        public async Task<IEnumerable<NWSStation>> GetOfficeStations(string station, string gridX, string gridY)
+        {
+            var request = new HttpRequestMessage(HttpMethod.Get, 
+            $"{_config.BaseNWSURL}/gridpoints/{station}/{gridX},{gridY}/stations");
+            request.Headers.Add("User-Agent", _config.UserAgent);
+
+            return await MakeThatHttpCall<IEnumerable<NWSStation>>(request, "features");
+        }         
         
         public async Task<IEnumerable<NWSPeriod>> GetForecast(string url)
         {
@@ -77,7 +87,5 @@ namespace whitewaterfinder.Repo.Weather
             
             return await MakeThatHttpCall<NWSCurrentConditions>(request, "properties");
         }
-
-
     }
 }

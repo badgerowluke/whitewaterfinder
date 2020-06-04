@@ -26,6 +26,7 @@
     <ProjectReference Include="..\whitewaterfinder.Repo\whitewaterfinder.Repo.csproj" />
     <ProjectReference Include="..\whitewaterfinder.Repo.Rivers\whitewaterfinder.Repo.Rivers.csproj" />
     <ProjectReference Include="..\whitewaterfinder.Repo.Weather\whitewaterfinder.Repo.Weather.csproj" />
+    <ProjectReference Include="..\whitewaterfinder.Core.Weather\whitewaterfinder.Core.Weather.csproj" />
 
 
   </ItemGroup>

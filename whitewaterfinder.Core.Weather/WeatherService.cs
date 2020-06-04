@@ -1,6 +1,8 @@
 ﻿using System;
 using whitewaterfinder.Repo.Weather;
 using whitewaterfinder.BusinessObjects.Weather;
+using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace whitewaterfinder.Core.Weather
 {
@@ -30,6 +32,7 @@ namespace whitewaterfinder.Core.Weather
         {
             _repo = repo;
         }
+        
         public async Task<IEnumerable<NWSPeriod>> GetForecast(string latitude, string longitude)
         {
             var location = await _repo.GetNWSOfficeAsync(latitude, longitude);
@@ -48,12 +51,14 @@ namespace whitewaterfinder.Core.Weather
             return null;
         }
 
-        public object GetCurrentConditions(string latitude, string longitude)
+        public async Task<object> GetCurrentConditions(string latitude, string longitude)
         {
             //TODO:  This needs to know what your nearest station is.
             var station = string.Empty;
+            var location = await _repo.GetNWSOfficeAsync(latitude, longitude);
+            var stations = await _repo.GetOfficeStations(location.CWA, location.GridX, location.GridY);
 
-            return null;
+            return station;
         }
     }
 }
