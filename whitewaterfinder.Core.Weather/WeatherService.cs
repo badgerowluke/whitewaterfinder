@@ -3,13 +3,14 @@ using whitewaterfinder.Repo.Weather;
 using whitewaterfinder.BusinessObjects.Weather;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace whitewaterfinder.Core.Weather
 {
     public interface IWeatherService
     {
         Task<IEnumerable<NWSPeriod>> GetForecast(string latitude, string longitude);
-        Task<object> GetCurrentConditions(string latitude, string longitude);
+        Task<NWSCurrentConditions> GetCurrentConditions(string latitude, string longitude);
     }
 
     public class WeatherService : IWeatherService
@@ -38,7 +39,7 @@ namespace whitewaterfinder.Core.Weather
             return null;
         }
 
-        public async Task<object> GetCurrentConditions(string latitude, string longitude)
+        public async Task<NWSCurrentConditions> GetCurrentConditions(string latitude, string longitude)
         {
             //TODO:  This needs to know what your nearest station is.
             var station = string.Empty;
@@ -52,13 +53,15 @@ namespace whitewaterfinder.Core.Weather
                 var coords = site.Geometry.Coordinates;
                 var distance = new Haversine(Convert.ToDouble(latitude), 
                                             Convert.ToDouble(longitude), 
-                                            coords[0], 
-                                            coords[1]).Distance;
+                                            coords[1], 
+                                            coords[0]).Distance;
                 map.Add(distance, stationName);
             }
-            
+            station = map.First().Value;
 
-            return station;
+            var conditions = await _repo.GetCurrentConditions(station);
+
+            return conditions;
         }
     }
 }

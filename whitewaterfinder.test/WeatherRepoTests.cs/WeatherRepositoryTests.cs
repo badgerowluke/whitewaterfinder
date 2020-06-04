@@ -8,6 +8,7 @@ using Moq;
 
 using whitewaterfinder.BusinessObjects.Weather;
 using FluentAssertions;
+using System.Collections.Generic;
 
 namespace whitewaterfinder.test.ForecastRepositoryTests
 {
@@ -27,6 +28,17 @@ namespace whitewaterfinder.test.ForecastRepositoryTests
             stuff.Should().NotBeNull().And
                             .BeOfType(typeof(NWSLocation));
 
+        }
+        [Fact]
+        public async Task ReturnsArrayOfNWSStations()
+        {
+            var content = fac.Get("stations.json");
+            FactoryMock.Setup(f => f.CreateClient(It.IsAny<string>()))
+                        .Returns(GetHttpClient(content));
+            
+            var stuff = await repository.GetOfficeStations("ILN", "88", "76");
+            stuff.Should().NotBeNull()
+                    .And.HaveCount(c => c > 0);
         }
     }
 }
