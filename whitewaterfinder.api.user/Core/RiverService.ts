@@ -11,7 +11,8 @@ export class RiverService {
         this.queue = createQueueService(connectionString).withFilter(retryOptions);
         
     }
-    postToStorage: (myQueueItem:string) => void = (myQueueItem:string) => {
+    
+    postToStorage = async (myQueueItem:string): Promise<void> =>  {
         this.service.createTableIfNotExists("UserPreferences", (error) =>{
             if(error) {
                 console.log(error);
@@ -34,6 +35,7 @@ export class RiverService {
         })        
 
     }
+
     getFromStorage  = async (name:string): Promise<any> =>{
         var query = new TableQuery()
         .where('PartitionKey eq ?', name);
@@ -58,20 +60,19 @@ export class RiverService {
         }
         return resolvedEntity;
     }
-    postToQueue = (record:any) =>  {
-        this.queue.createQueueIfNotExists("user-preference-queue", (error, results, response)=>{
-            if(!error) {
+
+    postToQueue = async (record:any) =>  {
+        this.queue.createQueueIfNotExists("user-preference-queue", (error, results, response) => {
+            if (!error) {
                 console.log("queue created");
             }
             return;
-    
         });
-        this.queue.createMessage("user-preference-queue", Buffer.from(JSON.stringify(record)).toString('base64'), (error, results, response) =>{
-            if(error) {
+
+        this.queue.createMessage("user-preference-queue", Buffer.from(JSON.stringify(record)).toString('base64'), (error, results, response) => {
+            if (error) {
                 console.log("something went wrong");
             }
         });
     }
-
-
 }
