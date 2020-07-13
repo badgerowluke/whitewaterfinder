@@ -10,7 +10,7 @@ stages:
 - template: 'whitewaterfinder.pipeline/deployglobal.yml'
   parameters:
     environment: 'development'
-    sharedRg: 'brgs-global'
+    sharedRg: 'waterfinder-shared'
     principal: '$(principal)'
     
     
