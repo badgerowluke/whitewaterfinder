@@ -11,6 +11,10 @@ parameters:
   type: string
   default: ''  
 
+- name: 'sharedRg'
+  type: string
+  default: ''
+
 - name: 'appName'
   type: string
   default: ''
@@ -42,4 +46,4 @@ steps:
     scriptType: ps
     scriptLocation: 'scriptPath'
     ScriptPath: '$(Pipeline.Workspace)/infra/global/getazuresearchkey.ps1'
-    ScriptArguments: '${{ parameters.resourceGroup }}'   
+    ScriptArguments: '${{ parameters.sharedRg }}'   

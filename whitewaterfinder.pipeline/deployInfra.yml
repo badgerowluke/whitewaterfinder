@@ -8,6 +8,9 @@ parameters:
 - name: 'resourceGroup'
   type: string
   default: ''
+- name: 'sharedRg'
+  type: string
+  default: ''
 - name: 'region'
   type: string
   default: 'North Central US'
@@ -61,7 +64,7 @@ stages:
             displayName: 'Deploy backend ARM Template'
             inputs:
               azureSubscription: '${{ parameters.principal }}'
-              resourceGroupName: '${{parameters.resourceGroup}}'
+              resourceGroupName: '${{ parameters.resourceGroup }}'
               location: '${{parameters.region}}'
               csmFile: '$(Pipeline.Workspace)/infra/azuredeploy.json'
               csmParametersFile: '$(Pipeline.Workspace)/infra/parameters.json'
