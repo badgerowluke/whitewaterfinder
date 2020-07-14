@@ -55,15 +55,7 @@ stages:
               resourceGroup: ${{parameters.resourceGroup}}
               region: ${{parameters.region}}
               principal: ${{ parameters.principal }}
-
-
-          - task: qetza.replacetokens.replacetokens-task.replacetokens@3
-            displayName: 'Replace tokens in azuredeploy.json'
-            inputs:
-              rootDirectory: '$(Pipeline.Workspace)/'
-              targetFiles: azuredeploy.json
-              tokenPrefix: '{%%'
-              tokenSuffix: '%%}'     
+   
 
           - task: AzureResourceGroupDeployment@2
             displayName: 'Deploy backend ARM Template'
