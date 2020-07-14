@@ -52,11 +52,12 @@ stages:
           steps:   
           - template:  'buildSearch.yml'
             parameters:
-              storageAccountType: ${{parameters.storageAccountType}}
-              storageAccountName: ${{parameters.storageAccountName}}
-              appName: ${{parameters.appName}}
-              resourceGroup: ${{parameters.resourceGroup}}
-              region: ${{parameters.region}}
+              storageAccountType: ${{ parameters.storageAccountType }}
+              storageAccountName: ${{ parameters.storageAccountName }}
+              appName: ${{ parameters.appName }}
+              resourceGroup: ${{ parameters.resourceGroup }}
+              sharedRg: ${{ parameters.sharedRg }}
+              region: ${{ parameters.region }}
               principal: ${{ parameters.principal }}
    
 
