@@ -69,15 +69,7 @@ stages:
               location: '${{parameters.region}}'
               csmFile: '$(Pipeline.Workspace)/infra/azuredeploy.json'
               csmParametersFile: '$(Pipeline.Workspace)/infra/parameters.json'
-              overrideParameters: |
-                '-storageAccountName ${{parameters.storageAccountName}} 
-                -storageAccountType "${{parameters.storageAccountType}}" 
-                -appName "${{parameters.appName}}" 
-                -appPlanName "WaterFinderPlan" 
-                -preferencesApp "${{parameters.appName}}-preferences"  
-                -baseUSGSUrl $(baseUSGSUrl)
-                -azureSearchKey $(searchKey)
-                -searchUrl $(searchUrl)'       
+              overrideParameters: '-storageAccountName ${{parameters.storageAccountName}} -storageAccountType "${{parameters.storageAccountType}}" -appName "${{parameters.appName}}" -appPlanName "WaterFinderPlan" -preferencesApp "${{parameters.appName}}-preferences" -baseUSGSUrl $(baseUSGSUrl) -azureSearchKey $(searchKey) -searchUrl $(searchUrl)'       
 
           - task: AzureResourceGroupDeployment@2
             displayName: 'Deploy Sendgrid'
@@ -87,10 +79,7 @@ stages:
               location: '${{ parameters.region }}'
               csmFile: '$(Pipeline.Workspace)/infra/communications/communicationdeploy.json'
               csmParametersFile: '$Pipeline.Workspace/infra/communications/communicationsdeployparams.json'
-              overrideParameters: |
-                '-password $(sendgridpassword)
-                -email $(adminEmail)
-                -website $(adminwebsite)'
+              overrideParameters: '-password $(sendgridpassword) -email $(adminEmail) -website $(adminwebsite)'
 
           - task: AzureResourceGroupDeployment@2
             displayName: 'Deploy AKV'
