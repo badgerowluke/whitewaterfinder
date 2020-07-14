@@ -78,7 +78,7 @@ stages:
               resourceGroupName: '${{ parameters.resourceGroup }}'
               location: '${{ parameters.region }}'
               csmFile: '$(Pipeline.Workspace)/infra/communications/communicationdeploy.json'
-              csmParametersFile: '$Pipeline.Workspace/infra/communications/communicationsdeployparams.json'
+              csmParametersFile: '$Pipeline.Workspace/infra/communications/communicationdeployparams.json'
               overrideParameters: '-password $(sendgridpassword) -email $(adminEmail) -website $(adminwebsite)'
 
           - task: AzureResourceGroupDeployment@2
