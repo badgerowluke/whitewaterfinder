@@ -1,3 +1,48 @@
 {
-    
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "paddle-finder"
+        },
+        "location": {
+            "value": "northcentralus"
+        },
+        "plan_name": {
+            "value": "free"
+        },
+        "plan_publisher": {
+            "value": "Sendgrid"
+        },
+        "plan_product": {
+            "value": "sendgrid_azure"
+        },
+        "plan_promotion_code": {
+            "value": ""
+        },
+        "password": {
+            "value": null
+        },
+        "email": {
+            "value": "funny.placeholder@anymail.com"
+        },
+        "firstName": {
+            "value": "Luke"
+        },
+        "lastName": {
+            "value": "Badgerow"
+        },
+        "company": {
+            "value": "Burning River Solutions"
+        },
+        "website": {
+            "value": "https://allthewebz.stuff"
+        },
+        "acceptMarketingEmails": {
+            "value": "0"
+        },
+        "tags": {
+            "value": {}
+        }
+    }
 }

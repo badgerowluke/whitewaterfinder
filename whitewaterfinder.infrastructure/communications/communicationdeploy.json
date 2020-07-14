@@ -1,4 +1,50 @@
 {
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "type": "String"
+        },
+        "location": {
+            "type": "String"
+        },
+        "plan_name": {
+            "type": "String"
+        },
+        "plan_publisher": {
+            "type": "String"
+        },
+        "plan_product": {
+            "type": "String"
+        },
+        "plan_promotion_code": {
+            "type": "String"
+        },
+        "password": {
+            "type": "SecureString"
+        },
+        "email": {
+            "type": "String"
+        },
+        "firstName": {
+            "type": "String"
+        },
+        "lastName": {
+            "type": "String"
+        },
+        "company": {
+            "type": "String"
+        },
+        "website": {
+            "type": "String"
+        },
+        "acceptMarketingEmails": {
+            "type": "String"
+        },
+        "tags": {
+            "type": "Object"
+        }
+    },
     "resources": [
         {
             "type": "Sendgrid.Email/accounts",
@@ -22,6 +68,5 @@
                 "website": "[parameters('website')]"
             }
         }
-
     ]
 }

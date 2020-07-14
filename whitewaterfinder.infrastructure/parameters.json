@@ -6,7 +6,9 @@
         "appPlanName": {"value": "WaterFinderPlan" },
         "preferencesApp": { "value" : "paddle-finder-preferences" },
         "storageAccountName": { "value" : "waterfinder" },
-        "azureSearchKey": {"value": ""}
+        "azureSearchKey": { "value": "" },
+        "baseUSGSUrl": { "value": "" },
+        "searchUrl": { "value": "" }
 
     }
 }

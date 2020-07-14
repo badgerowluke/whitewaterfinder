@@ -26,7 +26,9 @@
     "appPlanName": {"type" : "string", "defaultValue" : "WaterFinderPlan" },
     "preferencesApp" : { "type" : "string" , "defaultValue" : "paddle-finder-preferences" },
     "storageAccountName": { "type" : "string","defaultValue": "waterfinder" },
-    "azureSearchKey": {"type": "string" }
+    "azureSearchKey": {"type": "string" },
+    "baseUSGSUrl": { "type": "string" },
+    "searchUrl": { "type": "string" }
   },
   "variables": {
 
@@ -128,16 +130,12 @@
                     },
                     {
                         "name":"baseUSGSUrl",
-                        "value":"{%%baseUSGSUrl%%}"
+                        "value":"[parameters('baseUSGSUrl')]"
                     },
                     {
                         "name":"azureSearchUrl",
-                        "value":"{%%searchUrl%%}"
+                        "value":"[parameters('searchUrl')]"
                     },
-                    {
-                        "name":"riverTable",
-                        "value":"{%%riverTable%%}"
-                    }, 
                     {
                         "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
                         "value":"[reference(resourceId('microsoft.insights/components/', parameters('appName')), '2015-05-01').InstrumentationKey]"
