@@ -1,6 +1,7 @@
 
 trigger: 
   - master
+  - feature/adding-sendgrid
 
 stages: 
 - template: 'whitewaterfinder.pipeline/build.yml'
