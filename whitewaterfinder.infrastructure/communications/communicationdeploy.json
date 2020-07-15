@@ -11,38 +11,18 @@
         "plan_name": {
             "type": "String"
         },
-        "plan_publisher": {
-            "type": "String"
-        },
-        "plan_product": {
-            "type": "String"
-        },
-        "plan_promotion_code": {
-            "type": "String"
-        },
         "password": {
             "type": "SecureString"
         },
         "email": {
             "type": "String"
         },
-        "firstName": {
-            "type": "String"
-        },
-        "lastName": {
-            "type": "String"
-        },
-        "company": {
-            "type": "String"
-        },
-        "website": {
-            "type": "String"
-        },
+
         "acceptMarketingEmails": {
             "type": "String"
         },
-        "tags": {
-            "type": "Object"
+        "website": {
+            "type": "string"
         }
     },
     "resources": [
@@ -51,22 +31,25 @@
             "apiVersion": "2015-01-01",
             "name": "[parameters('name')]",
             "location": "[parameters('location')]",
-            "tags": "[parameters('tags')]",
             "plan": {
                 "name": "[parameters('plan_name')]",
-                "publisher": "[parameters('plan_publisher')]",
-                "product": "[parameters('plan_product')]",
-                "promotionCode": "[parameters('plan_promotion_code')]"
+                "publisher": "Sendgrid",
+                "product": "sendgrid_azure",
+                "promotionCode": ""
             },
             "properties": {
                 "password": "[parameters('password')]",
                 "acceptMarketingEmails": "[parameters('acceptMarketingEmails')]",
                 "email": "[parameters('email')]",
-                "firstName": "[parameters('firstName')]",
-                "lastName": "[parameters('lastName')]",
-                "company": "[parameters('company')]",
                 "website": "[parameters('website')]"
+
             }
         }
-    ]
+    ],
+    "outputs": {
+            "SendGrid": {
+        "type": "object",
+        "value": "[reference(resourceId('Sendgrid.Email/accounts', parameters('name')))]"
+    }
+    }
 }

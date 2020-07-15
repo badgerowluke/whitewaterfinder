@@ -11,38 +11,19 @@
         "plan_name": {
             "value": "free"
         },
-        "plan_publisher": {
-            "value": "Sendgrid"
-        },
-        "plan_product": {
-            "value": "sendgrid_azure"
-        },
-        "plan_promotion_code": {
-            "value": ""
-        },
         "password": {
             "value": "P@55w0rd"
         },
         "email": {
-            "value": "funny.placeholder@anymail.com"
+            "value": ""
         },
-        "firstName": {
-            "value": "Luke"
-        },
-        "lastName": {
-            "value": "Badgerow"
-        },
-        "company": {
-            "value": "Burning River Solutions"
-        },
-        "website": {
-            "value": "https://allthewebz.stuff"
-        },
+
         "acceptMarketingEmails": {
             "value": "0"
         },
-        "tags": {
-            "value": {}
+        "website": {
+            "value": "paddle-finder.com"
         }
+
     }
 }
