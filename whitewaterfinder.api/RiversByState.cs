@@ -31,19 +31,19 @@ namespace whitewaterfinder.api
 
 
         [FunctionName("RiversByState")]
-        [OpenApiOperation("RiversByState")]
+        [OpenApiOperation("ByState")]
         [OpenApiParameter("state", In=ParameterLocation.Query, Required=true, Description="The State you'd like to search within", Type=typeof(string))]
         [OpenApiResponseBody(HttpStatusCode.OK, "application/json", typeof(IEnumerable<River>))]
         [OpenApiResponseBody(System.Net.HttpStatusCode.NoContent, "application/json", typeof(string))]
         [OpenApiResponseBody(System.Net.HttpStatusCode.InternalServerError, "application/json", typeof(string))]
         [OpenApiResponseBody(System.Net.HttpStatusCode.BadRequest, "application/json", typeof(string))]        
         public async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = null)] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "rivers/ByState")] HttpRequest req,
             ILogger log)
         {
             try
             {
-                string name = req.Query["name"];
+                string name = req.Query["state"];
 
 
                 var rivers = await _service.GetRivers(name);

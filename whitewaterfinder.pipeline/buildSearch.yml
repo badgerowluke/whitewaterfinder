@@ -6,9 +6,14 @@ parameters:
 - name: 'region'
   type: string
   default: 'North Central US'  
+
 - name: 'resourceGroup'
   type: string
   default: ''  
+
+- name: 'sharedRg'
+  type: string
+  default: ''
 
 - name: 'appName'
   type: string
@@ -41,4 +46,4 @@ steps:
     scriptType: ps
     scriptLocation: 'scriptPath'
     ScriptPath: '$(Pipeline.Workspace)/infra/global/getazuresearchkey.ps1'
-    ScriptArguments: 'brgs-global'   
+    ScriptArguments: '${{ parameters.sharedRg }}'   

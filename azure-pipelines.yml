@@ -1,6 +1,7 @@
 
 trigger: 
   - master
+  - feature/adding-sendgrid
 
 stages: 
 - template: 'whitewaterfinder.pipeline/build.yml'
@@ -10,7 +11,7 @@ stages:
 - template: 'whitewaterfinder.pipeline/deployglobal.yml'
   parameters:
     environment: 'development'
-    sharedRg: 'brgs-global'
+    sharedRg: 'waterfinder-shared'
     principal: '$(principal)'
     
     
@@ -19,6 +20,7 @@ stages:
     environment: 'development'
     stageTitle: 'DeployDevInfrastructure'
     resourceGroup: '$(resourceGroupDev)'
+    sharedRg: 'waterfinder-shared'
     region: '$(azureRegion)'
     storageAccountName: "devwaterfinder"
     appName: "dev-paddle-finder"
