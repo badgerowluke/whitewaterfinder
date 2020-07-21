@@ -73,12 +73,6 @@ export class RiverService {
     }
 
     postToQueue = async (record:any) =>  {
-        // this.queue.createQueueIfNotExists("user-preference-queue", (error, results, response) => {
-        //     if (!error) {
-        //         console.log("queue created");
-        //     }
-        //     return;
-        // });
 
         this.queue.createMessage("user-preference-queue", Buffer.from(JSON.stringify(record)).toString('base64'), (error, results, response) => {
             if (error) {
