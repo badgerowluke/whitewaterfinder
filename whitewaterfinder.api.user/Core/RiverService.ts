@@ -1,6 +1,8 @@
 import {TableService, QueueService, ExponentialRetryPolicyFilter, createTableService, 
     createQueueService, TableUtilities, TableQuery } from "azure-storage";
+
 import * as uuidv1 from 'uuid/v1';
+
 export class RiverService {
     private service: TableService;
     private queue: QueueService;
@@ -23,10 +25,18 @@ export class RiverService {
 
         let entGen = TableUtilities.entityGenerator;
         let pref = {
-            PartitionKey: entGen.String(myQueueItem["name"]),
-            RowKey: entGen.String(uuidv1()),
-            FavoriteRiver: entGen.String(myQueueItem["favoriteRiver"])
+            PartitionKey: entGen.String(myQueueItem["sub"].toString()),
+            RowKey: entGen.String(myQueueItem["riverId"]),
+            RiverName: entGen.String(myQueueItem["riverName"]),
+            RiverId: entGen.String(myQueueItem["riverId"]),
+            LastFlow: entGen.String(myQueueItem["lastFlow"]),
+            LastLevel: entGen.String(myQueueItem["lastLevel"]),
+            LastReported: entGen.DateTime(myQueueItem["lastReported"])
+            
+            
         };
+
+
         this.service.insertOrMergeEntity("UserPreferences",pref, (error, result, response) =>{
             if(error) {
                 console.log(error);
@@ -39,6 +49,7 @@ export class RiverService {
     getFromStorage  = async (name:string): Promise<any> =>{
         var query = new TableQuery()
         .where('PartitionKey eq ?', name);
+        console.log(query);
 
         var continuation = null;
         return new Promise(async (resolve, reject) =>{
@@ -62,12 +73,12 @@ export class RiverService {
     }
 
     postToQueue = async (record:any) =>  {
-        this.queue.createQueueIfNotExists("user-preference-queue", (error, results, response) => {
-            if (!error) {
-                console.log("queue created");
-            }
-            return;
-        });
+        // this.queue.createQueueIfNotExists("user-preference-queue", (error, results, response) => {
+        //     if (!error) {
+        //         console.log("queue created");
+        //     }
+        //     return;
+        // });
 
         this.queue.createMessage("user-preference-queue", Buffer.from(JSON.stringify(record)).toString('base64'), (error, results, response) => {
             if (error) {

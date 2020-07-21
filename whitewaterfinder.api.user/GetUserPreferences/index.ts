@@ -2,17 +2,17 @@ import { AzureFunction, Context, HttpRequest } from "@azure/functions"
 import { RiverService } from "../Core/RiverService";
 
 
-const httpTrigger: AzureFunction = function (context: Context, req: HttpRequest): any {
-    context.log('HTTP trigger function processed a request.');
-    const name = (req.query.name || (req.body && req.body.name));
+const httpTrigger: AzureFunction = function (context: Context, req: HttpRequest, subId:string): any {
+
 
     const serve = new RiverService(process.env["blobStore"]);
-    serve.getFromStorage(name).then((entities) =>{
+
+    serve.getFromStorage(decodeURIComponent(context.bindingData.subId)).then((entities) =>{
         if(Array.isArray(entities)) {
             let returns = [];
             entities.forEach((e)=>{
                 let val = entityResolver(e);
-                console.log(val)
+                context.log(val)
                 returns.push(val)
             })
             context.res ={ 
