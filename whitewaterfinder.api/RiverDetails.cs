@@ -32,26 +32,26 @@ namespace whitewaterfinder.api
         }
         [FunctionName("RiverDetails")]
         [OpenApiOperation("Rivers")]
-        [OpenApiParameter("riverCode", In=ParameterLocation.Query, Required=true, Description="The USGS code for the chosen river", Type=typeof(string))]
+        [OpenApiParameter("riverCode", In=ParameterLocation.Path, Required=true, Description="The USGS code for the chosen river", Type=typeof(string))]
         [OpenApiResponseBody(HttpStatusCode.OK, "application/json", typeof(River))]
         [OpenApiResponseBody(System.Net.HttpStatusCode.NoContent, "application/json", typeof(string))]
         [OpenApiResponseBody(System.Net.HttpStatusCode.InternalServerError, "application/json", typeof(string))]
         [OpenApiResponseBody(System.Net.HttpStatusCode.BadRequest, "application/json", typeof(string))]        
         public async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = null)] HttpRequest req,
-            ILogger log, ExecutionContext context)
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "rivers/details/{riverCode}")] HttpRequest req,
+            string riverCode, ILogger log, ExecutionContext context)
         {
             try
             {
-                string name = req.Query["riverCode"];
+
 
                 string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
                 dynamic data = JsonConvert.DeserializeObject(requestBody);
-                name = name ?? data?.name;
 
-                var riverDetails = _service.GetRiverDetails(name);
 
-                return name != null
+                var riverDetails = _service.GetRiverDetails(riverCode);
+
+                return !string.IsNullOrEmpty(riverCode)
                     ? (ActionResult)new OkObjectResult(riverDetails)
                     : new NoContentResult();
 

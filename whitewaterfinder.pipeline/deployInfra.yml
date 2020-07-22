@@ -8,6 +8,9 @@ parameters:
 - name: 'resourceGroup'
   type: string
   default: ''
+- name: 'sharedRg'
+  type: string
+  default: ''
 - name: 'region'
   type: string
   default: 'North Central US'
@@ -49,31 +52,34 @@ stages:
           steps:   
           - template:  'buildSearch.yml'
             parameters:
-              storageAccountType: ${{parameters.storageAccountType}}
-              storageAccountName: ${{parameters.storageAccountName}}
-              appName: ${{parameters.appName}}
-              resourceGroup: ${{parameters.resourceGroup}}
-              region: ${{parameters.region}}
+              storageAccountType: ${{ parameters.storageAccountType }}
+              storageAccountName: ${{ parameters.storageAccountName }}
+              appName: ${{ parameters.appName }}
+              resourceGroup: ${{ parameters.resourceGroup }}
+              sharedRg: ${{ parameters.sharedRg }}
+              region: ${{ parameters.region }}
               principal: ${{ parameters.principal }}
-
-
-          - task: qetza.replacetokens.replacetokens-task.replacetokens@3
-            displayName: 'Replace tokens in azuredeploy.json'
-            inputs:
-              rootDirectory: '$(Pipeline.Workspace)/'
-              targetFiles: azuredeploy.json
-              tokenPrefix: '{%%'
-              tokenSuffix: '%%}'     
+   
 
           - task: AzureResourceGroupDeployment@2
             displayName: 'Deploy backend ARM Template'
             inputs:
               azureSubscription: '${{ parameters.principal }}'
-              resourceGroupName: '${{parameters.resourceGroup}}'
+              resourceGroupName: '${{ parameters.resourceGroup }}'
               location: '${{parameters.region}}'
               csmFile: '$(Pipeline.Workspace)/infra/azuredeploy.json'
               csmParametersFile: '$(Pipeline.Workspace)/infra/parameters.json'
-              overrideParameters: '-storageAccountName ${{parameters.storageAccountName}} -storageAccountType "${{parameters.storageAccountType}}" -appName "${{parameters.appName}}" -appPlanName "WaterFinderPlan" -preferencesApp "${{parameters.appName}}-preferences"  -azureSearchKey $(searchKey)'       
+              overrideParameters: '-storageAccountName ${{parameters.storageAccountName}} -storageAccountType "${{parameters.storageAccountType}}" -appName "${{parameters.appName}}" -appPlanName "WaterFinderPlan" -preferencesApp "${{parameters.appName}}-preferences" -baseUSGSUrl $(baseUSGSUrl) -azureSearchKey $(searchKey) -searchUrl $(searchUrl)'       
+
+          - task: AzureResourceGroupDeployment@2
+            displayName: 'Deploy Sendgrid'
+            inputs:
+              azureSubscription: '${{ parameters.principal }}'
+              resourceGroupName: '${{ parameters.resourceGroup }}'
+              location: '${{ parameters.region }}'
+              csmFile: '$(Pipeline.Workspace)/infra/communications/communicationdeploy.json'
+              csmParametersFile: '$(Pipeline.Workspace)/infra/communications/communicationdeployparams.json'
+              overrideParameters: '-password "$(sendgridpassword)" -email "$(adminEmail)" -website "$(adminwebsite)"'
 
           - task: AzureResourceGroupDeployment@2
             displayName: 'Deploy AKV'

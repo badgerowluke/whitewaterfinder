@@ -1,0 +1,55 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "type": "String"
+        },
+        "location": {
+            "type": "String"
+        },
+        "plan_name": {
+            "type": "String"
+        },
+        "password": {
+            "type": "SecureString"
+        },
+        "email": {
+            "type": "String"
+        },
+
+        "acceptMarketingEmails": {
+            "type": "String"
+        },
+        "website": {
+            "type": "string"
+        }
+    },
+    "resources": [
+        {
+            "type": "Sendgrid.Email/accounts",
+            "apiVersion": "2015-01-01",
+            "name": "[parameters('name')]",
+            "location": "[parameters('location')]",
+            "plan": {
+                "name": "[parameters('plan_name')]",
+                "publisher": "Sendgrid",
+                "product": "sendgrid_azure",
+                "promotionCode": ""
+            },
+            "properties": {
+                "password": "[parameters('password')]",
+                "acceptMarketingEmails": "[parameters('acceptMarketingEmails')]",
+                "email": "[parameters('email')]",
+                "website": "[parameters('website')]"
+
+            }
+        }
+    ],
+    "outputs": {
+            "SendGrid": {
+        "type": "object",
+        "value": "[reference(resourceId('Sendgrid.Email/accounts', parameters('name')))]"
+    }
+    }
+}

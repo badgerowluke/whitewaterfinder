@@ -1,0 +1,29 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "paddle-finder"
+        },
+        "location": {
+            "value": "northcentralus"
+        },
+        "plan_name": {
+            "value": "free"
+        },
+        "password": {
+            "value": "P@55w0rd"
+        },
+        "email": {
+            "value": ""
+        },
+
+        "acceptMarketingEmails": {
+            "value": "0"
+        },
+        "website": {
+            "value": "paddle-finder.com"
+        }
+
+    }
+}
