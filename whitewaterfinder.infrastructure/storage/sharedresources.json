@@ -25,9 +25,11 @@
         },
 
         "preferencesApp" : { "type" : "string" , "defaultValue" : "paddle-finder-preferences" },
-        "storageAccountName": { "type" : "string","defaultValue": "waterfinder" }
+        "storageAccountName": { "type" : "string","defaultValue": "devwaterfinder" }
     },
-    "variables":{},
+    "variables":{
+        "storageAccountId": "[concat(resourceGroup().id,'/providers/Microsoft.Storage/storageAccounts/', parameters('storageAccountName'))]"
+    },
     "resources":[
         {
             "type": "Microsoft.Insights/components",
@@ -138,5 +140,14 @@
                 "publicAccess": "Container"
             }
         }              
-    ]
+    ],
+    "outputs": {
+        "storageKey" : {
+
+            "type": "string",
+            "value": "[concat(listKeys(variables('storageAccountId'),'2015-05-01-preview').key1)]"
+
+        }
+
+    }
 }

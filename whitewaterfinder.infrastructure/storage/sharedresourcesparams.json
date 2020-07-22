@@ -4,6 +4,6 @@
     "parameters": {
         "appName":{"value": "paddle-finder" },
         "preferencesApp": { "value" : "paddle-finder-preferences" },
-        "storageAccountName": { "value" : "waterfinder" }
+        "storageAccountName": { "value" : "devwaterfinder" }
     }
 }

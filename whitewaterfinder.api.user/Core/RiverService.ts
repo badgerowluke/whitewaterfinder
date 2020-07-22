@@ -16,13 +16,16 @@ export class RiverService {
     
     postToStorage = async (myQueueItem:string): Promise<void> =>  {
         try {
-            this.service.createTableIfNotExists("UserPreferences", (error) =>{
+            let doesExist: boolean;
+            this.service.createTableIfNotExists("UserPreferences", (error, result) =>{
                 if(error) {
                     console.log(error);
                     throw new Error("oops");
                 }
+                doesExist = result.exists
                 return;
             });
+
     
             let entGen = TableUtilities.entityGenerator;
             let pref = {

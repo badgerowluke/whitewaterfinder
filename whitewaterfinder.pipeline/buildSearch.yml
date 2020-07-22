@@ -38,6 +38,7 @@ steps:
     csmFile: '$(Pipeline.Workspace)/infra/storage/sharedresources.json'
     csmParametersFile: '$(Pipeline.Workspace)/infra/storage/sharedresourcesparams.json'
     overrideParameters: '-storageAccountType "${{parameters.storageAccountType}}" -appName "${{parameters.appName}}" -preferencesApp "${{parameters.appName}}-preferences" -storageAccountName "${{parameters.storageAccountName}}"'           
+    deploymentOutputs: 'sharedValues'
 
 - task: AzureCLI@2
   displayName: 'Get Azure Search Query Key'
