@@ -15,34 +15,39 @@ export class RiverService {
     }
     
     postToStorage = async (myQueueItem:string): Promise<void> =>  {
-        this.service.createTableIfNotExists("UserPreferences", (error) =>{
-            if(error) {
-                console.log(error);
-                throw new Error("oops");
-            }
-            return;
-        });
+        try {
+            this.service.createTableIfNotExists("UserPreferences", (error) =>{
+                if(error) {
+                    console.log(error);
+                    throw new Error("oops");
+                }
+                return;
+            });
+    
+            let entGen = TableUtilities.entityGenerator;
+            let pref = {
+                PartitionKey: entGen.String(myQueueItem["id"].toString()),
+                RowKey: entGen.String(myQueueItem["riverId"]),
+                RiverName: entGen.String(myQueueItem["riverName"]),
+                RiverId: entGen.String(myQueueItem["riverId"]),
+                LastFlow: entGen.String(myQueueItem["lastFlow"]),
+                LastLevel: entGen.String(myQueueItem["lastLevel"]),
+                LastReported: entGen.DateTime(myQueueItem["lastReported"])
+                
+                
+            };
+    
+    
+            this.service.insertOrMergeEntity("UserPreferences",pref, (error, result, response) =>{
+                if(error) {
+                    console.log(error);
+                    throw new Error("uh-oh");
+                }
+            })        
 
-        let entGen = TableUtilities.entityGenerator;
-        let pref = {
-            PartitionKey: entGen.String(myQueueItem["sub"].toString()),
-            RowKey: entGen.String(myQueueItem["riverId"]),
-            RiverName: entGen.String(myQueueItem["riverName"]),
-            RiverId: entGen.String(myQueueItem["riverId"]),
-            LastFlow: entGen.String(myQueueItem["lastFlow"]),
-            LastLevel: entGen.String(myQueueItem["lastLevel"]),
-            LastReported: entGen.DateTime(myQueueItem["lastReported"])
-            
-            
-        };
-
-
-        this.service.insertOrMergeEntity("UserPreferences",pref, (error, result, response) =>{
-            if(error) {
-                console.log(error);
-                throw new Error("uh-oh");
-            }
-        })        
+        } catch(e) {
+            throw e
+        }
 
     }
 

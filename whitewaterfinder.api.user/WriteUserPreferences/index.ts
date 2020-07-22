@@ -6,7 +6,7 @@ const queueTrigger: AzureFunction = async function (context: Context, myQueueIte
     context.log('Queue trigger function processed work item', myQueueItem);
 
     const serve = new stuff.RiverService(process.env["blobStore"]);
-    serve.postToStorage(myQueueItem)
+    serve.postToStorage(myQueueItem).catch(e => console.error(e));
 };
 
 export default queueTrigger;
