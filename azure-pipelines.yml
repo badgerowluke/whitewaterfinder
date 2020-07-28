@@ -20,9 +20,9 @@ stages:
     environment: 'development'
     stageTitle: 'DeployDevInfrastructure'
     resourceGroup: '$(resourceGroupDev)'
-    sharedRg: 'waterfinder'
+    sharedRg: '$(resourceGroupDev)'
     region: '$(azureRegion)'
-    storageAccountName: "waterfinder"
+    storageAccountName: "$(resourceGroupDev)"
     appName: "paddle-finder"
     luisEndpointName: 'webster-luis'
     luisAuthoring: 'webster-luis-authoring'
@@ -36,7 +36,7 @@ stages:
 - template: 'whitewaterfinder.pipeline/deployApp.yml'
   parameters:
     stageTitle: "DevAppDeploy"
-    appName: 'dev-paddle-finder'
+    appName: 'paddle-finder'
     resourceGroup: '$(resourceGroupDev)'
     region: '$(azureRegion)'
     botapp: 'WhiteWaterWebsterDev'

@@ -35,15 +35,15 @@ stages:
       parameters:
         artifact: riversfunc
         appType: functionapp
-        principal: '${{parameters.principal}}'
-        appName: "${{parameters.appName}}"
+        principal: '${{ parameters.principal }}'
+        appName: "${{ parameters.appName }}"
 
     - template: 'downloadAndDeploy.yml'
       parameters:
         artifact: preferencesfunc
         appType: functionapp
-        principal: '${{parameters.principal}}'
-        appName: '${{parameters.appName}}-preferences'      
+        principal: '${{ parameters.principal }}'
+        appName: '${{ parameters.appName }}-preferences'      
           
   - job: 'backend_security'
     pool:
@@ -53,8 +53,8 @@ stages:
     - task: AzureResourceGroupDeployment@2
       displayName: 'Deploy APIM to waterfinder'
       inputs:
-          azureSubscription: '${{parameters.principal}}'
-          resourceGroupName: '${{parameters.resourceGroup}}'
+          azureSubscription: '${{ parameters.principal }}'
+          resourceGroupName: '${{ parameters.resourceGroup }}'
           location: '${{parameters.region}}'
           csmFile: 'whitewaterfinder.infrastructure/apim/apimdeploy.json'  
           csmParametersFile: 'whitewaterfinder.infrastructure/apim/apimparameters.json'   

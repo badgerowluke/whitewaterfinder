@@ -34,10 +34,10 @@ steps:
   inputs:
     azureSubscription: '${{ parameters.principal }}'
     resourceGroupName: '${ {parameters.resourceGroup }}'
-    location: '${{parameters.region}}'
+    location: '${{ parameters.region }}'
     csmFile: '$(Pipeline.Workspace)/infra/storage/sharedresources.json'
     csmParametersFile: '$(Pipeline.Workspace)/infra/storage/sharedresourcesparams.json'
-    overrideParameters: '-storageAccountType "${{parameters.storageAccountType}}" -appName "${{parameters.appName}}" -preferencesApp "${{parameters.appName}}-preferences" -storageAccountName "${{parameters.storageAccountName}}"'           
+    overrideParameters: '-storageAccountType "${{ parameters.storageAccountType }}" -appName "${{ parameters.appName }}" -preferencesApp "${{ parameters.appName }}-preferences" -storageAccountName "${{ parameters.storageAccountName }}"'           
     deploymentOutputs: 'sharedValues'
 
 - task: AzureCLI@2

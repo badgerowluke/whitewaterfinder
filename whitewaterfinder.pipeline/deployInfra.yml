@@ -49,12 +49,12 @@ parameters:
 
 
 stages:
-- stage: ${{parameters.stageTitle}}
+- stage: ${{ parameters.stageTitle }}
   jobs:
   - deployment: 'backend_infra'
     pool:
       vmImage: 'windows-latest'
-    environment: ${{parameters.environment}}
+    environment: ${{ parameters.environment }}
     strategy:
       runOnce:
         deploy:
@@ -75,7 +75,7 @@ stages:
             inputs:
               azureSubscription: '${{ parameters.principal }}'
               resourceGroupName: '${{ parameters.resourceGroup }}'
-              location: '${{parameters.region}}'
+              location: '${{ parameters.region }}'
               csmFile: '$(Pipeline.Workspace)/infra/azuredeploy.json'
               csmParametersFile: '$(Pipeline.Workspace)/infra/parameters.json'
               overrideParameters: '-storageAccountName ${{parameters.storageAccountName}} -storageAccountType "${{ parameters.storageAccountType }}" -appName "${{ parameters.appName }}" -appPlanName "WaterFinderPlan" -preferencesApp "${{ parameters.appName }}-preferences"  -azureSearchKey $(searchKey)'       
@@ -94,7 +94,7 @@ stages:
             displayName: 'Deploy AKV'
             inputs:
               azureSubscription: '${{ parameters.principal }}'
-              resourceGroupName: '${{parameters.resourceGroup}}'
+              resourceGroupName: '${{ parameters.resourceGroup }}'
               location: '${{parameters.region}}'
               csmFile: '$(Pipeline.Workspace)/infra/keyvault/kvtemplate.json'
               csmParametersFile: '$(Pipeline.Workspace)/infra/keyvault/kvparameters.json'
@@ -115,7 +115,7 @@ stages:
             displayName: 'Deploy Cognitive Services'
             inputs:
               azureSubscription: '${{ parameters.principal }}'
-              resourceGroupName: '${{parameters.resourceGroup}}'
+              resourceGroupName: '${{ parameters.resourceGroup }}'
               location: '${{parameters.region}}'
               csmFile: '$(Pipeline.Workspace)/infra/cognitiveservices/cognitiveservices.json'
               csmParametersFile: '$(Pipeline.Workspace)/infra/cognitiveservices/cogservicesparams.json'
