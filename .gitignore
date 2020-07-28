@@ -251,3 +251,8 @@ whitewaterfinder.bot.test/lcov.info
 swagger.json
 **/Nuget.config
 lcov.info
+**/*.tfstate*
+
+**/.terraform
+**/*.tfvars
+**/*.terraformrc

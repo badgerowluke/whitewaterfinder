@@ -11,7 +11,7 @@ stages:
 - template: 'whitewaterfinder.pipeline/deployglobal.yml'
   parameters:
     environment: 'development'
-    sharedRg: 'waterfinder-shared'
+    sharedRg: 'waterfinder'
     principal: '$(principal)'
     
     
@@ -20,12 +20,12 @@ stages:
     environment: 'development'
     stageTitle: 'DeployDevInfrastructure'
     resourceGroup: '$(resourceGroupDev)'
-    sharedRg: 'waterfinder-shared'
+    sharedRg: 'waterfinder'
     region: '$(azureRegion)'
-    storageAccountName: "devwaterfinder"
-    appName: "dev-paddle-finder"
-    luisEndpointName: 'dev-webster-luis'
-    luisAuthoring: 'dev-webster-luis-authoring'
+    storageAccountName: "waterfinder"
+    appName: "paddle-finder"
+    luisEndpointName: 'webster-luis'
+    luisAuthoring: 'webster-luis-authoring'
     botName: 'WhiteWaterWebsterDev'
     principal: '$(principal)'
 
