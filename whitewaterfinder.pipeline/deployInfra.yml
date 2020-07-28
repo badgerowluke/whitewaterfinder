@@ -35,6 +35,15 @@ parameters:
 - name: 'principal'
   type: string
   default: ''  
+- name: 'tenant'
+  type: string
+  default: ''
+- name: 'adminId'
+  type: string
+  default: ''
+- name: 'adminEmail'
+  type: string
+  default: ''
 
 
 
@@ -69,7 +78,7 @@ stages:
               location: '${{parameters.region}}'
               csmFile: '$(Pipeline.Workspace)/infra/azuredeploy.json'
               csmParametersFile: '$(Pipeline.Workspace)/infra/parameters.json'
-              overrideParameters: '-storageAccountName ${{parameters.storageAccountName}} -storageAccountType "${{parameters.storageAccountType}}" -appName "${{parameters.appName}}" -appPlanName "WaterFinderPlan" -preferencesApp "${{parameters.appName}}-preferences" -baseUSGSUrl $(baseUSGSUrl) -azureSearchKey $(searchKey) -searchUrl $(searchUrl)'       
+              overrideParameters: '-storageAccountName ${{parameters.storageAccountName}} -storageAccountType "${{ parameters.storageAccountType }}" -appName "${{ parameters.appName }}" -appPlanName "WaterFinderPlan" -preferencesApp "${{ parameters.appName }}-preferences"  -azureSearchKey $(searchKey)'       
 
           - task: AzureResourceGroupDeployment@2
             displayName: 'Deploy Sendgrid'
@@ -79,7 +88,7 @@ stages:
               location: '${{ parameters.region }}'
               csmFile: '$(Pipeline.Workspace)/infra/communications/communicationdeploy.json'
               csmParametersFile: '$(Pipeline.Workspace)/infra/communications/communicationdeployparams.json'
-              overrideParameters: '-password "$(sendgridpassword)" -email "$(adminEmail)" -website "$(adminwebsite)"'
+              overrideParameters: '-password "$(sendgridpassword)" -email "${{ parameters.adminEmail }}" -website "$(adminwebsite)"'
 
           - task: AzureResourceGroupDeployment@2
             displayName: 'Deploy AKV'
@@ -89,7 +98,7 @@ stages:
               location: '${{parameters.region}}'
               csmFile: '$(Pipeline.Workspace)/infra/keyvault/kvtemplate.json'
               csmParametersFile: '$(Pipeline.Workspace)/infra/keyvault/kvparameters.json'
-              overrideParameters: '-tenantId "$(tenantId)" -adminId "$(adminId)" -kvName "${{parameters.resourceGroup}}"'
+              overrideParameters: '-tenantId "${{ parameters.tenantId }}" -adminId "${{ parameters.adminId }}" -kvName "${{parameters.resourceGroup}}"'
 
   - deployment: 'bot'
     dependsOn: 'backend_infra'
@@ -119,7 +128,7 @@ stages:
               scriptType: ps
               scriptLocation: 'scriptPath'
               ScriptPath: '$(Pipeline.Workspace)/infra/app-registration-create.ps1'
-              ScriptArguments: '"${{ parameters.botName} }-ar"'
+              ScriptArguments: '"${{ parameters.botName }}-ar"'
                 
 
           - task: AzureResourceGroupDeployment@2

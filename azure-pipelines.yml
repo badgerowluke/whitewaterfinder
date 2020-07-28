@@ -28,6 +28,9 @@ stages:
     luisAuthoring: 'webster-luis-authoring'
     botName: 'WhiteWaterWebsterDev'
     principal: '$(principal)'
+    tenant: '$(tenantId)'
+    adminEmail: '$(adminEmail)'
+    adminId: '$(adminId)'
 
 
 - template: 'whitewaterfinder.pipeline/deployApp.yml'
