@@ -98,7 +98,7 @@ stages:
               location: '${{parameters.region}}'
               csmFile: '$(Pipeline.Workspace)/infra/keyvault/kvtemplate.json'
               csmParametersFile: '$(Pipeline.Workspace)/infra/keyvault/kvparameters.json'
-              overrideParameters: '-tenantId "${{ parameters.tenantId }}" -adminId "${{ parameters.adminId }}" -kvName "${{parameters.resourceGroup}}"'
+              overrideParameters: '-tenantId "${{ parameters.tenant }}" -adminId "${{ parameters.adminId }}" -kvName "${{parameters.resourceGroup}}"'
 
   - deployment: 'bot'
     dependsOn: 'backend_infra'
