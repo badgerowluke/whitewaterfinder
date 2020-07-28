@@ -33,7 +33,7 @@ steps:
   displayName: 'Deploy Shared Azure Resources'
   inputs:
     azureSubscription: '${{ parameters.principal }}'
-    resourceGroupName: '${ {parameters.resourceGroup }}'
+    resourceGroupName: '${{ parameters.resourceGroup }}'
     location: '${{ parameters.region }}'
     csmFile: '$(Pipeline.Workspace)/infra/storage/sharedresources.json'
     csmParametersFile: '$(Pipeline.Workspace)/infra/storage/sharedresourcesparams.json'
