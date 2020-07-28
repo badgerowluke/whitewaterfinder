@@ -8,6 +8,9 @@ parameters:
 - name: 'principal'
   type: string
   default: ''  
+- name: 'region' 
+  type: string
+  default: ''
 
 stages:
 - stage: DeployGlobal
@@ -15,7 +18,7 @@ stages:
   - deployment: 'shared'
     pool:
       vmImage: 'windows-latest'
-    environment: ${{parameters.environment}}
+    environment: ${{ parameters.environment }}
     strategy:
       runOnce:
         deploy:
@@ -26,7 +29,7 @@ stages:
             inputs:
               azureSubscription: '${{ parameters.principal }}'
               resourceGroupName: '${{ parameters.sharedRg }}'
-              location: '$(azureRegion)'
+              location: '${{ parameters.region }}'
               csmFile: '$(Pipeline.Workspace)/infra/global/global-service.json'
               csmParameetersFile: '$(Pipeline.Workspace)/infra/global/global-service-params.json'
 

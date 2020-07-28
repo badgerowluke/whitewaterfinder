@@ -2,6 +2,9 @@ parameters:
 - name: vstsFeed
   type: string
   default: ''
+- name: buildConfig
+  type: string
+  default: 'release'
 steps:
 - task: DotNetCoreCLI@2
   displayName: Restore
@@ -15,7 +18,7 @@ steps:
   inputs:
     command: 'build'
     projects: '**/*.csproj'
-    arguments: '--configuration $(BuildConfiguration) --no-restore'
+    arguments: '--configuration ${{ parameters.buildConfig }} --no-restore'
 
 
 - task: DotNetCoreCLI@2

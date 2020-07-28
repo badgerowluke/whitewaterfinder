@@ -68,14 +68,6 @@
                             "value": "[parameters('location')]"
                         },
                         {
-                            "name": "LuisAPIKey",
-                            "value": "{%%LuisAPIKey%%}"
-                        },
-                        {
-                            "name": "LuisAppId",
-                            "value": "{%%LuisAppId%%}"
-                        },
-                        {
                             "name": "MicrosoftAppId",
                             "value": "[parameters('msftAppId')]"
                         },

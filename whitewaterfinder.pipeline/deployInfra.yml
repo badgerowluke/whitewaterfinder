@@ -119,15 +119,8 @@ stages:
               scriptType: ps
               scriptLocation: 'scriptPath'
               ScriptPath: '$(Pipeline.Workspace)/infra/app-registration-create.ps1'
-              ScriptArguments: '"${{parameters.botName}}-ar"'
-              
-          - task: qetza.replacetokens.replacetokens-task.replacetokens@3
-            displayName: 'Replace tokens in botdeploy.json'
-            inputs:
-              rootDirectory: '$(Pipeline.Workspace)/infra/cognitiveservices/'
-              targetFiles: botdeploy.json
-              tokenPrefix: '{%%'
-              tokenSuffix: '%%}'    
+              ScriptArguments: '"${{ parameters.botName} }-ar"'
+                
 
           - task: AzureResourceGroupDeployment@2
             displayName: 'Azure Deployment:Create Or Update Resource Group action on waterfinder'
