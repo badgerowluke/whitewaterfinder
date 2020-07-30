@@ -29,7 +29,7 @@ export class RiverService {
     
             let entGen = TableUtilities.entityGenerator;
             let pref = {
-                PartitionKey: entGen.String(myQueueItem["id"].toString()),
+                PartitionKey: entGen.String(myQueueItem["sub"].toString()),
                 RowKey: entGen.String(myQueueItem["riverId"]),
                 RiverName: entGen.String(myQueueItem["riverName"]),
                 RiverId: entGen.String(myQueueItem["riverId"]),
