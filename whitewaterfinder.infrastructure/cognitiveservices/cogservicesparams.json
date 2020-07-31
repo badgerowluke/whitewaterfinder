@@ -3,6 +3,8 @@
     "contentVersion":"1.0.0.0",
     "parameters":{
         "luisName": { "value": "" },
-        "authoringName": { "value": "" }
+        "authoringName": { "value": "" },
+        "botAppName": { "value": "" },
+        "botInsightsName": { "value" : "" }
     }
 }
