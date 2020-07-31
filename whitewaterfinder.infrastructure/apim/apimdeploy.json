@@ -152,11 +152,11 @@
                 "[resourceId('Microsoft.ApiManagement/service', parameters('apimName'))]"
             ],
             "properties":{
-                "displayName": "paddle-finder-preferences",
+                "displayName": "users",
                 "protocols": [
                     "https"
                 ],
-                "path": "paddle-finder-preferences",
+                "path": "users",
                 "isCurrent": true,
                 "apiRevision": "1"
             }
@@ -173,7 +173,7 @@
             "properties": {
                 "displayName": "GetUserPreferences",
                 "method": "GET",
-                "urlTemplate": "/GetUserPreferences",
+                "urlTemplate": "/",
                 "templateParameters": [],
                 "responses": []
             }            
@@ -203,8 +203,8 @@
             ],
             "properties": {
                 "displayName": "PostUserPreferences",
-                "method": "GET",
-                "urlTemplate": "/PostUserPreferences",
+                "method": "POST",
+                "urlTemplate": "/",
                 "templateParameters": [],
                 "responses": []
             }            
