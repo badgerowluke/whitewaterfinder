@@ -1,62 +1,45 @@
 provider "azurerm" {
-    version = "2.20.0"
-    features {}
+  version = "2.20.0"
+  features {}
 }
+
 resource "azurerm_resource_group" "rg" {
-    name = "waterfinder"
-    location = "northcentralus"
+  name = "waterfinder"
+  location = "northcentralus"
 }
 
-resource "azurerm_storage_account" "storage" {
-    name ="waterfinder"
-    resource_group_name = azurerm_resource_group.rg.name
-    location = azurerm_resource_group.rg.location
-    account_tier = "Standard"
-    account_replication_type = "LRS"
-    account_kind = "StorageV2"
+module "keyvault" {
+  source = "./keyvault"
+  location = azurerm_resource_group.rg.location
+  rg_name = azurerm_resource_group.rg.name
+  name = azurerm_resource_group.rg.name
 }
 
-resource "azurerm_app_service_plan" "pf-plan" {
-  name                = "paddlefinderplan"
-  location            = azurerm_resource_group.rg.location
-  resource_group_name = azurerm_resource_group.rg.name
-
-  sku {
-    tier = "Dynamic"
-    size = "Y1"
-  }
+module "storage" {
+  source = "./storage"
+  location = azurerm_resource_group.rg.location
+  rg_name = azurerm_resource_group.rg.name
+  name = azurerm_resource_group.rg.name
+  cosmosdbtype = "Cassandra"
 }
 
-resource "azurerm_application_insights" "insights" {
-  name                = "paddlefinder"
-  location            = azurerm_resource_group.rg.location
-  resource_group_name = azurerm_resource_group.rg.name
-  application_type    = "web"
+module "search" {
+  source = "./search"
+  location = azurerm_resource_group.rg.location
+  rg_name = azurerm_resource_group.rg.name
+  name = "${azurerm_resource_group.rg.name}search"  
 }
 
-output "instrumentation_key" {
-  value = azurerm_application_insights.insights.instrumentation_key
-}
-
-resource "azurerm_function_app" "paddlefinder" {
-  name                      = "paddlefinder"
-  location                  = azurerm_resource_group.rg.location
-  resource_group_name       = azurerm_resource_group.rg.name
-  app_service_plan_id       = azurerm_app_service_plan.pf-plan.id
-  storage_connection_string = azurerm_storage_account.storage.primary_connection_string
-
-  app_settings = {
-    APPINSIGHTS_INSTRUMENTATIONKEY = azurerm_application_insights.insights.instrumentation_key
-  }
-
-}
-
-resource "azurerm_function_app" "pf-preferences" {
-  name                      = "paddlefinderpreferences"
-  location                  = azurerm_resource_group.rg.location
-  resource_group_name       = azurerm_resource_group.rg.name
-  app_service_plan_id       = azurerm_app_service_plan.pf-plan.id
-  storage_connection_string = azurerm_storage_account.storage.primary_connection_string
-
+module "api" {
+  source = "./api"
+  location = azurerm_resource_group.rg.location
+  rg_name = azurerm_resource_group.rg.name
+  name = "paddlefinder"
+  planname = "paddlefinderplan"
+  storage_conn_string = module.storage.primary_conn_string
+  instrumentkey = module.storage.instrumentation_key
+  storage_account_name = module.storage.account_name
+  storage_account_key = module.storage.account_key  
+  searchkey = module.search.query_keys[0].key
 }
 

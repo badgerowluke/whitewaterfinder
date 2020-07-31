@@ -39,7 +39,7 @@
                 "[resourceId('Microsoft.ApiManagement/service', parameters('apimName'))]"
             ],
             "properties":{
-                "displayName": "paddle-finder",
+                "displayName": "rivers",
                 "protocols": [
                     "https"
                 ],
