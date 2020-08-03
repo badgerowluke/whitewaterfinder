@@ -29,7 +29,7 @@
               "src/manifest.webmanifest"
             ],
             "styles": [
-              "src/styles.scss"
+              "src/scss/styles.scss"
             ],
             "scripts": []
           },
@@ -69,7 +69,8 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "paddle-finder:build"
+            "browserTarget": "paddle-finder:build",
+                        "proxyConfig": "proxy.config.json"
           },
           "configurations": {
             "production": {

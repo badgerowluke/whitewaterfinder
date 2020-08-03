@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { Http, Response } from "@angular/http";
+import { HttpClient } from "@angular/common/http";
 import { environment } from "src/environments/environment";
 import { AuthService } from "../auth/auth.service";
 import { RiverUserPreference } from "../model/riveruserreference";
@@ -7,7 +7,7 @@ import { RiverUserPreference } from "../model/riveruserreference";
 @Injectable()
 export class RiverUserSerice {
     private activeUser;
-    constructor(private http: Http, 
+    constructor(private http: HttpClient, 
                 private auth: AuthService) {
         this.auth.userProfile$.subscribe(
             value => this.activeUser = value,
@@ -20,14 +20,14 @@ export class RiverUserSerice {
         return this.activeUser;
     }
     
-    postUserFavorite: (preference:RiverUserPreference) => Promise<Response> = (preference:RiverUserPreference) => {
+    postUserFavorite: (preference:RiverUserPreference) => any = (preference:RiverUserPreference) => {
 
-        return this.http.post(environment.baseUrl + "/api/users", preference)
-        .map((response:Response) => response.json()).toPromise();
+        return this.http.post(environment.baseUrl + "/api/users", preference).toPromise();
+
     }
 
     getUserFavorites: (sub:string) => Promise<RiverUserPreference[]> = (sub:string) => {
-        return this.http.get(environment.baseUrl + `/api/users/${sub}`)
-        .map((response:Response) => <RiverUserPreference[]> response.json()).toPromise();
+        return this.http.get<RiverUserPreference[]>(environment.baseUrl + `/api/users/${sub}`).toPromise();
+
     }
 }
