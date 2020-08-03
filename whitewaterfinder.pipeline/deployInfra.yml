@@ -119,7 +119,7 @@ stages:
               location: '${{parameters.region}}'
               csmFile: '$(Pipeline.Workspace)/infra/cognitiveservices/cognitiveservices.json'
               csmParametersFile: '$(Pipeline.Workspace)/infra/cognitiveservices/cogservicesparams.json'
-              overrideParameters: '-luisName "${{parameters.luisEndpointName}}" -authoringName "${{parameters.luisAuthoring}}"'  
+              overrideParameters: '-luisName "${{ parameters.luisEndpointName }}" -authoringName "${{ parameters.luisAuthoring }}" -botAppName "${{ parameters.botName }}" -botInsightsName "${{ parameters.appName }}"'  
  
           - task: AzureCli@2
             displayName: 'create or pull MSFT App ID'
