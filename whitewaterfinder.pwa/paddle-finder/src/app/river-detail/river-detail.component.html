@@ -1,0 +1,34 @@
+<div class='outlet'>
+    <div >
+        <div>
+            <h3 class='' *ngIf='river'>
+                {{river.name}}
+                <button (click)='saveRiverAsFavorite()'>Add To Favorites</button>
+            </h3>
+
+        </div>
+        <h3>
+            <span *ngIf='river && river.latitude'>location: {{river.latitude}}</span>
+            <span *ngIf='river && river.latitude && river.longitude'>,&nbsp;</span>
+            <span *ngIf='river'>{{river.longitude}}</span>
+        </h3>
+        <table style='left:0px;right:0px;' *ngIf='river'>
+            <thead>
+                <tr>
+                    <td>Date</td>
+                    <td>Flow</td>
+                    <td>Level</td>
+                </tr>
+            </thead>
+            <tbody>
+
+            <tr *ngFor="let data of river.riverData">
+                <td>{{ data.dateTime }}</td>
+                <td>{{ data.flow }} <span *ngIf='data.flow'>cf/s</span></td>
+                <td>{{ data.level }} <span *ngIf='data.level'>ft</span></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>

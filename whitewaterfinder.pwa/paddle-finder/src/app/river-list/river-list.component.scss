@@ -1,0 +1,32 @@
+@import '../../scss/styles';
+@import '../../scss/includes/colors.scss';
+
+.river-search {
+    padding-left:16%;
+    padding-right:16%;
+    padding-bottom:16px;
+}
+
+.river-list {
+    padding-left:16%;
+    column-count:2;
+}
+@media screen and (max-width:924px) {
+    .river-list {
+        padding-left:16%;
+        column-count:1;
+    }
+}
+
+.river-list-data {
+    padding: 8px 8px 8px 0px;
+}
+.river-search-result {
+    color:$c04;
+    cursor:pointer;
+    font-weight: bold;
+
+}
+.river-search-result:hover {
+    color:$c02;
+}

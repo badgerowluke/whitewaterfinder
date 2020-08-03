@@ -1,0 +1,20 @@
+
+<div class='river-search' >
+    <div >
+      <input class="search-bar"  
+          id='riverSearch' type="text" [(ngModel)]='searchValue' (keyup)='findRivers($event)'/>
+    </div>
+    
+  </div>
+  <div class='river-list'>
+      <div class='river-list-data' *ngFor="let river of rivers">
+        <span class='river-search-result' 
+        [routerLink]="['river', river.riverId]"
+        [queryParams]="{'lat':river.latitude, 'long': river.longitude}">
+        {{river.name.toUpperCase()}}
+      </span>
+      </div>
+  </div>
+  
+  
+  
