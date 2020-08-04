@@ -8,6 +8,8 @@ import * as _ from 'lodash';
 
 import { RiverUserSerice } from '../services/river-user.service';
 import { AuthService } from '../auth/auth.service';
+import { User } from '../model/authuser';
+import { Observable, Subscription } from 'rxjs';
 @Component({
     selector: 'app-river-detail',
     templateUrl: 'river-detail.component.html',
@@ -17,7 +19,9 @@ export class RiverDetailComponent implements OnInit, OnDestroy {
     riverCode: string;
     river: River;
     point: any;
-
+    user: User;
+    profile: Subscription;
+    isFavorite: boolean = false;
     
     constructor(private route: ActivatedRoute, 
                 private riverData: RiverDataService,
@@ -30,9 +34,16 @@ export class RiverDetailComponent implements OnInit, OnDestroy {
         this.riverCode = this.route.snapshot.params['id'];
         this.point = this.route.snapshot.queryParams;
         this.pullRiverDetails(this.riverCode);
+        this.user = this.riverUser.getActiveUser();
+        this.profile = this.auth.userProfile$.subscribe(user => {
+            if(user) {
+                this.checkRiverFavorites(user.sub);
+            }
+
+        })
     }
     ngOnDestroy() {
-        //TODO
+        this.profile.unsubscribe();
     }
 
     getLatitude() {
@@ -58,23 +69,29 @@ export class RiverDetailComponent implements OnInit, OnDestroy {
     }
 
     saveRiverAsFavorite: () => void =() => {
-        let user = this.riverUser.getActiveUser();
-        if(!user) {
+        
+        if(!this.user) {
             alert("please log in")
         } else {
             const pref = new RiverUserPreference();
-            pref.sub = user.sub;
+            pref.sub = this.user.sub;
             pref.riverName = this.river.name;
             pref.riverId= this.river.riverId;
             pref.lastFlow = this.river.riverData[0].flow;
             pref.lastLevel = this.river.riverData[0].level;
             pref.lastReported = this.river.riverData[0].dateTime;
 
-            this.riverUser.postUserFavorite(pref).then((data) => {
-                console.log(data);
-            });
-        }
-
-        
+            this.riverUser.postUserFavorite(pref).then((data) => {});
+        }  
+    }
+    
+    checkRiverFavorites: (userId: string) => void = (userId: string) => {
+        this.riverUser.getUserFavorites(userId).then((data) =>{
+            data.forEach((i) => {
+                if(i.riverId === this.riverCode) {
+                    this.isFavorite = true;
+                }
+            })
+        })
     }
 }

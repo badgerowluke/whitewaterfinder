@@ -3,11 +3,16 @@ import { RiverService } from "../Core/RiverService";
 
 
 const httpTrigger: AzureFunction = async function (context: Context, req: HttpRequest): Promise<void> {
-    context.log('HTTP trigger function processed a request.');
 
-    
     let service = new RiverService(process.env["blobStore"]);
-    service.postToQueue(req.body);
+
+    if(req.method === "POST") {
+        service.postToQueue(req.body, "user-preference-queue");
+    }
+
+    if(req.method === "DELETE") {
+        service.postToQueue(req.body,"drop-user-pref-queue");
+    }
 };
 
 export default httpTrigger;

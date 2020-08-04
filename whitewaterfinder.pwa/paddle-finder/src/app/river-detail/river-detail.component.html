@@ -5,7 +5,8 @@
                 {{river.name}}
 
                 <pre *ngIf="auth.userProfile$ | async as profile">
-                    <button (click)='saveRiverAsFavorite()'>Add To Favorites</button>
+                    <button [hidden]="isFavorite" (click)='saveRiverAsFavorite()'>Add To Favorites</button>
+                    <button [hidden]=!isFavorite>Remove Favorite</button>
                     
                 </pre>
             </h3>

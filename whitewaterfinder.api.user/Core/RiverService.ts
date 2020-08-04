@@ -13,6 +13,19 @@ export class RiverService {
         this.queue = createQueueService(connectionString).withFilter(retryOptions);
         
     }
+    private generateEntity(myQueueItem:string) {
+        let entGen = TableUtilities.entityGenerator;
+        let pref = {
+            PartitionKey: entGen.String(myQueueItem["sub"].toString()),
+            RowKey: entGen.String(myQueueItem["riverId"]),
+            RiverName: entGen.String(myQueueItem["riverName"]),
+            RiverId: entGen.String(myQueueItem["riverId"]),
+            LastFlow: entGen.String(myQueueItem["lastFlow"]),
+            LastLevel: entGen.String(myQueueItem["lastLevel"]),
+            LastReported: entGen.DateTime(myQueueItem["lastReported"])
+        };
+        return pref;
+    }
     
     postToStorage = async (myQueueItem:string): Promise<void> =>  {
         try {
@@ -25,20 +38,7 @@ export class RiverService {
                 doesExist = result.exists
                 return;
             });
-
-    
-            let entGen = TableUtilities.entityGenerator;
-            let pref = {
-                PartitionKey: entGen.String(myQueueItem["sub"].toString()),
-                RowKey: entGen.String(myQueueItem["riverId"]),
-                RiverName: entGen.String(myQueueItem["riverName"]),
-                RiverId: entGen.String(myQueueItem["riverId"]),
-                LastFlow: entGen.String(myQueueItem["lastFlow"]),
-                LastLevel: entGen.String(myQueueItem["lastLevel"]),
-                LastReported: entGen.DateTime(myQueueItem["lastReported"])
-                
-                
-            };
+            let pref = this.generateEntity(myQueueItem);
     
     
             this.service.insertOrMergeEntity("UserPreferences",pref, (error, result, response) =>{
@@ -57,7 +57,7 @@ export class RiverService {
     getFromStorage  = async (name:string): Promise<any> =>{
         var query = new TableQuery()
         .where('PartitionKey eq ?', name);
-        console.log(query);
+
 
         var continuation = null;
         return new Promise(async (resolve, reject) =>{
@@ -72,17 +72,19 @@ export class RiverService {
         })
     }
 
-    private entityResolver = (entity) =>{
-        let resolvedEntity = {};
-        for(let key in entity) {
-            resolvedEntity[key] = entity[key]._
-        }
-        return resolvedEntity;
+    removeFromStorage = async (myQueueItem:string): Promise<any> =>{
+        let pref = this.generateEntity(myQueueItem);
+        this.service.deleteEntity("UserPreferences",pref, (error) =>{
+            if(error) {
+                throw new Error("uh-oh")
+            }
+
+        })
     }
+    
+    postToQueue = async (record:any, queue:string) =>  {
 
-    postToQueue = async (record:any) =>  {
-
-        this.queue.createMessage("user-preference-queue", Buffer.from(JSON.stringify(record)).toString('base64'), (error, results, response) => {
+        this.queue.createMessage(queue, Buffer.from(JSON.stringify(record)).toString('base64'), (error, results, response) => {
             if (error) {
                 console.log("something went wrong");
             }
