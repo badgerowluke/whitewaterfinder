@@ -11,7 +11,7 @@
         <span class='river-search-result' 
         [routerLink]="['river', river.riverId]"
         [queryParams]="{'lat':river.latitude, 'long': river.longitude}">
-        {{river.name.toUpperCase()}}
+        {{ river.name }}
       </span>
       </div>
   </div>

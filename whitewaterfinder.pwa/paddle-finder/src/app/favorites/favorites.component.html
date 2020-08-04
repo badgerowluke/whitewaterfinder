@@ -1,7 +1,7 @@
 <div class="outlet">
 <div class="river-list">
     <div class="river-list-data" *ngFor="let fav of userFavorites">
-        {{fav.riverId}}
+        {{ fav.riverName.toUpperCase() }} {{ fav.lastReportedDate}}
     </div>
 </div>
 </div>

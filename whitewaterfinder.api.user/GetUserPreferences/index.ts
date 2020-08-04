@@ -1,6 +1,7 @@
 import { AzureFunction, Context, HttpRequest } from "@azure/functions"
 import { RiverService } from "../Core/RiverService";
-
+import * as camel from 'camelcase-keys'
+import camelcaseKeys = require("camelcase-keys");
 
 const httpTrigger: AzureFunction = function (context: Context, req: HttpRequest, subId:string): any {
 
@@ -16,12 +17,12 @@ const httpTrigger: AzureFunction = function (context: Context, req: HttpRequest,
                 returns.push(val)
             })
             context.res ={ 
-                body: returns
+                body: camelcaseKeys(returns)
             }
             context.done();
         }
         context.res = {
-            body: entities
+            body: camelcaseKeys(entities)
         };
     
         context.done();
