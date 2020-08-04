@@ -4,8 +4,8 @@
       "name": "myQueueItem",
       "type": "queueTrigger",
       "direction": "in",
-      "queueName": "js-queue-items",
-      "connection": ""
+      "queueName": "drop-user-pref-queue",
+      "connection": "blobStore"
     }
   ],
   "scriptFile": "../dist/DropUserPreferences/index.js"
