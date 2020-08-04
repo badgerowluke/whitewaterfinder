@@ -7,6 +7,7 @@ import { ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash';
 
 import { RiverUserSerice } from '../services/river-user.service';
+import { AuthService } from '../auth/auth.service';
 @Component({
     selector: 'app-river-detail',
     templateUrl: 'river-detail.component.html',
@@ -20,7 +21,8 @@ export class RiverDetailComponent implements OnInit, OnDestroy {
     
     constructor(private route: ActivatedRoute, 
                 private riverData: RiverDataService,
-                private riverUser: RiverUserSerice) {
+                private riverUser: RiverUserSerice,
+                public auth: AuthService) {
 
     }
     ngOnInit() {

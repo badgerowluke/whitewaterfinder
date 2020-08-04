@@ -3,7 +3,11 @@
         <div>
             <h3 class='' *ngIf='river'>
                 {{river.name}}
-                <button (click)='saveRiverAsFavorite()'>Add To Favorites</button>
+
+                <pre *ngIf="auth.userProfile$ | async as profile">
+                    <button (click)='saveRiverAsFavorite()'>Add To Favorites</button>
+                    
+                </pre>
             </h3>
 
         </div>

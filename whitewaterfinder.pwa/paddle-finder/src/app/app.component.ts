@@ -7,7 +7,7 @@ import { AuthService } from './auth/auth.service';
   styleUrls: ['./app.component.scss'],
   providers: []
 })
-export class AppComponent implements OnInit, OnChanges {
+export class AppComponent implements OnInit {
   title = 'paddle-finder';
   profile: any;
   constructor(public auth: AuthService) {
@@ -15,9 +15,6 @@ export class AppComponent implements OnInit, OnChanges {
   }
   ngOnInit() { }
 
-  ngOnChanges(changes) {
-    console.log(changes);
-  }
 
   openNav() {
     document.getElementById("side-nav").style.width = "250px";

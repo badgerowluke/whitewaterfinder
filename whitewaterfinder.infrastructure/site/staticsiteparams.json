@@ -1,0 +1,26 @@
+{
+    "$schema":"https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion":"1.0.0.0",
+    "parameters":{
+        "name": { "value": "paddle-finder" },
+        "location": { "value": "centralus" },
+        "sku": { "value": "Free" },
+        "repositoryUrl": { "value": "https://github.com/badgerowluke/whitewaterfinder" },
+        "branch": {
+            "value": "trunk"
+        },
+        "repositoryToken": {
+            "value": null
+        },
+        "appLocation": {
+            "value": "/whitewaterfinder.pwa/paddle-finder"
+        },
+        "apiLocation": {
+            "value": ""
+        },
+        "appArtifactLocation": {
+            "value": "/whitewaterfinder.pwa/paddle-finder/dist"
+        }
+
+    }
+}
