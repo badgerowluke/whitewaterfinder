@@ -3,8 +3,10 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
+    "config": "tsc ./build.ts && node ./build.js",
     "start": "tsc ./build.ts && node ./build.js && ng serve",
     "build": "tsc ./build.ts && node ./build.js && ng build",
+    "build-prod": "ng build --prod",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"

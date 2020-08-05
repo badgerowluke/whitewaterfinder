@@ -19,7 +19,7 @@ export class AuthService {
     createAuth0Client({
       domain: environment.auth0Domain,
       client_id: environment.auth0ClientId,
-      redirect_uri: environment.baseUrl + "/callback",
+      redirect_uri: environment.callbackUrl + "/callback",
       scope: environment.openIdScope
     })
   ) as Observable<Auth0Client>).pipe(
@@ -84,7 +84,7 @@ export class AuthService {
     this.auth0Client$.subscribe((client: Auth0Client) => {
       // Call method to log in
       client.loginWithRedirect({
-        redirect_uri: environment.baseUrl + "/callback",
+        redirect_uri: environment.callbackUrl + "/callback",
         appState: { target: redirectPath }
       });
     });

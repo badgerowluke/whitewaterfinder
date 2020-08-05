@@ -13,10 +13,14 @@ $apps = az functionapp list --query "[?resourceGroup=='$($resourceGroup)'].name"
 Write-Output "Load template policy"
 $functionGetInbound = Get-Content $fullPath\apim-policy\FunctionGetPolicy.xml -Raw
 
+$basePolicy = Get-Content $fullPath\apim-policy\BasePolicy.xml -Raw
+
 Write-Output "Loop Function Apps"
 foreach($name in $apps.GetEnumerator())
 {
     $rg = $resourceGroup
+    
+    Set-BasePolicy($basePolicy, $rg, $name)
     
     $creds = Get-KuduCredentials $name $rg
 

@@ -263,3 +263,4 @@ lcov.info
 **/.env
 
 **/build.js
+whitewaterfinder.pwa/paddle-finder/src/environments/environment.ts

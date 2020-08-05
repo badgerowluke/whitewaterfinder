@@ -61,7 +61,7 @@
             "properties": {
                 "displayName": "RiverDetails",
                 "method": "GET",
-                "urlTemplate": "/RiverDetails",
+                "urlTemplate": "/details/{id}",
                 "templateParameters": [],
                 "responses": [],
                 "operationId": "RiverDetails"
@@ -124,7 +124,7 @@
             "properties": {
                 "displayName": "RiversByState",
                 "method": "GET",
-                "urlTemplate": "/RiversByState",
+                "urlTemplate": "/{state}",
                 "templateParameters": [],
                 "responses": []
             }            

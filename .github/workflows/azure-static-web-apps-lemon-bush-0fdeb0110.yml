@@ -22,13 +22,7 @@ jobs:
         with:
           submodules: true
 
-      - name: cache node modules
-        uses: actions/cache@1
-        with:
-          path: ~/.npm
-          kdy: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node
+
 
       - name: Use Node 10.x
         uses: actions/setup-node@v1
@@ -37,6 +31,10 @@ jobs:
 
       - name: npm schtuffs
         run: |
+          npm i
+          npm run config
+          npm run build-prod
+
 
       - name: Build And Deploy
         id: builddeploy
@@ -49,7 +47,7 @@ jobs:
           # For more information regarding Static Web App workflow configurations, please visit: https://aka.ms/swaworkflowconfig
           app_location: "/whitewaterfinder.pwa/paddle-finder" # App source code path
           api_location: "api" # Api source code path - optional
-          app_artifact_location: "/whitewaterfinder.pwa/paddle-finder/dist" # Built app content directory - optional
+          app_artifact_location: "/whitewaterfinder.pwa/paddle-finder/dist/paddle-finder" # Built app content directory - optional
           ###### End of Repository/Build Configurations ######
 
   # close_pull_request_job:

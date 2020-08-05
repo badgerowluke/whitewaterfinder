@@ -14,7 +14,8 @@ const envConfigFile = `export const environment = {
     detailsKeyCode:'',
     auth0Domain: '${process.env.auth0Domain}',
     auth0ClientId: '${process.env.auth0ClientId}',
-    openIdScope: '${process.env.openIdScope}'
+    openIdScope: '${process.env.openIdScope}',
+    callbackUrl: '${process.env.callbackUrl}'
  };
  `;
 
