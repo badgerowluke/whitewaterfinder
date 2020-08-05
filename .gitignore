@@ -1,4 +1,4 @@
-/dist
+**/dist
 **/bin
 **/obj
 **/.gitkeep
@@ -259,3 +259,7 @@ lcov.info
 **/*.terraformrc
 
 **/*.local.*
+
+**/.env
+
+**/build.js
