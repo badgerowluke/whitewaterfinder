@@ -10,11 +10,13 @@ stages:
       vmImage: 'windows-latest'
     continueOnError: false
     steps:
-    - task: PublishBuildArtifacts@1
-      displayName: 'Push infra scripts'
-      inputs:
-        PathtoPublish: 'whitewaterfinder.infrastructure/'
-        ArtifactName: infra      
+    - template: 'whitewaterfinder.pipeline/infra.yml'
+      parameters:
+    # - task: PublishBuildArtifacts@1
+    #   displayName: 'Push infra scripts'
+    #   inputs:
+    #     PathtoPublish: 'whitewaterfinder.infrastructure/'
+    #     ArtifactName: infra      
 
   - job: build_dotnet
     pool:

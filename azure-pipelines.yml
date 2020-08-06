@@ -15,22 +15,22 @@ stages:
     region: '$(azureRegion)'
     
     
-- template: 'whitewaterfinder.pipeline/deployInfra.yml'
-  parameters:
-    environment: 'development'
-    stageTitle: 'DeployDevInfrastructure'
-    resourceGroup: '$(resourceGroupDev)'
-    sharedRg: '$(resourceGroupDev)'
-    region: '$(azureRegion)'
-    storageAccountName: "$(resourceGroupDev)"
-    appName: "paddle-finder"
-    luisEndpointName: 'webster-luis'
-    luisAuthoring: 'webster-luis-authoring'
-    botName: 'WhiteWaterWebsterDev'
-    principal: '$(principal)'
-    tenant: '$(tenantId)'
-    adminEmail: '$(adminEmail)'
-    adminId: '$(adminId)'
+# - template: 'whitewaterfinder.pipeline/deployInfra.yml'
+#   parameters:
+#     environment: 'development'
+#     stageTitle: 'DeployDevInfrastructure'
+#     resourceGroup: '$(resourceGroupDev)'
+#     sharedRg: '$(resourceGroupDev)'
+#     region: '$(azureRegion)'
+#     storageAccountName: "$(resourceGroupDev)"
+#     appName: "paddle-finder"
+#     luisEndpointName: 'webster-luis'
+#     luisAuthoring: 'webster-luis-authoring'
+#     botName: 'WhiteWaterWebsterDev'
+#     principal: '$(principal)'
+#     tenant: '$(tenantId)'
+#     adminEmail: '$(adminEmail)'
+#     adminId: '$(adminId)'
 
 
 - template: 'whitewaterfinder.pipeline/deployApp.yml'

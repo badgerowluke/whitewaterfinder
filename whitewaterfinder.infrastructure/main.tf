@@ -1,7 +1,11 @@
+
 provider "azurerm" {
   version = "2.20.0"
+  use_msi = true
   features {}
+
 }
+
 
 resource "azurerm_resource_group" "rg" {
   name = "waterfinder"

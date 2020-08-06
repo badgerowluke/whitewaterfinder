@@ -9,16 +9,9 @@
                 "description": "Location for all resources."
             }
         },
-        "secondLocation": {
-            "type": "string",
-            "defaultValue": "eastus",
-            "metadata": {
-                "description": "secondary location for resources"
-            }
-        },
 
-        "azureSearchName": { "type" : "string", "defaultValue": "waterfindersearch" },
-        "cosmosDbName": { "type" : "string", "defaultValue": "brgscosmosdb"}
+
+        "azureSearchName": { "type" : "string", "defaultValue": "waterfindersearch" }
     },
     "variables":{},
     "resources":[
@@ -35,39 +28,6 @@
                 "partitionCount": 1,
                 "hostingMode": "Default"
             }
-        },
-        {
-            "apiVersion": "2019-12-12",
-            "kind": "GlobalDocumentDB",
-            "type": "Microsoft.DocumentDb/databaseAccounts",
-            "name": "[parameters('cosmosDbName')]",
-            "location": "[parameters('secondLocation')]",
-            "properties": {
-                "databaseAccountOfferType": "Standard",
-                "locations": [
-                    {
-                        "id": "[concat(parameters('cosmosDbName'), '-', parameters('secondLocation'))]",
-                        "failoverPriority": 0,
-                        "locationName": "[parameters('secondLocation')]"
-                    }
-                ],
-                "enableMultipleWriteLocations": false,
-                "isVirtualNetworkFilterEnabled": false,
-                "virtualNetworkRules": [],
-                "ipRangeFilter": "",
-                "dependsOn": [],
-                "capabilities": [
-                    {
-                        "name": "EnableCassandra"
-                    }
-                ],
-                "enableFreeTier": true
-            },
-            "tags": {
-                "defaultExperience": "Cassandra",
-                "hidden-cosmos-mmspecial": "",
-                "CosmosAccountType": "Non-Production"
-            }
-        }       
+        }      
     ]
 }
