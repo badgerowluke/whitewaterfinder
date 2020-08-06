@@ -1,4 +1,4 @@
-import { writeFile } from 'fs'
+import { writeFile, mkdir } from 'fs'
 const colors = require('colors');
 require('dotenv').config();
 // require('dotenv').load();
@@ -18,11 +18,16 @@ const envConfigFile = `export const environment = {
     callbackUrl: '${process.env.callbackUrl}'
  };
  `;
-
- writeFile(targetPath, envConfigFile, function (err) {
-    if (err) {
-        throw console.error(err);
-    } else {
-        console.log(colors.magenta(`Angular environment.ts file generated correctly at ${targetPath} \n`));
+ mkdir('./src/environments',(err) =>{
+    if(err) {
+        console.log(colors.red(err));
     }
- });
+    console.log(colors.green("created environments folder"));
+    writeFile(targetPath, envConfigFile, function (err) {
+       if (err) {
+           throw console.error(err);
+       } else {
+           console.log(colors.magenta(`Angular environment.ts file generated correctly at ${targetPath} \n`));
+       }
+    });
+ })
