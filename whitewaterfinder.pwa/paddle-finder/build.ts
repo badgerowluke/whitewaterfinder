@@ -1,4 +1,4 @@
-import { writeFile, mkdir } from 'fs'
+import { writeFile, mkdir, existsSync } from 'fs'
 const colors = require('colors');
 require('dotenv').config();
 // require('dotenv').load();
@@ -15,19 +15,32 @@ const envConfigFile = `export const environment = {
     auth0Domain: '${process.env.auth0Domain}',
     auth0ClientId: '${process.env.auth0ClientId}',
     openIdScope: '${process.env.openIdScope}',
-    callbackUrl: '${process.env.callbackUrl}'
+    callbackUrl: '${process.env.callbackUrl}',
+    subscriptionKey: '${process.env.subscriptionKey}'
  };
  `;
- mkdir('./src/environments',(err) =>{
-    if(err) {
-        console.log(colors.red(err));
-    }
-    console.log(colors.green("created environments folder"));
+
+ if(existsSync('./src/environments')) {
     writeFile(targetPath, envConfigFile, function (err) {
-       if (err) {
-           throw console.error(err);
-       } else {
-           console.log(colors.magenta(`Angular environment.ts file generated correctly at ${targetPath} \n`));
-       }
-    });
- })
+        if (err) {
+            throw console.error(err);
+        } else {
+            console.log(colors.magenta(`Angular environment.ts file generated correctly at ${targetPath} \n`));
+        }
+     });
+ } else {
+     mkdir('./src/environments',(err) =>{
+        if(err) {
+            console.log(colors.red(err));
+        }
+        console.log(colors.green("created environments folder"));
+        writeFile(targetPath, envConfigFile, function (err) {
+           if (err) {
+               throw console.error(err);
+           } else {
+               console.log(colors.magenta(`Angular environment.ts file generated correctly at ${targetPath} \n`));
+           }
+        });
+     })
+
+ }
