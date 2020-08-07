@@ -17,10 +17,10 @@ parameters:
 - name: tenant
   type: string
   default: ''
-
-- name: 'tenant'
+- name: 'adminEmail'
   type: string
   default: ''
+  
 - name: 'adminId'
   type: string
   default: ''  
