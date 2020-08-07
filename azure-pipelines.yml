@@ -6,6 +6,9 @@ stages:
 - template: 'whitewaterfinder.pipeline/build.yml'
   parameters: 
     vstsFeed: $(artifactKey)
+    principal: $(principal)
+    providerstorage: 'tfstatewaterfinder'
+    resourceGroup: $(resourceGroupDev)
     
 - template: 'whitewaterfinder.pipeline/deployglobal.yml'
   parameters:

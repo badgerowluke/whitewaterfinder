@@ -2,6 +2,17 @@ parameters:
 - name: vstsFeed
   type: string
   default: ''
+- name: principal
+  type: string
+  default: ''
+- name: providerstorage
+  type: string
+  default: 'tfstatewaterfinder'
+- name: resourceGroup
+  type: string
+  default: ''
+
+
 stages:
 - stage: Build
   jobs:
@@ -10,13 +21,17 @@ stages:
       vmImage: 'windows-latest'
     continueOnError: false
     steps:
-    - template: 'whitewaterfinder.pipeline/infra.yml'
-      parameters:
-    # - task: PublishBuildArtifacts@1
-    #   displayName: 'Push infra scripts'
-    #   inputs:
-    #     PathtoPublish: 'whitewaterfinder.infrastructure/'
-    #     ArtifactName: infra      
+
+    - task: AzureResourceGroupDeployment@2
+      displayName: 'Deploy APIM to waterfinder'
+      inputs:
+          azureSubscription: '${{ parameters.principal }}'
+          resourceGroupName: '${{ parameters.resourceGroup }}'
+          location: '${{parameters.region}}'
+          csmFile: 'whitewaterfinder.infrastructure/apim/apimdeploy.json'  
+          csmParametersFile: 'whitewaterfinder.infrastructure/apim/apimparameters.json'   
+          overrideParameters: '-adminEmail "${{ parameters.adminEmail }}" -appName "${{ parameters.appName }}" -preferencesApp "${{ parameters.appName }}-preferences"'   
+
 
   - job: build_dotnet
     pool:
