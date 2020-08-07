@@ -56,7 +56,7 @@ stages:
 
         
     - task: AzureResourceGroupDeployment@2
-      display: 'provision storage'
+      displayName: 'provision storage'
       inputs:
         azureSubscription: '${{ parameters.principal }}'
         resourceGroupName: '${{ parameters.resourceGroup }}'
