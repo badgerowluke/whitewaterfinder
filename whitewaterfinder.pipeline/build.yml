@@ -109,7 +109,7 @@ stages:
         location: '${{ parameters.region }}'      
         csmFile: 'whitewaterfinder.infrastructure/cognitiveservices/bot/botdeploy.json'
         csmParametersFile: 'whitewaterfinder.infrastrucure/cognitiveservices/bot/botparams.json'
-        overrideParameters: '-botAppName "${{ parameters.botNamme }}" --botInsightsName "${{ parameters.appName }}" -msftAppId "$(newAppId)" -storageAccountName ${{ parameters.storageAccountName }}'
+        overrideParameters: '-botAppName "${{ parameters.botName }}" --botInsightsName "${{ parameters.appName }}" -msftAppId "$(newAppId)" -storageAccountName ${{ parameters.storageAccountName }}'
 
     - task: AzureResourceGroupDeployment@2
       displayName: 'Provision APIM'
