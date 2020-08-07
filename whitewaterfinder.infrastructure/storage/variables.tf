@@ -35,8 +35,3 @@ variable "redundancy" {
     default     = "LRS"
 }
 
-variable "cosmosdbtype" {
-    description = "document, table, mongo, or cassandra db type"
-    type        = string
-    default     = "Cassandra"
-}
