@@ -35,6 +35,9 @@ parameters:
 - name: 'appName'
   type: string
   default: ''  
+- name: 'botName'
+  type: string
+  default: ''
 
 stages:
 - stage: Build
@@ -79,15 +82,34 @@ stages:
         deploymentOutputs: 'searchKey'
 
     - task: AzureResourceGroupDeployment@2
-      displayName: deploy apis'
+      displayName: provision apis
       inputs:
         azureSubscription: '${{ parameters.principal }}'
         resourceGroupName: '${{ parameters.resourceGroup }}'
         location: '${{ parameters.region }}'
-        csmFile: '$(Pipeline.Workspace)/infra/azuredeploy.json'
-        csmParametersFile: '$(Pipeline.Workspace)/infra/parameters.json'
-        overrideParameters: '-storageAccountName ${{parameters.storageAccountName}} -storageAccountType "${{ parameters.storageAccountType }}" -appName "${{ parameters.appName }}" -appPlanName "WaterFinderPlan" -preferencesApp "${{ parameters.appName }}-preferences"  -azureSearchKey $(searchKey)'          
+        csmFile: 'whitewaterfinder.infrastructure/api/api.json'
+        csmParametersFile: 'whitewaterfinder.infrastructure/api/apiparams.json'
+        overrideParameters: '-storageAccountName ${{ parameters.storageAccountName }} -storageAccountType "${{ parameters.storageAccountType }}" -appName "${{ parameters.appName }}" -appPlanName "WaterFinderPlan" -preferencesApp "${{ parameters.appName }}-preferences"  -azureSearchKey $(searchKey)'          
         deploymentOutputs: 'riverKeys usersKey'
+
+    - task: AzureCli@2
+      displayName: 'create or pull MSFT App ID'
+      inputs:
+        azureSubscription: '${{ parameters.principal }}'
+        scriptType: ps
+        scriptLocation: 'scriptPath'
+        ScriptPath: 'whitewaterfinder.infrastructure/app-registration-create.ps1'
+        ScriptArguments: '"${{ parameters.botName }}-ar"'
+
+    - task: AzureResourceGroupDeployment@2
+      displayName: provision bot
+      inputs: 
+        azureSubscription: '${{ parameters.principal }}'
+        resourceGroupName: '${{ parameters.resourceGroup }}'
+        location: '${{ parameters.region }}'      
+        csmFile: 'whitewaterfinder.infrastructure/cognitiveservices/bot/botdeploy.json'
+        csmParametersFile: 'whitewaterfinder.infrastrucure/cognitiveservices/bot/botparams.json'
+        overrideParameters: '-botAppName "${{ parameters.botNamme }}" --botInsightsName "${{ parameters.appName }}" -msftAppId "$(newAppId)" -storageAccountName ${{ parameters.storageAccountName }}'
 
     - task: AzureResourceGroupDeployment@2
       displayName: 'Provision APIM'
@@ -100,7 +122,7 @@ stages:
           overrideParameters: '-adminEmail "${{ parameters.adminEmail }}" -appName "${{ parameters.appName }}" -preferencesApp "${{ parameters.appName }}-preferences"'   
 
     - task: AzureResourceGroupDeployment@2
-      displayName: 'Deploy Sendgrid'
+      displayName: 'provision Sendgrid'
       inputs:
         azureSubscription: '${{ parameters.principal }}'
         resourceGroupName: '${{ parameters.resourceGroup }}'

@@ -3,8 +3,8 @@
     "contentVersion":"1.0.0.0",
     "parameters":{
         "botAppName": { "value": "WhitewaterWebsterDev" },
-        "botInsightsName": { "value": "dev-paddle-finder" },
-        "msftAppId" : { "value" : "a0c50ab4-0ffa-4606-8e9a-ee209f2f210f" },
-        "storageAccountName" : { "value": "devwaterfinder" }    
+        "botInsightsName": { "value": "paddle-finder" },
+        "msftAppId" : { "value" : "" },
+        "storageAccountName" : { "value": "waterfinder" }
     }    
 }

@@ -97,14 +97,7 @@ stages:
               csmParametersFile: '$(Pipeline.Workspace)/infra/cognitiveservices/cogservicesparams.json'
               overrideParameters: '-luisName "${{ parameters.luisEndpointName }}" -authoringName "${{ parameters.luisAuthoring }}" -botAppName "${{ parameters.botName }}" -botInsightsName "${{ parameters.appName }}"'  
  
-          - task: AzureCli@2
-            displayName: 'create or pull MSFT App ID'
-            inputs:
-              azureSubscription: '${{ parameters.principal }}'
-              scriptType: ps
-              scriptLocation: 'scriptPath'
-              ScriptPath: '$(Pipeline.Workspace)/infra/app-registration-create.ps1'
-              ScriptArguments: '"${{ parameters.botName }}-ar"'
+
                 
 
           - task: AzureResourceGroupDeployment@2
