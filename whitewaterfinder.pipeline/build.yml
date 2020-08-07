@@ -11,7 +11,30 @@ parameters:
 - name: resourceGroup
   type: string
   default: ''
+- name: region
+  type: string
+  default: ''
+- name: tenant
+  type: string
+  default: ''
 
+- name: 'tenant'
+  type: string
+  default: ''
+- name: 'adminId'
+  type: string
+  default: ''  
+
+- name: 'storageAccountName'
+  type: string
+  default: ''
+- name: 'storageAccountType'
+  type: string
+  default: 'Standard_LRS'
+
+- name: 'appName'
+  type: string
+  default: ''  
 
 stages:
 - stage: Build
@@ -21,9 +44,53 @@ stages:
       vmImage: 'windows-latest'
     continueOnError: false
     steps:
+    - task: AzureResourceGroupDeployment@2
+      displayName: 'provision AKV'
+      inputs:
+        azureSubscription: '${{ parameters.principal }}'
+        resourceGroupName: '${{ parameters.resourceGroup }}'
+        location: '${{ parameters.region }}'
+        csmFile: 'whitewaterfinder.infrastructure/keyvault/kvtemplate.json'
+        csmParametersFile: 'whitewaterfinder.infrastructure/keyvault/kvparameters.json'
+        overrideParameters: '-tenantId "${{ parameters.tenant }}" -adminId "${{ parameters.adminId }}" -kvName "${{ parameters.resourceGroup }}"'     
+
+        
+    - task: AzureResourceGroupDeployment@2
+      display: 'provision storage'
+      inputs:
+        azureSubscription: '${{ parameters.principal }}'
+        resourceGroupName: '${{ parameters.resourceGroup }}'
+        location: '${{parameters.region}}'
+        csmFile: 'whitewaterfinder.infrastructure/storage/storage.json'
+        csmParametersFile: 'whitewaterfinder.infrastructure/storage/storageparams.json'
+        overrideParameters: '-storageAccountType "${{ parameters.storageAccountType }}" -appName "${{ parameters.appName }}" -preferencesApp "${{ parameters.appName }}-preferences" -storageAccountName "${{ parameters.storageAccountName }}"'           
+        deploymentOutputs: 'sharedValues'        
+
+   
 
     - task: AzureResourceGroupDeployment@2
-      displayName: 'Deploy APIM to waterfinder'
+      displayName: 'provision (Search) Resources'
+      inputs:
+        azureSubscription: '${{ parameters.principal }}'
+        resourceGroupName: '${{ parameters.resourceGroup }}'
+        location: '${{ parameters.region }}'
+        csmFile: 'whitewaterfinder.infrastructure/search/search.json'
+        csmParameetersFile: 'whitewaterfinder.infrastructure/search/searchparams.json'        
+        deploymentOutputs: 'searchKey'
+
+    - task: AzureResourceGroupDeployment@2
+      displayName: deploy apis'
+      inputs:
+        azureSubscription: '${{ parameters.principal }}'
+        resourceGroupName: '${{ parameters.resourceGroup }}'
+        location: '${{ parameters.region }}'
+        csmFile: '$(Pipeline.Workspace)/infra/azuredeploy.json'
+        csmParametersFile: '$(Pipeline.Workspace)/infra/parameters.json'
+        overrideParameters: '-storageAccountName ${{parameters.storageAccountName}} -storageAccountType "${{ parameters.storageAccountType }}" -appName "${{ parameters.appName }}" -appPlanName "WaterFinderPlan" -preferencesApp "${{ parameters.appName }}-preferences"  -azureSearchKey $(searchKey)'          
+        deploymentOutputs: 'riverKeys usersKey'
+
+    - task: AzureResourceGroupDeployment@2
+      displayName: 'Provision APIM'
       inputs:
           azureSubscription: '${{ parameters.principal }}'
           resourceGroupName: '${{ parameters.resourceGroup }}'
@@ -32,7 +99,16 @@ stages:
           csmParametersFile: 'whitewaterfinder.infrastructure/apim/apimparameters.json'   
           overrideParameters: '-adminEmail "${{ parameters.adminEmail }}" -appName "${{ parameters.appName }}" -preferencesApp "${{ parameters.appName }}-preferences"'   
 
-
+    - task: AzureResourceGroupDeployment@2
+      displayName: 'Deploy Sendgrid'
+      inputs:
+        azureSubscription: '${{ parameters.principal }}'
+        resourceGroupName: '${{ parameters.resourceGroup }}'
+        location: '${{ parameters.region }}'
+        csmFile: '$(Pipeline.Workspace)/infra/communications/communicationdeploy.json'
+        csmParametersFile: '$(Pipeline.Workspace)/infra/communications/communicationdeployparams.json'
+        overrideParameters: '-password "$(sendgridpassword)" -email "${{ parameters.adminEmail }}" -website "$(adminwebsite)"'
+  
   - job: build_dotnet
     pool:
       vmImage: 'windows-latest'

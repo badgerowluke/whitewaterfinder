@@ -24,14 +24,6 @@ stages:
         deploy:
           steps:
                     
-          - task: AzureResourceGroupDeployment@2
-            displayName: 'Build Global (Search) Resources'
-            inputs:
-              azureSubscription: '${{ parameters.principal }}'
-              resourceGroupName: '${{ parameters.sharedRg }}'
-              location: '${{ parameters.region }}'
-              csmFile: '$(Pipeline.Workspace)/infra/global/global-service.json'
-              csmParameetersFile: '$(Pipeline.Workspace)/infra/global/global-service-params.json'
 
           - task: AzureCLI@2
             displayName: 'Build Azure Search Index'

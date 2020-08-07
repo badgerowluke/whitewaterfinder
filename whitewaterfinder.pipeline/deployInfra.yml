@@ -70,35 +70,11 @@ stages:
               principal: ${{ parameters.principal }}
    
 
-          - task: AzureResourceGroupDeployment@2
-            displayName: 'Deploy backend ARM Template'
-            inputs:
-              azureSubscription: '${{ parameters.principal }}'
-              resourceGroupName: '${{ parameters.resourceGroup }}'
-              location: '${{ parameters.region }}'
-              csmFile: '$(Pipeline.Workspace)/infra/azuredeploy.json'
-              csmParametersFile: '$(Pipeline.Workspace)/infra/parameters.json'
-              overrideParameters: '-storageAccountName ${{parameters.storageAccountName}} -storageAccountType "${{ parameters.storageAccountType }}" -appName "${{ parameters.appName }}" -appPlanName "WaterFinderPlan" -preferencesApp "${{ parameters.appName }}-preferences"  -azureSearchKey $(searchKey)'       
+     
 
-          - task: AzureResourceGroupDeployment@2
-            displayName: 'Deploy Sendgrid'
-            inputs:
-              azureSubscription: '${{ parameters.principal }}'
-              resourceGroupName: '${{ parameters.resourceGroup }}'
-              location: '${{ parameters.region }}'
-              csmFile: '$(Pipeline.Workspace)/infra/communications/communicationdeploy.json'
-              csmParametersFile: '$(Pipeline.Workspace)/infra/communications/communicationdeployparams.json'
-              overrideParameters: '-password "$(sendgridpassword)" -email "${{ parameters.adminEmail }}" -website "$(adminwebsite)"'
 
-          - task: AzureResourceGroupDeployment@2
-            displayName: 'Deploy AKV'
-            inputs:
-              azureSubscription: '${{ parameters.principal }}'
-              resourceGroupName: '${{ parameters.resourceGroup }}'
-              location: '${{parameters.region}}'
-              csmFile: '$(Pipeline.Workspace)/infra/keyvault/kvtemplate.json'
-              csmParametersFile: '$(Pipeline.Workspace)/infra/keyvault/kvparameters.json'
-              overrideParameters: '-tenantId "${{ parameters.tenant }}" -adminId "${{ parameters.adminId }}" -kvName "${{parameters.resourceGroup}}"'
+
+
 
   - deployment: 'bot'
     dependsOn: 'backend_infra'
