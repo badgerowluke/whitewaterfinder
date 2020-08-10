@@ -31,9 +31,9 @@
         }      
     ],
     "outputs":{
-        "SEARCH_QUERY_API_KEY": {
-        "type": "string",
-        "value": "[listQueryKeys(parameters('azureSearchName'), '2020-03-13').value[0].key]"
+        "searchKey": {
+            "type": "string",
+            "value": "[listQueryKeys(parameters('azureSearchName'), '2020-03-13').value[0].key]"
         }
 
      }
