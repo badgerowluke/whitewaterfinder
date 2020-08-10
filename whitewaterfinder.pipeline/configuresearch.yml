@@ -11,11 +11,14 @@ parameters:
 - name: 'region' 
   type: string
   default: ''
+- name: artifact
+  type: string
+  default: ''
 
 stages:
-- stage: DeployGlobal
+- stage: ConfigureSearch
   jobs:
-  - deployment: 'shared'
+  - deployment: 'search'
     pool:
       vmImage: 'windows-latest'
     environment: ${{ parameters.environment }}
@@ -23,13 +26,15 @@ stages:
       runOnce:
         deploy:
           steps:
-                    
 
+          - download: current
+            displayName: download ${{ parameters.artifact }}
+            artifact: ${{ parameters.artifact }}
           - task: AzureCLI@2
             displayName: 'Build Azure Search Index'
             inputs:
               azureSubscription: '${{ parameters.principal }}'
               scriptType: ps
               scriptLocation: 'scriptPath'
-              ScriptPath: '$(Pipeline.Workspace)/infra/deployment.ps1'
-              ScriptArguments: '${{ parameters.sharedRg }} "$(Pipeline.Workspace)/infra/riverswithid.json"'     
+              ScriptPath: '$(Pipeline.Workspace)/${{ parameters.artifact }}/deployment.ps1'
+              ScriptArguments: '${{ parameters.sharedRg }} "$(Pipeline.Workspace)/${{ parameters.artifact }}/riverswithid.json"'     

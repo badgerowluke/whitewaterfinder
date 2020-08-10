@@ -56,10 +56,8 @@ stages:
   - job: 'backend_security'
     pool:
       vmImage: 'windows-latest'
-    dependsOn: 'build_infra'
-    variables:
-      riversKey: $[dependencies.build_infra.riverKey]
-      usersKey: $[dependencies.build_infra.userKey]
+    # dependsOn: 'backend_app_deployment'
+
     steps:
 
     - powershell: |
