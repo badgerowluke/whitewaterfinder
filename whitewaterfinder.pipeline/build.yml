@@ -146,22 +146,32 @@ stages:
         azureSubscription: '${{ parameters.principal }}'
         resourceGroupName: '${{ parameters.resourceGroup }}'
         location: '${{ parameters.region }}'
-        csmFile: '$(Pipeline.Workspace)/infra/communications/communicationdeploy.json'
-        csmParametersFile: '$(Pipeline.Workspace)/infra/communications/communicationdeployparams.json'
+        csmFile: 'whitewaterfinder.infrastructure/communications/communicationdeploy.json'
+        csmParametersFile: 'whitewaterfinder.infrastructure/communications/communicationdeployparams.json'
         overrideParameters: '-password "$(sendgridpassword)" -email "${{ parameters.adminEmail }}" -website "$(adminwebsite)"'
-  
-  - job: build_dotnet
-    pool:
-      vmImage: 'windows-latest'
-    continueOnError: false
-    steps:
-    - template: 'buildDotnet.yml'   
-      parameters:
-        vstsFeed: '${{parameters.vstsFeed}}' 
 
-  - job: build_node
-    pool:
-      vmImage: 'windows-latest'
-    continueOnError: false
-    steps:
-    - template: 'buildNode.yml'
+    - task: AzureResourceGroupDeployment@2
+      displayName: 'provision static web app'
+      inputs:
+        azureSubscription: '${{ parameters.principal }}'
+        resourceGroupName: '${{ parameters.resourceGroup }}'
+        location: '${{ parameters.region }}'      
+        csmFile: 'whitewaterfinder.infrastructure/site/staticsite.json'
+        csmParametersFile: 'whitewaterfinder.infrastructure/site/staticsiteparams.json'
+        overrideParameters: '-repositoryToken $(repositoryToken)'
+  
+  # - job: build_dotnet
+  #   pool:
+  #     vmImage: 'windows-latest'
+  #   continueOnError: false
+  #   steps:
+  #   - template: 'buildDotnet.yml'   
+  #     parameters:
+  #       vstsFeed: '${{parameters.vstsFeed}}' 
+
+  # - job: build_node
+  #   pool:
+  #     vmImage: 'windows-latest'
+  #   continueOnError: false
+  #   steps:
+  #   - template: 'buildNode.yml'
