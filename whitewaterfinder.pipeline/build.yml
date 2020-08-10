@@ -89,10 +89,10 @@ stages:
         csmParameetersFile: 'whitewaterfinder.infrastructure/search/searchparams.json'        
         deploymentOutputs: 'searchOutput'
     
-    - task: Powershell@2
+    - powershell:
       displayName: 'parse ARM output'
       inputs:
-        # arguments: "-output $(searchOutput)"
+        env: searchOutput:$(searchOutput)
         targetType: inline
         script: |
 
