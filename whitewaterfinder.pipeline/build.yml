@@ -90,14 +90,10 @@ stages:
         deploymentOutputs: 'searchOutput'
     
     - powershell: |
-          $obj = $env:searchOutput
-          $json = $obj | ConvertTo-Json | ConvertFrom-Json
           $stuff = ConvertFrom-Json -InputObject $env:searchOutput
-          Write-Host $obj
-          Write-Host $stuff
           Write-Host $stuff.searchKey
-          Write-Host $tuff.searchKey.Value
-          Write-Host "##vso[task.setvariable variable=searchKey]$json.value"
+          Write-Host $stuff.searchKey.Value
+          Write-Host "##vso[task.setvariable variable=searchKey]$stuff.searchKey.Value"
       displayName: 'parse ARM output'
       env: 
         searchOutput: $(searchOutput)
