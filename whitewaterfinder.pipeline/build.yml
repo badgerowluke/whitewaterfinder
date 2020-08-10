@@ -92,7 +92,7 @@ stages:
     - powershell: |
           $obj = $env:searchOutput
           $json = $obj | ConvertTo-Json | ConvertFrom-Json
-          $stuff = ConvertTo-FromJson -InputObject $env:searchOutput
+          $stuff = ConvertFrom-Json -InputObject $env:searchOutput
           Write-Host $obj
           Write-Host $stuff
           Write-Host $stuff.searchKey
