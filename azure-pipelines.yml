@@ -17,6 +17,8 @@ stages:
     tenant: '$(tenantId)' 
     storageAccountName: "$(resourceGroupDev)" 
     botName: 'WhiteWaterWebster'
+    luisAuthoring: 'webster-luis-authoring'
+    luisEndpointName: 'webster-luis'
 
 
 
