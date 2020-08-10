@@ -96,7 +96,7 @@ stages:
         targetType: inline
         script: |
 
-          $json = '$(searchOutput)' | ConvertFrom-Json
+          $json = '$env:searchOutput' | ConvertFrom-Json
           Write-Host $json
           Write-Host "##vso[task.setvariable variable=searchKey]$json.searchKey.value"
 
