@@ -92,11 +92,11 @@ stages:
     - task: Powershell@2
       displayName: 'parse ARM output'
       inputs:
-        arguments: "-output $(searchOutput)"
-        targetType: inline
-        script: |
-          Write-Host $(searchOutput)
-          Write-Host "##vso[task.setvariable variable=searchKey]$(searchOutput).searchKey.value"
+
+        targetType: filePath
+        filePath: 'whitewaterfinder.infrastructure/search/getazuresearchkey.ps1'
+        arguments: "-templateOutput $(searchOutput)"
+
 
     - task: AzureResourceGroupDeployment@2
       displayName: provision apis

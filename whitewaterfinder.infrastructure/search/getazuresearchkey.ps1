@@ -1,16 +1,18 @@
 param (
-    [Parameter(Mandatory=$true)] $resourceGroup
+    [Parameter(Mandatory=$true)][string] $templateOutput,
+    [Parameter(Mandatory=$true)][string] $variableName
 )
 
 
 
+$json = $templateOutput | ConvertFrom-Json
 
-$key = az search query-key list --resource-group $resourceGroup --service-name 'waterfindersearch' | ConvertFrom-Json
+Write-Host $(searchOutput)
+Write-Host "##vso[task.setvariable variable=$variableName]$json.searchKey.value"
 
 
-
-
-$keyValue = $key.key
-Write-Host "##vso[task.setvariable variable=searchKey;]$keyValue"
+# $key = az search query-key list --resource-group $resourceGroup --service-name 'waterfindersearch' | ConvertFrom-Json
+# $keyValue = $key.key
+# Write-Host "##vso[task.setvariable variable=searchKey;]$keyValue"
 
 
