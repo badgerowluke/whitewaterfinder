@@ -26,51 +26,52 @@ parameters:
 stages:
 - stage: ${{parameters.stageTitle}}
   jobs:
-  - job: 'backend_app_deployment'
-    pool:
-      vmImage: 'windows-latest'
+  # - job: 'backend_app_deployment'
+  #   pool:
+  #     vmImage: 'windows-latest'
 
-    steps:
-    - template: 'downloadAndDeploy.yml'
-      parameters:
-        artifact: riversfunc
-        appType: functionapp
-        principal: '${{ parameters.principal }}'
-        appName: "${{ parameters.appName }}"
+  #   steps:
+  #   - template: 'downloadAndDeploy.yml'
+  #     parameters:
+  #       artifact: riversfunc
+  #       appType: functionapp
+  #       principal: '${{ parameters.principal }}'
+  #       appName: "${{ parameters.appName }}"
 
-    - template: 'downloadAndDeploy.yml'
-      parameters:
-        artifact: preferencesfunc
-        appType: functionapp
-        principal: '${{ parameters.principal }}'
-        appName: '${{ parameters.appName }}-preferences'      
-          
+  #   - template: 'downloadAndDeploy.yml'
+  #     parameters:
+  #       artifact: preferencesfunc
+  #       appType: functionapp
+  #       principal: '${{ parameters.principal }}'
+  #       appName: '${{ parameters.appName }}-preferences'      
+        
+
+  #   - template: 'downloadAndDeploy.yml'
+  #     parameters: 
+  #       artifact: websterbot
+  #       appType: app
+  #       principal: '${{ parameters.principal }}'
+  #       appName: '${{ parameters.botapp }}'  
+
   - job: 'backend_security'
     pool:
       vmImage: 'windows-latest'
     dependsOn: 'backend_app_deployment'
     steps:
-   
 
-
-
-    - task: AzureCLI@2
-      displayName: 'Configure APIM'
-      inputs:
-        azureSubscription: '${{parameters.principal}}'
-        scriptType: ps
-        scriptLocation: 'scriptPath'
-        ScriptPath: '$(Pipeline.Workspace)/infra/apim/apimdeploy.ps1'    
-        azurePowerShellVersion: LatestVersion      
-        ScriptArguments: '${{ parameters.resourceGroup }} $(Pipeline.Workspace)\infra'      
-
-  - job: 'deploy_bot_code'
-    pool:
-      vmImage: 'windows-latest'
-    steps:
-      - template: 'downloadAndDeploy.yml'
-        parameters: 
-          artifact: websterbot
-          appType: app
-          principal: '${{ parameters.principal }}'
-          appName: '${{ parameters.botapp }}'                     
+    - powershell: |
+        Write-Host $(riverKey)
+        Write-Host $(userKey)
+      env:
+        riversKey: $(riverKey)
+        userKey: $(userKey)
+    # - task: AzureCLI@2
+    #   displayName: 'Configure APIM'
+    #   inputs:
+    #     azureSubscription: '${{parameters.principal}}'
+    #     scriptType: ps
+    #     scriptLocation: 'scriptPath'
+    #     ScriptPath: '$(Pipeline.Workspace)/infra/apim/apimdeploy.ps1'    
+    #     azurePowerShellVersion: LatestVersion      
+    #     ScriptArguments: '${{ parameters.resourceGroup }} $(Pipeline.Workspace)\infra'      
+               

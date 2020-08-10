@@ -77,8 +77,6 @@ stages:
     #     overrideParameters: '-storageAccountType "${{ parameters.storageAccountType }}" -appName "${{ parameters.appName }}" -preferencesApp "${{ parameters.appName }}-preferences" -storageAccountName "${{ parameters.storageAccountName }}"'           
     #     deploymentOutputs: 'sharedValues'        
 
-   
-
     - task: AzureResourceGroupDeployment@2
       displayName: 'provision (Search) Resources'
       inputs:
@@ -135,7 +133,7 @@ stages:
     #     azureSubscription: '${{ parameters.principal }}'
     #     resourceGroupName: '${{ parameters.resourceGroup }}'
     #     location: '${{ parameters.region }}'      
-    #     csmFile: 'whitewaterfinder.infrastructure/cognitiveservices/bot/botdeploy.json' #/whitewaterfinder.infrastructure/cognitiveservices/bot/botdeploy.json
+    #     csmFile: 'whitewaterfinder.infrastructure/cognitiveservices/bot/botdeploy.json' 
     #     csmParametersFile: 'whitewaterfinder.infrastructure/cognitiveservices/bot/botparams.json'
     #     overrideParameters: '-botAppName "${{ parameters.botName }}" -botInsightsName "${{ parameters.appName }}" -msftAppId "$(newAppId)" -storageAccountName ${{ parameters.storageAccountName }}'
 
