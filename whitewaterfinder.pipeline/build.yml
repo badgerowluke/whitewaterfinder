@@ -95,7 +95,8 @@ stages:
           Write-Host $json
           Write-Host "##vso[task.setvariable variable=searchKey]$json.searchKey.value"
       displayName: 'parse ARM output'
-      env: searchOutput:$(searchOutput)
+      env: 
+        searchOutput: $(searchOutput)
 
 
 
