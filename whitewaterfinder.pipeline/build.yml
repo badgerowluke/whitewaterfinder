@@ -95,7 +95,8 @@ stages:
           $json = $obj | ConvertTo-Json
           $stuff = $json | ConvertFrom-Json
           Write-Host $obj
-          Write-Host $stuff.searchKey
+          Write-Host $stuff.searchKey.Value
+          Write-Host $stuff.Value
           Write-Host "##vso[task.setvariable variable=searchKey]$stuff.searchKey.value"
       displayName: 'parse ARM output'
       env: 
