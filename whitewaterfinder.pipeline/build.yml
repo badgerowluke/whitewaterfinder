@@ -95,11 +95,6 @@ stages:
         arguments: "-output $(searchOutput)"
         targetType: inline
         script: |
-          param (
-            [Parameter(Mandatory=$true)][string] $output
-          )
-
-          
           Write-Host $(searchOutput)
           Write-Host "##vso[task.setvariable variable=searchKey]$(searchOutput).searchKey.value"
 
