@@ -1,9 +1,9 @@
 
 
 param (
-    [Parameter(Mandatory=$true)] $templateOutput,
-    [Parameter(Mandatory=$true)] $containerName,
-    [Parameter(Mandatory=$true)] $tableOrQueue
+    [Parameter(Mandatory=$true)][string] $templateOutput,
+    [Parameter(Mandatory=$true)][string] $containerName,
+    [Parameter(Mandatory=$true)][string] $tableOrQueue
 )
 $json = $templateOutput | ConvertFrom-Json
 

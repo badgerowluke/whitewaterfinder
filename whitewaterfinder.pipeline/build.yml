@@ -92,9 +92,12 @@ stages:
     - task: Powershell@2
       displayName: 'parse ARM output'
       inputs:
+        arguments: -output $(searchOutput)
         targetType: inline
         script: |
-          $json = $(searchOutput) | ConvertFrom-Json
+          param( [Parameter(Mandatory=$true)][string] output)
+
+          $json = $output | ConvertFrom-Json
           Write-Host $json
           Write-Host "##vso[task.setvariable variable=searchKey]$json.searchKey.value"
 
