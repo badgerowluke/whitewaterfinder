@@ -92,12 +92,13 @@ stages:
     - powershell: |
           Write-Host $env:searchOutput
           $obj = $env:searchOutput
-          $json = $obj | ConvertTo-Json
+          $json = $obj | ConvertTo-Json | ConvertFrom-Json
           $stuff = $json | ConvertFrom-Json
           Write-Host $obj
-          Write-Host $stuff.searchKey.Value
-          Write-Host $stuff.Value
-          Write-Host "##vso[task.setvariable variable=searchKey]$stuff.searchKey.value"
+          Write-Host $json
+          Write-Host $json.searchKey
+          Write-Host $json.searchKey.Value
+          Write-Host "##vso[task.setvariable variable=searchKey]$json.value"
       displayName: 'parse ARM output'
       env: 
         searchOutput: $(searchOutput)
