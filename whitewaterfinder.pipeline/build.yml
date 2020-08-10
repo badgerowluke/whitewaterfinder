@@ -92,6 +92,7 @@ stages:
     - task: Powershell@2
       displayName: 'parse ARM output'
       inputs:
+        targetType: inline
         script: |
           $json = $(searchOutput) | ConvertFrom-Json
           Write-Host $json
