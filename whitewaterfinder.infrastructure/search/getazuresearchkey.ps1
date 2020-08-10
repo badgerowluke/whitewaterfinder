@@ -7,8 +7,8 @@ param (
 
 $json = $templateOutput | ConvertFrom-Json
 
-Write-Host $(searchOutput)
-Write-Host "##vso[task.setvariable variable=$variableName]$json.searchKey.value"
+Write-Host $json
+Write-Host "##vso[task.setvariable variable=$variableName]$json.searchKey.Value"
 
 
 # $key = az search query-key list --resource-group $resourceGroup --service-name 'waterfindersearch' | ConvertFrom-Json
