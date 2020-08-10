@@ -55,27 +55,27 @@ stages:
       vmImage: 'windows-latest'
     continueOnError: false
     steps:
-    # - task: AzureResourceGroupDeployment@2
-    #   displayName: 'provision AKV'
-    #   inputs:
-    #     azureSubscription: '${{ parameters.principal }}'
-    #     resourceGroupName: '${{ parameters.resourceGroup }}'
-    #     location: '${{ parameters.region }}'
-    #     csmFile: 'whitewaterfinder.infrastructure/keyvault/kvtemplate.json'
-    #     csmParametersFile: 'whitewaterfinder.infrastructure/keyvault/kvparameters.json'
-    #     overrideParameters: '-tenantId "${{ parameters.tenant }}" -adminId "${{ parameters.adminId }}" -kvName "${{ parameters.resourceGroup }}"'     
+    - task: AzureResourceGroupDeployment@2
+      displayName: 'provision AKV'
+      inputs:
+        azureSubscription: '${{ parameters.principal }}'
+        resourceGroupName: '${{ parameters.resourceGroup }}'
+        location: '${{ parameters.region }}'
+        csmFile: 'whitewaterfinder.infrastructure/keyvault/kvtemplate.json'
+        csmParametersFile: 'whitewaterfinder.infrastructure/keyvault/kvparameters.json'
+        overrideParameters: '-tenantId "${{ parameters.tenant }}" -adminId "${{ parameters.adminId }}" -kvName "${{ parameters.resourceGroup }}"'     
 
         
-    # - task: AzureResourceGroupDeployment@2
-    #   displayName: 'provision storage'
-    #   inputs:
-    #     azureSubscription: '${{ parameters.principal }}'
-    #     resourceGroupName: '${{ parameters.resourceGroup }}'
-    #     location: '${{parameters.region}}'
-    #     csmFile: 'whitewaterfinder.infrastructure/storage/storage.json'
-    #     csmParametersFile: 'whitewaterfinder.infrastructure/storage/storageparams.json'
-    #     overrideParameters: '-storageAccountType "${{ parameters.storageAccountType }}" -appName "${{ parameters.appName }}" -preferencesApp "${{ parameters.appName }}-preferences" -storageAccountName "${{ parameters.storageAccountName }}"'           
-    #     deploymentOutputs: 'sharedValues'        
+    - task: AzureResourceGroupDeployment@2
+      displayName: 'provision storage'
+      inputs:
+        azureSubscription: '${{ parameters.principal }}'
+        resourceGroupName: '${{ parameters.resourceGroup }}'
+        location: '${{parameters.region}}'
+        csmFile: 'whitewaterfinder.infrastructure/storage/storage.json'
+        csmParametersFile: 'whitewaterfinder.infrastructure/storage/storageparams.json'
+        overrideParameters: '-storageAccountType "${{ parameters.storageAccountType }}" -appName "${{ parameters.appName }}" -preferencesApp "${{ parameters.appName }}-preferences" -storageAccountName "${{ parameters.storageAccountName }}"'           
+        deploymentOutputs: 'sharedValues'        
 
    
 
@@ -92,11 +92,13 @@ stages:
     - task: Powershell@2
       displayName: 'parse ARM output'
       inputs:
+        # arguments: "-output $(searchOutput)"
+        targetType: inline
+        script: |
 
-        targetType: FilePath
-        arguments: "-templateOutput '$(searchOutput)'"
-        FilePath: 'whitewaterfinder.infrastructure/search/getazuresearchkey.ps1'
-
+          $json = '$(searchOutput)' | ConvertFrom-Json
+          Write-Host $json
+          Write-Host "##vso[task.setvariable variable=searchKey]$json.searchKey.value"
 
     - task: AzureResourceGroupDeployment@2
       displayName: provision apis
