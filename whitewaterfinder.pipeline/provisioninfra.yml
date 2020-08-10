@@ -1,0 +1,184 @@
+parameters:
+- name: principal
+  type: string
+  default: ''
+- name: providerstorage
+  type: string
+  default: 'tfstatewaterfinder'
+- name: resourceGroup
+  type: string
+  default: ''
+- name: region
+  type: string
+  default: ''
+- name: tenant
+  type: string
+  default: ''
+- name: 'adminEmail'
+  type: string
+  default: ''
+  
+- name: 'adminId'
+  type: string
+  default: ''  
+
+- name: 'storageAccountName'
+  type: string
+  default: ''
+- name: 'storageAccountType'
+  type: string
+  default: 'Standard_LRS'
+
+- name: 'appName'
+  type: string
+  default: ''  
+- name: 'botName'
+  type: string
+  default: ''
+
+- name: 'luisAuthoring'
+  type: string
+  default: ''
+
+- name: 'luisEndpointName'
+  type: string
+  default: ''
+
+stages:
+- stage: provision
+  jobs:
+    - job: provision_infra
+      pool:
+        vmImage: 'ubuntu-latest'
+      continueOnError: true
+
+      steps:
+        - task: AzureResourceGroupDeployment@2
+          displayName: 'provision AKV'
+          inputs:
+            azureSubscription: '${{ parameters.principal }}'
+            resourceGroupName: '${{ parameters.resourceGroup }}'
+            location: '${{ parameters.region }}'
+            csmFile: 'whitewaterfinder.infrastructure/keyvault/kvtemplate.json'
+            csmParametersFile: 'whitewaterfinder.infrastructure/keyvault/kvparameters.json'
+            overrideParameters: '-tenantId "${{ parameters.tenant }}" -adminId "${{ parameters.adminId }}" -kvName "${{ parameters.resourceGroup }}"'     
+
+              
+        - task: AzureResourceGroupDeployment@2
+          displayName: 'provision storage'
+          inputs:
+            azureSubscription: '${{ parameters.principal }}'
+            resourceGroupName: '${{ parameters.resourceGroup }}'
+            location: '${{parameters.region}}'
+            csmFile: 'whitewaterfinder.infrastructure/storage/storage.json'
+            csmParametersFile: 'whitewaterfinder.infrastructure/storage/storageparams.json'
+            overrideParameters: '-storageAccountType "${{ parameters.storageAccountType }}" -appName "${{ parameters.appName }}" -preferencesApp "${{ parameters.appName }}-preferences" -storageAccountName "${{ parameters.storageAccountName }}"'           
+            deploymentOutputs: 'sharedValues'        
+
+        - task: AzureResourceGroupDeployment@2
+          displayName: 'provision (Search) Resources'
+          inputs:
+            azureSubscription: '${{ parameters.principal }}'
+            resourceGroupName: '${{ parameters.resourceGroup }}'
+            location: '${{ parameters.region }}'
+            csmFile: 'whitewaterfinder.infrastructure/search/search.json'
+            csmParameetersFile: 'whitewaterfinder.infrastructure/search/searchparams.json'        
+            deploymentOutputs: 'searchOutput'
+          
+        - powershell: |
+              $stuff = ConvertFrom-Json -InputObject $env:searchOutput
+              $key = $stuff.searchKey.Value
+              Write-Host "##vso[task.setvariable variable=searchKey]$key"
+          displayName: 'parse ARM output'
+          env: 
+            searchOutput: $(searchOutput)
+
+        - task: AzureResourceGroupDeployment@2
+          displayName: provision apis
+          inputs:
+            azureSubscription: '${{ parameters.principal }}'
+            resourceGroupName: '${{ parameters.resourceGroup }}'
+            location: '${{ parameters.region }}'
+            csmFile: 'whitewaterfinder.infrastructure/api/api.json'
+            csmParametersFile: 'whitewaterfinder.infrastructure/api/apiparams.json'
+            overrideParameters: '-storageAccountName ${{ parameters.storageAccountName }} -storageAccountType "${{ parameters.storageAccountType }}" -appName "${{ parameters.appName }}" -appPlanName "WaterFinderPlan" -preferencesApp "${{ parameters.appName }}-preferences"  -azureSearchKey $(searchKey)'          
+            deploymentOutputs: 'functionKeys'
+
+        - powershell: |
+            $allKeys = ConvertFrom-Json -InputObject $env:functionKeys
+            Write-Host $allKeys
+            $riverKey = $allKeys.riversKeys.Value
+            $userKey = $allKeys.usersKeys.Value
+            Write-Host $riverKey 
+            Write-Host $usersKey
+            Write-Host "##vso[task.setvariable variable=riverKey;isOutput=true]$riverKey"
+            Write-Host "##vso[task.setvariable variable=userKey;isOutput=true]$usersKey"
+          displayName: 'parse API output'
+          env:
+            functionKeys: $(functionKeys)
+
+        - task: AzureCli@2
+          displayName: 'create or pull MSFT App ID'
+          inputs:
+            azureSubscription: '${{ parameters.principal }}'
+            scriptType: ps
+            scriptLocation: 'scriptPath'
+            ScriptPath: 'whitewaterfinder.infrastructure/app-registration-create.ps1'
+            ScriptArguments: '"${{ parameters.botName }}-ar"'
+
+        - task: AzureResourceGroupDeployment@2
+          displayName: provision bot
+          inputs: 
+            azureSubscription: '${{ parameters.principal }}'
+            resourceGroupName: '${{ parameters.resourceGroup }}'
+            location: '${{ parameters.region }}'      
+            csmFile: 'whitewaterfinder.infrastructure/cognitiveservices/bot/botdeploy.json' 
+            csmParametersFile: 'whitewaterfinder.infrastructure/cognitiveservices/bot/botparams.json'
+            overrideParameters: '-botAppName "${{ parameters.botName }}" -botInsightsName "${{ parameters.appName }}" -msftAppId "$(newAppId)" -storageAccountName ${{ parameters.storageAccountName }}'
+
+        - task: AzureResourceGroupDeployment@2
+          displayName: 'Provision APIM'
+          inputs:
+              azureSubscription: '${{ parameters.principal }}'
+              resourceGroupName: '${{ parameters.resourceGroup }}'
+              location: '${{parameters.region}}'
+              csmFile: 'whitewaterfinder.infrastructure/apim/apimdeploy.json'  
+              csmParametersFile: 'whitewaterfinder.infrastructure/apim/apimparameters.json'   
+              overrideParameters: '-adminEmail "${{ parameters.adminEmail }}" -appName "${{ parameters.appName }}" -preferencesApp "${{ parameters.appName }}-preferences"'   
+
+        - task: AzureResourceGroupDeployment@2
+          displayName: 'provision cognititve services'
+          inputs: 
+              azureSubscription: '${{ parameters.principal }}'
+              resourceGroupName: '${{ parameters.resourceGroup }}'
+              location: '${{parameters.region}}'
+              csmFile: 'whitewaterfinder.infrastructure/cognitiveservices/cognitiveservices.json'
+              csmParametersFile: 'whitewaterfinder.infrastructure/cognitiveservices/cogservicesparams.json'      
+              overrideParameters: '-luisName "${{ parameters.luisEndpointName }}" -authoringName "${{ parameters.luisAuthoring }}" -botAppName "${{ parameters.botName }}" -botInsightsName "${{ parameters.appName }}"'  
+
+        - task: AzureResourceGroupDeployment@2
+          displayName: 'provision Sendgrid'
+          inputs:
+            azureSubscription: '${{ parameters.principal }}'
+            resourceGroupName: '${{ parameters.resourceGroup }}'
+            location: '${{ parameters.region }}'
+            csmFile: 'whitewaterfinder.infrastructure/communications/communicationdeploy.json'
+            csmParametersFile: 'whitewaterfinder.infrastructure/communications/communicationdeployparams.json'
+            overrideParameters: '-password "$(sendgridpassword)" -email "${{ parameters.adminEmail }}" -website "$(adminwebsite)"'
+
+        - task: AzureResourceGroupDeployment@2
+          displayName: 'provision static web app'
+          inputs:
+            azureSubscription: '${{ parameters.principal }}'
+            resourceGroupName: '${{ parameters.resourceGroup }}'
+            location: '${{ parameters.region }}'      
+            csmFile: 'whitewaterfinder.infrastructure/site/staticsite.json'
+            csmParametersFile: 'whitewaterfinder.infrastructure/site/staticsiteparams.json'
+            overrideParameters: '-repositoryToken $(repositoryToken)'
+
+        - task: PublishBuildArtifacts@1
+          displayName: 'Push infra scripts'
+          inputs:
+            PathtoPublish: 'whitewaterfinder.infrastructure/'
+            ArtifactName: infra              
+        
