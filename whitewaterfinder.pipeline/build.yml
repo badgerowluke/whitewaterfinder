@@ -96,7 +96,7 @@ stages:
         script: |
           $json = $(searchOutput) | ConvertFrom-Json
           Write-Host $json
-          Write-Host ##vso[task.setvariable variable=searchKey]$json.searchKey.Value
+          Write-Host "##vso[task.setvariable variable=searchKey]$json.searchKey.value"
 
     - task: AzureResourceGroupDeployment@2
       displayName: provision apis
