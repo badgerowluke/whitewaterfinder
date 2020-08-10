@@ -26,32 +26,32 @@ parameters:
 stages:
 - stage: ${{parameters.stageTitle}}
   jobs:
-  # - job: 'backend_app_deployment'
-  #   pool:
-  #     vmImage: 'windows-latest'
+  - job: 'backend_app_deployment'
+    pool:
+      vmImage: 'windows-latest'
 
-  #   steps:
-  #   - template: 'downloadAndDeploy.yml'
-  #     parameters:
-  #       artifact: riversfunc
-  #       appType: functionapp
-  #       principal: '${{ parameters.principal }}'
-  #       appName: "${{ parameters.appName }}"
+    steps:
+    - template: 'downloadAndDeploy.yml'
+      parameters:
+        artifact: riversfunc
+        appType: functionapp
+        principal: '${{ parameters.principal }}'
+        appName: "${{ parameters.appName }}"
 
-  #   - template: 'downloadAndDeploy.yml'
-  #     parameters:
-  #       artifact: preferencesfunc
-  #       appType: functionapp
-  #       principal: '${{ parameters.principal }}'
-  #       appName: '${{ parameters.appName }}-preferences'      
+    - template: 'downloadAndDeploy.yml'
+      parameters:
+        artifact: preferencesfunc
+        appType: functionapp
+        principal: '${{ parameters.principal }}'
+        appName: '${{ parameters.appName }}-preferences'      
         
 
-  #   - template: 'downloadAndDeploy.yml'
-  #     parameters: 
-  #       artifact: websterbot
-  #       appType: app
-  #       principal: '${{ parameters.principal }}'
-  #       appName: '${{ parameters.botapp }}'  
+    - template: 'downloadAndDeploy.yml'
+      parameters: 
+        artifact: websterbot
+        appType: app
+        principal: '${{ parameters.principal }}'
+        appName: '${{ parameters.botapp }}'  
 
   - job: 'backend_security'
     pool:
