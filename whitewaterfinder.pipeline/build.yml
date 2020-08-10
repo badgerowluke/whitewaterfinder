@@ -94,7 +94,7 @@ stages:
       inputs:
 
         targetType: FilePath
-        arguments: "-templateOutput $(searchOutput)"
+        arguments: "-templateOutput '$(searchOutput)'"
         FilePath: 'whitewaterfinder.infrastructure/search/getazuresearchkey.ps1'
 
 
