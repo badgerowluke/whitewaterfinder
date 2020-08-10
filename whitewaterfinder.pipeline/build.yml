@@ -89,16 +89,16 @@ stages:
         csmParameetersFile: 'whitewaterfinder.infrastructure/search/searchparams.json'        
         deploymentOutputs: 'searchOutput'
     
-    - powershell:
-      displayName: 'parse ARM output'
-      inputs:
-        env: searchOutput:$(searchOutput)
-        targetType: inline
-        script: |
+    - powershell: |
 
           $json = '$env:searchOutput' | ConvertFrom-Json
           Write-Host $json
           Write-Host "##vso[task.setvariable variable=searchKey]$json.searchKey.value"
+      displayName: 'parse ARM output'
+      env: searchOutput:$(searchOutput)
+
+
+
 
     - task: AzureResourceGroupDeployment@2
       displayName: provision apis
