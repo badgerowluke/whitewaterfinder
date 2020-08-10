@@ -24,4 +24,4 @@ if( "queue" -eq $tableOrQueue) {
     az storage queue create -n $containerName `
     --account-key $key `
     --account-name $container
-}re4
+}

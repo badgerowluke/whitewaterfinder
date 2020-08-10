@@ -87,7 +87,15 @@ stages:
         location: '${{ parameters.region }}'
         csmFile: 'whitewaterfinder.infrastructure/search/search.json'
         csmParameetersFile: 'whitewaterfinder.infrastructure/search/searchparams.json'        
-        deploymentOutputs: 'searchKey'
+        deploymentOutputs: 'searchOutput'
+    
+    - task: Powershell@2
+      displayName: 'parse ARM output'
+      inputs:
+        script: |
+          $json = $(searchOutput) | ConvertFrom-Json
+          Write-Host $json
+          Write-Host ##vso[task.setvariable variable=searchKey]$json.searchKey.Value
 
     - task: AzureResourceGroupDeployment@2
       displayName: provision apis
@@ -162,7 +170,7 @@ stages:
   
   # - job: build_dotnet
   #   pool:
-  #     vmImage: 'windows-latest'
+  #     vmImage: 'ubuntu-latest'
   #   continueOnError: false
   #   steps:
   #   - template: 'buildDotnet.yml'   
@@ -171,7 +179,7 @@ stages:
 
   # - job: build_node
   #   pool:
-  #     vmImage: 'windows-latest'
+  #     vmImage: 'ubuntu-latest'
   #   continueOnError: false
   #   steps:
   #   - template: 'buildNode.yml'
