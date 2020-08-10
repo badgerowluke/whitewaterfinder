@@ -97,9 +97,6 @@ stages:
       env: 
         searchOutput: $(searchOutput)
 
-
-
-
     - task: AzureResourceGroupDeployment@2
       displayName: provision apis
       inputs:
@@ -112,7 +109,12 @@ stages:
         deploymentOutputs: 'functionKeys'
 
     - powershell: |
-        echo $env:functionKeys
+        $allKeys = ConvertFrom-Json -InputObject $env:functionKeys
+        $riverKey = $allKeys.riversKeys.Value
+        $userKey = $allKeys.usersKeys.Value
+        Write-Host $riverKey $userKey
+        Write-Host "##vso[task.setvariable variable=riverKey]$riverKey"
+        Write-Host "##vso[task.setvariable variable=userKey]$userKey"
       displayName: 'parse API output'
       env:
         functionKeys: $(functionKeys)
