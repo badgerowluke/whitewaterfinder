@@ -91,8 +91,10 @@ stages:
     
     - powershell: |
           Write-Host $env:searchOutput
+          $obj = $env:searchOutput
           $json = $env:searchOutput | ConvertTo-Json
           Write-Host $json
+          Write-Host $obj.searchKey
           Write-Host "##vso[task.setvariable variable=searchKey]$env:searchOutput.searchKey.value"
       displayName: 'parse ARM output'
       env: 
@@ -110,7 +112,7 @@ stages:
         csmFile: 'whitewaterfinder.infrastructure/api/api.json'
         csmParametersFile: 'whitewaterfinder.infrastructure/api/apiparams.json'
         overrideParameters: '-storageAccountName ${{ parameters.storageAccountName }} -storageAccountType "${{ parameters.storageAccountType }}" -appName "${{ parameters.appName }}" -appPlanName "WaterFinderPlan" -preferencesApp "${{ parameters.appName }}-preferences"  -azureSearchKey $(searchKey)'          
-        deploymentOutputs: 'riverKeys usersKey'
+        deploymentOutputs: 'functionKeys'
 
     # - task: AzureCli@2
     #   displayName: 'create or pull MSFT App ID'
