@@ -39,6 +39,14 @@ parameters:
   type: string
   default: ''
 
+- name: 'luisAuthoring'
+  type: string
+  default: ''
+
+- name: 'luisEndpointName'
+  type: string
+  default: ''
+
 stages:
 - stage: Build
   jobs:
@@ -120,6 +128,17 @@ stages:
           csmFile: 'whitewaterfinder.infrastructure/apim/apimdeploy.json'  
           csmParametersFile: 'whitewaterfinder.infrastructure/apim/apimparameters.json'   
           overrideParameters: '-adminEmail "${{ parameters.adminEmail }}" -appName "${{ parameters.appName }}" -preferencesApp "${{ parameters.appName }}-preferences"'   
+
+    - task: AzureResourceGroupDeployment@2
+      displayName: 'provision cognititve services'
+      inputs: 
+          azureSubscription: '${{ parameters.principal }}'
+          resourceGroupName: '${{ parameters.resourceGroup }}'
+          location: '${{parameters.region}}'
+          csmFile: 'whitewaterfinder.infrastructure/cognitiveservices/cognitiveservices.json'
+          csmParametersFile: 'whitewaterfinder.infrastructure/cognitiveservices/cogservicesparams.json'      
+          overrideParameters: '-luisName "${{ parameters.luisEndpointName }}" -authoringName "${{ parameters.luisAuthoring }}" -botAppName "${{ parameters.botName }}" -botInsightsName "${{ parameters.appName }}"'  
+
 
     - task: AzureResourceGroupDeployment@2
       displayName: 'provision Sendgrid'
