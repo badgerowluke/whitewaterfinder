@@ -56,15 +56,18 @@ stages:
   - job: 'backend_security'
     pool:
       vmImage: 'windows-latest'
-    # dependsOn: 'backend_app_deployment'
+    dependsOn: 'build_infra'
+    variables:
+      riversKey: $[dependencies.build_infra.riverKey]
+      usersKey: $[dependencies.build_infra.userKey]
     steps:
 
     - powershell: |
-        Write-Host $(riverKey)
-        Write-Host $(userKey)
+        Write-Host $env:riversKey
+        Write-Host $env:usersKey
       env:
-        riversKey: $(riverKey)
-        userKey: $(userKey)
+        riversKey: $(riversKey)
+        userKey: $(usersKey)
     # - task: AzureCLI@2
     #   displayName: 'Configure APIM'
     #   inputs:
