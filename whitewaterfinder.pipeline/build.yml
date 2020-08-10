@@ -92,10 +92,10 @@ stages:
     - task: Powershell@2
       displayName: 'parse ARM output'
       inputs:
-        arguments: -output $(searchOutput)
+        arguments: "-output $(searchOutput)"
         targetType: inline
         script: |
-          param( [Parameter(Mandatory=$true)][string] output)
+          param([Parameter(Mandatory=$true)][string] $output)
 
           $json = $output | ConvertFrom-Json
           Write-Host $json
