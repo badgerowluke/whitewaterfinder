@@ -22,6 +22,10 @@ stages:
     pool:
       vmImage: 'windows-latest'
     environment: ${{ parameters.environment }}
+
+    dependsOn: 'provision_infra'
+    variables:
+      riversKey: $[dependencies.provision_infra.outputs['provisioning.riverKey']]
     strategy:
       runOnce:
         deploy:

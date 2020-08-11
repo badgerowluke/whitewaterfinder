@@ -52,14 +52,4 @@ stages:
         appType: app
         principal: '${{ parameters.principal }}'
         appName: '${{ parameters.botapp }}'  
-
-  - job: 'backend_security'
-    pool:
-      vmImage: 'windows-latest'
-      dependsOn: 'provision_infra'
-      variables:
-        riversKey: $[dependencies.provision_infra.outputs['provisioning.riverKey']]
-
-
-   
                
