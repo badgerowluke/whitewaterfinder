@@ -32,18 +32,18 @@ stages:
         deploy:
           steps:
 
-          - download: current
-            displayName: download ${{ parameters.artifact }}
-            artifact: ${{ parameters.artifact }}
+          # - download: current
+          #   displayName: download ${{ parameters.artifact }}
+          #   artifact: ${{ parameters.artifact }}
 
-          - task: AzureCLI@2
-            displayName: 'Build Azure Search Index'
-            inputs:
-              azureSubscription: '${{ parameters.principal }}'
-              scriptType: ps
-              scriptLocation: 'scriptPath'
-              ScriptPath: '$(Pipeline.Workspace)/${{ parameters.artifact }}/deployment.ps1'
-              ScriptArguments: '${{ parameters.sharedRg }} "$(Pipeline.Workspace)/${{ parameters.artifact }}/riverswithid.json"'   
+          # - task: AzureCLI@2
+          #   displayName: 'Build Azure Search Index'
+          #   inputs:
+          #     azureSubscription: '${{ parameters.principal }}'
+          #     scriptType: ps
+          #     scriptLocation: 'scriptPath'
+          #     ScriptPath: '$(Pipeline.Workspace)/${{ parameters.artifact }}/deployment.ps1'
+          #     ScriptArguments: '${{ parameters.sharedRg }} "$(Pipeline.Workspace)/${{ parameters.artifact }}/riverswithid.json"'   
 
           - powershell: |
               Write-Host $env:riversKey
