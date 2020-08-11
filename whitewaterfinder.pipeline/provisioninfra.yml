@@ -112,8 +112,8 @@ stages:
             $userKey = $allKeys.usersKeys.Value
             New-Item -Path $(Pipeline.Workspace) -Name 'variables' -ItemType 'directory'
             New-Item -Path $(Pipeline.Workspace)/variables -Name 'functionkeys.log' -ItemType 'file'
-            Set-Content -Path '$(Pipeline.Workspace)/variables/functionkeys.log' -Value 'riverkey=$riverKey'
-            Set-Content -Path '$(Pipeline.Workspace)/variables/functionkeys.log' -Value 'userKey=$usersKey'
+            Set-Content -Path '$(Pipeline.Workspace)/variables/functionkeys.log' -Value riverkey=$riverKey
+            Add-Content -Path '$(Pipeline.Workspace)/variables/functionkeys.log' -Value userKey=$usersKey
 
           displayName: 'parse API output'
           env:
