@@ -24,9 +24,6 @@ stages:
       vmImage: 'ubuntu-latest'
     environment: ${{ parameters.environment }}
 
-
-    variables:
-      riversKey: $[dependencies.provision_infra.outputs['provisioning.riverKey']]
     strategy:
       runOnce:
         deploy:
@@ -44,14 +41,12 @@ stages:
           #     scriptLocation: 'scriptPath'
           #     ScriptPath: '$(Pipeline.Workspace)/${{ parameters.artifact }}/deployment.ps1'
           #     ScriptArguments: '${{ parameters.sharedRg }} "$(Pipeline.Workspace)/${{ parameters.artifact }}/riverswithid.json"'   
-
+          - download: variables
+            displayName: pull function keys
+            artifact: variables
           - pwsh: |
-              Write-Host $env:riversKey
-              Write-Host $env:usersKey
-
-            env:
-              riversKey: $(riversKey)
-              userKey: $(usersKey)
+              $rawKeys = Get-Content -Path $(Pipeline.Workspace)/variables/functionkeys.log
+              Write-Host $rawKeys
           # - task: AzureCLI@2
           #   displayName: 'Configure APIM'
           #   inputs:
