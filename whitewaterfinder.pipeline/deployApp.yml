@@ -58,24 +58,8 @@ stages:
       vmImage: 'windows-latest'
       dependsOn: 'provision_infra'
       variables:
-        riversKey: $[dependencies.provision_infra.outputs['provisioning.riverKey']
+        riversKey: $[dependencies.provision_infra.outputs['provisioning.riverKey']]
 
 
-    steps:
-
-    - powershell: |
-        Write-Host $env:riversKey
-        Write-Host $env:usersKey
-      env:
-        riversKey: $(riversKey)
-        userKey: $(usersKey)
-    # - task: AzureCLI@2
-    #   displayName: 'Configure APIM'
-    #   inputs:
-    #     azureSubscription: '${{parameters.principal}}'
-    #     scriptType: ps
-    #     scriptLocation: 'scriptPath'
-    #     ScriptPath: '$(Pipeline.Workspace)/infra/apim/apimdeploy.ps1'    
-    #     azurePowerShellVersion: LatestVersion      
-    #     ScriptArguments: '${{ parameters.resourceGroup }} $(Pipeline.Workspace)\infra'      
+   
                

@@ -39,6 +39,6 @@ stages:
     appName: 'paddle-finder'
     resourceGroup: '$(resourceGroupDev)'
     region: '$(azureRegion)'
-    botapp: 'WhiteWaterWebsterDev'
+    botapp: 'WhiteWaterWebster'
     principal: '$(principal)'
     adminEmail: '$(adminEmail)'        

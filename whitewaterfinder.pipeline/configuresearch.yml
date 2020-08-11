@@ -30,6 +30,7 @@ stages:
           - download: current
             displayName: download ${{ parameters.artifact }}
             artifact: ${{ parameters.artifact }}
+
           - task: AzureCLI@2
             displayName: 'Build Azure Search Index'
             inputs:
@@ -37,4 +38,20 @@ stages:
               scriptType: ps
               scriptLocation: 'scriptPath'
               ScriptPath: '$(Pipeline.Workspace)/${{ parameters.artifact }}/deployment.ps1'
-              ScriptArguments: '${{ parameters.sharedRg }} "$(Pipeline.Workspace)/${{ parameters.artifact }}/riverswithid.json"'     
+              ScriptArguments: '${{ parameters.sharedRg }} "$(Pipeline.Workspace)/${{ parameters.artifact }}/riverswithid.json"'   
+
+          - powershell: |
+              Write-Host $env:riversKey
+              Write-Host $env:usersKey
+            env:
+              riversKey: $(riversKey)
+              userKey: $(usersKey)
+          # - task: AzureCLI@2
+          #   displayName: 'Configure APIM'
+          #   inputs:
+          #     azureSubscription: '${{parameters.principal}}'
+          #     scriptType: ps
+          #     scriptLocation: 'scriptPath'
+          #     ScriptPath: '$(Pipeline.Workspace)/infra/apim/apimdeploy.ps1'    
+          #     azurePowerShellVersion: LatestVersion      
+          #     ScriptArguments: '${{ parameters.resourceGroup }} $(Pipeline.Workspace)\infra'                   
