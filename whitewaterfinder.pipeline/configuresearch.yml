@@ -18,12 +18,13 @@ parameters:
 stages:
 - stage: ConfigureSearch
   jobs:
+
   - deployment: 'search'
     pool:
       vmImage: 'windows-latest'
     environment: ${{ parameters.environment }}
 
-    dependsOn: 'provision_infra'
+
     variables:
       riversKey: $[dependencies.provision_infra.outputs['provisioning.riverKey']]
     strategy:
@@ -47,6 +48,7 @@ stages:
           - powershell: |
               Write-Host $env:riversKey
               Write-Host $env:usersKey
+            dependsOn: 'provision_infra'
             env:
               riversKey: $(riversKey)
               userKey: $(usersKey)
