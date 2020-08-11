@@ -56,7 +56,10 @@ stages:
   - job: 'backend_security'
     pool:
       vmImage: 'windows-latest'
-    # dependsOn: 'backend_app_deployment'
+      dependsOn: 'provision_infra'
+      variables:
+        riversKey: $[dependencies.provision_infra.outputs['provisioning.riverKey']
+
 
     steps:
 

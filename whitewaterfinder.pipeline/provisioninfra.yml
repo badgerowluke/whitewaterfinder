@@ -48,6 +48,7 @@ stages:
 - stage: provision
   jobs:
     - job: provision_infra
+      name: provisioning
       pool:
         vmImage: 'windows-latest'
       continueOnError: true

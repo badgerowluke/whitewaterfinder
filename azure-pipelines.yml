@@ -33,12 +33,12 @@ stages:
     artifact: infra
     
 
-# - template: 'whitewaterfinder.pipeline/deployApp.yml'
-#   parameters:
-#     stageTitle: "DevAppDeploy"
-#     appName: 'paddle-finder'
-#     resourceGroup: '$(resourceGroupDev)'
-#     region: '$(azureRegion)'
-#     botapp: 'WhiteWaterWebsterDev'
-#     principal: '$(principal)'
-#     adminEmail: '$(adminEmail)'        
+- template: 'whitewaterfinder.pipeline/deployApp.yml'
+  parameters:
+    stageTitle: "DevAppDeploy"
+    appName: 'paddle-finder'
+    resourceGroup: '$(resourceGroupDev)'
+    region: '$(azureRegion)'
+    botapp: 'WhiteWaterWebsterDev'
+    principal: '$(principal)'
+    adminEmail: '$(adminEmail)'        
