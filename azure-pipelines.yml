@@ -20,9 +20,9 @@ stages:
     luisEndpointName: 'webster-luis'
 
 
-- template: 'whitewaterfinder.pipeline/build.yml'
-  parameters: 
-    vstsFeed: $(artifactKey)
+# - template: 'whitewaterfinder.pipeline/build.yml'
+#   parameters: 
+#     vstsFeed: $(artifactKey)
     
 - template: 'whitewaterfinder.pipeline/configuresearch.yml'
   parameters:

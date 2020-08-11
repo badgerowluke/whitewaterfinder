@@ -108,11 +108,8 @@ stages:
 
         - powershell: |
             $allKeys = ConvertFrom-Json -InputObject $env:functionKeys
-            Write-Host $allKeys
             $riverKey = $allKeys.riversKeys.Value
             $userKey = $allKeys.usersKeys.Value
-            Write-Host $riverKey 
-            Write-Host $usersKey
             Write-Host "##vso[task.setvariable variable=riverKey;isOutput=true]$riverKey"
             Write-Host "##vso[task.setvariable variable=userKey;isOutput=true]$usersKey"
           displayName: 'parse API output'
