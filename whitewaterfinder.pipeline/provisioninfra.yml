@@ -50,7 +50,7 @@ stages:
     - job: provision_infra
       
       pool:
-        vmImage: 'windows-latest'
+        vmImage: 'ubuntu-latest'
       continueOnError: true
 
       steps:
@@ -86,7 +86,7 @@ stages:
         #     csmParameetersFile: 'whitewaterfinder.infrastructure/search/searchparams.json'        
         #     deploymentOutputs: 'searchOutput'
           
-        # - powershell: |
+        # - pwsh: |
         #       $stuff = ConvertFrom-Json -InputObject $env:searchOutput
         #       $key = $stuff.searchKey.Value
         #       Write-Host "##vso[task.setvariable variable=searchKey]$key"
@@ -106,15 +106,18 @@ stages:
             overrideParameters: '-storageAccountName ${{ parameters.storageAccountName }} -storageAccountType "${{ parameters.storageAccountType }}" -appName "${{ parameters.appName }}" -appPlanName "WaterFinderPlan" -preferencesApp "${{ parameters.appName }}-preferences"  -azureSearchKey $(searchKey)'          
             deploymentOutputs: 'functionKeys'
 
-        - powershell: |
+        - pwsh: |
             $allKeys = ConvertFrom-Json -InputObject $env:functionKeys
             $riverKey = $allKeys.riversKeys.Value
             $userKey = $allKeys.usersKeys.Value
-            Write-Host "##vso[task.setvariable variable=riverKey;isOutput=true]$riverKey"
-            Write-Host "##vso[task.setvariable variable=userKey;isOutput=true]$usersKey"
+            Set-Content $(Pipeline.Workspace)/variables/functionkeys.log -Value 'riverkey=$riverKey'
+            Set-Content $(Pipeline.Workspace)/variables/functionkeys.log -Value 'userKey=$usersKey'
+
           displayName: 'parse API output'
           env:
             functionKeys: $(functionKeys)
+        - publish: $(Pipeline.Workspace)/variables
+          artifact: variables
 
         # - task: AzureCli@2
         #   displayName: 'create or pull MSFT App ID'

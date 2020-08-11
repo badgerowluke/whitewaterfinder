@@ -24,13 +24,13 @@ stages:
 #   parameters: 
 #     vstsFeed: $(artifactKey)
     
-- template: 'whitewaterfinder.pipeline/configuresearch.yml'
-  parameters:
-    principal: $(principal)
-    environment: 'production' 
-    region: $(azureRegion)
-    sharedRg: $(resourceGroupDev)
-    artifact: infra
+# - template: 'whitewaterfinder.pipeline/configuresearch.yml'
+#   parameters:
+#     principal: $(principal)
+#     environment: 'production' 
+#     region: $(azureRegion)
+#     sharedRg: $(resourceGroupDev)
+#     artifact: infra
     
 
 # - template: 'whitewaterfinder.pipeline/deployApp.yml'

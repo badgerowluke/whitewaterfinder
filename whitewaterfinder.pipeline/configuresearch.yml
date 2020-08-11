@@ -21,7 +21,7 @@ stages:
 
   - deployment: 'search'
     pool:
-      vmImage: 'windows-latest'
+      vmImage: 'ubuntu-latest'
     environment: ${{ parameters.environment }}
 
 
@@ -45,7 +45,7 @@ stages:
           #     ScriptPath: '$(Pipeline.Workspace)/${{ parameters.artifact }}/deployment.ps1'
           #     ScriptArguments: '${{ parameters.sharedRg }} "$(Pipeline.Workspace)/${{ parameters.artifact }}/riverswithid.json"'   
 
-          - powershell: |
+          - pwsh: |
               Write-Host $env:riversKey
               Write-Host $env:usersKey
 
