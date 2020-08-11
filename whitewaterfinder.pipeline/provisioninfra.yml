@@ -50,7 +50,7 @@ stages:
     - job: provision_infra
       
       pool:
-        vmImage: 'ubuntu-latest'
+        vmImage: 'windows-latest'
       continueOnError: true
 
       steps:
