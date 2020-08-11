@@ -48,7 +48,7 @@ stages:
 - stage: provision
   jobs:
     - job: provision_infra
-      name: provisioning
+      
       pool:
         vmImage: 'windows-latest'
       continueOnError: true
@@ -96,6 +96,7 @@ stages:
 
         - task: AzureResourceGroupDeployment@2
           displayName: provision apis
+          name: provisioning
           inputs:
             azureSubscription: '${{ parameters.principal }}'
             resourceGroupName: '${{ parameters.resourceGroup }}'
