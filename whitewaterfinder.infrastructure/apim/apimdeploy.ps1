@@ -14,13 +14,13 @@ Write-Output "Load template policy"
 $functionGetInbound = Get-Content $fullPath\apim-policy\FunctionGetPolicy.xml -Raw
 
 $basePolicy = Get-Content $fullPath\apim-policy\BasePolicy.xml -Raw
+Set-BasePolicy($basePolicy, $resourceGroup, $name)
 
 Write-Output "Loop Function Apps"
 foreach($name in $apps.GetEnumerator())
 {
     $rg = $resourceGroup
     
-    Set-BasePolicy($basePolicy, $rg, $name)
     
     $creds = Get-KuduCredentials $name $rg
 
