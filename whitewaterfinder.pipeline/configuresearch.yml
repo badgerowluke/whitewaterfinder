@@ -21,7 +21,7 @@ stages:
 
   - deployment: 'search'
     pool:
-      vmImage: 'windows-latest'
+      vmImage: 'ubuntu-latest'
     environment: ${{ parameters.environment }}
 
     strategy:
@@ -57,7 +57,7 @@ stages:
             displayName: 'Configure APIM'
             inputs:
               azureSubscription: '${{parameters.principal}}'
-              scriptType: ps
+              scriptType: pscore
               scriptLocation: 'scriptPath'
               ScriptPath: '$(Pipeline.Workspace)/infra/apim/apimdeploy.ps1'    
               azurePowerShellVersion: LatestVersion      

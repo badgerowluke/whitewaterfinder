@@ -1,4 +1,4 @@
-function Set-BasePolicy($policy, $resourceGroup, $appName)
+function Set-BasePolicy($policy, $resourceGroup)
 {
     az resource update `
             -g $resourceGroup `
