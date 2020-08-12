@@ -61,4 +61,4 @@ stages:
               scriptLocation: 'scriptPath'
               ScriptPath: '$(Pipeline.Workspace)/infra/apim/apimdeploy.ps1'    
               azurePowerShellVersion: LatestVersion      
-              ScriptArguments: '${{ parameters.resourceGroup }} $(Pipeline.Workspace)\infra'                   
+              ScriptArguments: '${{ parameters.sharedRg }} $(Pipeline.Workspace)\infra'                   
