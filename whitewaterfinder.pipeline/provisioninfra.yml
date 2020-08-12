@@ -110,11 +110,11 @@ stages:
             $allKeys = ConvertFrom-Json -InputObject $env:functionKeys
             $riverKey = $allKeys.riversKeys.Value
             $userKey = $allKeys.usersKeys.Value
-
+            Write-Host #allKeys
             New-Item -Path $(Pipeline.Workspace) -Name 'variables' -ItemType 'directory'
             New-Item -Path $(Pipeline.Workspace)/variables -Name 'functionkeys.log' -ItemType 'file'
             Set-Content -Path '$(Pipeline.Workspace)/variables/functionkeys.log' -Value riverkey=$riverKey
-            Add-Content -Path '$(Pipeline.Workspace)/variables/functionkeys.log' -Value userKey=$usersKey
+            Add-Content -Path '$(Pipeline.Workspace)/variables/functionkeys.log' -Value userKey=$userKey
 
           displayName: 'parse API output'
           env:
