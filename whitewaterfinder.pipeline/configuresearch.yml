@@ -29,9 +29,9 @@ stages:
         deploy:
           steps:
 
-          - download: current
-            displayName: download ${{ parameters.artifact }}
-            artifact: ${{ parameters.artifact }}
+          # - download: current
+          #   displayName: download ${{ parameters.artifact }}
+          #   artifact: ${{ parameters.artifact }}
 
           # - task: AzureCLI@2
           #   displayName: 'Build Azure Search Index'
