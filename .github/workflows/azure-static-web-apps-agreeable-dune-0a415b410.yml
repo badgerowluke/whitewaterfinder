@@ -23,19 +23,6 @@ jobs:
           submodules: true
 
 
-
-      - name: Use Node 10.x
-        uses: actions/setup-node@v1
-        with:
-          node-version: '10.x'
-
-      # - name: npm schtuffs
-      #   run: |
-      #     npm i
-      #     npm run config
-      #     npm run build-prod
-
-
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v0.0.1-preview
