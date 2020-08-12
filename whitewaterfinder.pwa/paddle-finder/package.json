@@ -5,8 +5,8 @@
     "ng": "ng",
     "config": "tsc ./build.ts && node ./build.js",
     "start": "tsc ./build.ts && node ./build.js && ng serve",
-    "build": "tsc ./build.ts && node ./build.js && ng build --prod && cd ./api && npm i && npm run build:production",
-    "build-local": "tsc ./build.ts && node ./build.js && ng build && cd ./api && npm i && npm run build",
+    "build": "tsc ./build.ts && node ./build.js && ng build --prod",
+    "build-local": "tsc ./build.ts && node ./build.js && ng build",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
