@@ -1,7 +1,5 @@
 
-trigger: 
-  - trunk
-  - refactor/pipeline-refactoring
+trigger: none
 
 stages: 
 - template: 'whitewaterfinder.pipeline/provisioninfra.yml'
