@@ -2,7 +2,7 @@
     "$schema":"https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
     "contentVersion":"1.0.0.0",
     "parameters":{
-        "adminEmail": { "value": "" },
+        "adminEmail": { "value": "badgerow.luke@outlook.com" },
         "orgName": { "value": "burning-river-geospatial-solutions" },
         "preferencesApp": { "value": "paddle-finder-preferences" },
         "appName": { "value": "paddle-finder" }

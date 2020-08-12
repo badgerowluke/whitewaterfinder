@@ -1,9 +1,9 @@
 
 
 param (
-    [Parameter(Mandatory=$true)] $templateOutput,
-    [Parameter(Mandatory=$true)] $containerName,
-    [Parameter(Mandatory=$true)] $tableOrQueue
+    [Parameter(Mandatory=$true)][string] $templateOutput,
+    [Parameter(Mandatory=$true)][string] $containerName,
+    [Parameter(Mandatory=$true)][string] $tableOrQueue
 )
 $json = $templateOutput | ConvertFrom-Json
 
@@ -24,4 +24,4 @@ if( "queue" -eq $tableOrQueue) {
     az storage queue create -n $containerName `
     --account-key $key `
     --account-name $container
-}re4
+}

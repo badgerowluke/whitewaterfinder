@@ -1,9 +1,9 @@
-function Set-BasePolicy($policy, $resourceGroup, $appName)
+function Set-BasePolicy($policy, $resourceGroup)
 {
     az resource update `
             -g $resourceGroup `
-            -n "whitewater-finder/apis/$appName/policies/policy" `
-            --resource-type "Microsoft.ApiManagement/service/apis/policies" `
+            -n "whitewater-finder/service/policies/policy" `
+            --resource-type "Microsoft.ApiManagement/service/policies" `
             --set properties.value=$policy
 }
 function Set-OperationPolicy([string]$resourceGroup, [string] $name, [string]$app, $policy)

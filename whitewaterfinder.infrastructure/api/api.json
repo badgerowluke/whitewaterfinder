@@ -221,7 +221,7 @@
     
   ],
   "outputs": { 
-      "riversKeys": {
+      "riversKey": {
           "type": "string",
           "value": "[listkeys(concat(variables('riversAppId'), '/host/default'), '2018-11-01').functionKeys.default]" 
       },

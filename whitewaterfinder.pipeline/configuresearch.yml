@@ -1,0 +1,64 @@
+parameters:
+- name: 'environment'
+  type: string
+  default: ''
+- name: 'sharedRg'
+  type: string
+  default: 'shared'
+- name: 'principal'
+  type: string
+  default: ''  
+- name: 'region' 
+  type: string
+  default: ''
+- name: artifact
+  type: string
+  default: ''
+
+stages:
+- stage: ConfigureSearch
+  jobs:
+
+  - deployment: 'search'
+    pool:
+      vmImage: 'ubuntu-latest'
+    environment: ${{ parameters.environment }}
+
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+
+          - download: current
+            displayName: download ${{ parameters.artifact }}
+            artifact: ${{ parameters.artifact }}
+
+          - task: AzureCLI@2
+            displayName: 'Build Azure Search Index'
+            inputs:
+              azureSubscription: '${{ parameters.principal }}'
+              scriptType: pscore
+              scriptLocation: 'scriptPath'
+              ScriptPath: '$(Pipeline.Workspace)/${{ parameters.artifact }}/deployment.ps1'
+              ScriptArguments: '${{ parameters.sharedRg }} "$(Pipeline.Workspace)/${{ parameters.artifact }}/riverswithid.json"'   
+          
+          - download: current
+            displayName: pull function keys
+            artifact: variables
+          
+          - pwsh: |
+              Get-Content $(Pipeline.Workspace)/variables/functionkeys.log | foreach-object -begin {$h=@{}} -process { $k = [regex]::split($_,':'); if(($k[0].CompareTo("") -ne 0) -and ($k[0].StartsWith("[") -ne $True)) { $h.Add($k[0], $k[1]) } }
+              $riverKey =  $h.riverKey
+              $userKey =  $h.userKey
+              Write-Host "##vso[task.setvariable variable=riverKey]$riverKey"
+              Write-Host "##vso[task.setvariable variable=suserKey]$userKey"
+          
+          - task: AzureCLI@2
+            displayName: 'Configure APIM'
+            inputs:
+              azureSubscription: '${{parameters.principal}}'
+              scriptType: pscore
+              scriptLocation: 'scriptPath'
+              ScriptPath: '$(Pipeline.Workspace)/infra/apim/apimdeploy.ps1'    
+              azurePowerShellVersion: LatestVersion      
+              ScriptArguments: '${{ parameters.sharedRg }} $(Pipeline.Workspace)\infra'                   

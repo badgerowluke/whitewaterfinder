@@ -2,32 +2,68 @@ parameters:
 - name: vstsFeed
   type: string
   default: ''
+- name: principal
+  type: string
+  default: ''
+- name: providerstorage
+  type: string
+  default: 'tfstatewaterfinder'
+- name: resourceGroup
+  type: string
+  default: ''
+- name: region
+  type: string
+  default: ''
+- name: tenant
+  type: string
+  default: ''
+- name: 'adminEmail'
+  type: string
+  default: ''
+  
+- name: 'adminId'
+  type: string
+  default: ''  
+
+- name: 'storageAccountName'
+  type: string
+  default: ''
+- name: 'storageAccountType'
+  type: string
+  default: 'Standard_LRS'
+
+- name: 'appName'
+  type: string
+  default: ''  
+- name: 'botName'
+  type: string
+  default: ''
+
+- name: 'luisAuthoring'
+  type: string
+  default: ''
+
+- name: 'luisEndpointName'
+  type: string
+  default: ''
+
 stages:
 - stage: Build
   jobs:
-  - job: build_infra
-    pool:
-      vmImage: 'windows-latest'
-    continueOnError: false
-    steps:
-    - task: PublishBuildArtifacts@1
-      displayName: 'Push infra scripts'
-      inputs:
-        PathtoPublish: 'whitewaterfinder.infrastructure/'
-        ArtifactName: infra      
 
+ 
   - job: build_dotnet
     pool:
-      vmImage: 'windows-latest'
+      vmImage: 'ubuntu-latest'
     continueOnError: false
     steps:
     - template: 'buildDotnet.yml'   
       parameters:
-        vstsFeed: '${{parameters.vstsFeed}}' 
+        vstsFeed: '${{ parameters.vstsFeed }}' 
 
   - job: build_node
     pool:
-      vmImage: 'windows-latest'
+      vmImage: 'ubuntu-latest'
     continueOnError: false
     steps:
     - template: 'buildNode.yml'

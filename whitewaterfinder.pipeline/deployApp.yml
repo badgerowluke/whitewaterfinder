@@ -44,42 +44,12 @@ stages:
         appType: functionapp
         principal: '${{ parameters.principal }}'
         appName: '${{ parameters.appName }}-preferences'      
-          
-  - job: 'backend_security'
-    pool:
-      vmImage: 'windows-latest'
-    dependsOn: 'backend_app_deployment'
-    steps:
-    - task: AzureResourceGroupDeployment@2
-      displayName: 'Deploy APIM to waterfinder'
-      inputs:
-          azureSubscription: '${{ parameters.principal }}'
-          resourceGroupName: '${{ parameters.resourceGroup }}'
-          location: '${{parameters.region}}'
-          csmFile: 'whitewaterfinder.infrastructure/apim/apimdeploy.json'  
-          csmParametersFile: 'whitewaterfinder.infrastructure/apim/apimparameters.json'   
-          overrideParameters: '-adminEmail "${{ parameters.adminEmail }}" -appName "${{ parameters.appName }}" -preferencesApp "${{ parameters.appName }}-preferences"'   
+        
 
-    - download: current
-      artifact: infra
-
-    - task: AzureCLI@2
-      displayName: 'Configure APIM'
-      inputs:
-        azureSubscription: '${{parameters.principal}}'
-        scriptType: ps
-        scriptLocation: 'scriptPath'
-        ScriptPath: '$(Pipeline.Workspace)/infra/apim/apimdeploy.ps1'    
-        azurePowerShellVersion: LatestVersion      
-        ScriptArguments: '${{ parameters.resourceGroup }} $(Pipeline.Workspace)\infra'      
-
-  - job: 'deploy_bot_code'
-    pool:
-      vmImage: 'windows-latest'
-    steps:
-      - template: 'downloadAndDeploy.yml'
-        parameters: 
-          artifact: websterbot
-          appType: app
-          principal: '${{ parameters.principal }}'
-          appName: '${{ parameters.botapp }}'                     
+    - template: 'downloadAndDeploy.yml'
+      parameters: 
+        artifact: websterbot
+        appType: app
+        principal: '${{ parameters.principal }}'
+        appName: '${{ parameters.botapp }}'  
+               

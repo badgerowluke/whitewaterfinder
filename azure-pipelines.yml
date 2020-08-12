@@ -1,36 +1,28 @@
 
 trigger: 
   - trunk
+  - refactor/pipeline-refactoring
 
 stages: 
+- template: 'whitewaterfinder.pipeline/provisioninfra.yml'
+  parameters:
+    principal: $(principal)
+    providerstorage: 'tfstatewaterfinder'
+    resourceGroup: $(resourceGroupDev)
+    region: '$(azureRegion)'
+    appName: "paddle-finder"    
+    adminEmail: '$(adminEmail)'
+    adminId: '$(adminId)' 
+    tenant: '$(tenantId)' 
+    storageAccountName: "$(resourceGroupDev)" 
+    botName: 'WhiteWaterWebster'
+    luisAuthoring: 'webster-luis-authoring'
+    luisEndpointName: 'webster-luis'
+
+
 - template: 'whitewaterfinder.pipeline/build.yml'
   parameters: 
     vstsFeed: $(artifactKey)
-    
-- template: 'whitewaterfinder.pipeline/deployglobal.yml'
-  parameters:
-    environment: 'development'
-    sharedRg: '$(resourceGroupDev)'
-    principal: '$(principal)'
-    region: '$(azureRegion)'
-    
-    
-- template: 'whitewaterfinder.pipeline/deployInfra.yml'
-  parameters:
-    environment: 'development'
-    stageTitle: 'DeployDevInfrastructure'
-    resourceGroup: '$(resourceGroupDev)'
-    sharedRg: '$(resourceGroupDev)'
-    region: '$(azureRegion)'
-    storageAccountName: "$(resourceGroupDev)"
-    appName: "paddle-finder"
-    luisEndpointName: 'webster-luis'
-    luisAuthoring: 'webster-luis-authoring'
-    botName: 'WhiteWaterWebsterDev'
-    principal: '$(principal)'
-    tenant: '$(tenantId)'
-    adminEmail: '$(adminEmail)'
-    adminId: '$(adminId)'
 
 
 - template: 'whitewaterfinder.pipeline/deployApp.yml'
@@ -39,6 +31,16 @@ stages:
     appName: 'paddle-finder'
     resourceGroup: '$(resourceGroupDev)'
     region: '$(azureRegion)'
-    botapp: 'WhiteWaterWebsterDev'
+    botapp: 'WhiteWaterWebster'
     principal: '$(principal)'
-    adminEmail: '$(adminEmail)'        
+    adminEmail: '$(adminEmail)'            
+    
+- template: 'whitewaterfinder.pipeline/configuresearch.yml'
+  parameters:
+    principal: $(principal)
+    environment: 'production' 
+    region: $(azureRegion)
+    sharedRg: $(resourceGroupDev)
+    artifact: infra
+    
+
