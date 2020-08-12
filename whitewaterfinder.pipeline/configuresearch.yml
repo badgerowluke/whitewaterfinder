@@ -21,7 +21,7 @@ stages:
 
   - deployment: 'search'
     pool:
-      vmImage: 'ubuntu-latest'
+      vmImage: 'windows-latest'
     environment: ${{ parameters.environment }}
 
     strategy:
@@ -37,7 +37,7 @@ stages:
             displayName: 'Build Azure Search Index'
             inputs:
               azureSubscription: '${{ parameters.principal }}'
-              scriptType: ps
+              scriptType: pscore
               scriptLocation: 'scriptPath'
               ScriptPath: '$(Pipeline.Workspace)/${{ parameters.artifact }}/deployment.ps1'
               ScriptArguments: '${{ parameters.sharedRg }} "$(Pipeline.Workspace)/${{ parameters.artifact }}/riverswithid.json"'   
