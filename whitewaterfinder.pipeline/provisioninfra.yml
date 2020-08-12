@@ -126,7 +126,7 @@ stages:
           displayName: 'create or pull MSFT App ID'
           inputs:
             azureSubscription: '${{ parameters.principal }}'
-            scriptType: ps
+            scriptType: pscore
             scriptLocation: 'scriptPath'
             ScriptPath: 'whitewaterfinder.infrastructure/app-registration-create.ps1'
             ScriptArguments: '"${{ parameters.botName }}-ar"'
@@ -183,6 +183,7 @@ stages:
 
         - task: PublishBuildArtifacts@1
           displayName: 'Push infra scripts'
+          condition: always()
           inputs:
             PathtoPublish: 'whitewaterfinder.infrastructure/'
             ArtifactName: infra              
