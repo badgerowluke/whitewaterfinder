@@ -35,12 +35,19 @@ steps:
     mergeTestResults: true
     failTaskOnFailedTests: true    
 
-- task: DotNetCoreCLI@2
-  displayName: Publish bot app
+# - task: DotNetCoreCLI@2
+#   displayName: Publish bot app
+#   inputs:
+#     command: publish
+#     projects: '**/whitewaterfinder.app.bot/whitewaterfinder.app.bot.csproj'
+#     arguments: '--configuration $(BuildConfiguration)'
+
+- task: ArchiveFiles@2
+  displayName: bundle bot api
   inputs:
-    command: publish
-    projects: '**/whitewaterfinder.app.bot/whitewaterfinder.app.bot.csproj'
-    arguments: '--configuration $(BuildConfiguration)'
+    rootFolderOrFile: whitewaterfinder.api.bot/bin/release/netcoreapp3.0
+    includeRootFolder: false
+    archiveFile: $(Pipeline.Workspace)/botfunc/app.zip
 
 - task: ArchiveFiles@2
   displayName: bundle api 

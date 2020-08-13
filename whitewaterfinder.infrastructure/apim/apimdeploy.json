@@ -168,22 +168,6 @@
             }
         },
         {
-            "type": "Microsoft.ApiManagement/service/apis",
-            "apiVersion": "2019-01-01",
-            "name": "[concat(parameters('apimName'),'/', 'bot')]",
-                        "dependsOn":[
-
-                "[resourceId('Microsoft.ApiManagement/service', parameters('apimName'))]"
-            ],
-            "properties": {
-                "displayName": "webster",
-                "protocols": [ "https" ],
-                "path": "webster",
-                "isCurrent": true,
-                "apiRevision": "1"
-            }
-        },
-        {
             "type": "Microsoft.ApiManagement/service/apis/operations",
             "apiVersion": "2019-01-01",
             "name":"[concat(parameters('apimName'), '/', parameters('preferencesApp'), '/getuserpreferences')]",
@@ -240,11 +224,58 @@
                 "[resourceId('Microsoft.ApiManagement/service/apis', parameters('apimName'), parameters('preferencesApp'))]",
                 "[resourceId('Microsoft.Apimanagement/service/apis/operations', parameters('apimName'), parameters('preferencesApp'), 'postuserpreferences')]"
             ],
-            "properties":{
+            "properties": {
                 "value":"<policies></policies>",
                 "format":"xml"
             }         
-        }                 
+        },
+        {
+            "type": "Microsoft.ApiManagement/service/apis",
+            "apiVersion": "2019-01-01",
+            "name": "[concat(parameters('apimName'),'/', 'webster')]",
+            "dependsOn":[
+
+                "[resourceId('Microsoft.ApiManagement/service', parameters('apimName'))]"
+            ],
+            "properties": {
+                "displayName": "webster",
+                "protocols": [ "https" ],
+                "path": "webster",
+                "isCurrent": true,
+                "apiRevision": "1"
+            }
+        },
+        {
+            "type": "Microsoft.ApiManagement/service/apis/operations",
+            "apiVersion": "2019-01-01",
+            "name": "[concat(parameters('apimName'), 'webster', '/messages')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.ApiManagement/service', parameters('apimName'))]",
+                "[resourceId('Microsoft.ApiManagement/service/apis', parameters('apimName'), 'webster')]"
+            ],
+            "properties": {
+                "displayName": "Messages",
+                "method":"POST",
+                "urlTemplate": "/messages",
+                "templateParameters": [],
+                "responses": []                
+            }
+        },
+        {
+            "type": "Microsoft.ApiManagement/service/apis/operations/policies",
+            "apiVersion":"2019-01-01",
+            "name": "[concat(parameters('apimName'), '/', 'webster','/messages/policy')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.ApiManagement/service', parameters('apimName'))]",
+                "[resourceId('Microsoft.ApiManagement/service/apis', parameters('apimName'), 'webster')]",
+                "[resourceId('Microsoft.ApiManagement/service/apis/operations', parameters('apimName'), 'webster', 'messages')]"
+            ],
+            "properties": {
+                "value":"<policies></policies>",
+                "format":"xml"                
+            }            
+
+        }
     ],
 
     "outputs":{ }

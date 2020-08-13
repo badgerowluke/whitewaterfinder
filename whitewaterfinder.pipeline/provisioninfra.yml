@@ -110,11 +110,13 @@ stages:
             $allKeys = ConvertFrom-Json -InputObject $env:functionKeys
             $riverKey = $allKeys.riversKey.Value
             $userKey = $allKeys.usersKey.Value
+            $botKey = $allKeys.botKey.Value
             Write-Host #allKeys
             New-Item -Path $(Pipeline.Workspace) -Name 'variables' -ItemType 'directory'
             New-Item -Path $(Pipeline.Workspace)/variables -Name 'functionkeys.log' -ItemType 'file'
             Set-Content -Path '$(Pipeline.Workspace)/variables/functionkeys.log' -Value riverkey:$riverKey
             Add-Content -Path '$(Pipeline.Workspace)/variables/functionkeys.log' -Value userKey:$userKey
+            Add-Content -Path '$(Pipeline.Workspace)/variables/functionkeys.log -Value botKey:$botKey'
 
           displayName: 'parse API output'
           env:
@@ -131,15 +133,15 @@ stages:
             ScriptPath: 'whitewaterfinder.infrastructure/app-registration-create.ps1'
             ScriptArguments: '"${{ parameters.botName }}-ar"'
 
-        - task: AzureResourceGroupDeployment@2
-          displayName: provision bot
-          inputs: 
-            azureSubscription: '${{ parameters.principal }}'
-            resourceGroupName: '${{ parameters.resourceGroup }}'
-            location: '${{ parameters.region }}'      
-            csmFile: 'whitewaterfinder.infrastructure/cognitiveservices/bot/botdeploy.json' 
-            csmParametersFile: 'whitewaterfinder.infrastructure/cognitiveservices/bot/botparams.json'
-            overrideParameters: '-botAppName "${{ parameters.botName }}" -botInsightsName "${{ parameters.appName }}" -msftAppId "$(newAppId)" -storageAccountName ${{ parameters.storageAccountName }}'
+        # - task: AzureResourceGroupDeployment@2
+        #   displayName: provision bot
+        #   inputs: 
+        #     azureSubscription: '${{ parameters.principal }}'
+        #     resourceGroupName: '${{ parameters.resourceGroup }}'
+        #     location: '${{ parameters.region }}'      
+        #     csmFile: 'whitewaterfinder.infrastructure/cognitiveservices/bot/botdeploy.json' 
+        #     csmParametersFile: 'whitewaterfinder.infrastructure/cognitiveservices/bot/botparams.json'
+        #     overrideParameters: '-botAppName "${{ parameters.botName }}" -botInsightsName "${{ parameters.appName }}" -msftAppId "$(newAppId)" -storageAccountName ${{ parameters.storageAccountName }}'
 
         - task: AzureResourceGroupDeployment@2
           displayName: 'Provision APIM'
