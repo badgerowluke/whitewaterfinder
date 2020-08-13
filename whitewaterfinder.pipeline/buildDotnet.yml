@@ -62,8 +62,8 @@ steps:
     PathtoPublish: $(Pipeline.Workspace)/riversfunc/app.zip
     ArtifactName: 'riversfunc'
 
-- task: PublishBuildArtifacts@1
-  displayName: 'Publish Bot App'
-  inputs:
-    PathtoPublish: whitewaterfinder.app.bot/bin/release/netcoreapp2.1/publish.zip
-    ArtifactName: 'websterbot'        
+# - task: PublishBuildArtifacts@1
+#   displayName: 'Publish Bot App'
+#   inputs:
+#     PathtoPublish: whitewaterfinder.app.bot/bin/release/netcoreapp2.1/publish.zip
+#     ArtifactName: 'websterbot'        
