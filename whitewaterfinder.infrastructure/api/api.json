@@ -17,7 +17,7 @@
     "azureSearchKey": {"type": "string" },
     "baseUSGSUrl": { "type": "string" },
     "searchUrl": { "type": "string" },
-    "botName": { "type": "string", "defaultValue": "whitewater-webster" }
+    "botName": { "type": "string", "defaultValue": "paddle-finder-webster" }
   },
   "variables": {
 
