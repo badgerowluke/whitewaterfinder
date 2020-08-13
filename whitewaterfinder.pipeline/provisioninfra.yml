@@ -111,7 +111,7 @@ stages:
             $riverKey = $allKeys.riversKey.Value
             $userKey = $allKeys.usersKey.Value
             $botKey = $allKeys.botKey.Value
-            Write-Host #allKeys
+            Write-Host $allKeys
             New-Item -Path $(Pipeline.Workspace) -Name 'variables' -ItemType 'directory'
             New-Item -Path $(Pipeline.Workspace)/variables -Name 'functionkeys.log' -ItemType 'file'
             Set-Content -Path '$(Pipeline.Workspace)/variables/functionkeys.log' -Value riverkey:$riverKey
