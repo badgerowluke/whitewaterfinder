@@ -116,7 +116,7 @@ stages:
             New-Item -Path $(Pipeline.Workspace)/variables -Name 'functionkeys.log' -ItemType 'file'
             Set-Content -Path '$(Pipeline.Workspace)/variables/functionkeys.log' -Value riverkey:$riverKey
             Add-Content -Path '$(Pipeline.Workspace)/variables/functionkeys.log' -Value userKey:$userKey
-            Add-Content -Path '$(Pipeline.Workspace)/variables/functionkeys.log -Value botKey:$botKey'
+            Add-Content -Path '$(Pipeline.Workspace)/variables/functionkeys.log' -Value botKey:$botKey'
 
           displayName: 'parse API output'
           env:
