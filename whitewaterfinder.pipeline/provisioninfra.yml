@@ -103,7 +103,7 @@ stages:
             location: '${{ parameters.region }}'
             csmFile: 'whitewaterfinder.infrastructure/api/api.json'
             csmParametersFile: 'whitewaterfinder.infrastructure/api/apiparams.json'
-            overrideParameters: '-storageAccountName ${{ parameters.storageAccountName }} -storageAccountType "${{ parameters.storageAccountType }}" -appName "${{ parameters.appName }}" -appPlanName "WaterFinderPlan" -preferencesApp "${{ parameters.appName }}-preferences"  -azureSearchKey $(searchKey)'          
+            overrideParameters: '-storageAccountName ${{ parameters.storageAccountName }} -appName "${{ parameters.appName }}" -appPlanName "WaterFinderPlan" -preferencesApp "${{ parameters.appName }}-preferences"  -azureSearchKey $(searchKey)'          
             deploymentOutputs: 'functionKeys'
 
         - pwsh: |
