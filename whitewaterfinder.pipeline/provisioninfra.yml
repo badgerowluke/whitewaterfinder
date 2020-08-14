@@ -118,13 +118,24 @@ stages:
             Add-Content -Path '$(Pipeline.Workspace)/variables/functionkeys.log' -Value userKey:$userKey
             Add-Content -Path '$(Pipeline.Workspace)/variables/functionkeys.log' -Value botKey:$botKey'
 
+          condition: in(variables['Agent.JobStatus'], 'Succeeded', 'SucceededWithIssues')
           displayName: 'parse API output'
           env:
             functionKeys: $(functionKeys)
+
+
         - publish: $(Pipeline.Workspace)/variables
+          condition: in(variables['Agent.JobStatus'], 'Succeeded', 'SucceededWithIssues')
           artifact: variables
 
+
+        - pwsh: |
+            Write-Host "API did not deploy again"
+          condition: eq(variables['Agent.JobStatus'], 'Failed')
+
+          
         - task: AzureCli@2
+          condition: in(variables['Agent.JobStatus'], 'Succeeded', 'SucceededWithIssues')
           displayName: 'create or pull MSFT App ID'
           inputs:
             azureSubscription: '${{ parameters.principal }}'
@@ -133,15 +144,7 @@ stages:
             ScriptPath: 'whitewaterfinder.infrastructure/app-registration-create.ps1'
             ScriptArguments: '"${{ parameters.botName }}-ar"'
 
-        # - task: AzureResourceGroupDeployment@2
-        #   displayName: provision bot
-        #   inputs: 
-        #     azureSubscription: '${{ parameters.principal }}'
-        #     resourceGroupName: '${{ parameters.resourceGroup }}'
-        #     location: '${{ parameters.region }}'      
-        #     csmFile: 'whitewaterfinder.infrastructure/cognitiveservices/bot/botdeploy.json' 
-        #     csmParametersFile: 'whitewaterfinder.infrastructure/cognitiveservices/bot/botparams.json'
-        #     overrideParameters: '-botAppName "${{ parameters.botName }}" -botInsightsName "${{ parameters.appName }}" -msftAppId "$(newAppId)" -storageAccountName ${{ parameters.storageAccountName }}'
+
 
         - task: AzureResourceGroupDeployment@2
           displayName: 'Provision APIM'

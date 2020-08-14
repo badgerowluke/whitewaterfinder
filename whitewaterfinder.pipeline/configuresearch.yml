@@ -50,8 +50,10 @@ stages:
               Get-Content $(Pipeline.Workspace)/variables/functionkeys.log | foreach-object -begin {$h=@{}} -process { $k = [regex]::split($_,':'); if(($k[0].CompareTo("") -ne 0) -and ($k[0].StartsWith("[") -ne $True)) { $h.Add($k[0], $k[1]) } }
               $riverKey =  $h.riverKey
               $userKey =  $h.userKey
+              $botKey = $h.botKey
               Write-Host "##vso[task.setvariable variable=riverKey]$riverKey"
-              Write-Host "##vso[task.setvariable variable=suserKey]$userKey"
+              Write-Host "##vso[task.setvariable variable=userKey]$userKey"
+              Write-Host "##vso[task.setvariable variable=botKey]$botKey"
           
           - task: AzureCLI@2
             displayName: 'Configure APIM'

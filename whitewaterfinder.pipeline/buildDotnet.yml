@@ -35,13 +35,6 @@ steps:
     mergeTestResults: true
     failTaskOnFailedTests: true    
 
-# - task: DotNetCoreCLI@2
-#   displayName: Publish bot app
-#   inputs:
-#     command: publish
-#     projects: '**/whitewaterfinder.app.bot/whitewaterfinder.app.bot.csproj'
-#     arguments: '--configuration $(BuildConfiguration)'
-
 - task: ArchiveFiles@2
   displayName: bundle bot api
   inputs:
@@ -62,8 +55,3 @@ steps:
     PathtoPublish: $(Pipeline.Workspace)/riversfunc/app.zip
     ArtifactName: 'riversfunc'
 
-# - task: PublishBuildArtifacts@1
-#   displayName: 'Publish Bot App'
-#   inputs:
-#     PathtoPublish: whitewaterfinder.app.bot/bin/release/netcoreapp2.1/publish.zip
-#     ArtifactName: 'websterbot'        
