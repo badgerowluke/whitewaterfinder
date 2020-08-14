@@ -5,6 +5,7 @@
         "luisName": { "value": "webster-luis" },
         "authoringName": { "value": "webster-luis-authoring" },
         "botAppName": { "value": "WhitewaterWebster" },
-        "botInsightsName": { "value" : "paddle-finder" }
+        "botInsightsName": { "value" : "paddle-finder" },
+        "msftAppId" : { "value": "" }
     }
 }

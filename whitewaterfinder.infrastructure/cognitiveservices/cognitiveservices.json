@@ -4,8 +4,8 @@
     "parameters": {
         "luisName": { "type" : "string", "defaultValue": "webster-luis" },
         "authoringName": { "type" : "string", "defaultValue" : "webster-luis-authoring"},
-        "botAppName": { "type" : "string", "defaultValue": "WhitewaterWebster" },
-        
+        "botAppName" : { "type" : "string", "defaultValue": "WhitewaterWebster" },
+        "msftAppId" : { "type": "string", "defaultValue" : "" },
         "botInsightsName": { "type": "string", "defaultValue": "paddle-finder" },
         "location": {
             "type": "string",
@@ -52,8 +52,8 @@
             "properties": {
                 "displayName": "[parameters('botAppName')]",
                 "iconUrl": "https://docs.botframework.com/static/devportal/client/images/bot-framework-default.png",
-                "endpoint": "[concat('https://', parameters('botAppName'), '.azurewebsites.net/api/messages')]",
-                "msaAppId": "[reference(resourceId('Microsoft.Web/sites', parameters('botAppName')), '2015-05-01', 'Full').identity.principalId]",
+                "endpoint": "https://whitewater-finder.azure-api.net/webster/messages",
+                "msaAppId": "[parameters('msftAppId')]",
                 "developerAppInsightKey": "[reference(resourceId('microsoft.insights/components/', parameters('botInsightsName')), '2015-05-01').InstrumentationKey]",
                 "developerAppInsightsApplicationId": "[reference(resourceId('microsoft.insights/components', parameters('botInsightsName')), '2015-05-01').appId]",
                 "luisAppIds":[]

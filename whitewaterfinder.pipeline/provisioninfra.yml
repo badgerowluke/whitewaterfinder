@@ -166,7 +166,7 @@ stages:
               location: '${{parameters.region}}'
               csmFile: 'whitewaterfinder.infrastructure/cognitiveservices/cognitiveservices.json'
               csmParametersFile: 'whitewaterfinder.infrastructure/cognitiveservices/cogservicesparams.json'      
-              overrideParameters: '-luisName "${{ parameters.luisEndpointName }}" -authoringName "${{ parameters.luisAuthoring }}" -botAppName "${{ parameters.botName }}" -botInsightsName "${{ parameters.appName }}"'  
+              overrideParameters: '-msftAppId $(newAppId) -luisName "${{ parameters.luisEndpointName }}" -authoringName "${{ parameters.luisAuthoring }}" -botAppName "${{ parameters.botName }}" -botInsightsName "${{ parameters.appName }}"'  
 
         - task: AzureResourceGroupDeployment@2
           displayName: 'provision Sendgrid'
