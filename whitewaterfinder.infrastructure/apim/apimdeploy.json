@@ -13,7 +13,8 @@
         "adminEmail":{ "type": "string", "defaultValue": "badgerow.luke@outlook.com" },
         "orgName": { "type": "string", "defaultValue": "burning-river-geospatial-solutions" },
         "preferencesApp" : { "type" : "string" , "defaultValue" : "paddle-finder-preferences" },
-        "appName":{ "type": "string", "defaultValue" : "paddle-finder" }
+        "appName": { "type": "string", "defaultValue" : "paddle-finder" },
+        "botName": { "type": "string", "defaultValue": "webster" }
     },
     "resources": [
         {
@@ -222,7 +223,7 @@
             "dependsOn":[
                 "[resourceId('Microsoft.ApiManagement/service', parameters('apimName'))]",
                 "[resourceId('Microsoft.ApiManagement/service/apis', parameters('apimName'), parameters('preferencesApp'))]",
-                "[resourceId('Microsoft.Apimanagement/service/apis/operations', parameters('apimName'), parameters('preferencesApp'), 'postuserpreferences')]"
+                "[resourceId('Microsoft.ApiManagement/service/apis/operations', parameters('apimName'), parameters('preferencesApp'), 'postuserpreferences')]"
             ],
             "properties": {
                 "value":"<policies></policies>",
@@ -232,7 +233,7 @@
         {
             "type": "Microsoft.ApiManagement/service/apis",
             "apiVersion": "2019-01-01",
-            "name": "[concat(parameters('apimName'),'/', 'webster')]",
+            "name": "[concat(parameters('apimName'),'/', parameters('botName'))]",
             "dependsOn":[
 
                 "[resourceId('Microsoft.ApiManagement/service', parameters('apimName'))]"
@@ -248,13 +249,13 @@
         {
             "type": "Microsoft.ApiManagement/service/apis/operations",
             "apiVersion": "2019-01-01",
-            "name": "[concat(parameters('apimName'), 'webster', '/messages')]",
+            "name": "[concat(parameters('apimName'), '/',parameters('botName'), '/messages')]",
             "dependsOn": [
-                "[resourceId('Microsoft.ApiManagement/service', parameters('apimName'))]",
-                "[resourceId('Microsoft.ApiManagement/service/apis', parameters('apimName'), 'webster')]"
+                "[resourceId('Microsoft.ApiManagement/service/apis', parameters('apimName'), parameters('botName'))]",
+                "[resourceId('Microsoft.ApiManagement/service', parameters('apimName'))]"
             ],
             "properties": {
-                "displayName": "Messages",
+                "displayName": "messages",
                 "method":"POST",
                 "urlTemplate": "/messages",
                 "templateParameters": [],
@@ -263,18 +264,17 @@
         },
         {
             "type": "Microsoft.ApiManagement/service/apis/operations/policies",
-            "apiVersion":"2019-01-01",
-            "name": "[concat(parameters('apimName'), '/', 'webster','/messages/policy')]",
+            "apiVersion": "2019-01-01",
+            "name": "[concat(parameters('apimName'), '/', parameters('botName'), '/messages/policy')]",
             "dependsOn": [
-                "[resourceId('Microsoft.ApiManagement/service', parameters('apimName'))]",
-                "[resourceId('Microsoft.ApiManagement/service/apis', parameters('apimName'), 'webster')]",
-                "[resourceId('Microsoft.ApiManagement/service/apis/operations', parameters('apimName'), 'webster', 'messages')]"
-            ],
+                "[resourceId('Microsoft.ApiManagement/service/apis/operations', parameters('apimName'), parameters('botName'), 'messages')]",
+                "[resourceId('Microsoft.ApiManagement/service/apis', parameters('apimName'), parameters('botName'))]",
+                "[resourceId('Microsoft.ApiManagement/service', parameters('apimName'))]"
+            ],  
             "properties": {
                 "value":"<policies></policies>",
-                "format":"xml"                
-            }            
-
+                "format":"xml"
+            }          
         }
     ],
 
