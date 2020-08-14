@@ -122,16 +122,18 @@ stages:
           displayName: 'parse API output'
           env:
             functionKeys: $(functionKeys)
-
+        
+        
+        - pwsh: |
+            Write-Host "API did not deploy again"
+          condition: eq(variables['Agent.JobStatus'], 'Failed')
 
         - publish: $(Pipeline.Workspace)/variables
           condition: in(variables['Agent.JobStatus'], 'Succeeded', 'SucceededWithIssues')
           artifact: variables
 
 
-        - pwsh: |
-            Write-Host "API did not deploy again"
-          condition: eq(variables['Agent.JobStatus'], 'Failed')
+
 
 
         - task: AzureCli@2
@@ -191,5 +193,7 @@ stages:
           condition: always()
           inputs:
             PathtoPublish: 'whitewaterfinder.infrastructure/'
-            ArtifactName: infra              
+            ArtifactName: infra            
+
+    
         

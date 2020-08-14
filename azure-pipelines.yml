@@ -34,7 +34,7 @@ stages:
     principal: '$(principal)'
     adminEmail: '$(adminEmail)'            
     
-- template: 'whitewaterfinder.pipeline/configuresearch.yml'
+- template: 'whitewaterfinder.pipeline/configure.yml'
   parameters:
     principal: $(principal)
     environment: 'production' 

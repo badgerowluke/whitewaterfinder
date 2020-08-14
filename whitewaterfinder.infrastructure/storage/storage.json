@@ -25,8 +25,8 @@
         },
 
         "preferencesApp" : { "type" : "string" , "defaultValue" : "paddle-finder-preferences" },
-        "storageAccountName": { "type" : "string","defaultValue": "devwaterfinder" },
-        "cosmosDbName": { "type" : "string", "defaultValue": "brgscosmosdb"},
+        "storageAccountName": { "type" : "string","defaultValue": "waterfinder" },
+        "cosmosDbName": { "type" : "string", "defaultValue": "waterfindercosmosdb"},
         "secondLocation": {
             "type": "string",
             "defaultValue": "eastus",
