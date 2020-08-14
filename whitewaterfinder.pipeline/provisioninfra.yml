@@ -116,7 +116,7 @@ stages:
             New-Item -Path $(Pipeline.Workspace)/variables -Name 'functionkeys.log' -ItemType 'file'
             Set-Content -Path '$(Pipeline.Workspace)/variables/functionkeys.log' -Value riverkey:$riverKey
             Add-Content -Path '$(Pipeline.Workspace)/variables/functionkeys.log' -Value userKey:$userKey
-            Add-Content -Path '$(Pipeline.Workspace)/variables/functionkeys.log' -Value botKey:$botKey'
+            Add-Content -Path '$(Pipeline.Workspace)/variables/functionkeys.log' -Value botKey:$botKey
 
           condition: in(variables['Agent.JobStatus'], 'Succeeded', 'SucceededWithIssues')
           displayName: 'parse API output'
@@ -133,7 +133,7 @@ stages:
             Write-Host "API did not deploy again"
           condition: eq(variables['Agent.JobStatus'], 'Failed')
 
-          
+
         - task: AzureCli@2
           condition: in(variables['Agent.JobStatus'], 'Succeeded', 'SucceededWithIssues')
           displayName: 'create or pull MSFT App ID'
