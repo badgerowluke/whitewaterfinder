@@ -55,3 +55,9 @@ steps:
     PathtoPublish: $(Pipeline.Workspace)/riversfunc/app.zip
     ArtifactName: 'riversfunc'
 
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Bot Functions'
+  inputs:
+    PathtoPublish: $(Pipeline.Workspace)/botfunc/app.zip
+    ArtifactName: 'botfunc'
+

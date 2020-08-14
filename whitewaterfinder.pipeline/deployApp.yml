@@ -48,7 +48,7 @@ stages:
 
     - template: 'downloadAndDeploy.yml'
       parameters: 
-        artifact: websterbot
+        artifact: botfunc
         appType: app
         principal: '${{ parameters.principal }}'
         appName: '${{ parameters.botapp }}'  
