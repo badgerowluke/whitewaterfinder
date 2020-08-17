@@ -94,43 +94,43 @@ stages:
           env: 
             searchOutput: $(searchOutput)
 
-        - task: AzureResourceGroupDeployment@2
-          displayName: provision apis
-          name: provisioning
-          inputs:
-            azureSubscription: '${{ parameters.principal }}'
-            resourceGroupName: '${{ parameters.resourceGroup }}'
-            location: '${{ parameters.region }}'
-            csmFile: 'whitewaterfinder.infrastructure/api/api.json'
-            csmParametersFile: 'whitewaterfinder.infrastructure/api/apiparams.json'
-            overrideParameters: '-storageAccountName ${{ parameters.storageAccountName }} -appName "${{ parameters.appName }}" -appPlanName "WaterFinderPlan" -preferencesApp "${{ parameters.appName }}-preferences"  -azureSearchKey $(searchKey)'          
-            deploymentOutputs: 'functionKeys'
+        # - task: AzureResourceGroupDeployment@2
+        #   displayName: provision apis
+        #   name: provisioning
+        #   inputs:
+        #     azureSubscription: '${{ parameters.principal }}'
+        #     resourceGroupName: '${{ parameters.resourceGroup }}'
+        #     location: '${{ parameters.region }}'
+        #     csmFile: 'whitewaterfinder.infrastructure/api/api.json'
+        #     csmParametersFile: 'whitewaterfinder.infrastructure/api/apiparams.json'
+        #     overrideParameters: '-storageAccountName ${{ parameters.storageAccountName }} -appName "${{ parameters.appName }}" -appPlanName "WaterFinderPlan" -preferencesApp "${{ parameters.appName }}-preferences"  -azureSearchKey $(searchKey)'          
+        #     deploymentOutputs: 'functionKeys'
 
-        - pwsh: |
-            $allKeys = ConvertFrom-Json -InputObject $env:functionKeys
-            $riverKey = $allKeys.riversKey.Value
-            $userKey = $allKeys.usersKey.Value
-            $botKey = $allKeys.botKey.Value
-            Write-Host $allKeys
-            New-Item -Path $(Pipeline.Workspace) -Name 'variables' -ItemType 'directory'
-            New-Item -Path $(Pipeline.Workspace)/variables -Name 'functionkeys.log' -ItemType 'file'
-            Set-Content -Path '$(Pipeline.Workspace)/variables/functionkeys.log' -Value riverkey:$riverKey
-            Add-Content -Path '$(Pipeline.Workspace)/variables/functionkeys.log' -Value userKey:$userKey
-            Add-Content -Path '$(Pipeline.Workspace)/variables/functionkeys.log' -Value botKey:$botKey
+        # - pwsh: |
+        #     $allKeys = ConvertFrom-Json -InputObject $env:functionKeys
+        #     $riverKey = $allKeys.riversKey.Value
+        #     $userKey = $allKeys.usersKey.Value
+        #     $botKey = $allKeys.botKey.Value
+        #     Write-Host $allKeys
+        #     New-Item -Path $(Pipeline.Workspace) -Name 'variables' -ItemType 'directory'
+        #     New-Item -Path $(Pipeline.Workspace)/variables -Name 'functionkeys.log' -ItemType 'file'
+        #     Set-Content -Path '$(Pipeline.Workspace)/variables/functionkeys.log' -Value riverkey:$riverKey
+        #     Add-Content -Path '$(Pipeline.Workspace)/variables/functionkeys.log' -Value userKey:$userKey
+        #     Add-Content -Path '$(Pipeline.Workspace)/variables/functionkeys.log' -Value botKey:$botKey
 
-          condition: in(variables['Agent.JobStatus'], 'Succeeded', 'SucceededWithIssues')
-          displayName: 'parse API output'
-          env:
-            functionKeys: $(functionKeys)
+        #   condition: in(variables['Agent.JobStatus'], 'Succeeded', 'SucceededWithIssues')
+        #   displayName: 'parse API output'
+        #   env:
+        #     functionKeys: $(functionKeys)
         
         
-        - pwsh: |
-            Write-Host "API did not deploy again"
-          condition: eq(variables['Agent.JobStatus'], 'Failed')
+        # - pwsh: |
+        #     Write-Host "API did not deploy again"
+        #   condition: eq(variables['Agent.JobStatus'], 'Failed')
 
-        - publish: $(Pipeline.Workspace)/variables
-          condition: in(variables['Agent.JobStatus'], 'Succeeded', 'SucceededWithIssues')
-          artifact: variables
+        # - publish: $(Pipeline.Workspace)/variables
+        #   condition: in(variables['Agent.JobStatus'], 'Succeeded', 'SucceededWithIssues')
+        #   artifact: variables
 
 
 
