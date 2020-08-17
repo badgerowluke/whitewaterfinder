@@ -19,7 +19,7 @@ steps:
   artifact: ${{ parameters.artifact }}
 
 - task: AzureRmWebAppDeployment@3
-  displayName: 'Deploy ${{ parameters.artifiact }}'
+  displayName: 'Deploy ${{ parameters.artifact }}'
   inputs:
     displayName: 'Deploy ${{ parameters.artifact }}'
     azureSubscription: '${{ parameters.principal }}'
