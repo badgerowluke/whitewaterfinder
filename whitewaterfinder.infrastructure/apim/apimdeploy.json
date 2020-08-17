@@ -14,7 +14,7 @@
         "orgName": { "type": "string", "defaultValue": "burning-river-geospatial-solutions" },
         "preferencesApp" : { "type" : "string" , "defaultValue" : "paddle-finder-preferences" },
         "appName": { "type": "string", "defaultValue" : "paddle-finder" },
-        "botName": { "type": "string", "defaultValue": "webster" }
+        "botName": { "type": "string", "defaultValue": "paddle-finder-webster" }
     },
     "resources": [
         {
