@@ -19,7 +19,7 @@
             "value": "/whitewaterfinder.pwa/waterfinder.api"
         },
         "appArtifactLocation": {
-            "value": "/whitewaterfinder.pwa/paddle-finder/dist"
+            "value": "/whitewaterfinder.pwa/paddle-finder/dist/paddle-finder"
         }
 
     }

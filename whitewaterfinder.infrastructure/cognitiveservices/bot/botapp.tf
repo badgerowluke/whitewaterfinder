@@ -18,12 +18,12 @@ resource "azurerm_app_service" "botapp" {
 
 
   app_settings = {
-    "stateStore"        = ""
-    "LuisAPIHostName"   = ""
-    "MicrosoftAppId"    = ""
-    "MicrosoftAppPassword" = ""
-    APPINSIGHTS_INSTRUMENTATIONKEY = var.instrumentkey
-    APPINSIGHTS_CONNECTION_STRING = "InstrumentationKey=${var.instrumentkey}"
+    "stateStore"                               = ""
+    "LuisAPIHostName"                          = ""
+    "MicrosoftAppId"                           = ""
+    "MicrosoftAppPassword"                     = ""
+    APPINSIGHTS_INSTRUMENTATIONKEY             = var.instrumentkey
+    APPINSIGHTS_CONNECTION_STRING              = "InstrumentationKey=${var.instrumentkey}"
     ApplicationInsightsAgent_EXTENSION_VERSION = "~2"
   }
 

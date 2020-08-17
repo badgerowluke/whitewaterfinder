@@ -14,19 +14,18 @@ $apps = az functionapp list --query "[?resourceGroup=='$($resourceGroup)'].name"
 Write-Output $apps
 Write-Output "Load template policy"
 $functionGetInbound = Get-Content $fullPath\apim-policy\FunctionGetPolicy.xml -Raw
+$rg = $resourceGroup
 
 $basePolicy = Get-Content $fullPath\apim-policy\BasePolicy.xml -Raw
-Set-BasePolicy($basePolicy, $resourceGroup)
+Set-BasePolicy $basePolicy $rg
 
 Write-Output "Loop Function Apps"
 foreach($name in $apps.GetEnumerator())
 {
-    $rg = $resourceGroup
-    
-    
     $creds = Get-KuduCredentials $name $rg
-
+    
     $functions = Get-Functions $name $creds
+
     Write-Output "Loop Functions in App"
     foreach($func in $functions)
     {
@@ -43,6 +42,7 @@ foreach($name in $apps.GetEnumerator())
                     $newInboundPolicy = $functionGetInbound.Replace("{{funcCode}}", $key )
                     $newInboundPolicy = $newInboundPolicy.Replace("{{functionName}}", $func.name)
                     $newInboundPolicy = $newInboundPolicy.Replace("{{functionApp}}", $name)
+                                      
                     Set-OperationPolicy $rg $func.name $name $newInboundPolicy
                     $completed = $true
                 } catch 
@@ -60,5 +60,6 @@ foreach($name in $apps.GetEnumerator())
                 }
             }
         }
-    }
+    }    
+    
 }

@@ -49,3 +49,8 @@ variable "searchkey" {
     type = string
     default = ""
 }
+
+variable "botName" {
+    type = string
+    default = ""
+}
