@@ -20,7 +20,7 @@
         {
             "kind": "LUIS.Authoring",
             "type": "Microsoft.CognitiveServices/accounts",
-            "apiVersion": "2016-02-01-preview",
+            "apiVersion": "2017-04-18",
             "name": "[parameters('authoringName')]",
             "location": "westus",
             "sku": {
@@ -30,7 +30,7 @@
         {
             "kind": "LUIS",
             "type": "Microsoft.CognitiveServices/accounts",
-            "apiVersion": "2016-02-01-preview",
+            "apiVersion": "2017-04-18",
             "name": "[parameters('luisName')]",
             "location": "[parameters('location')]",
             "sku": {
@@ -56,10 +56,23 @@
                 "msaAppId": "[parameters('msftAppId')]",
                 "developerAppInsightKey": "[reference(resourceId('microsoft.insights/components/', parameters('botInsightsName')), '2015-05-01').InstrumentationKey]",
                 "developerAppInsightsApplicationId": "[reference(resourceId('microsoft.insights/components', parameters('botInsightsName')), '2015-05-01').appId]",
-                "luisAppIds":[]
+                "luisAppIds":[
+                    
+                ]
             }
         }          
        
-    ]
+    ],
+    "outputs": {
+        "luisId" : {
+            "type": "string",
+            "value": "[listKeys(resourceId('Microsoft.CognitiveServices/accounts', parameters('luisName')), '2016-02-01-preview').key1]"
+        },
+        "luisEndpoint": {
+            "type": "string",
+            "value": "[reference(resourceId('Microsoft.CognitiveServices/accounts', parameters('luisName')), '2017-04-18').endpoint]"
+        }
+
+    }
 
 }
