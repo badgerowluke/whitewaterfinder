@@ -16,9 +16,6 @@ Write-Output "Load template policy"
 $functionGetInbound = Get-Content $fullPath\apim-policy\FunctionGetPolicy.xml -Raw
 $rg = $resourceGroup
 
-$basePolicy = Get-Content $fullPath\apim-policy\BasePolicy.xml -Raw
-Set-BasePolicy $basePolicy $rg
-
 Write-Output "Loop Function Apps"
 foreach($name in $apps.GetEnumerator())
 {
@@ -42,7 +39,7 @@ foreach($name in $apps.GetEnumerator())
                     $newInboundPolicy = $functionGetInbound.Replace("{{funcCode}}", $key )
                     $newInboundPolicy = $newInboundPolicy.Replace("{{functionName}}", $func.name)
                     $newInboundPolicy = $newInboundPolicy.Replace("{{functionApp}}", $name)
-                                      
+
                     Set-OperationPolicy $rg $func.name $name $newInboundPolicy
                     $completed = $true
                 } catch 
