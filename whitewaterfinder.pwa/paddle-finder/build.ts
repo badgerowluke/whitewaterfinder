@@ -10,6 +10,7 @@ const targetPath = './src/environments/environment.ts';
 const envConfigFile = `export const environment = {
     production: ${process.env.production},
     baseUrl: '${process.env.baseUrl}',
+    apiUrl: '${process.env.apiUrl}',
     riverKeyCode: '',
     detailsKeyCode:'',
     auth0Domain: '${process.env.auth0Domain}',

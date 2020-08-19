@@ -4,6 +4,7 @@
     "parameters": {
         "tenantId": { "value": "not-supplied-currently" },
         "adminId": { "value": "Luke" },
-        "kvName": { "value": ""}
+        "kvName": { "value": "waterfinder" },
+        "apimName": { "value": "whitewater-finder" }
     }
 }

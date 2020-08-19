@@ -11,7 +11,8 @@
         },
         "tenantId": { "type": "string" }, 
         "adminId": { "type": "string" },
-        "kvName": { "type": "string"}
+        "kvName": { "type": "string"},
+        "apimName": { "type": "string"}
     }, 
     "variables":{},
     "resources": [
@@ -73,6 +74,17 @@
                         }
                                    
                 ]
+            }
+        },
+        {
+            "name": "[concat(parameters('kvName'), '/apim-master-key')]",
+            "type": "Microsoft.KeyVault/vaults/secrets",
+            "apiVersion": "2016-10-01",
+            "dependsOn": [
+                "[resourceId('Microsoft.KeyVault/vaults', parameters('kvName') )]"
+            ],
+            "properties": {
+                "value": "[reference(resourceId('Microsoft.ApiManagement/service/subscriptions', parameters('apimName'), 'master'), '2019-01-01').primaryKey]"
             }
         }
     ]

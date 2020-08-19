@@ -54,15 +54,7 @@ stages:
       continueOnError: true
 
       steps:
-        - task: AzureResourceGroupDeployment@2
-          displayName: 'provision AKV'
-          inputs:
-            azureSubscription: '${{ parameters.principal }}'
-            resourceGroupName: '${{ parameters.resourceGroup }}'
-            location: '${{ parameters.region }}'
-            csmFile: 'whitewaterfinder.infrastructure/keyvault/kvtemplate.json'
-            csmParametersFile: 'whitewaterfinder.infrastructure/keyvault/kvparameters.json'
-            overrideParameters: '-tenantId "${{ parameters.tenant }}" -adminId "${{ parameters.adminId }}" -kvName "${{ parameters.resourceGroup }}"'     
+
 
               
         - task: AzureResourceGroupDeployment@2
@@ -177,6 +169,16 @@ stages:
             csmFile: 'whitewaterfinder.infrastructure/communications/communicationdeploy.json'
             csmParametersFile: 'whitewaterfinder.infrastructure/communications/communicationdeployparams.json'
             overrideParameters: '-password "$(sendgridpassword)" -email "${{ parameters.adminEmail }}" -website "$(adminwebsite)"'
+
+        - task: AzureResourceGroupDeployment@2
+          displayName: 'provision AKV'
+          inputs:
+            azureSubscription: '${{ parameters.principal }}'
+            resourceGroupName: '${{ parameters.resourceGroup }}'
+            location: '${{ parameters.region }}'
+            csmFile: 'whitewaterfinder.infrastructure/keyvault/kvtemplate.json'
+            csmParametersFile: 'whitewaterfinder.infrastructure/keyvault/kvparameters.json'
+            overrideParameters: '-tenantId "${{ parameters.tenant }}" -adminId "${{ parameters.adminId }}" -kvName "${{ parameters.resourceGroup }}"'                 
 
         - task: AzureResourceGroupDeployment@2
           displayName: 'provision static web app'

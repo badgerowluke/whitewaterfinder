@@ -290,5 +290,10 @@
         }
     ],
 
-    "outputs":{ }
+    "outputs":{ 
+        "subkey" : {
+            "type": "string",
+            "value": "[reference(resourceId('Microsoft.ApiManagement/service/subscriptions', parameters('apimName'), 'master'), '2019-01-01').primaryKey]"
+        }
+    }
 }
