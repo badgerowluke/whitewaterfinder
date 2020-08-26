@@ -11,10 +11,15 @@
         },
         "tenantId": { "type": "string" }, 
         "adminId": { "type": "string" },
-        "kvName": { "type": "string"},
-        "apimName": { "type": "string"}
+        "kvName": { "type": "string" },
+        "apimName": { "type": "string" },
+        "appName":{ "type": "string", "defaultValue" : "paddle-finder" }
     }, 
-    "variables":{},
+    "variables":{
+        "riversAppId": "[resourceId('Microsoft.Web/sites', parameters('appName'))]",
+        "usersAppId": "[resourceId('Microsoft.Web/sites', concat(parameters('appName'), '-preferences'))]",
+        "botFuncId": "[resourceId('Microsoft.Web/sites', concat(parameters('appName'), '-webster'))]"
+    },
     "resources": [
         {
             "type":"Microsoft.KeyVault/vaults",
@@ -86,6 +91,39 @@
             "properties": {
                 "value": "[reference(resourceId('Microsoft.ApiManagement/service/subscriptions', parameters('apimName'), 'master'), '2019-01-01').primaryKey]"
             }
-        }
+        },
+        {
+            "name": "[concat(parameters('kvName'),'riverfunckey')]",
+            "type": "Microsoft.KeyVault/vaults/secrets",
+            "apiVersion": "2016-10-01",
+            "dependsOn": [
+                "[resourceId('Microsoft.KeyVault/vaults', parameters('kvName') )]"
+            ],
+            "properties": {
+                "value": "[listkeys(concat(variables('riversAppId'), '/host/default'), '2018-11-01').functionKeys.default]" 
+            }
+        },
+        {
+            "name": "[concat(parameters('kvName'),'preferencefunckey')]",
+            "type": "Microsoft.KeyVault/vaults/secrets",
+            "apiVersion": "2016-10-01",
+            "dependsOn": [
+                "[resourceId('Microsoft.KeyVault/vaults', parameters('kvName') )]"
+            ],
+            "properties": {
+                "value": "[listkeys(concat(variables('usersAppId'), '/host/default'), '2018-11-01').functionKeys.default]" 
+            }
+        },
+        {
+            "name": "[concat(parameters('kvName'),'botfunckey')]",
+            "type": "Microsoft.KeyVault/vaults/secrets",
+            "apiVersion": "2016-10-01",
+            "dependsOn": [
+                "[resourceId('Microsoft.KeyVault/vaults', parameters('kvName') )]"
+            ],
+            "properties": {
+                "value": "[listkeys(concat(variables('botFuncId'), '/host/default'), '2018-11-01').functionKeys.default]"
+            }
+        }       
     ]
 }
