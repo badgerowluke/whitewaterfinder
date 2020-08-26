@@ -93,7 +93,7 @@
             }
         },
         {
-            "name": "[concat(parameters('kvName'),'riverfunckey')]",
+            "name": "[concat(parameters('kvName'),'/riverfunckey')]",
             "type": "Microsoft.KeyVault/vaults/secrets",
             "apiVersion": "2016-10-01",
             "dependsOn": [
@@ -104,7 +104,7 @@
             }
         },
         {
-            "name": "[concat(parameters('kvName'),'preferencefunckey')]",
+            "name": "[concat(parameters('kvName'),'/preferencefunckey')]",
             "type": "Microsoft.KeyVault/vaults/secrets",
             "apiVersion": "2016-10-01",
             "dependsOn": [
@@ -115,7 +115,7 @@
             }
         },
         {
-            "name": "[concat(parameters('kvName'),'botfunckey')]",
+            "name": "[concat(parameters('kvName'),'/botfunckey')]",
             "type": "Microsoft.KeyVault/vaults/secrets",
             "apiVersion": "2016-10-01",
             "dependsOn": [
