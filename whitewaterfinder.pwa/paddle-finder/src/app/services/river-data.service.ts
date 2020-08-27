@@ -19,15 +19,15 @@ export class RiverDataService {
 
         
         if(!partialName) {
-            return this.http.get<River[]>(environment.baseUrl + "/Rivers/rivers", {headers: this.headers} ).toPromise();
+            return this.http.get<River[]>(environment.apiUrl + "/Rivers/rivers", {headers: this.headers} ).toPromise();
 
         } else {
-            return this.http.get<River[]>(environment.baseUrl + '/Rivers/rivers?name=' + partialName, {headers: this.headers}).toPromise();
+            return this.http.get<River[]>(environment.apiUrl + '/Rivers/rivers?name=' + partialName, {headers: this.headers}).toPromise();
 
         }
     }
     getRiverDetails: (riverCode: string) => Promise<River> = (riverCode: string) => {
-        return this.http.get<River>(environment.baseUrl + '/Rivers/rivers/details/' + riverCode, {headers: this.headers}).toPromise();
+        return this.http.get<River>(environment.apiUrl + '/Rivers/details/' + riverCode, {headers: this.headers}).toPromise();
 
     }
 }

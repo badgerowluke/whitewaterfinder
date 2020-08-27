@@ -38,15 +38,15 @@ namespace whitewaterfinder.api
         [OpenApiResponseBody(System.Net.HttpStatusCode.InternalServerError, "application/json", typeof(string))]
         [OpenApiResponseBody(System.Net.HttpStatusCode.BadRequest, "application/json", typeof(string))]        
         public async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "rivers/ByState")] HttpRequest req,
-            ILogger log)
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "rivers/{state}")] HttpRequest req,
+            string state, ILogger log)
         {
             try
             {
                 string name = req.Query["state"];
 
 
-                var rivers = await _service.GetRivers(name);
+                var rivers = await _service.GetRivers(state);
 
                 return rivers != null
                     ? (ActionResult)new OkObjectResult(rivers)

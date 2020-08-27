@@ -1,6 +1,6 @@
 {
     "/api/users/*" : {
-        "target": "http://localhost:7071",
+        "target": "http://localhost:7072",
         "secure":false,
         "logLevel":"debug",
         "changeOrigin":false
