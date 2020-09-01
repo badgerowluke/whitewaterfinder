@@ -2,6 +2,7 @@ param (
     [Parameter(Mandatory=$true)] $resourceGroup,
     [Parameter(Mandatory=$true)] $appName,
     [Parameter(Mandatory=$true)] $functionName,
+    [Parameter(Mandatory=$true)] $sendgridKey
 )
 
 Import-Module ..\whitewaterfinder.infrastructure\modules\kudu-security.psm1

@@ -12,7 +12,7 @@ namespace whitewaterfinder.Core
     public interface IRiverService 
     {
         Task<IEnumerable<River>> GetRivers(string partName);
-        River GetRiverDetails(string riverCode);
+        Task<River> GetRiverDetails(string riverCode);
     }
     public class RiverService : StateData, IRiverService
     {
@@ -42,10 +42,10 @@ namespace whitewaterfinder.Core
             }
         }
         
-        public River GetRiverDetails(string riverCode)
+        public async Task<River> GetRiverDetails(string riverCode)
         {
             detail.Register(_config);
-            return detail.GetRiverDetailsAsync(riverCode).Result;
+            return await detail.GetRiverDetailsAsync(riverCode);
         }
 
     }

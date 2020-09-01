@@ -44,12 +44,7 @@ namespace whitewaterfinder.api
             try
             {
 
-
-                string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-                dynamic data = JsonConvert.DeserializeObject(requestBody);
-
-
-                var riverDetails = _service.GetRiverDetails(riverCode);
+                var riverDetails = await _service.GetRiverDetails(riverCode);
 
                 return !string.IsNullOrEmpty(riverCode)
                     ? (ActionResult)new OkObjectResult(riverDetails)
