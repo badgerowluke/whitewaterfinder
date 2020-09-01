@@ -2,6 +2,7 @@ param (
     [Parameter(Mandatory=$true)] $resourceGroup,
     [Parameter(Mandatory=$true)] $appName,
     [Parameter(Mandatory=$true)] $functionName,
+    [Parameter(Mandatory=$true)] $emailAddress,
     [Parameter(Mandatory=$true)] $sendgridKey
 )
 
@@ -9,15 +10,15 @@ Import-Module ..\whitewaterfinder.infrastructure\modules\kudu-security.psm1
 Import-Module ..\whitewaterfinder.infrastructure\modules\azure-functions.psm1 
 
 
-$creds = Get-KuduCredentials "paddle-finder-preferences" "waterfinder"
+$creds = Get-KuduCredentials $appName $resourceGroup
 
 
 
-$key = Set-NewKey "paddle-finder-preferences" "PostUserPreferences" "luke.badgerow@gmail.com" $creds
+$key = Set-NewKey $appName $functionName $emailAddress $creds
 
 $value = $key.value
 
-$msg = "your access key for the CirrusSense telemetry API is: $value"
+$msg = "your access key for $functionName : $value"
 
 Write-Host $msg
 
@@ -34,8 +35,8 @@ $Body = @{
         @{
             "to"      = @(
                 @{
-                    "email" = "badgerow.luke@gmail.com"
-                    "name"  = "Luke"
+                    "email" = $emalAddress
+
                 }
             )
             "subject" = " example "
@@ -48,8 +49,8 @@ $Body = @{
         }
     )
     "from"             = @{
-        "email" = "keys-no-reply@paddle-finder.com"
-        "name"  = "Paddle-Finder Keys"
+        "email" = "keys-no-reply@transducersdirect.com"
+        "name"  = "Tr"
     }
 }
 
