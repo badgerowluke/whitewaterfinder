@@ -20,5 +20,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\whitewaterfinder.Core.Admin\whitewaterfinder.Core.Admin.csproj" />
+    <ProjectReference Include="..\whitewaterfinder.BusinessObjects\whitewaterfinder.BusinessObjects.csproj" />
   </ItemGroup>
 </Project>

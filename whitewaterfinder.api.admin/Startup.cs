@@ -6,6 +6,7 @@ using Microsoft.Extensions.Http;
 using System;
 
 using whitewaterfinder.Core.Admin;
+using whitewaterfinder.BusinessObjects.Configuration;
 
 
 [assembly: FunctionsStartup(typeof(whitewaterfinder.api.admin.Startup))]
@@ -21,6 +22,10 @@ namespace whitewaterfinder.api.admin
                 .AddJsonFile("local.settings.json", optional: true, reloadOnChange: true)
                 .AddEnvironmentVariables()
                 .Build();
+
+                var myConfig = config.Get<AdminFunctionsConfig>();
+
+                builder.Services.AddSingleton<AdminFunctionsConfig>(sp => myConfig);
                 
                 builder.Services.AddHttpClient();
                 builder.Services.AddSingleton<IFunctionKeyManagementUtility, FunctionKeyManagementUtility>();

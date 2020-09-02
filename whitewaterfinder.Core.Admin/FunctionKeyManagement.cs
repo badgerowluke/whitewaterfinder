@@ -2,13 +2,21 @@ using System.Threading.Tasks;
 using Microsoft.IdentityModel.Clients.ActiveDirectory;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System;
+using System.Text;
+using System.Collections.Generic;
+using Newtonsoft.Json.Linq;
+
+
+using whitewaterfinder.BusinessObjects.Configuration;
 
 namespace whitewaterfinder.Core.Admin
 {
     public interface IFunctionKeyManagementUtility
     {
-        Task<string> GetAccessToken(string clientId, string clientSecret, string azureTenantId);
+        Task<string> GetAADAccessToken();
 
+        Task<string> GetFunctionAdminToken(string appName, string aadToken);
         Task<string> GetNewFunctionKey(string keyName, string accessToken, string appName, string functionName);
 
     }
@@ -17,23 +25,58 @@ namespace whitewaterfinder.Core.Admin
     {
         private readonly HttpClient _client;
 
-        public FunctionKeyManagementUtility(HttpClient client)
+        private readonly AdminFunctionsConfig _config;
+
+        private const string functAdminTokenUrl = "https://management.azure.com/subscriptions/{0}/resourceGroups/{1}/providers/Microsoft.Web/sites/{2}/functions/admin/token?api-version=2019-08-01&Author";
+        private const string funcManagementUrl = "https://management.core.windows.net/subscriptions/{0}/resourceGroups/{1}/providers/Microsoft.Web/sites/{2}/functions/{3}/keys/{4}?api-version=2019-08-01";
+
+        public FunctionKeyManagementUtility(HttpClient client, AdminFunctionsConfig config)
         {
             _client = client;
+            _config = config;
         }
 
         private const string msftLoginUrl = "https://login.microsoftonline.com";
+        // private const string msftLoginUrl = "https://management.core.windows.net";
 
         ///<summary>
         /// returns an access token from Azure Active Directory 
         ///</summary>
-        public async Task<string> GetAccessToken(string clientId, string clientSecret, string azureTenantId)
+        public async Task<string> GetAADAccessToken()
         {
-            var context = new AuthenticationContext($"{msftLoginUrl}/{azureTenantId}", new TokenCache());
-            var cred = new ClientCredential(clientId, clientSecret);
-            var token = await context.AcquireTokenAsync(clientId, cred);
-            return token.AccessToken;
+            var token = string.Empty;
+            using(var request = new HttpRequestMessage(HttpMethod.Post, $"{msftLoginUrl}/{_config.TenantId}/oauth2/token"))
+            {
+                var kvPairs = new List<KeyValuePair<string,string>>();
+                kvPairs.Add(new KeyValuePair<string,string>("client_id", _config.SpClientId));
+                kvPairs.Add(new KeyValuePair<string,string>("client_secret", _config.SpSecret));
+                kvPairs.Add(new KeyValuePair<string,string>("grant_type", "client_credentials"));
+                kvPairs.Add(new KeyValuePair<string,string>("Resource", "https://management.core.windows.net"));
 
+                request.Content = new FormUrlEncodedContent(kvPairs);
+                var response = await _client.SendAsync(request);
+
+                var content = JObject.Parse(await response.Content.ReadAsStringAsync());
+                token = content["access_token"].ToString();
+
+            }
+            return token;
+
+        }
+
+        public async Task<string> GetFunctionAdminToken(string appName, string aadToken)
+        {
+            var  token = string.Empty;
+            var url = string.Format(functAdminTokenUrl, _config.Subscription, _config.ResourceGroup, appName);
+            using (var request = new HttpRequestMessage(HttpMethod.Get, url))
+            {
+                _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", aadToken);
+                var response = await _client.SendAsync(request);
+                token = await response.Content.ReadAsStringAsync();
+                token = token.Replace("\"", "");
+
+            }
+            return token;
         }
 
         ///<summary>
@@ -43,11 +86,13 @@ namespace whitewaterfinder.Core.Admin
         {
             var key = string.Empty;
             var funcToken = string.Empty;
+
             using(var request = new HttpRequestMessage(HttpMethod.Post, $"https://{appName}.azurewebsites.net/admin/functions/{functionName}/keys/{keyName}"))
             {
                 _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
                 var response = await _client.SendAsync(request);
-
+                var content = JObject.Parse(await response.Content.ReadAsStringAsync());
+                key = content["value"].ToString();
             }
 
 

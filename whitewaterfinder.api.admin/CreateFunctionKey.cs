@@ -10,11 +10,13 @@ using Newtonsoft.Json;
 
 using Aliencube.AzureFunctions.Extensions.OpenApi.Attributes;
 
+using whitewaterfinder.Core.Admin;
+
 namespace whitewaterfinder.api.admin
 {
     public class CreateFunctionKey
     {
-        private readonly IFUnctionKeyManagementUtility _util;
+        private readonly IFunctionKeyManagementUtility _util;
         public CreateFunctionKey(IFunctionKeyManagementUtility util)
         {
             _util = util;
@@ -32,9 +34,10 @@ namespace whitewaterfinder.api.admin
             string keyName,
             ILogger log)
         {
-            var token = await _util.GetAccessToken("","", "");
+            var token = await _util.GetAADAccessToken();
+            var funcToken = await _util.GetFunctionAdminToken(appName, token);
 
-            var funcKey = await GetNewFunctionKey(keyName, token, appName, funcName);
+            var funcKey = await _util.GetNewFunctionKey(keyName, funcToken, appName, funcName);
 
 
 
