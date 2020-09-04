@@ -21,19 +21,21 @@ namespace whitewaterfinder.api.admin
         {
             _util = util;
         }
-
+        
         [FunctionName("CreateFunctionKey")]
-        [OpenApiOperation("FunctionKeys")]
+        [OpenApiOperation("FunctionKeys", "Function Keys", Summary="Generates an Azure Function Access Key", Description= "Generates an Azure Function Access Key")]
         [OpenApiResponseBody(System.Net.HttpStatusCode.NoContent, "application/json", typeof(string))]
         [OpenApiResponseBody(System.Net.HttpStatusCode.InternalServerError, "application/json", typeof(string))]
         [OpenApiResponseBody(System.Net.HttpStatusCode.BadRequest, "application/json", typeof(string))]    
         public async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "accesskeys/functions/{appName}/{funcName}/{keyName}")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "accesskeys/functions/{appName}/{keyName}")] HttpRequest req,
             string appName,
-            string funcName,
+
             string keyName,
             ILogger log)
         {
+            var funcName = req.Query["function"];
+            
             var token = await _util.GetAADAccessToken();
             var funcToken = await _util.GetFunctionAdminToken(appName, token);
 
@@ -43,7 +45,7 @@ namespace whitewaterfinder.api.admin
 
             string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
             dynamic data = JsonConvert.DeserializeObject(requestBody);
-            return new OkObjectResult("");
+            return new OkObjectResult(funcKey);
         }
     }
 }

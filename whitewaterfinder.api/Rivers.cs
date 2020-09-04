@@ -28,8 +28,10 @@ namespace whitewaterfinder.api
 
 
         }
+
+        //TODO: update documentation, details here: https://github.com/aliencube/AzureFunctions.Extensions/blob/dev/docs/openapi-core.md
         [FunctionName("Rivers")]
-        [OpenApiOperation("Rivers")]
+        [OpenApiOperation("Rivers", "Rivers")]
         [OpenApiParameter("name", In=ParameterLocation.Query, Required=true, Description="name of the river  you'd like to find", Type=typeof(string))]
         [OpenApiResponseBody(HttpStatusCode.OK, "application/json", typeof(IEnumerable<River>))]
         [OpenApiResponseBody(System.Net.HttpStatusCode.NoContent, "application/json", typeof(string))]

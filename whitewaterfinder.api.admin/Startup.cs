@@ -29,6 +29,7 @@ namespace whitewaterfinder.api.admin
                 
                 builder.Services.AddHttpClient();
                 builder.Services.AddSingleton<IFunctionKeyManagementUtility, FunctionKeyManagementUtility>();
+                builder.Services.AddSingleton<IAppSettings>(new AppSettings(config));
         }
     }
 
