@@ -36,8 +36,9 @@ namespace whitewaterfinder.Repo.Rivers
             + riverCode +"&period=P1D&parameterCd=00065,00060&siteStatus=all");
 
             
-            using(HttpResponseMessage outstuff = await _client.SendAsync(request)){
-                var vals = outstuff.Content.ReadAsStringAsync().Result;
+            using(HttpResponseMessage outstuff = await _client.SendAsync(request))
+            {
+                var vals = await outstuff.Content.ReadAsStringAsync();
                 USGSRiverResponse obj = JsonConvert.DeserializeObject<USGSRiverResponse>(vals);
                 
                 if(obj.Value.TimeSeries.Length > 0)
