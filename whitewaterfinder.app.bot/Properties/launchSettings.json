@@ -7,10 +7,10 @@
     "whitewaterfinder.app.bot": {
       "commandName": "Project",
       "launchBrowser": true,
-      "applicationUrl": "http://localhost:34251",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
-      }
+      },
+      "applicationUrl": "http://localhost:51371"
     }
   }
 }
