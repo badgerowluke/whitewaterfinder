@@ -50,10 +50,10 @@ namespace whitewaterfinder.Core.test.RiverServiceTests
 
         }
         [Fact]
-        public void ReturnRiverDetails()
+        public async Task ReturnRiverDetails()
         {
             MockDetailRepo.Setup(m => m.GetRiverDetailsAsync(It.IsAny<string>())).ReturnsAsync(new River());
-            var vals = service.GetRiverDetails("4444444");
+            var vals = await service.GetRiverDetails("4444444");
             Assert.IsType<River>(vals);
         }
 
