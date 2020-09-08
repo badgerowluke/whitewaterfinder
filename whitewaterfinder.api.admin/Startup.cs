@@ -8,6 +8,8 @@ using System;
 using whitewaterfinder.Core.Admin;
 using whitewaterfinder.BusinessObjects.Configuration;
 
+using SendGrid.Extensions.DependencyInjection;
+
 
 [assembly: FunctionsStartup(typeof(whitewaterfinder.api.admin.Startup))]
 
@@ -23,13 +25,15 @@ namespace whitewaterfinder.api.admin
                 .AddEnvironmentVariables()
                 .Build();
 
-                var myConfig = config.Get<AdminFunctionsConfig>();
+            var myConfig = config.Get<AdminFunctionsConfig>();
 
-                builder.Services.AddSingleton<AdminFunctionsConfig>(sp => myConfig);
+            builder.Services.AddSingleton<AdminFunctionsConfig>(sp => myConfig);
                 
-                builder.Services.AddHttpClient();
-                builder.Services.AddSingleton<IFunctionKeyManagementUtility, FunctionKeyManagementUtility>();
-                builder.Services.AddSingleton<IAppSettings>(new AppSettings(config));
+            builder.Services.AddHttpClient();
+            builder.Services.AddSingleton<IFunctionKeyManagementService, FunctionKeyManagementService>();
+            builder.Services.AddSingleton<IAppSettings>(new AppSettings(config));
+
+            builder.Services.AddSendGrid(options => options.ApiKey = config["sendGridApiKey"]);
         }
     }
 

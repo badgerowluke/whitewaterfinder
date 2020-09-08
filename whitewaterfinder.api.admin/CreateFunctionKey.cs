@@ -16,8 +16,8 @@ namespace whitewaterfinder.api.admin
 {
     public class CreateFunctionKey
     {
-        private readonly IFunctionKeyManagementUtility _util;
-        public CreateFunctionKey(IFunctionKeyManagementUtility util)
+        private readonly IFunctionKeyManagementService _util;
+        public CreateFunctionKey(IFunctionKeyManagementService util)
         {
             _util = util;
         }

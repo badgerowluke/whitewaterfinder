@@ -27,10 +27,10 @@ export class RiverService {
         return pref;
     }
     
-    postToStorage = async (myQueueItem:string): Promise<void> =>  {
+    postToStorage = async (myQueueItem:string): Promise<void> => {
         try {
             let doesExist: boolean;
-            this.service.createTableIfNotExists("UserPreferences", (error, result) =>{
+            this.service.createTableIfNotExists("UserPreferences", (error, result) => {
                 if(error) {
                     console.log(error);
                     throw new Error("oops");
@@ -41,7 +41,7 @@ export class RiverService {
             let pref = this.generateEntity(myQueueItem);
     
     
-            this.service.insertOrMergeEntity("UserPreferences",pref, (error, result, response) =>{
+            this.service.insertOrMergeEntity("UserPreferences",pref, (error, result, response) => {
                 if(error) {
                     console.log(error);
                     throw new Error("uh-oh");
@@ -54,14 +54,14 @@ export class RiverService {
 
     }
 
-    getFromStorage  = async (name:string): Promise<any> =>{
+    getFromStorage  = async (name:string): Promise<any> => {
         var query = new TableQuery()
         .where('PartitionKey eq ?', name);
 
 
         var continuation = null;
-        return new Promise(async (resolve, reject) =>{
-            await this.service.queryEntities("UserPreferences", query, continuation, (error, result, response) =>{
+        return new Promise(async (resolve, reject) => {
+            await this.service.queryEntities("UserPreferences", query, continuation, (error, result, response) => {
                 if(error) {
                     reject(error);
                 }
@@ -72,9 +72,9 @@ export class RiverService {
         })
     }
 
-    removeFromStorage = async (myQueueItem:string): Promise<any> =>{
+    removeFromStorage = async (myQueueItem:string): Promise<any> => {
         let pref = this.generateEntity(myQueueItem);
-        this.service.deleteEntity("UserPreferences",pref, (error) =>{
+        this.service.deleteEntity("UserPreferences",pref, (error) => {
             if(error) {
                 throw new Error("uh-oh")
             }
