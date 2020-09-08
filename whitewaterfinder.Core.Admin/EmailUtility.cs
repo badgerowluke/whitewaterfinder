@@ -8,16 +8,21 @@ namespace whitewaterfinder.Core.Admin
     }
     public class EmailUtility : IEmailUtility
     {
-        public async Task Send()
+        private readonly ISendGridClient _sendGrid;
+
+        public EmailUtility(ISendGridClient grid)
         {
-            var key = "";
-            var client = new SendGridClient(key);
+            _sendGrid = grid;
+        }
+        public async Task SendAsync(string txtContent, string htmlContent)
+        {
+
             var from= new EmailAddress("no-reply@paddle-finder.com", "Paddle-Finder");
             var subject = "Test Message";
             var to = new EmailAddress("badgerow.luke@gmail.com", "Luke Badgerow");
-            var txtContent = "";
-            var htmlContent = "";
+            //I'm not really sure how I feel about having this static helper here...
             var msg = MailHelper.CreateSingleEmail(from, to, subject, txtContent, htmlContent);
+            await _sendGrid.SendEmailAsync(msg);
         }
         
     }
