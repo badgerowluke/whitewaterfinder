@@ -76,7 +76,7 @@
                 "method": "GET",
                 "urlTemplate": "/details/{riverCode}",
                 "templateParameters": [{
-                     "name": "id",
+                     "name": "riverCode",
                      "type": "string"
                 }],
                 "responses": [],
@@ -193,7 +193,12 @@
                 "displayName": "GetUserPreferences",
                 "method": "GET",
                 "urlTemplate": "users/{subId}",
-                "templateParameters": [],
+                "templateParameters": [
+                    {
+                        "name": "subId",
+                        "type": "string"
+                    }
+                ],
                 "responses": []
             }            
         },  
