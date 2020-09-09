@@ -74,7 +74,7 @@
             "properties": {
                 "displayName": "RiverDetails",
                 "method": "GET",
-                "urlTemplate": "/details/{id}",
+                "urlTemplate": "/details/{riverCode}",
                 "templateParameters": [{
                      "name": "id",
                      "type": "string"
@@ -140,7 +140,7 @@
             "properties": {
                 "displayName": "RiversByState",
                 "method": "GET",
-                "urlTemplate": "/{state}",
+                "urlTemplate": "rivers/{state}",
                 "templateParameters": [{
                     "name": "state",
                     "type": "string"
@@ -192,7 +192,7 @@
             "properties": {
                 "displayName": "GetUserPreferences",
                 "method": "GET",
-                "urlTemplate": "/",
+                "urlTemplate": "users/{subId}",
                 "templateParameters": [],
                 "responses": []
             }            
@@ -269,7 +269,7 @@
             "properties": {
                 "displayName": "messages",
                 "method":"POST",
-                "urlTemplate": "/messages",
+                "urlTemplate": "messages",
                 "templateParameters": [],
                 "responses": []                
             }
