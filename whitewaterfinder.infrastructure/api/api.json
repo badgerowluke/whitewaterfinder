@@ -238,7 +238,8 @@
             "hostNamesDisabled": false,
             "containerSize": 1536,
             "dailyMemoryTimeQuota": 0,
-            "httpsOnly": true,   
+            "httpsOnly": true,  
+            "appOffline": true, 
             "siteConfig": {
                 "appSettings":[
                     {
@@ -256,7 +257,11 @@
                     {
                         "name": "FUNCTIONS_EXTENSION_VERSION",
                         "value": "~2"
-                    } 
+                    },
+                    {
+                        "name": "WEBSITE_READONLY_APP",
+                        "value": "1"
+                    }
 
                 ]
             }
