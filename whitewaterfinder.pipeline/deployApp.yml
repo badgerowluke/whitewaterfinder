@@ -32,6 +32,7 @@ stages:
   - job: 'backend_app_deployment'
     pool:
       vmImage: 'windows-latest'
+    continueOnError: true
 
     steps:
     - template: 'downloadAndDeploy.yml'
