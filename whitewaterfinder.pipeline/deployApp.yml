@@ -60,6 +60,6 @@ stages:
       parameters:
         artifact: adminfunc
         appType: app
-        principal: '${{ prameters.principal }}'
+        principal: '${{ parameters.principal }}'
         appName: '{{ parameters.adminApp }}'
                
