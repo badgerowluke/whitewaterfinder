@@ -1,8 +1,9 @@
 <policies>
     <inbound>
         <base />
-        <set-backend-service base-url="https://{{functionApp}}.azurewebsites.net/api/{{functionName}}" />        
-        <rewrite-uri template="?" copy-unmatched-params="true" />
+        <set-backend-service base-url="https://{{functionApp}}.azurewebsites.net/api/" />        
+        <rewrite-uri template="{{route}}" copy-unmatched-params="true" />
+
 
         <set-header name="x-functions-key" exists-action="override">
             <value>{{funcCode}}</value>

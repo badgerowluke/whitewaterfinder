@@ -17,6 +17,8 @@ $functionGetInbound = Get-Content $fullPath\apim-policy\FunctionGetPolicy.xml -R
 $rg = $resourceGroup
 
 Write-Output "Loop Function Apps"
+
+
 foreach($name in $apps.GetEnumerator())
 {
     $creds = Get-KuduCredentials $name $rg
@@ -36,9 +38,19 @@ foreach($name in $apps.GetEnumerator())
                 try 
                 {
                     $key = Get-FunctionKey $name $func.name $creds
+                    Write-Output $func.config.bindings[0].route
+
+                    $route = $func.config.bindings[0].route
+
+
                     $newInboundPolicy = $functionGetInbound.Replace("{{funcCode}}", $key )
                     $newInboundPolicy = $newInboundPolicy.Replace("{{functionName}}", $func.name)
                     $newInboundPolicy = $newInboundPolicy.Replace("{{functionApp}}", $name)
+                    $newInboundPolicy = $newInboundPolicy.Replace("{{route}}", $route)
+
+
+                    $newInboundPolicy = $newInboundPolicy.Replace("{{invokeUrl}}", $func.invoke_url_template)
+
 
                     Set-OperationPolicy $rg $func.name $name $newInboundPolicy
                     $completed = $true
