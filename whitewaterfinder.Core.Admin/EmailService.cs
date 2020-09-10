@@ -29,9 +29,10 @@ namespace whitewaterfinder.Core.Admin
             _repo = repo;
         }
         ///<summary>
-        ///
+        ///cast/convert/generate an official SendGridMessage
         ///</summary>
         ///<param name="message"></param>
+        ///<returns>A SendGridMessage representing the internal message type</returns>
         public SendGridMessage CreateMessage(WaterfinderEmailMessage message)
         {
 
@@ -45,7 +46,7 @@ namespace whitewaterfinder.Core.Admin
         }
 
         ///<summary>
-        ///
+        ///write an internal message to a Processing queue
         ///</summary>
         ///<param name="message"></param>
         public async Task WriteMessageToQueue(WaterfinderEmailMessage message)
@@ -54,7 +55,7 @@ namespace whitewaterfinder.Core.Admin
         }
 
         ///<summary>
-        ///
+        ///use the sendgrid client to fire off the email message
         ///</summary>
         public async Task SendMessageAsync(SendGridMessage message)
         {
