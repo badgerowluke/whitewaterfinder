@@ -5,6 +5,8 @@
         "adminEmail": { "value": "badgerow.luke@outlook.com" },
         "orgName": { "value": "burning-river-geospatial-solutions" },
         "preferencesApp": { "value": "paddle-finder-preferences" },
-        "appName": { "value": "paddle-finder" }
+        "appName": { "value": "paddle-finder" },
+        "botName": { "value": "paddle-finder-webster" },
+        "adminName": { "value": "paddle-finder-admin" }
     }
 }

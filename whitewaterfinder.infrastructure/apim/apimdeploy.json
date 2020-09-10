@@ -14,7 +14,8 @@
         "orgName": { "type": "string", "defaultValue": "burning-river-geospatial-solutions" },
         "preferencesApp" : { "type" : "string" , "defaultValue" : "paddle-finder-preferences" },
         "appName": { "type": "string", "defaultValue" : "paddle-finder" },
-        "botName": { "type": "string", "defaultValue": "paddle-finder-webster" }
+        "botName": { "type": "string", "defaultValue": "paddle-finder-webster" },
+        "adminName": { "type": "string", "defaultValue": "paddle-finder-admin"}
     },
     "resources": [
         {
@@ -58,7 +59,7 @@
                 "[resourceId('Microsoft.ApiManagement/service', parameters('apimName'))]"
             ],
             "properties": {
-                "value": "<policies>\r\n  <inbound>\r\n    <cors allow-credentials=\"true\">\r\n      <allowed-origins>\r\n        <origin>http://localhost:5000</origin>\r\n        <origin>http://localhost:3000</origin>\r\n        <origin>http://localhost:4200</origin>\r\n        <origin>https://proud-grass-0d8a22710.azurestaticapps.net</origin>\r\n        <origin>http://paddle-finder.com</origin>\r\n        <origin>https://paddle-finder.com</origin>\r\n      </allowed-origins>\r\n      <allowed-methods preflight-result-max-age=\"300\">\r\n        <method>GET</method>\r\n        <method>POST</method>\r\n        <method>DELETE</method>\r\n        <method>OPTIONS</method>\r\n      </allowed-methods>\r\n      <allowed-headers>\r\n        <header>content-type</header>\r\n        <header>accept</header>\r\n      </allowed-headers>\r\n    </cors>\r\n  </inbound>\r\n  <backend>\r\n    <forward-request />\r\n  </backend>\r\n  <outbound>\r\n    <set-header name=\"Request-Id\" exists-action=\"override\">\r\n      <value>@(context.Response.Headers.GetValueOrDefault(\"x-ms-request-id\"))</value>\r\n    </set-header>\r\n  </outbound>\r\n  <on-error />\r\n</policies>",
+                "value": "<policies>\r\n  <inbound>\r\n    <cors allow-credentials=\"true\">\r\n      <allowed-origins>\r\n        <origin>http://localhost:5000</origin>\r\n        <origin>http://localhost:3000</origin>\r\n        <origin>http://localhost:4200</origin>\r\n        <origin>https://orange-bush-089d46710.azurestaticapps.net</origin>\r\n        <origin>http://paddle-finder.com</origin>\r\n        <origin>https://paddle-finder.com</origin>\r\n      </allowed-origins>\r\n      <allowed-methods preflight-result-max-age=\"300\">\r\n        <method>GET</method>\r\n        <method>POST</method>\r\n        <method>DELETE</method>\r\n        <method>OPTIONS</method>\r\n      </allowed-methods>\r\n      <allowed-headers>\r\n        <header>content-type</header>\r\n        <header>accept</header>\r\n      </allowed-headers>\r\n    </cors>\r\n  </inbound>\r\n  <backend>\r\n    <forward-request />\r\n  </backend>\r\n  <outbound>\r\n    <set-header name=\"Request-Id\" exists-action=\"override\">\r\n      <value>@(context.Response.Headers.GetValueOrDefault(\"x-ms-request-id\"))</value>\r\n    </set-header>\r\n  </outbound>\r\n  <on-error />\r\n</policies>",
                 "format": "xml"
             }
         },
@@ -292,6 +293,67 @@
                 "value":"<policies></policies>",
                 "format":"xml"
             }          
+        },
+        {
+            "type":"Microsoft.ApiManagement/service/apis",
+            "apiVersion": "2019-01-01",
+            "name": "[concat(parameters('apimName'), '/', parameters('adminName'))]",
+            "dependsOn":[
+
+                "[resourceId('Microsoft.ApiManagement/service', parameters('apimName'))]"
+            ],
+            "properties":{
+                "displayName": "pfadmin",
+                "protocols": [
+                    "https"
+                ],
+                "path": "pfadmin",
+                "isCurrent": true,
+                "apiRevision": "1",
+                "serviceUrl": "[concat('https://', parameters('adminName'), '.azurewebsites.net/api')]"
+            }
+        },  
+        {
+            "type": "Microsoft.ApiManagement/service/apis/operations",
+            "apiVersion": "2019-01-01",
+            "name": "[concat(parameters('apimName'), '/pfadmin', '/functionkeys')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.ApiManagement/service/apis', parameters('apimName'), parameters('adminName'))]",
+                "[resourceId('Microsoft.ApiManagement/service', parameters('apimName'))]"
+            ],
+            "properties": {
+                "displayName": "functionkeys",
+                "method": "POST",
+                "urlTemplate": "functionkeys/{appName}/{keyName}",
+                "templateParameters": [
+                    {
+                        "name": "appName",
+                        "type": "string"
+                    },
+                    {
+                        "name": "keyName",
+                        "type": "string"
+                    }
+                ],
+                "responses":[]
+            }            
+        },
+        {
+            "type": "Microsoft.ApiManagement/service/apis/operations",
+            "apiVersion": "2019-01-01",
+            "name": "[concat(parameters('apimName'), '/pfadmin', '/email')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.ApiManagement/service/apis', parameters('apimName'), parameters('adminName'))]",
+                "[resourceId('Microsoft.ApiManagement/service', parameters('apimName'))]"
+            ],
+            "properties": {
+                "displayName": "email",
+                "method": "POST",
+                "urlTemplate": "email",
+                "templateParameters": [],
+                "responses":[]
+            }            
+
         }
     ],
 
