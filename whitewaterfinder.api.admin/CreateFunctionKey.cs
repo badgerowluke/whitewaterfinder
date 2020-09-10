@@ -6,6 +6,7 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 
 using Aliencube.AzureFunctions.Extensions.OpenApi.Attributes;
@@ -24,11 +25,13 @@ namespace whitewaterfinder.api.admin
         
         [FunctionName("CreateFunctionKey")]
         [OpenApiOperation("FunctionKeys", "Function Keys", Summary="Generates an Azure Function Access Key", Description= "Generates an Azure Function Access Key")]
+        [OpenApiParameter("appName", In=ParameterLocation.Path, Required=true, Type=typeof(string))]
+        [OpenApiParameter("keyName", In=ParameterLocation.Path, Required=true, Type=typeof(string))]
         [OpenApiResponseBody(System.Net.HttpStatusCode.NoContent, "application/json", typeof(string))]
         [OpenApiResponseBody(System.Net.HttpStatusCode.InternalServerError, "application/json", typeof(string))]
         [OpenApiResponseBody(System.Net.HttpStatusCode.BadRequest, "application/json", typeof(string))]    
         public async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "accesskeys/functions/{appName}/{keyName}")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "pfadmin/accesskeys/functions/{appName}/{keyName}")] HttpRequest req,
             string appName,
 
             string keyName,
