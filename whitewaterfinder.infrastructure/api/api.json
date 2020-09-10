@@ -17,14 +17,16 @@
     "azureSearchKey": {"type": "string" },
     "baseUSGSUrl": { "type": "string" },
     "searchUrl": { "type": "string" },
-    "botName": { "type": "string", "defaultValue": "paddle-finder-webster" }
+    "botName": { "type": "string", "defaultValue": "paddle-finder-webster" },
+    "adminName": { "type": "string", "defaultValue": "paddle-finder-admin" }
   },
   "variables": {
 
     "storageAccountId": "[concat(resourceGroup().id,'/providers/Microsoft.Storage/storageAccounts/', parameters('storageAccountName'))]",
     "riversAppId": "[resourceId('Microsoft.Web/sites', parameters('appName'))]",
     "usersAppId": "[resourceId('Microsoft.Web/sites', parameters('preferencesApp'))]",
-    "botFuncId": "[resourceId('Microsoft.Web/sites', parameters('botName'))]"
+    "botFuncId": "[resourceId('Microsoft.Web/sites', parameters('botName'))]",
+    "adminFuncId": "[resourceId('Microsoft.Web/sites', parameters('adminName'))]"
   },
   "resources": [
     {
@@ -255,19 +257,90 @@
                         "value": "[toLower(parameters('botName'))]"
                     },                    
                     {
-                        "name": "FUNCTIONS_EXTENSION_VERSION",
-                        "value": "~2"
-                    },
-                    {
                         "name": "WEBSITE_READONLY_APP",
                         "value": "1"
-                    }
+                    },
+                    {
+                        "name": "FUNCTIONS_EXTENSION_VERSION",
+                        "value": "~3"
+                    },
+                    {
+                        "name": "FUNCTIONS_WORKER_RUNTIME",
+                        "value": "dotnet"
+                    }                   
 
                 ]
             }
         }
 
-    }    
+    },
+    {
+        "type":"Microsoft.Web/sites",
+        "apiVersion":"2016-08-01",
+        "name":"[parameters('adminName')]",
+        "location":"[parameters('location')]",
+        "dependsOn":[
+            "[resourceId('Microsoft.Web/serverfarms',parameters('appPlanName'))]"
+        ],
+        "kind":"functionapp",
+        "properties": {
+            "enabled": true,
+            "hostNameSSlStates":[
+                {
+                    "name":"[concat(parameters('adminName'), '.azurewebsites.net')]",
+                    "sslState":"Disabled",
+                    "hostType":"Standard"
+                },
+                {
+                    "name":"[concat(parameters('adminName'), '.scm.azurewebsites.net')]",
+                    "sslState":"Disabled",
+                    "hostType":"Repository"
+                }
+            ],
+            "serverFarmId":"[resourceId('Microsoft.Web/serverfarms',parameters('appPlanName'))]",
+            "reserved": false,
+            "scmSiteAlsoStopped": false,
+            "clientAffinityEnabled": false,
+            "clientCertEnabled": false,
+            "hostNamesDisabled": false,
+            "containerSize": 1536,
+            "dailyMemoryTimeQuota": 0,
+            "httpsOnly": false,
+            "siteConfig": {
+                "appSettings": [
+                    {
+                        "name": "blobStore",
+                        "value": "[concat('DefaultEndpointsProtocol=https;AccountName=',parameters('storageAccountName'),';AccountKey=',concat(listKeys(variables('storageAccountId'),'2015-05-01-preview').key1))]"
+                    },
+                    {
+                        "name": "AzureWebJobsStorage",
+                        "value": "[concat('DefaultEndpointsProtocol=https;AccountName=',parameters('storageAccountName'),';AccountKey=',concat(listKeys(variables('storageAccountId'),'2015-05-01-preview').key1))]"
+                    },
+                    {
+                        "name": "WEBSITE_CONTENTAZUREFILECONNECTIONSTRING",
+                        "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', parameters('storageAccountName'), ';AccountKey=', listKeys(variables('storageAccountid'),'2015-05-01-preview').key1)]"
+                    },
+                    {
+                        "name": "WEBSITE_CONTENTSHARE",
+                        "value": "[toLower(parameters('preferencesApp'))]"
+                    },                    
+                    {
+                        "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
+                        "value":"[reference(resourceId('microsoft.insights/components/', parameters('appName')), '2015-05-01').InstrumentationKey]"
+                    } ,
+                    {
+                        "name": "FUNCTIONS_EXTENSION_VERSION",
+                        "value": "~3"
+                    },
+                    {
+                        "name": "FUNCTIONS_WORKER_RUNTIME",
+                        "value": "dotnet"
+                    }               
+                ]
+            }                     
+
+        } 
+    } 
 
     
   ],
@@ -283,6 +356,12 @@
       "botKey": {
           "type": "string",
           "value": "[listkeys(concat(variables('botFuncId'), '/host/default'), '2018-11-01').functionKeys.default]"
-      }      
+      }, 
+      "adminKey": {
+          "type": "string",
+          "value": "[listkeys(concat(variables('adminFuncId'), '/host/default'), '2018-11-01').functionKeys.default]"
+
+
+      }    
   }
 }

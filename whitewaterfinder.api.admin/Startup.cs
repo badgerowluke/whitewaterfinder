@@ -33,7 +33,7 @@ namespace whitewaterfinder.api.admin
             builder.Services.AddHttpClient();
             builder.Services.AddSingleton<IFunctionKeyManagementService, FunctionKeyManagementService>();
             builder.Services.AddSingleton<IAppSettings>(new AppSettings(config));
-            builder.Services.AddSingleton<ICloudStorageAccount>(new CloudStorageAccountBuilder(config.GetConnectionString("blob-store")));
+            builder.Services.AddSingleton<ICloudStorageAccount>(new CloudStorageAccountBuilder(config.GetConnectionString("blobStore")));
             builder.Services.AddSingleton<EmailRepositoryConfig>(sp => config.Get<EmailRepositoryConfig>());
 
 
