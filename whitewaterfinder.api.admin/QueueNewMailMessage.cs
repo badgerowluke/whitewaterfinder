@@ -40,7 +40,9 @@ namespace whitewaterfinder.api.admin
             string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
             var message = JsonConvert.DeserializeObject<WaterfinderEmailMessage>(requestBody);
 
-            return new OkObjectResult("");
+            await _emails.WriteMessageToQueue(message);
+
+            return new OkObjectResult("message is queued");
         }
     }
 }

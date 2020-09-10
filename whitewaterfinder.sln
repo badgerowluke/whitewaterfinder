@@ -33,6 +33,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "whitewaterfinder.api", "whi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "whitewaterfinder.api.monitoring", "whitewaterfinder.api.monitoring\whitewaterfinder.api.monitoring.csproj", "{70CCF4C3-F080-4EEC-8707-78F77B5DABC1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "whitewaterfinder.Repo.Admin", "whitewaterfinder.Repo.Admin\whitewaterfinder.Repo.Admin.csproj", "{B741F8DC-9477-46FA-9814-47229FF6D0B1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -238,5 +240,17 @@ Global
 		{70CCF4C3-F080-4EEC-8707-78F77B5DABC1}.Release|x64.Build.0 = Release|Any CPU
 		{70CCF4C3-F080-4EEC-8707-78F77B5DABC1}.Release|x86.ActiveCfg = Release|Any CPU
 		{70CCF4C3-F080-4EEC-8707-78F77B5DABC1}.Release|x86.Build.0 = Release|Any CPU
+		{B741F8DC-9477-46FA-9814-47229FF6D0B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B741F8DC-9477-46FA-9814-47229FF6D0B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B741F8DC-9477-46FA-9814-47229FF6D0B1}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{B741F8DC-9477-46FA-9814-47229FF6D0B1}.Debug|x64.Build.0 = Debug|Any CPU
+		{B741F8DC-9477-46FA-9814-47229FF6D0B1}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{B741F8DC-9477-46FA-9814-47229FF6D0B1}.Debug|x86.Build.0 = Debug|Any CPU
+		{B741F8DC-9477-46FA-9814-47229FF6D0B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B741F8DC-9477-46FA-9814-47229FF6D0B1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B741F8DC-9477-46FA-9814-47229FF6D0B1}.Release|x64.ActiveCfg = Release|Any CPU
+		{B741F8DC-9477-46FA-9814-47229FF6D0B1}.Release|x64.Build.0 = Release|Any CPU
+		{B741F8DC-9477-46FA-9814-47229FF6D0B1}.Release|x86.ActiveCfg = Release|Any CPU
+		{B741F8DC-9477-46FA-9814-47229FF6D0B1}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

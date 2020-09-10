@@ -33,13 +33,14 @@ namespace whitewaterfinder.api.admin
             builder.Services.AddHttpClient();
             builder.Services.AddSingleton<IFunctionKeyManagementService, FunctionKeyManagementService>();
             builder.Services.AddSingleton<IAppSettings>(new AppSettings(config));
+            builder.Services.AddSingleton<ICloudStorageAccount>(new CloudStorageAccountBuilder(config.GetConnectionString("blob-store")));
             builder.Services.AddSingleton<EmailRepositoryConfig>(sp => config.Get<EmailRepositoryConfig>());
 
 
             builder.Services.AddSendGrid(options => options.ApiKey = config["sendGridApiKey"]);
             builder.Services.AddScoped<IAzureStorage, AzureStorageFactory>();
-            builder.Services.AddSingleton<IEmailRepository, EmailRepository>();
-            builder.Services.AddSingleton<IEmailService, EmailService>();
+            builder.Services.AddScoped<IEmailRepository, EmailRepository>();
+            builder.Services.AddScoped<IEmailService, EmailService>();
         }
     }
 
