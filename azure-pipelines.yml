@@ -32,7 +32,8 @@ stages:
     region: '$(azureRegion)'
     botapp: 'paddle-finder-webster'
     principal: '$(principal)'
-    adminEmail: '$(adminEmail)'            
+    adminEmail: '$(adminEmail)'      
+    adminApp: 'paddle-finder-admin'      
     
 - template: 'whitewaterfinder.pipeline/configure.yml'
   parameters:

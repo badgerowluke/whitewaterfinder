@@ -22,6 +22,9 @@ parameters:
 - name: 'adminEmail'
   type: string
   default: ''
+- name: 'adminApp'
+  type: string
+  default: string
 
 stages:
 - stage: ${{parameters.stageTitle}}
@@ -52,4 +55,11 @@ stages:
         appType: app
         principal: '${{ parameters.principal }}'
         appName: '${{ parameters.botapp }}'  
+
+    - template: 'downloadAndDeploy.yml'
+      parameters:
+        artifact: adminfunc
+        appType: app
+        principal: '${{ prameters.principal }}'
+        appName: '{{ parameters.adminApp }}'
                

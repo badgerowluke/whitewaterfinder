@@ -49,6 +49,13 @@ steps:
     includeRootFolder: false
     archiveFile: $(Pipeline.Workspace)/riversfunc/app.zip
 
+- task: ArchiveFiles@2
+  displayName: bundle admin Functions
+  inputs:
+    rootFolderOrFile: whitewaterfinder.api.admin/bin/release/netcoreapp3.0
+    includeRootFolder: false
+    archiveFile: $(Pipeline.Workspace)/adminfunc/app.zip
+
 - task: PublishBuildArtifacts@1
   displayName: 'Publish River Functions'
   inputs:
@@ -60,4 +67,10 @@ steps:
   inputs:
     PathtoPublish: $(Pipeline.Workspace)/botfunc/app.zip
     ArtifactName: 'botfunc'
+
+- task: PublishBuildArtifacts@1
+  displayName: Publish Admin Functions
+  inputs:
+    PathtoPublish: $(Pipeline.Workspace)/adminfunc/app.zip
+    ArtifactName: 'adminfunc'
 
