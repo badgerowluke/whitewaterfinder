@@ -33,11 +33,21 @@ resource "azurerm_api_management_api" "users" {
 }
 
 resource "azurerm_api_management_api" "bot" {
-    name = "bot"
-    display_name = "bot"
-    path = "bot"
+    name = "webster"
+    display_name = "webster"
+    path = "webster"
     resource_group_name = var.rg_name
     api_management_name =azurerm_api_management.apim.name
+    revision = "1"
+    protocols = ["https"]
+}
+
+resource "azurerm_api_management_api" "pfadmin" {
+    name = "pfadmin"
+    display_name = "pfadmin"
+    path "pfadmin"
+    resource_group_name = var.rg_name
+    api_management_name = api_management_name.apim.name
     revision = "1"
     protocols = ["https"]
 }

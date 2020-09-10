@@ -7,10 +7,12 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.IdentityModel.Clients.ActiveDirectory" Version="5.2.8" />
     <PackageReference Include="Newtonsoft.json" Version="12.0.3" />
+    <PackageReference Include="Sendgrid" Version="9.21.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\whitewaterfinder.BusinessObjects\whitewaterfinder.BusinessObjects.csproj" />
+    <ProjectReference Include="..\whitewaterfinder.Repo.Admin\whitewaterfinder.Repo.Admin.csproj" />
   </ItemGroup>
 
 </Project>

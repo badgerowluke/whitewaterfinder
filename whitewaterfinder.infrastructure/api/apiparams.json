@@ -5,6 +5,8 @@
         "appName":{"value": "paddle-finder" },
         "appPlanName": {"value": "WaterFinderPlan" },
         "preferencesApp": { "value" : "paddle-finder-preferences" },
+        "botName": { "value" : "paddle-finder-webster" },
+        "adminName": { "value" : "paddle-finder-admin" },
         "storageAccountName": { "value" : "waterfinder" },
         "azureSearchKey": { "value": "" },
         "baseUSGSUrl": { "value": "https://waterservices.usgs.gov/nwis/iv/?format=json&indent=on&" },

@@ -12,7 +12,7 @@ using whitewaterfinder.BusinessObjects.Configuration;
 
 namespace whitewaterfinder.Core.Admin
 {
-    public interface IFunctionKeyManagementUtility
+    public interface IFunctionKeyManagementService
     {
         Task<string> GetAADAccessToken();
         Task<string> GetFunctionAdminToken(string appName, string aadToken);
@@ -20,7 +20,7 @@ namespace whitewaterfinder.Core.Admin
 
     }
 
-    public class FunctionKeyManagementUtility : IFunctionKeyManagementUtility
+    public class FunctionKeyManagementService : IFunctionKeyManagementService
     {
         private readonly HttpClient _client;
 
@@ -29,7 +29,7 @@ namespace whitewaterfinder.Core.Admin
         private const string functAdminTokenUrl = "https://management.azure.com/subscriptions/{0}/resourceGroups/{1}/providers/Microsoft.Web/sites/{2}/functions/admin/token?api-version=2019-08-01&Author";
 
 
-        public FunctionKeyManagementUtility(HttpClient client, AdminFunctionsConfig config)
+        public FunctionKeyManagementService(HttpClient client, AdminFunctionsConfig config)
         {
             _client = client;
             _config = config;
