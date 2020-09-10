@@ -22,7 +22,7 @@ namespace whitewaterfinder.Repo.Admin
         }
 
         ///<summary>
-        ///post tthe message off to the Azure Storage Queue
+        ///post the message off to the Azure Storage Queue
         ///</summary>
         public async Task PostMessageToQueue(WaterfinderEmailMessage message)
         {
