@@ -6,8 +6,9 @@ using Microsoft.Extensions.Http;
 using System;
 
 using whitewaterfinder.Core.Admin;
+using whitewaterfinder.Repo.Admin;
 using whitewaterfinder.BusinessObjects.Configuration;
-
+using com.brgs.orm.Azure;
 using SendGrid.Extensions.DependencyInjection;
 
 
@@ -32,8 +33,13 @@ namespace whitewaterfinder.api.admin
             builder.Services.AddHttpClient();
             builder.Services.AddSingleton<IFunctionKeyManagementService, FunctionKeyManagementService>();
             builder.Services.AddSingleton<IAppSettings>(new AppSettings(config));
+            builder.Services.AddSingleton<EmailRepositoryConfig>(sp => config.Get<EmailRepositoryConfig>());
+
 
             builder.Services.AddSendGrid(options => options.ApiKey = config["sendGridApiKey"]);
+            builder.Services.AddScoped<IAzureStorage, AzureStorageFactory>();
+            builder.Services.AddSingleton<IEmailRepository, EmailRepository>();
+            builder.Services.AddSingleton<IEmailService, EmailService>();
         }
     }
 

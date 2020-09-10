@@ -3,7 +3,9 @@ using System.Threading.Tasks;
 using SendGrid;
 using SendGrid.Helpers.Mail;
 
-using whitewaterfinder.BusinessObjects;
+using whitewaterfinder.BusinessObjects.Messaging;
+
+using whitewaterfinder.Repo.Admin;
 
 namespace whitewaterfinder.Core.Admin
 {
@@ -11,30 +13,49 @@ namespace whitewaterfinder.Core.Admin
     {
         Task SendMessageAsync(SendGridMessage message);
 
-        SendGridMessage CreateMessage(string txtContent, string htmlContent, string subject);
+        SendGridMessage CreateMessage(WaterfinderEmailMessage message);
+        Task WriteMessageToQueue(WaterfinderEmailMessage message);
 
     }
     public class EmailService : IEmailService
     {
         private readonly ISendGridClient _sendGrid;
 
-        public EmailService(ISendGridClient grid)
+        private readonly IEmailRepository _repo;
+
+        public EmailService(ISendGridClient grid, IEmailRepository repo)
         {
             _sendGrid = grid;
+            _repo = repo;
         }
-
-        public SendGridMessage CreateMessage(string txtContent, string htmlContent, string subject)
+        ///<summary>
+        ///
+        ///</summary>
+        ///<param name="message"></param>
+        public SendGridMessage CreateMessage(WaterfinderEmailMessage message)
         {
 
-            var from= new EmailAddress("no-reply@paddle-finder.com", "Paddle-Finder");
+            var from = new EmailAddress(message.AddressFrom, message.NameFrom);
 
-            var to = new EmailAddress("badgerow.luke@gmail.com", "Luke Badgerow");
+            var to = new EmailAddress(message.AddressTo, message.NameFrom);
 
             //I'm not really sure how I feel about having this static helper here...
-            return MailHelper.CreateSingleEmail(from, to, subject, txtContent, htmlContent);
+            return MailHelper.CreateSingleEmail(from, to, message.Subject, message.TextContent, message.HtmlContent);
             
         }
 
+        ///<summary>
+        ///
+        ///</summary>
+        ///<param name="message"></param>
+        public async Task WriteMessageToQueue(WaterfinderEmailMessage message)
+        {
+            await _repo.PostMessageToQueue(message);
+        }
+
+        ///<summary>
+        ///
+        ///</summary>
         public async Task SendMessageAsync(SendGridMessage message)
         {
             await _sendGrid.SendEmailAsync(message);
