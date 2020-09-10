@@ -15,7 +15,7 @@
         "preferencesApp" : { "type" : "string" , "defaultValue" : "paddle-finder-preferences" },
         "appName": { "type": "string", "defaultValue" : "paddle-finder" },
         "botName": { "type": "string", "defaultValue": "paddle-finder-webster" },
-        "adminName": { "type": "string", "defaultValue": "paddle-finder-admin"}
+        "adminName": { "type": "string", "defaultValue": "paddle-finder-admin" }
     },
     "resources": [
         {
