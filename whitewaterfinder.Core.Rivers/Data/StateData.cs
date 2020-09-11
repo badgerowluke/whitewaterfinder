@@ -1,10 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
 
-
-
-namespace whitewaterfinder.Core.Data
+namespace whitewaterfinder.Core.Rivers.Data
 {
     public abstract class StateData
     {

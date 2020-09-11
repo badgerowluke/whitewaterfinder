@@ -1,7 +1,7 @@
 ﻿//using whitewaterfinder.Repo.Factories;
 using whitewaterfinder.Repo.Rivers;
 using whitewaterfinder.Repo;
-using whitewaterfinder.Core;
+using whitewaterfinder.Core.Rivers;
 using whitewaterfinder.BusinessObjects.Rivers;
 using com.brgs.orm;
 using com.brgs.orm.Azure;

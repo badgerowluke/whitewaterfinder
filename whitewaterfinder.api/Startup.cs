@@ -2,10 +2,10 @@
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Http;
+
 using System;
-using whitewaterfinder.Core;
-using whitewaterfinder.Repo;
+
+using whitewaterfinder.Core.Rivers;
 using whitewaterfinder.Repo.Rivers;
 using whitewaterfinder.BusinessObjects.Configuration;
 

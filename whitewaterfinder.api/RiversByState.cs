@@ -5,14 +5,14 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
+
 using Aliencube.AzureFunctions.Extensions.OpenApi.Attributes;
 using Microsoft.OpenApi.Models;
 using System.Net;
 using System.Collections.Generic;
 using whitewaterfinder.BusinessObjects.Rivers;
-using com.brgs.orm.Azure;
-using whitewaterfinder.Core;
+
+using whitewaterfinder.Core.Rivers;
 using Microsoft.Extensions.Configuration;
 using System;
 

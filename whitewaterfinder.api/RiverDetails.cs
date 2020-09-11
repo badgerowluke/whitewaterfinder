@@ -8,8 +8,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
-using whitewaterfinder.Core;
-using com.brgs.orm.Azure;
+using whitewaterfinder.Core.Rivers;
+
 using Microsoft.Extensions.Configuration;
 using Aliencube.AzureFunctions.Extensions.OpenApi.Attributes;
 using Microsoft.OpenApi.Models;

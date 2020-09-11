@@ -5,8 +5,6 @@ VisualStudioVersion = 15.0.26124.0
 MinimumVisualStudioVersion = 15.0.26124.0
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "whitewaterfinder.test", "whitewaterfinder.test\whitewaterfinder.test.csproj", "{F2A73E10-4B89-4780-9FAD-37FB79CADBE6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "whitewaterfinder.Core", "whitewaterfinder.Core\whitewaterfinder.Core.csproj", "{93272ABB-29CD-4D80-B9A5-CF2AA63897D8}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "whitewaterfinder.Repo", "whitewaterfinder.Repo\whitewaterfinder.Repo.csproj", "{A06C3697-7BA0-447F-AA00-6A4274A6DB78}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "whitewaterfinder.BusinessObjects", "whitewaterfinder.BusinessObjects\whitewaterfinder.BusinessObjects.csproj", "{2333F68B-4C79-479A-A85E-FF2D48B52CD3}"
@@ -34,6 +32,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "whitewaterfinder.api.monitoring", "whitewaterfinder.api.monitoring\whitewaterfinder.api.monitoring.csproj", "{70CCF4C3-F080-4EEC-8707-78F77B5DABC1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "whitewaterfinder.Repo.Admin", "whitewaterfinder.Repo.Admin\whitewaterfinder.Repo.Admin.csproj", "{B741F8DC-9477-46FA-9814-47229FF6D0B1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "whitewaterfinder.Core.Rivers", "whitewaterfinder.Core.Rivers\whitewaterfinder.Core.Rivers.csproj", "{F2E4736B-8D39-411F-8020-F445851E6515}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -72,18 +72,6 @@ Global
 		{F2A73E10-4B89-4780-9FAD-37FB79CADBE6}.Release|x64.Build.0 = Release|Any CPU
 		{F2A73E10-4B89-4780-9FAD-37FB79CADBE6}.Release|x86.ActiveCfg = Release|Any CPU
 		{F2A73E10-4B89-4780-9FAD-37FB79CADBE6}.Release|x86.Build.0 = Release|Any CPU
-		{93272ABB-29CD-4D80-B9A5-CF2AA63897D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{93272ABB-29CD-4D80-B9A5-CF2AA63897D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{93272ABB-29CD-4D80-B9A5-CF2AA63897D8}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{93272ABB-29CD-4D80-B9A5-CF2AA63897D8}.Debug|x64.Build.0 = Debug|Any CPU
-		{93272ABB-29CD-4D80-B9A5-CF2AA63897D8}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{93272ABB-29CD-4D80-B9A5-CF2AA63897D8}.Debug|x86.Build.0 = Debug|Any CPU
-		{93272ABB-29CD-4D80-B9A5-CF2AA63897D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{93272ABB-29CD-4D80-B9A5-CF2AA63897D8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{93272ABB-29CD-4D80-B9A5-CF2AA63897D8}.Release|x64.ActiveCfg = Release|Any CPU
-		{93272ABB-29CD-4D80-B9A5-CF2AA63897D8}.Release|x64.Build.0 = Release|Any CPU
-		{93272ABB-29CD-4D80-B9A5-CF2AA63897D8}.Release|x86.ActiveCfg = Release|Any CPU
-		{93272ABB-29CD-4D80-B9A5-CF2AA63897D8}.Release|x86.Build.0 = Release|Any CPU
 		{A06C3697-7BA0-447F-AA00-6A4274A6DB78}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A06C3697-7BA0-447F-AA00-6A4274A6DB78}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A06C3697-7BA0-447F-AA00-6A4274A6DB78}.Debug|x64.ActiveCfg = Debug|Any CPU
@@ -252,5 +240,17 @@ Global
 		{B741F8DC-9477-46FA-9814-47229FF6D0B1}.Release|x64.Build.0 = Release|Any CPU
 		{B741F8DC-9477-46FA-9814-47229FF6D0B1}.Release|x86.ActiveCfg = Release|Any CPU
 		{B741F8DC-9477-46FA-9814-47229FF6D0B1}.Release|x86.Build.0 = Release|Any CPU
+		{F2E4736B-8D39-411F-8020-F445851E6515}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F2E4736B-8D39-411F-8020-F445851E6515}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F2E4736B-8D39-411F-8020-F445851E6515}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{F2E4736B-8D39-411F-8020-F445851E6515}.Debug|x64.Build.0 = Debug|Any CPU
+		{F2E4736B-8D39-411F-8020-F445851E6515}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{F2E4736B-8D39-411F-8020-F445851E6515}.Debug|x86.Build.0 = Debug|Any CPU
+		{F2E4736B-8D39-411F-8020-F445851E6515}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F2E4736B-8D39-411F-8020-F445851E6515}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F2E4736B-8D39-411F-8020-F445851E6515}.Release|x64.ActiveCfg = Release|Any CPU
+		{F2E4736B-8D39-411F-8020-F445851E6515}.Release|x64.Build.0 = Release|Any CPU
+		{F2E4736B-8D39-411F-8020-F445851E6515}.Release|x86.ActiveCfg = Release|Any CPU
+		{F2E4736B-8D39-411F-8020-F445851E6515}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

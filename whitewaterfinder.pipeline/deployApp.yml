@@ -27,7 +27,7 @@ parameters:
   default: ''
 
 stages:
-- stage: ${{parameters.stageTitle}}
+- stage: ${{ parameters.stageTitle }}
   jobs:
   - job: 'backend_app_deployment'
     pool:
