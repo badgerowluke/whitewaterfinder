@@ -20,9 +20,9 @@ namespace whitewaterfinder.Core.Admin
 
         private readonly HttpClient _client;
 
-        public UserInformationService()
+        public UserInformationService(HttpClient client)
         {
-
+            _client = client;
 
         }
 

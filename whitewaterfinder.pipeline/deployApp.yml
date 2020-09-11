@@ -24,7 +24,7 @@ parameters:
   default: ''
 - name: 'adminApp'
   type: string
-  default: string
+  default: ''
 
 stages:
 - stage: ${{parameters.stageTitle}}
