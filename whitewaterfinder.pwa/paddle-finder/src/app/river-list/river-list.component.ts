@@ -2,7 +2,7 @@ import { RiverDataService } from '../services/river-data.service';
 import { Component } from '@angular/core';
 import { River } from '../model/river';
 import * as _ from 'lodash';
-import { AuthService } from '../auth/auth.service';
+import { AuthService } from '../services/auth/auth.service';
 @Component({
     selector: 'app-river-list',
     templateUrl: 'river-list.component.html',

@@ -7,7 +7,7 @@ import { ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash';
 
 import { RiverUserSerice } from '../services/river-user.service';
-import { AuthService } from '../auth/auth.service';
+import { AuthService } from '../services/auth/auth.service';
 import { User } from '../model/authuser';
 import { Observable, Subscription } from 'rxjs';
 @Component({

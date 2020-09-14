@@ -48,14 +48,6 @@ stages:
         appType: functionapp
         principal: '${{ parameters.principal }}'
         appName: '${{ parameters.appName }}-preferences'      
-        
-
-    - template: 'downloadAndDeploy.yml'
-      parameters: 
-        artifact: botfunc
-        appType: app
-        principal: '${{ parameters.principal }}'
-        appName: '${{ parameters.botapp }}'  
 
     - template: 'downloadAndDeploy.yml'
       parameters:
@@ -63,4 +55,11 @@ stages:
         appType: app
         principal: '${{ parameters.principal }}'
         appName: '{{ parameters.adminApp }}'
-               
+                     
+    - template: 'downloadAndDeploy.yml'
+      parameters: 
+        artifact: botfunc
+        appType: app
+        principal: '${{ parameters.principal }}'
+        appName: '${{ parameters.botapp }}'  
+
