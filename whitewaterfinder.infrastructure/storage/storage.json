@@ -23,17 +23,9 @@
                 "description": "Location for all resources."
             }
         },
-
+        "botApp": { "type": "string", "defaultValue": "paddle-finder-webster" },
         "preferencesApp" : { "type" : "string" , "defaultValue" : "paddle-finder-preferences" },
-        "storageAccountName": { "type" : "string","defaultValue": "waterfinder" },
-        "cosmosDbName": { "type" : "string", "defaultValue": "waterfindercosmosdb"},
-        "secondLocation": {
-            "type": "string",
-            "defaultValue": "eastus",
-            "metadata": {
-                "description": "secondary location for resources"
-            }
-        }        
+        "storageAccountName": { "type" : "string","defaultValue": "waterfinder" }       
     },
     "variables":{
         "storageAccountId": "[concat(resourceGroup().id,'/providers/Microsoft.Storage/storageAccounts/', parameters('storageAccountName'))]"
@@ -75,7 +67,8 @@
                         {
                             "allowedOrigins": [
                                 "[concat('https://', parameters('appName'), '.azurewebsites.net')]",
-                                "[concat('https://', parameters('preferencesApp'), '.azurewebsites.net')]"
+                                "[concat('https://', parameters('preferencesApp'), '.azurewebsites.net')]",
+                                "[concat('https://', parameters('botApp'),'.azurewebsites.net')]"
                             ],
                             "allowedMethods": ["GET", "PUT", "POST"],
                             "maxAgeInSeconds": 0,
@@ -127,18 +120,6 @@
         {
             "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
             "apiVersion": "2019-04-01",
-            "name": "[concat(parameters('storageAccountName'), '/default/$web')]",
-            "dependsOn": [
-                "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccountName'), 'default')]",
-                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName'))]"
-            ],
-            "properties": {
-                "publicAccess": "Container"
-            }
-        }, 
-        {
-            "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
-            "apiVersion": "2019-04-01",
             "name": "[concat(parameters('storageAccountName'), '/default/botstore')]",
             "dependsOn": [
                 "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccountName'), 'default')]",
@@ -147,40 +128,7 @@
             "properties": {
                 "publicAccess": "Container"
             }
-        },
-        {
-            "apiVersion": "2019-12-12",
-            "kind": "GlobalDocumentDB",
-            "type": "Microsoft.DocumentDb/databaseAccounts",
-            "name": "[parameters('cosmosDbName')]",
-            "location": "[parameters('secondLocation')]",
-            "properties": {
-                "databaseAccountOfferType": "Standard",
-                "locations": [
-                    {
-                        "id": "[concat(parameters('cosmosDbName'), '-', parameters('secondLocation'))]",
-                        "failoverPriority": 0,
-                        "locationName": "[parameters('secondLocation')]"
-                    }
-                ],
-                "enableMultipleWriteLocations": false,
-                "isVirtualNetworkFilterEnabled": false,
-                "virtualNetworkRules": [],
-                "ipRangeFilter": "",
-                "dependsOn": [],
-                "capabilities": [
-                    {
-                        "name": "EnableCassandra"
-                    }
-                ],
-                "enableFreeTier": true
-            },
-            "tags": {
-                "defaultExperience": "Cassandra",
-                "hidden-cosmos-mmspecial": "",
-                "CosmosAccountType": "Non-Production"
-            }
-        }                     
+        }                    
     ],
     "outputs": {
         "storageKey" : {

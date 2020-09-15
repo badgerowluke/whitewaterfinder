@@ -4,6 +4,7 @@
     "parameters": {
         "appName":{"value": "paddle-finder" },
         "preferencesApp": { "value" : "paddle-finder-preferences" },
+        "botApp": { "value" : "paddle-finder-webster" },
         "storageAccountName": { "value" : "devwaterfinder" }
     }
 }
