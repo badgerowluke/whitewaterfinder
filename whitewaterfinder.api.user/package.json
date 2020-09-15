@@ -1,5 +1,5 @@
 {
-  "name": "",
+  "name": "paddle-finder-preferences",
   "version": "",
   "scripts": {
     "build": "tsc",
@@ -16,7 +16,7 @@
     "typescript": "^3.3.3"
   },
   "dependencies": {
-    "@types/node": "^12.7.2",
+    "@types/node": "^14.10.1",
     "azure-storage": "^2.10.3",
     "camelcase-keys": "^6.2.2",
     "uuid": "^3.3.2"

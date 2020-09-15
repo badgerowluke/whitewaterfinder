@@ -1,30 +1,23 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { River } from '../model/river';
-import { AKVSecret } from '../model/keyvault'
 import { environment } from '../../environments/environment';
+import { BaseService } from './base-service'
 
 
 
 
 @Injectable()
-export class RiverDataService {
+export class RiverDataService extends BaseService {
 
-    private headers: HttpHeaders; 
 
-    constructor(private http: HttpClient) {
+    constructor(http:HttpClient) {
+        super(http);
         if(!environment.subscriptionKey) {
-            console.error("no api key")
 
-
-            this.http.get<AKVSecret>("http://localhost:7071/api/configure").toPromise()
+            this.getAPIMSubscriptionKey()
             .then((response) => {
-
-                environment.subscriptionKey = response.value;
-                this.headers = new HttpHeaders()
-                .set('content-type', 'application/json')
-                .set('Ocp-Apim-Subscription-Key', response.value);
-            
+                this.setAPIMHeader(response);
             });
         }
 
