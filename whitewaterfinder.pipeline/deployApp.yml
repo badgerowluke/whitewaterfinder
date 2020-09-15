@@ -54,7 +54,7 @@ stages:
         artifact: adminfunc
         appType: app
         principal: '${{ parameters.principal }}'
-        appName: '{{ parameters.adminApp }}'
+        appName: '${{ parameters.adminApp }}'
                      
     - template: 'downloadAndDeploy.yml'
       parameters: 
