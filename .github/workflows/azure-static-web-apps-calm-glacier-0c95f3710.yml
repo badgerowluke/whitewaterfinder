@@ -17,10 +17,10 @@ jobs:
     runs-on: ubuntu-latest
     name: Build and Deploy Job
     steps:
-      - run: sudo apt-get pkg-config
+      - run: sudo apt install -y pkg-config
 
 
-      
+
       - uses: actions/checkout@v2
         with:
           submodules: true
