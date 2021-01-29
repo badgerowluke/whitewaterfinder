@@ -25,14 +25,15 @@ namespace whitewaterfinder.api.admin
             _emails = emailService;
         }
         [FunctionName("QueueNewMailMessage")]
-        [OpenApiOperation("QueueNewMailMessage", "Queue New Email", Summary="POST up a new Mail message for Sendgrid", Description="Via a POST call, submit a mail message to a queue that will be processed by SendGrid")]
+        [OpenApiOperation("QueueNewMailMessage", "Queue New Email", Summary="POST up a new Mail message for Sendgrid", 
+        Description="Via a POST call, submit a mail message to a queue that will be processed by SendGrid")]
         [OpenApiRequestBody("application/json", typeof(WaterfinderEmailMessage))]
         [OpenApiResponseBody(System.Net.HttpStatusCode.NoContent, "application/json", typeof(string))]
         [OpenApiResponseBody(System.Net.HttpStatusCode.InternalServerError, "application/json", typeof(string))]
         [OpenApiResponseBody(System.Net.HttpStatusCode.BadRequest, "application/json", typeof(string))]   
         [OpenApiResponseBody(System.Net.HttpStatusCode.OK, "application/json", typeof(string))] 
         public async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "pfadmin/mailmessage")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "pfadmin/email ")] HttpRequest req,
             ILogger log)
         {
 
