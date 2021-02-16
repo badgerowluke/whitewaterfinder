@@ -180,15 +180,15 @@ stages:
             csmParametersFile: 'whitewaterfinder.infrastructure/keyvault/kvparameters.json'
             overrideParameters: '-tenantId "${{ parameters.tenant }}" -adminId "${{ parameters.adminId }}" -kvName "${{ parameters.resourceGroup }}"'                 
 
-        - task: AzureResourceGroupDeployment@2
-          displayName: 'provision static web app'
-          inputs:
-            azureSubscription: '${{ parameters.principal }}'
-            resourceGroupName: '${{ parameters.resourceGroup }}'
-            location: '${{ parameters.region }}'      
-            csmFile: 'whitewaterfinder.infrastructure/site/staticsite.json'
-            csmParametersFile: 'whitewaterfinder.infrastructure/site/staticsiteparams.json'
-            overrideParameters: '-repositoryToken $(repositoryToken)'
+        # - task: AzureResourceGroupDeployment@2
+        #   displayName: 'provision static web app'
+        #   inputs:
+        #     azureSubscription: '${{ parameters.principal }}'
+        #     resourceGroupName: '${{ parameters.resourceGroup }}'
+        #     location: '${{ parameters.region }}'      
+        #     csmFile: 'whitewaterfinder.infrastructure/site/staticsite.json'
+        #     csmParametersFile: 'whitewaterfinder.infrastructure/site/staticsiteparams.json'
+        #     overrideParameters: '-repositoryToken $(repositoryToken)'
 
         - task: PublishBuildArtifacts@1
           displayName: 'Push infra scripts'
