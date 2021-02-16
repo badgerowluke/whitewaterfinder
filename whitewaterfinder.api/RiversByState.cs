@@ -1,20 +1,20 @@
-using System.IO;
+
+using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Net;
+
+using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi.Models;
 
 using Aliencube.AzureFunctions.Extensions.OpenApi.Attributes;
-using Microsoft.OpenApi.Models;
-using System.Net;
-using System.Collections.Generic;
 using whitewaterfinder.BusinessObjects.Rivers;
-
 using whitewaterfinder.Core.Rivers;
-using Microsoft.Extensions.Configuration;
-using System;
 
 namespace whitewaterfinder.api
 {
@@ -57,15 +57,6 @@ namespace whitewaterfinder.api
                 log.LogError(new EventId(), e.StackTrace);
                 throw;
             }
-        }
-        private Dictionary<string, string> GetNeededConfig(IConfiguration config)
-        {
-            var outConfig = new Dictionary<string, string>();
-            outConfig.Add("riverTable", "USRivers");
-            outConfig.Add("searchKey", config["azuresearch-key"]);
-            outConfig.Add("baseUSGSURL", config["baseUSGSUrl"]);
-            outConfig.Add("searchUrl", config["searchUrl"]);
-            return outConfig;
         }
     }
 }

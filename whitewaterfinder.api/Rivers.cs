@@ -1,19 +1,19 @@
 using System;
-
 using System.Threading.Tasks;
+using System.Collections.Generic;
+using System.Net;
+using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 
+using Aliencube.AzureFunctions.Extensions.OpenApi.Attributes;
+
 using whitewaterfinder.Core.Rivers;
 using whitewaterfinder.BusinessObjects.Rivers;
 
 
-using Aliencube.AzureFunctions.Extensions.OpenApi.Attributes;
-using System.Collections.Generic;
-using System.Net;
-using Microsoft.OpenApi.Models;
 
 
 namespace whitewaterfinder.api

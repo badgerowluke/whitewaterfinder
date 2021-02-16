@@ -33,7 +33,7 @@ namespace whitewaterfinder.api.admin
         [OpenApiResponseBody(System.Net.HttpStatusCode.BadRequest, "application/json", typeof(string))]   
         [OpenApiResponseBody(System.Net.HttpStatusCode.OK, "application/json", typeof(string))] 
         public async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "pfadmin/email ")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "pfadmin/email")] HttpRequest req,
             ILogger log)
         {
 
