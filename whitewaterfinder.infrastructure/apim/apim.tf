@@ -45,7 +45,7 @@ resource "azurerm_api_management_api" "bot" {
 resource "azurerm_api_management_api" "pfadmin" {
     name = "pfadmin"
     display_name = "pfadmin"
-    path "pfadmin"
+    path = "pfadmin"
     resource_group_name = var.rg_name
     api_management_name = api_management_name.apim.name
     revision = "1"
