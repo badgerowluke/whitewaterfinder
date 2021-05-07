@@ -39,7 +39,7 @@ import { interceptors } from './interceptors'
     {
       provide: APP_INITIALIZER,
       useFactory: (appInit: AppInitService) => () => appInit.loadConfiguration().toPromise(),
-      deps: [AppInitService, EnvironmentService],
+      deps: [AppInitService, EnvironmentService ],
       multi: true
     },
     interceptors
