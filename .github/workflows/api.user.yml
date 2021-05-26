@@ -1,0 +1,31 @@
+on:
+  push:
+    branches:
+      - main
+      - feature/add-docker
+    # paths:
+    #   - 'whitewaterfinder.api.user/**'
+jobs:
+  build-and-test:
+    name: "build and test"
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: 'whitewaterfinder.api.user'
+    steps:
+      - name: 'build user pref functions'
+        run: |
+          npm install && npm run build
+
+      - name: az login
+        uses: azure/login@v1
+        with: 
+          creds: ${{ secrets.AZCLI_CREDS }}
+      
+      - name: build container
+        run: |
+
+          az acr login --name paddlefinderregistry 
+          docker build . --file Dockerfile --tag paddlefinderregistry.azurecr.io/whitewaterfinder.api.user:$GITHUB_RUN_ID
+          docker push paddlefinderregistry.azurecr.io/whitewaterfinder.api.user:$GITHUB_RUN_ID  

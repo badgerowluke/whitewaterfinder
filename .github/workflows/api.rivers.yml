@@ -3,7 +3,7 @@ on:
     branches:
       - main
     paths:
-      - 'witewaterfinder.api.rivers/**'
+      - 'whitewaterfinder.api.rivers/**'
 
 jobs:
   build-and-test:
