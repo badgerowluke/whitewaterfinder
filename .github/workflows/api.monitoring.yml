@@ -15,7 +15,7 @@ jobs:
     defaults:
       run:
         shell: bash
-        working-directory: whitewaterfinder.api.monitoring
+
 
     steps:
       - name: "checkout"
@@ -27,10 +27,13 @@ jobs:
          dotnet-version: '3.1.x'
       
       - name: restore
+        working-directory: whitewaterfinder.api.monitoring
         run: dotnet restore
       - name: build
+        working-directory: whitewaterfinder.api.monitoring
         run: dotnet build --no-restore --configuration Release 
       - name: test
+        working-directory: whitewaterfinder.api.monitoring
         run: dotnet test --no-build --verbosity normal
     
 
@@ -43,5 +46,8 @@ jobs:
         run: |
 
           az acr login --name paddlefinderregistry 
-          docker build . --file Dockerfile --tag paddlefinderregistry.azurecr.io/whitewaterfinder.api.monitoring:$GITHUB_RUN_ID
+          docker build . --file ./whitewaterfinder.api.monitoring/Dockerfile \
+          --tag paddlefinderregistry.azurecr.io/whitewaterfinder.api.monitoring:$GITHUB_RUN_ID \
+          --build-arg TOKEN=${{ secrets.AZ_ARTIFACT_TOKEN }} \
+          --build-arg ENDPOINT=${{ secrets.AZ_ARTIFACTS }}
           docker push paddlefinderregistry.azurecr.io/whitewaterfinder.api.monitoring:$GITHUB_RUN_ID  
