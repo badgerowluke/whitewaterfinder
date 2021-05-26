@@ -17,7 +17,7 @@ jobs:
     defaults:
       run:
         shell: bash
-        working-directory: whitewaterfinder.api.bot
+
 
 
     steps:
@@ -30,12 +30,13 @@ jobs:
          dotnet-version: '3.1.x'
       
       - name: restore
+        working-directory: whitewaterfinder.api.bot
         run: dotnet restore
       - name: build
-
+        working-directory: whitewaterfinder.api.bot
         run: dotnet build --no-restore --configuration Release 
       - name: test
-
+        working-directory: whitewaterfinder.api.bot
         run: dotnet test --no-build --verbosity normal
     
 
@@ -45,9 +46,9 @@ jobs:
           creds: ${{ secrets.AZCLI_CREDS }}
 
       - name: build container
-        working-directory: whitewaterfinder
+
         run: |
 
           az acr login --name paddlefinderregistry 
-          docker build . --file whitewaterfinder.api.bot/Dockerfile --tag paddlefinderregistry.azurecr.io/whitewaterfinder.api.bot:$GITHUB_RUN_ID 
+          docker build . --file ./whitewaterfinder.api.bot/Dockerfile --tag paddlefinderregistry.azurecr.io/whitewaterfinder.api.bot:$GITHUB_RUN_ID 
           docker push paddlefinderregistry.azurecr.io/whitewaterfinder.api.bot:$GITHUB_RUN_ID 
