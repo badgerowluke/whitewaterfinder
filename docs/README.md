@@ -5,3 +5,17 @@ Also included is a wrapper for some of the National Weather Service APIs to retr
 The architecture for this api is trending towards serverless microservices, with the exception of the MSFT Bot Framework v4 app service (also slated to move to Az Func).  Infrastructure/Azure Resources are provisioned via ARM Templates currently, with the roadmap to move over to Terraform in the near future.
 
 Currently utilizing microsoft's "economy" storage offerings, with an instance of the Free Tier Cosmos DB being added very recently.
+
+## Github Actions Builds
+we're using github actions to create the container images that are being hosted in Azure Container Registry.  The process requires a secret be stored in the Secrets section of the Repo Settings.
+The format looks like this:
+
+
+```json
+{
+    "clientId": "<SPNGUID>",
+    "clientSecret": "<SPNSECRET>",
+    "subscriptionId": "<SUBID>",
+    "tenantId": "<TENANTID>"
+}
+```

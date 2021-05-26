@@ -1,0 +1,52 @@
+on:
+  push:
+    branches:
+      - main
+      - feature/add-docker
+    # paths:
+    #   - 'whitewaterfinder.api.monitoring/**'
+
+jobs:
+  build-and-test:
+    # needs: terraform
+    name: "build and test"
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        shell: bash
+
+
+    steps:
+      - name: "checkout"
+        uses: actions/checkout@v2.1.0
+      # - name: setup dotnet
+      #   uses: actions/setup-dotnet@v1
+      #   with:
+      #    dotnet-version: '3.1.x'
+      
+      # - name: restore
+      #   working-directory: whitewaterfinder.api.monitoring
+      #   run: dotnet restore
+      # - name: build
+      #   working-directory: whitewaterfinder.api.monitoring
+      #   run: dotnet build --no-restore --configuration Release 
+      # - name: test
+      #   working-directory: whitewaterfinder.api.monitoring
+      #   run: dotnet test --no-build --verbosity normal
+    
+
+      - name: az login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZCLI_CREDS }}
+
+      - name: build container
+        run: |
+
+          az acr login --name paddlefinderregistry 
+          docker build . --file ./whitewaterfinder.api.monitoring/Dockerfile \
+          --tag paddlefinderregistry.azurecr.io/whitewaterfinder.api.monitoring:$GITHUB_RUN_ID \
+          --build-arg TOKEN=${{ secrets.AZ_ARTIFACT_TOKEN }} \
+          --build-arg ENDPOINT=${{ secrets.AZ_ARTIFACTS }}
+          docker push paddlefinderregistry.azurecr.io/whitewaterfinder.api.monitoring:$GITHUB_RUN_ID  
