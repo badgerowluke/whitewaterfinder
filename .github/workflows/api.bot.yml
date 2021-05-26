@@ -1,4 +1,5 @@
 #because GHA doesn't allow manual runs
+          # docker push paddlefinderregistry.azurecr.io/whitewaterfinder.api.bot:$GITHUB_RUN_ID  
 on:
   push:
     branches:
@@ -44,9 +45,8 @@ jobs:
           creds: ${{ secrets.AZCLI_CREDS }}
 
       - name: build container
-        working-directory: whitewaterfinder
+
         run: |
 
           az acr login --name paddlefinderregistry 
-          docker build . --file whitewaterfinder.api.bot/Dockerfile --tag paddlefinderregistry.azurecr.io/whitewaterfinder.api.bot:$GITHUB_RUN_ID 
-          docker push paddlefinderregistry.azurecr.io/whitewaterfinder.api.bot:$GITHUB_RUN_ID  
+          docker build whitewaterfinder --file Dockerfile --tag paddlefinderregistry.azurecr.io/whitewaterfinder.api.bot:$GITHUB_RUN_ID 
