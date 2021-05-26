@@ -16,7 +16,6 @@ jobs:
       run:
         shell: bash
 
-
     steps:
       - name: "checkout"
         uses: actions/checkout@v2.1.0
@@ -42,7 +41,7 @@ jobs:
         run: |
 
           az acr login --name paddlefinderregistry 
-          docker build . --file /whitewaterfinder.api.rivers/Dockerfile \
+          docker build . --file ./whitewaterfinder.api.rivers/Dockerfile \
           --tag paddlefinderregistry.azurecr.io/whitewaterfinder.api.rivers:$GITHUB_RUN_ID \
           --build-arg TOKEN=${{ secrets.AZ_ARTIFACT_TOKEN }} \
           --build-arg ENDPOINT=${{ secrets.AZ_ARTIFACTS }}
