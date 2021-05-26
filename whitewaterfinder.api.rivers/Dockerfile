@@ -12,8 +12,8 @@ ENV VSS_NUGET_EXTERNAL_FEED_ENDPOINTS "{\"endpointCredentials\": [{\"endpoint\":
 
 RUN mkdir -p /home/site/wwwroot
 RUN cd /src/dotnet-function-app && \
-    dotnet restore -s ${ENDPOINT} && \
-    dotnet publish ./whitewaterfinder.api.rivers/whitewaterfinder.api.rivers.csproj --output /home/site/wwwroot
+    dotnet restore -s ${ENDPOINT} && \ 
+    dotnet publish ./whitewaterfinder.api.rivers/whitewaterfinder.api.rivers.csproj --no-restore --output /home/site/wwwroot
 
 # To enable ssh & remote debugging on app service change the base image to the one below
 # FROM mcr.microsoft.com/azure-functions/dotnet:3.0-appservice

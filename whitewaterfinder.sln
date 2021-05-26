@@ -27,13 +27,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "whitewaterfinder.Repo.River
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "whitewaterfinder.Repo.Weather", "whitewaterfinder.Repo.Weather\whitewaterfinder.Repo.Weather.csproj", "{AD704292-B900-4014-AFFD-6839F1569307}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "whitewaterfinder.api", "whitewaterfinder.api\whitewaterfinder.api.csproj", "{4D5C7746-C3A5-445E-9298-6B89E0D07463}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "whitewaterfinder.api.monitoring", "whitewaterfinder.api.monitoring\whitewaterfinder.api.monitoring.csproj", "{70CCF4C3-F080-4EEC-8707-78F77B5DABC1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "whitewaterfinder.Repo.Admin", "whitewaterfinder.Repo.Admin\whitewaterfinder.Repo.Admin.csproj", "{B741F8DC-9477-46FA-9814-47229FF6D0B1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "whitewaterfinder.Core.Rivers", "whitewaterfinder.Core.Rivers\whitewaterfinder.Core.Rivers.csproj", "{F2E4736B-8D39-411F-8020-F445851E6515}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "whitewaterfinder.api.rivers", "whitewaterfinder.api.rivers\whitewaterfinder.api.rivers.csproj", "{F713B907-EF18-4251-8D41-CBC8C5B0ECE7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -252,5 +252,17 @@ Global
 		{F2E4736B-8D39-411F-8020-F445851E6515}.Release|x64.Build.0 = Release|Any CPU
 		{F2E4736B-8D39-411F-8020-F445851E6515}.Release|x86.ActiveCfg = Release|Any CPU
 		{F2E4736B-8D39-411F-8020-F445851E6515}.Release|x86.Build.0 = Release|Any CPU
+		{F713B907-EF18-4251-8D41-CBC8C5B0ECE7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F713B907-EF18-4251-8D41-CBC8C5B0ECE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F713B907-EF18-4251-8D41-CBC8C5B0ECE7}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{F713B907-EF18-4251-8D41-CBC8C5B0ECE7}.Debug|x64.Build.0 = Debug|Any CPU
+		{F713B907-EF18-4251-8D41-CBC8C5B0ECE7}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{F713B907-EF18-4251-8D41-CBC8C5B0ECE7}.Debug|x86.Build.0 = Debug|Any CPU
+		{F713B907-EF18-4251-8D41-CBC8C5B0ECE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F713B907-EF18-4251-8D41-CBC8C5B0ECE7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F713B907-EF18-4251-8D41-CBC8C5B0ECE7}.Release|x64.ActiveCfg = Release|Any CPU
+		{F713B907-EF18-4251-8D41-CBC8C5B0ECE7}.Release|x64.Build.0 = Release|Any CPU
+		{F713B907-EF18-4251-8D41-CBC8C5B0ECE7}.Release|x86.ActiveCfg = Release|Any CPU
+		{F713B907-EF18-4251-8D41-CBC8C5B0ECE7}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

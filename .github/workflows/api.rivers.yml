@@ -2,7 +2,7 @@ on:
   push:
     branches:
       - main
-      - feature/add-docker
+      - feature/using-bicep
     paths:
       - 'whitewaterfinder.api.rivers/**'
 
