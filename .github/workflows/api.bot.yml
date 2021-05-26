@@ -45,8 +45,8 @@ jobs:
           creds: ${{ secrets.AZCLI_CREDS }}
 
       - name: build container
-
+        working-directory: whitewaterfinder
         run: |
 
           az acr login --name paddlefinderregistry 
-          docker build whitewaterfinder --file Dockerfile --tag paddlefinderregistry.azurecr.io/whitewaterfinder.api.bot:$GITHUB_RUN_ID 
+          docker build . --file whitewaterfinder.api.bot/Dockerfile --tag paddlefinderregistry.azurecr.io/whitewaterfinder.api.bot:$GITHUB_RUN_ID 
