@@ -1,4 +1,4 @@
-#because GHA doesn't allow manual runs
+#because GHA doesn't allow manual runs 2
           # docker push paddlefinderregistry.azurecr.io/whitewaterfinder.api.bot:$GITHUB_RUN_ID  
 on:
   push:
