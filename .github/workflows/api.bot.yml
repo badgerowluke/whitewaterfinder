@@ -1,3 +1,4 @@
+#because GHA doesn't allow manual runs
 on:
   push:
     branches:
