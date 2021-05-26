@@ -7,7 +7,7 @@ COPY . /src/dotnet-function-app
 
 RUN cd /src/dotnet-function-app && \
     mkdir -p /home/site/wwwroot && \
-    dotnet publish whitewaterfinder.api.bot/whitewaterfinder.api.bot.csproj --output /home/site/wwwroot
+    dotnet publish ./whitewaterfinder.api.bot/whitewaterfinder.api.bot.csproj --output /home/site/wwwroot
 
 # To enable ssh & remote debugging on app service change the base image to the one below
 # FROM mcr.microsoft.com/azure-functions/dotnet:3.0-appservice
