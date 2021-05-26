@@ -4,8 +4,8 @@ on:
     branches:
       - main
       - feature/add-docker
-    # paths:
-    #   - 'whitewaterfinder.api.user/**'
+    paths:
+      - 'whitewaterfinder.api.user/**'
 jobs:
   build-and-test:
     name: "build and test"
