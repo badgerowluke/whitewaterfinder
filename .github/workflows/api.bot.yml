@@ -3,8 +3,8 @@ on:
     branches:
       - main
       - feature/add-docker
-    paths:
-      - 'whitewaterfinder.api.bot/**'
+    # paths:
+    #   - 'whitewaterfinder.api.bot/**'
 
 jobs:
   build-and-test:

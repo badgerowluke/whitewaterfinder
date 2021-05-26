@@ -3,8 +3,8 @@ on:
     branches:
       - main
       - feature/add-docker
-    # paths:
-    #   - 'whitewaterfinder.api.rivers/**'
+    paths:
+      - 'whitewaterfinder.api.rivers/**'
 
 jobs:
   build-and-test:
