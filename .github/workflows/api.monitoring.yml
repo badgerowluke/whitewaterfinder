@@ -26,15 +26,15 @@ jobs:
         with:
          dotnet-version: '3.1.x'
       
-      - name: restore
-        working-directory: whitewaterfinder.api.monitoring
-        run: dotnet restore
-      - name: build
-        working-directory: whitewaterfinder.api.monitoring
-        run: dotnet build --no-restore --configuration Release 
-      - name: test
-        working-directory: whitewaterfinder.api.monitoring
-        run: dotnet test --no-build --verbosity normal
+      # - name: restore
+      #   working-directory: whitewaterfinder.api.monitoring
+      #   run: dotnet restore
+      # - name: build
+      #   working-directory: whitewaterfinder.api.monitoring
+      #   run: dotnet build --no-restore --configuration Release 
+      # - name: test
+      #   working-directory: whitewaterfinder.api.monitoring
+      #   run: dotnet test --no-build --verbosity normal
     
 
       - name: az login
