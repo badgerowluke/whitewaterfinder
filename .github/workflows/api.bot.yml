@@ -1,0 +1,54 @@
+#because GHA doesn't allow manual runs 3
+          #  
+on:
+  push:
+    branches:
+      - main
+      - feature/add-docker
+    paths:
+      - 'whitewaterfinder.api.bot/**'
+
+jobs:
+  build-and-test:
+    # needs: terraform
+    name: "build and test"
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        shell: bash
+
+
+
+    steps:
+      - name: "checkout"
+        uses: actions/checkout@v2.1.0
+      - name: setup dotnet
+        uses: actions/setup-dotnet@v1
+
+        with:
+         dotnet-version: '3.1.x'
+      
+      - name: restore
+        working-directory: whitewaterfinder.api.bot
+        run: dotnet restore
+      - name: build
+        working-directory: whitewaterfinder.api.bot
+        run: dotnet build --no-restore --configuration Release 
+      - name: test
+        working-directory: whitewaterfinder.api.bot
+        run: dotnet test --no-build --verbosity normal
+    
+
+      - name: az login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZCLI_CREDS }}
+
+      - name: build container
+
+        run: |
+
+          az acr login --name paddlefinderregistry 
+          docker build . --file ./whitewaterfinder.api.bot/Dockerfile --tag paddlefinderregistry.azurecr.io/whitewaterfinder.api.bot:$GITHUB_RUN_ID 
+          docker push paddlefinderregistry.azurecr.io/whitewaterfinder.api.bot:$GITHUB_RUN_ID 

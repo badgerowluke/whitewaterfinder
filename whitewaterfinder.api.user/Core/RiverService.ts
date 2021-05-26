@@ -1,5 +1,7 @@
-import {TableService, QueueService, ExponentialRetryPolicyFilter, createTableService, 
-    createQueueService, TableUtilities, TableQuery } from "azure-storage";
+import {
+    TableService, QueueService, ExponentialRetryPolicyFilter, createTableService, 
+    createQueueService, TableUtilities, TableQuery 
+} from "azure-storage";
 
 import * as uuidv1 from 'uuid/v1';
 
