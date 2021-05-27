@@ -1,6 +1,5 @@
 
 trigger: none
-  # - trunk
 
 stages: 
 - template: 'whitewaterfinder.pipeline/provisioninfra.yml'
