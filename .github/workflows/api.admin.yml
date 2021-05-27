@@ -4,7 +4,7 @@ on:
       - main
       - feature/using-bicep
     paths:
-      - 'whitewaterfinder.api.rivers/**'
+      - 'whitewaterfinder.api.admin/**'
 
 jobs:
   build-and-test:
@@ -41,8 +41,8 @@ jobs:
         run: |
 
           az acr login --name paddlefinderregistry 
-          docker build . --file ./whitewaterfinder.api.rivers/Dockerfile \
-          --tag paddlefinderregistry.azurecr.io/whitewaterfinder.api.rivers:$GITHUB_RUN_ID \
+          docker build . --file ./whitewaterfinder.api.admin/Dockerfile \
+          --tag paddlefinderregistry.azurecr.io/whitewaterfinder.api.admin:$GITHUB_RUN_ID \
           --build-arg TOKEN=${{ secrets.AZ_ARTIFACT_TOKEN }} \
           --build-arg ENDPOINT=${{ secrets.AZ_ARTIFACTS }}
-          docker push paddlefinderregistry.azurecr.io/whitewaterfinder.api.rivers:$GITHUB_RUN_ID  
+          docker push paddlefinderregistry.azurecr.io/whitewaterfinder.api.admin:$GITHUB_RUN_ID  
