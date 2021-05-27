@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <AzureFunctionsVersion>v3</AzureFunctionsVersion>
     <Rootnamespace>whitewaterfinder.api</Rootnamespace>
   </PropertyGroup>
@@ -30,7 +30,7 @@
     <ProjectReference Include="..\whitewaterfinder.BusinessObjects\whitewaterfinder.BusinessObjects.csproj" />
     <ProjectReference Include="..\whitewaterfinder.Core.Rivers\whitewaterfinder.Core.Rivers.csproj" />
     <ProjectReference Include="..\whitewaterfinder.Repo\whitewaterfinder.Repo.csproj" />
-        <ProjectReference Include="..\whitewaterfinder.Repo.Rivers\whitewaterfinder.Repo.Rivers.csproj" />
+    <ProjectReference Include="..\whitewaterfinder.Repo.Rivers\whitewaterfinder.Repo.Rivers.csproj" />
 
   </ItemGroup>  
 </Project>
