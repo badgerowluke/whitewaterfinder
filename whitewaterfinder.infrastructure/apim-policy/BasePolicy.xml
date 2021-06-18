@@ -5,7 +5,6 @@
                 <origin>http://localhost:5000</origin>
                 <origin>http://localhost:3000</origin>
                 <origin>http://localhost:4200</origin>
-                <origin>https://mango-forest-01a5e9710.azurestaticapps.net</origin>
                 <origin>http://paddle-finder.com</origin>
                 <origin>https://paddle-finder.com</origin>
             </allowed-origins>
