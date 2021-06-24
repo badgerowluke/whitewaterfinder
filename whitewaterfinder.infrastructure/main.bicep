@@ -2,7 +2,7 @@ targetScope = 'subscription'
 
 resource  newRg 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   name: 'waterfinder'
-  location: 'northcentralus'
+  location: deployment().location
 }
 
 module storage 'bicep/storage/storage.bicep' = {
@@ -45,6 +45,12 @@ module keyvault 'bicep/keyvault/kvtemplate.bicep' = {
 module apim 'bicep/apim/apimdeploy.bicep' = {
   name: 'paddle-finder-apim'
   scope: newRg
+  params: {
+    riverFuncKey: apis.outputs.riversKey
+    prefFuncKey: apis.outputs.usersKey
+    botFuncKey: apis.outputs.botKey
+    adminFuncKey: apis.outputs.adminKey
+  }
 }
 
 
