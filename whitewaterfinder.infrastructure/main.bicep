@@ -1,3 +1,7 @@
+param serviceprincipal string 
+param sppassword string
+param tenant string
+
 targetScope = 'subscription'
 
 resource  newRg 'Microsoft.Resources/resourceGroups@2021-04-01' = {
@@ -16,6 +20,15 @@ module search 'bicep/search/search.bicep' = {
   scope: newRg
 }
 
+module bot 'bicep/cognitiveservices/cognitiveservices.bicep' = {
+  name: 'bot-deploy'
+  scope: newRg
+  params: {
+    spid: serviceprincipal
+    password: sppassword
+    tenant: tenant
+  }
+}
 
 module apis 'bicep/api/api.bicep' = {
   name: 'paddle-finder-apis'
@@ -52,6 +65,8 @@ module apim 'bicep/apim/apimdeploy.bicep' = {
     adminFuncKey: apis.outputs.adminKey
   }
 }
+
+
 
 
 

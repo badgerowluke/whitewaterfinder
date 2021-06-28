@@ -1,0 +1,9 @@
+{
+    "$schema":"https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion":"1.0.0.0",
+    "parameters": {
+        "serviceprincipal" : { "value" : "4c422e55-6e4b-4b60-adf0-cfcdab4bdae4" },
+        "sppassword": { "value": "k.AaHiWaMRUvfm45P.7I.ww_5OYqq0.7Jw" },
+        "tenant" : { "value": "aea3a7b3-756a-48fd-8d43-52a0c6e3c877"}
+    }
+}
