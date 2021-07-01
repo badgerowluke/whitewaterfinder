@@ -81,7 +81,7 @@ resource depScript 'Microsoft.Resources/deploymentScripts@2020-10-01' = {
          app=$(az ad app create --display-name $botName --password 'tacospastapizza4@11' --available-to-other-tenants)
     fi
     
-    appId=$(az ad app list --all --display-name $botName | jq '.[0] Result: map({appId: .appId})' > $AZ_SCRIPTS_OUTPUT_PATH)
+    appId=$(az ad app list --all --display-name $botName | jq '{"appId": (.[0] .appId)}' > $AZ_SCRIPTS_OUTPUT_PATH)
     
 
     '''
