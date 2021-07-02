@@ -18,6 +18,11 @@ module storage 'bicep/storage/storage.bicep' = {
 module search 'bicep/search/search.bicep' = {
   name: 'paddle-finder-search'
   scope: newRg
+  params: {
+    spid: serviceprincipal
+    password: sppassword
+    tenant: tenant
+  }
 }
 
 module bot 'bicep/cognitiveservices/cognitiveservices.bicep' = {
