@@ -3,7 +3,9 @@ param authoringName string = 'webster-luis-authoring'
 param botAppName string = 'WhitewaterWebster'
 
 param botInsightsName string = 'paddle-finder'
-param botName string = 'WhtewaterWebster'
+param botName string = 'whitewaterwebster-ar'
+param botPassword string
+
 param spid string
 param password string
 param tenant string
@@ -40,11 +42,12 @@ resource depScript 'Microsoft.Resources/deploymentScripts@2020-10-01' = {
     azCliVersion: '2.24.0'
     retentionInterval: 'P1D'
     cleanupPreference: 'OnSuccess'
-    arguments: '--botName ${botName} --spid ${spid} --pass ${password} --tenant ${tenant}'
+    arguments: '--botName ${botName} --botPassword ${botPassword} --spid ${spid} --pass ${password} --tenant ${tenant}'
     scriptContent: '''
   
 
     botName=""
+    botPassword=""
     spid=""
     pass=""
     tenant=""
@@ -78,7 +81,8 @@ resource depScript 'Microsoft.Resources/deploymentScripts@2020-10-01' = {
     
     #create it first if it doesn't exist
     if [ "$doCreate" =  true ]; then
-         app=$(az ad app create --display-name $botName --password 'tacospastapizza4@11' --available-to-other-tenants)
+         app=$(az ad app create --display-name $botName --password $botPassword --available-to-other-tenants)
+         appId=$(az ad app list --all --display-name $botName | jq '{"appId": (.[0] .appId)}' > $AZ_SCRIPTS_OUTPUT_PATH)
     fi
     
     appId=$(az ad app list --all --display-name $botName | jq '{"appId": (.[0] .appId)}' > $AZ_SCRIPTS_OUTPUT_PATH)

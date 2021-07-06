@@ -1,6 +1,7 @@
 param serviceprincipal string 
 param sppassword string
 param tenant string
+param botPassword string
 
 targetScope = 'subscription'
 
@@ -29,6 +30,7 @@ module bot 'bicep/cognitiveservices/cognitiveservices.bicep' = {
   name: 'bot-deploy'
   scope: newRg
   params: {
+    botPassword: botPassword
     spid: serviceprincipal
     password: sppassword
     tenant: tenant

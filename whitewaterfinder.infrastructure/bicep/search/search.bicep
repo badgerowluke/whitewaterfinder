@@ -7,7 +7,7 @@ param spid string
 param password string
 param tenant string
 
-resource azureSearchName_resource 'Microsoft.Search/searchServices@2020-03-13' = {
+resource azureSearch 'Microsoft.Search/searchServices@2020-03-13' = {
   name: azureSearchName
   location: location
   sku: {
@@ -25,15 +25,22 @@ resource depScript 'Microsoft.Resources/deploymentScripts@2020-10-01' = {
   kind: 'AzureCLI'
   location: location
   name: 'search-index-builder'
+
+  dependsOn: [
+    azureSearch
+  ]
   properties: {
     azCliVersion: '2.24.0'
     retentionInterval: 'P1D'
     cleanupPreference: 'OnSuccess'
-    arguments: '--spid ${spid} --pass ${password} --tenant ${tenant}'
+    arguments: '--spid ${spid} --pass ${password} --tenant ${tenant} --resourceGroup ${resourceGroup().name} --jsonFile ../../riverswithid'
     scriptContent: '''
 
         resourceGroup=""
         jsonFile=""
+        spid=""
+        pass=""
+        tenant=""
         while [ $# -gt 0 ]; do
         
           if [[ $1 == *"--"* ]]; then
@@ -48,8 +55,11 @@ resource depScript 'Microsoft.Resources/deploymentScripts@2020-10-01' = {
         az login --service-principal --username $spid --password $pass --tenant $tenant
     
         key=$(az search admin-key show --output json --resource-group ${resourceGroup} --service-name "waterfindersearch" | jq '. .primaryKey')
+        
         stripped="${key%\"}"
         stripped="${stripped#\"}"
+
+        
         curl -X PUT https://waterfindersearch.search.windows.net/indexes/riversearch-index?api-version=2019-05-06 \
            -H "api-key : ${stripped}" \
            -H "Content-Type: application/json" \
@@ -80,8 +90,8 @@ resource depScript 'Microsoft.Resources/deploymentScripts@2020-10-01' = {
                 ]
             }
             " 
-    
     '''
   }
 }
+
 output searchKey string = listQueryKeys(azureSearchName, '2020-03-13').value[0].key
