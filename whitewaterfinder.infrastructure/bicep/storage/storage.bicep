@@ -62,7 +62,7 @@ resource storageAccountName_default 'Microsoft.Storage/storageAccounts/blobServi
         }
       ]
     }
-    deleteRententionPolicy: {
+    deleteRetentionPolicy: {
       enabled: false
     }
   }

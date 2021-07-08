@@ -1,8 +1,7 @@
 on:
   push:
     branches:
-      - main
-      - feature/using-bicep
+      - trunk
     paths:
       - 'whitewaterfinder.api.rivers/**'
 

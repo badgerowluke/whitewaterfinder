@@ -14,28 +14,28 @@ resource "azurerm_resource_group" "rg" {
 }
 
 module "keyvault" {
-  source   = "./keyvault"
+  source   = "./terraform/keyvault"
   location = azurerm_resource_group.rg.location
   rg_name  = azurerm_resource_group.rg.name
   name     = azurerm_resource_group.rg.name
 }
 
 module "storage" {
-  source   = "./storage"
+  source   = "./terraform/storage"
   location = azurerm_resource_group.rg.location
   rg_name  = azurerm_resource_group.rg.name
   name     = azurerm_resource_group.rg.name
 }
 
 module "search" {
-  source   = "./search"
+  source   = "./terraform/search"
   location = azurerm_resource_group.rg.location
   rg_name  = azurerm_resource_group.rg.name
   name     = "${azurerm_resource_group.rg.name}search"
 }
 
 module "api" {
-  source               = "./api"
+  source               = "./terraform/api"
   location             = azurerm_resource_group.rg.location
   rg_name              = azurerm_resource_group.rg.name
   name                 = "paddlefinder"
