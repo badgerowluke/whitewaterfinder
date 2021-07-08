@@ -1,4 +1,4 @@
-
+# https://stackoverflow.com/questions/65249158/azure-devops-how-to-disable-ci-trigger-on-a-yaml-template-pipeline
 trigger: none
 
 stages: 
