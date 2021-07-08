@@ -2,8 +2,10 @@ param serviceprincipal string
 @secure()
 param sppassword string
 param tenant string
+param adminId string
 @secure()
 param botPassword string
+param luisAppId string
 
 targetScope = 'subscription'
 
@@ -28,6 +30,15 @@ module search 'bicep/search/search.bicep' = {
   }
 }
 
+module registry 'bicep/registry/registry.bicep' = {
+  name: 'container-registry'
+  scope: newRg
+  params: {
+    name: 'paddlefinderregistry'
+    location: newRg.location
+  }
+}
+
 module bot 'bicep/cognitiveservices/cognitiveservices.bicep' = {
   name: 'bot-deploy'
   scope: newRg
@@ -48,6 +59,7 @@ module apis 'bicep/api/api.bicep' = {
   params: {
     botAppId: bot.outputs.msaAppId
     luisApiKey: bot.outputs.luisId
+    luisAppId: luisAppId
     botPassword: botPassword
     azureSearchKey: search.outputs.searchKey
     baseUSGSUrl: 'https://waterservices.usgs.gov/nwis/iv/?format=json&indent=on&'
@@ -59,10 +71,10 @@ module keyvault 'bicep/keyvault/kvtemplate.bicep' = {
   name: 'paddle-finder-keyvault'
 
   params: {
-    adminId: '91761d6b-9bc3-4f65-bf99-9920a6ed6b54'
+    adminId: adminId
     kvName: 'paddle-finder'
     location: newRg.location
-    tenantId: 'aea3a7b3-756a-48fd-8d43-52a0c6e3c877'
+    tenantId: tenant
   }
   scope: newRg
 }

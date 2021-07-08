@@ -27,6 +27,13 @@ module "storage" {
   name     = azurerm_resource_group.rg.name
 }
 
+module "registry" {
+  source   = "./terraform/registry"
+  location = azurerm_resource_group.rg.location
+  rg_name  = azurerm_resource_group.rg.name
+  name     = "paddlefinderregistry"
+}
+
 module "search" {
   source   = "./terraform/search"
   location = azurerm_resource_group.rg.location

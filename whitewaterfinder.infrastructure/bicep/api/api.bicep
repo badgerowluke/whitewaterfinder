@@ -14,6 +14,7 @@ param botPassword string
 param botName string = 'paddle-finder-webster'
 param adminName string = 'paddle-finder-admin'
 param luisApiKey string
+param luisAppId string
 
 var storageAccountId = '${resourceGroup().id}/providers/Microsoft.Storage/storageAccounts/${storageAccountName}'
 
@@ -82,6 +83,7 @@ module bot 'bot.bicep' ={
     msftAppId: botAppId
     botPassword: botPassword
     luisApiKey: luisApiKey
+    luisAppId: luisAppId
     appName: appName
     location: location
     planId: appPlan.id
