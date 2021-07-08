@@ -2,44 +2,44 @@
 trigger: none
 
 stages: 
-# - template: 'whitewaterfinder.pipeline/provisioninfra.yml'
-#   parameters:
-#     principal: $(principal)
-#     providerstorage: 'tfstatewaterfinder'
-#     resourceGroup: $(resourceGroupDev)
-#     region: '$(azureRegion)'
-#     appName: "paddle-finder"    
-#     adminEmail: '$(adminEmail)'
-#     adminId: '$(adminId)' 
-#     tenant: '$(tenantId)' 
-#     storageAccountName: "$(resourceGroupDev)" 
-#     botName: 'WhiteWaterWebster'
-#     luisAuthoring: 'webster-luis-authoring'
-#     luisEndpointName: 'webster-luis'
+- template: 'whitewaterfinder.pipeline/provisioninfra.yml'
+  parameters:
+    principal: $(principal)
+    providerstorage: 'tfstatewaterfinder'
+    resourceGroup: $(resourceGroupDev)
+    region: '$(azureRegion)'
+    appName: "paddle-finder"    
+    adminEmail: '$(adminEmail)'
+    adminId: '$(adminId)' 
+    tenant: '$(tenantId)' 
+    storageAccountName: "$(resourceGroupDev)" 
+    botName: 'WhiteWaterWebster'
+    luisAuthoring: 'webster-luis-authoring'
+    luisEndpointName: 'webster-luis'
 
 
-# - template: 'whitewaterfinder.pipeline/build.yml'
-#   parameters: 
-#     vstsFeed: $(artifactKey)
+- template: 'whitewaterfinder.pipeline/build.yml'
+  parameters: 
+    vstsFeed: $(artifactKey)
 
 
-# - template: 'whitewaterfinder.pipeline/deployApp.yml'
-#   parameters:
-#     stageTitle: "DevAppDeploy"
-#     appName: 'paddle-finder'
-#     resourceGroup: '$(resourceGroupDev)'
-#     region: '$(azureRegion)'
-#     botapp: 'paddle-finder-webster'
-#     principal: '$(principal)'
-#     adminEmail: '$(adminEmail)'      
-#     adminApp: 'paddle-finder-admin'      
+- template: 'whitewaterfinder.pipeline/deployApp.yml'
+  parameters:
+    stageTitle: "DevAppDeploy"
+    appName: 'paddle-finder'
+    resourceGroup: '$(resourceGroupDev)'
+    region: '$(azureRegion)'
+    botapp: 'paddle-finder-webster'
+    principal: '$(principal)'
+    adminEmail: '$(adminEmail)'      
+    adminApp: 'paddle-finder-admin'      
     
-# - template: 'whitewaterfinder.pipeline/configure.yml'
-#   parameters:
-#     principal: $(principal)
-#     environment: 'production' 
-#     region: $(azureRegion)
-#     sharedRg: $(resourceGroupDev)
-#     artifact: infra
+- template: 'whitewaterfinder.pipeline/configure.yml'
+  parameters:
+    principal: $(principal)
+    environment: 'production' 
+    region: $(azureRegion)
+    sharedRg: $(resourceGroupDev)
+    artifact: infra
     
 
