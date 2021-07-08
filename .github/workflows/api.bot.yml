@@ -3,8 +3,7 @@
 on:
   push:
     branches:
-      - main
-      - feature/add-docker
+      - trunk
     paths:
       - 'whitewaterfinder.api.bot/**'
 
