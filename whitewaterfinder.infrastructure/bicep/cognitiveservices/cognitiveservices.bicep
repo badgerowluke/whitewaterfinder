@@ -13,7 +13,7 @@ param tenant string
 @description('Location for all resources.')
 param location string = resourceGroup().location
 
-resource authoringName_resource 'Microsoft.CognitiveServices/accounts@2017-04-18' = {
+resource authoring_resource 'Microsoft.CognitiveServices/accounts@2017-04-18' = {
   kind: 'LUIS.Authoring'
   name: authoringName
   location: 'westus'
@@ -22,7 +22,7 @@ resource authoringName_resource 'Microsoft.CognitiveServices/accounts@2017-04-18
   }
 }
 
-resource luisName_resource 'Microsoft.CognitiveServices/accounts@2017-04-18' = {
+resource luis_resource 'Microsoft.CognitiveServices/accounts@2017-04-18' = {
   kind: 'LUIS'
   name: luisName
   location: location
@@ -30,7 +30,7 @@ resource luisName_resource 'Microsoft.CognitiveServices/accounts@2017-04-18' = {
     name: 'S0'
   }
   dependsOn: [
-    authoringName_resource
+    authoring_resource
   ]
 }
 
@@ -92,7 +92,7 @@ resource depScript 'Microsoft.Resources/deploymentScripts@2020-10-01' = {
   }
 }
 
-resource botAppName_resource 'Microsoft.BotService/botServices@2018-07-12' = {
+resource botService 'Microsoft.BotService/botServices@2018-07-12' = {
   kind: 'sdk'
   name: botAppName
   location: 'global'
@@ -106,12 +106,16 @@ resource botAppName_resource 'Microsoft.BotService/botServices@2018-07-12' = {
     msaAppId: reference('bot-app-id-create').outputs.appId
     developerAppInsightKey: reference(resourceId('microsoft.insights/components/', botInsightsName), '2015-05-01').InstrumentationKey
     developerAppInsightsApplicationId: reference(resourceId('microsoft.insights/components', botInsightsName), '2015-05-01').appId
-    luisAppIds: []
+    luisAppIds: [
+      listKeys(luis_resource.id, '2016-02-01-preview').key1
+    ]
   }
   dependsOn: [
     depScript
   ]
 }
 
-output luisId string = listKeys(luisName_resource.id, '2016-02-01-preview').key1
-output luisEndpoint string = reference(luisName_resource.id, '2017-04-18').endpoint
+output msaAppId string = reference('bot-app-id-create').outputs.appId
+
+output luisId string = listKeys(luis_resource.id, '2016-02-01-preview').key1
+output luisEndpoint string = reference(luis_resource.id, '2017-04-18').endpoint

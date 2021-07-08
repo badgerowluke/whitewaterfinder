@@ -1,6 +1,8 @@
 param serviceprincipal string 
+@secure()
 param sppassword string
 param tenant string
+@secure()
 param botPassword string
 
 targetScope = 'subscription'
@@ -44,6 +46,9 @@ module apis 'bicep/api/api.bicep' = {
   ]
   scope: newRg
   params: {
+    botAppId: bot.outputs.msaAppId
+    luisApiKey: bot.outputs.luisId
+    botPassword: botPassword
     azureSearchKey: search.outputs.searchKey
     baseUSGSUrl: 'https://waterservices.usgs.gov/nwis/iv/?format=json&indent=on&'
     searchUrl: 'https://waterfindersearch.search.windows.net/indexes/riversearch-index/docs/suggest?suggesterName=RiverName&api-version=2019-05-06&fuzzy=false&$top=20&&$select=Name,RiverId,Latitude,Longitude&search="'
