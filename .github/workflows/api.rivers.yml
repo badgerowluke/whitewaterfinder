@@ -7,7 +7,7 @@ on:
 
 jobs:
   build-and-test:
-    # needs: terraform
+  #needs a check to verify if the infrastructure already exists or not.
     name: "build and test"
     runs-on: ubuntu-latest
 
@@ -18,24 +18,33 @@ jobs:
     steps:
       - name: "checkout"
         uses: actions/checkout@v2.1.0
-      # - name: setup dotnet
-      #   uses: actions/setup-dotnet@v1
-      #   with:
-      #    dotnet-version: '3.1.x'
-      
-      # - name: restore
-      #   run: dotnet restore
-      # - name: build
-      #   run: dotnet build --no-restore --configuration Release 
-      # - name: test
-      #   run: dotnet test --no-build --verbosity normal
-    
+      - name: setup dotnet
+        uses: actions/setup-dotnet@v1
+        with:
+         dotnet-version: '3.1.x'
+
+
 
       - name: az login
         uses: azure/login@v1
         with:
-          creds: ${{ secrets.AZCLI_CREDS }}
+          creds: ${{ secrets.AZCLI_CREDS }}         
 
+      - name: build test and release
+        run: |
+          dotnet restore
+          dotnet build --no-restore --configuration Release
+          dotnet test --no-build --verbosity normal
+          dotnet publish -c Release -o '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/rivers'
+      
+      - name: deploy to funtionapp
+        uses: azure/webapps-deploy@v2
+        with: 
+          app-name: 'paddle-finder'
+          package: '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/rivers'
+
+
+      #DOING THIS FOR AN INTERNAL TEST OF K8S ENVIRONMENTS
       - name: build container
         run: |
 
@@ -45,3 +54,7 @@ jobs:
           --build-arg TOKEN=${{ secrets.AZ_ARTIFACT_TOKEN }} \
           --build-arg ENDPOINT=${{ secrets.AZ_ARTIFACTS }}
           docker push paddlefinderregistry.azurecr.io/whitewaterfinder.api.rivers:$GITHUB_RUN_ID  
+
+
+      - name: logout
+        run: az logout
