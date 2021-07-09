@@ -1,0 +1,27 @@
+on:
+  push:
+    branches:
+      - trunk
+    paths:
+      - 'whitewaterfinder.infrastructure/bicep/**'
+jobs:
+  build-and-provision:
+    name: 'provision infra with bicep'
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: "checkout"
+        uses: actions/checkout@v2.1.0
+
+      - name: az login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets. AZCLI_CREDS }}
+      - name: provision
+        working-directory: whitewaterfinder.infrastructure
+        run: |
+          az deployment sub create -f main.bicep \
+                                  -l northcentralus \
+                                  --parameters ${{ secrets.BICEP_PARAMS }}
