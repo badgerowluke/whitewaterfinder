@@ -10,6 +10,7 @@ RUN wget -qO- https://raw.githubusercontent.com/Microsoft/artifacts-credprovider
 ENV NUGET_CREDENTIALPROVIDER_SESSIONTOKENCACHE_ENABLED true
 ENV VSS_NUGET_EXTERNAL_FEED_ENDPOINTS "{\"endpointCredentials\": [{\"endpoint\":\"${ENDPOINT}\", \"password\":\"${TOKEN}\"}]}"
 
+# notice the no-restore flag on dotnet publish
 RUN mkdir -p /home/site/wwwroot
 RUN cd /src/dotnet-function-app && \
     dotnet restore -s ${ENDPOINT} && \ 
