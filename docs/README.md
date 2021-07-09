@@ -19,3 +19,30 @@ The format looks like this:
     "tenantId": "<TENANTID>"
 }
 ```
+
+## Infrastructure Provisioning with Azure Bicep
+[Azure Bicep](https://github.com/Azure/bicep) is a super cool DSL that, by the Azure Teams own definition "starts to treat ARM Templates as an intermedate language".  It still utilizes the parameters json file concept to pass our secrets into the deployment, and the working version of that file is below:
+```json
+{
+    "$schema" : "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion" : "1.0.0.0",
+    "parameters": {
+        "serviceprincipal" : { "value" : "<Your SPN value?" },
+        "sppassword": { "value": "<Client Secret for SPN>" },
+        "tenant" : { "value": "<Your Azure Tenant>" },
+        "botPassword" : { "value" : "<MSFT Bot Service pwd>" },
+        "luisAppId" : { "value" : "<Your LUIS App ID>" },
+        "adminId" : { "value" : "<YOUR AAD Object id from YOUR Tenant>" }
+    }
+}
+```
+
+from there, we're passing that into the AZCLI to trigger the deployment:
+```yml
+    - name: provision
+    working-directory: whitewaterfinder.infrastructure
+    run: |
+        az deployment sub create -f main.bicep \
+                                -l northcentralus \
+                                --parameters ${{ secrets.BICEP_PARAMS }}
+```

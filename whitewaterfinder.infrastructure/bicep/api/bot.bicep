@@ -77,6 +77,7 @@ resource app 'Microsoft.Web/sites@2016-08-01' = {
           //so the app id legitimately is tightly coupled ot "apps" hosted at https://luis.ai
           //TODO: determine the best way to get the app id from luis and into this config item
           //current solution was to manually create the app in the LUIS portal and drop it as an input param
+          //TODO: investifart if I can do it as part of a deployment script block here in the bicep
           name: 'LuisAppId'
           value: luisAppId
         }
