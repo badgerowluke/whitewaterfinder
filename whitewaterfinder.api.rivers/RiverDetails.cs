@@ -30,8 +30,8 @@ namespace whitewaterfinder.api
 
 
         }
-        //TODO: remove this comment.  I didn't set a specific project, and for some reason the legacy bot app didn't "exist" to restore
-        
+        //TODO: remove this comment.  maybe by setting an env variable on the task?
+
         [FunctionName("RiverDetails")]
         [OpenApiOperation("Rivers")]
         [OpenApiParameter("riverCode", In=ParameterLocation.Path, Required=true, Description="The USGS code for the chosen river", Type=typeof(string))]
