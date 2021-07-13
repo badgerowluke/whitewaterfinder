@@ -30,7 +30,8 @@ namespace whitewaterfinder.api
 
 
         }
-        //TODO: remove this comment.  This is a change to the file so that I an initiate an GHA build.
+        //TODO: remove this comment.  I didn't set a specific project, and for some reason the legacy bot app didn't "exist" to restore
+        
         [FunctionName("RiverDetails")]
         [OpenApiOperation("Rivers")]
         [OpenApiParameter("riverCode", In=ParameterLocation.Path, Required=true, Description="The USGS code for the chosen river", Type=typeof(string))]

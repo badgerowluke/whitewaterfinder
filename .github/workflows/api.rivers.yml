@@ -31,6 +31,7 @@ jobs:
           creds: ${{ secrets.AZCLI_CREDS }}         
 
       - name: build test and release
+        working-directory: whitewaterfinder.api.rivers
         run: |
           dotnet restore -s ${{ secrets.AZ_ARTIFACT_TOKEN }}
           dotnet build --no-restore --configuration Release
