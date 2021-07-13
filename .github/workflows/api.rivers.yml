@@ -33,6 +33,7 @@ jobs:
       - name: build test and release
         working-directory: whitewaterfinder.api.rivers
         env:
+          NUGET_CREDENTIALPROVIDER_SESSIONTOKENCACHE_ENABLED: true
           VSS_NUGET_EXTERNAL_FEED_ENDPOINTS: '{"endpointCredentials": [{"endpoint":"${{ secrets.AZ_ARTIFACTS }}", "password": "${{ secrets.AZ_ARTIFACT_TOKEN }}"}]}'
 
         run: |
