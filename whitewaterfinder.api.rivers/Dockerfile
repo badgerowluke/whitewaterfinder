@@ -9,7 +9,7 @@ RUN wget -qO- https://raw.githubusercontent.com/Microsoft/artifacts-credprovider
 
 # and this one might be required to get past the 401 as well.
 ENV NUGET_CREDENTIALPROVIDER_SESSIONTOKENCACHE_ENABLED true
-# fresh client secret, lets see what that does.
+# the token needs to be provided by azure devops
 ENV VSS_NUGET_EXTERNAL_FEED_ENDPOINTS "{\"endpointCredentials\": [{\"endpoint\":\"${ENDPOINT}\", \"password\":\"${TOKEN}\"}]}"
 
 # notice the no-restore flag on dotnet publish
