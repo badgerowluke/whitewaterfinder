@@ -4,6 +4,7 @@ on:
       - trunk
     paths:
       - 'whitewaterfinder.api.rivers/**'
+      - '.github/workflows/**'
 
 jobs:
   build-and-test:
@@ -35,7 +36,8 @@ jobs:
 
 
         run: |
-          dotnet restore -s ${{ secrets.GH_PACKAGES }}
+          dotnet nuget add source --usersname {{ secrets.GH_USER }} --password {{ secrets.GH_TOKEN }} --store-password-in-clear-text --name github "${{ secrets.GH_PACKAGES }}"
+          dotnet restore 
           dotnet build --no-restore --configuration Release
           dotnet test --no-build --verbosity normal
           dotnet publish --no-restore -c Release -o '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/rivers'
@@ -48,15 +50,15 @@ jobs:
 
 
       #DOING THIS FOR AN INTERNAL TEST OF K8S ENVIRONMENTS
-      - name: build container
-        run: |
+      # - name: build container
+      #   run: |
 
-          az acr login --name paddlefinderregistry 
-          docker build . --file ./whitewaterfinder.api.rivers/Dockerfile \
-          --tag paddlefinderregistry.azurecr.io/whitewaterfinder.api.rivers:$GITHUB_RUN_ID \
-          --build-arg TOKEN=${{ secrets.AZ_ARTIFACT_TOKEN }} \
-          --build-arg ENDPOINT=${{ secrets.GH_PACKAGES }}
-          docker push paddlefinderregistry.azurecr.io/whitewaterfinder.api.rivers:$GITHUB_RUN_ID  
+      #     az acr login --name paddlefinderregistry 
+      #     docker build . --file ./whitewaterfinder.api.rivers/Dockerfile \
+      #     --tag paddlefinderregistry.azurecr.io/whitewaterfinder.api.rivers:$GITHUB_RUN_ID \
+      #     --build-arg TOKEN=${{ secrets.AZ_ARTIFACT_TOKEN }} \
+      #     --build-arg ENDPOINT=${{ secrets.GH_PACKAGES }}
+      #     docker push paddlefinderregistry.azurecr.io/whitewaterfinder.api.rivers:$GITHUB_RUN_ID  
 
 
       - name: logout
