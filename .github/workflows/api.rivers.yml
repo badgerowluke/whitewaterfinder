@@ -5,7 +5,8 @@ on:
     paths:
       - 'whitewaterfinder.api.rivers/**'
       - '.github/workflows/api.rivers.yml'
-
+env:
+  AZURE_FUNCTIONAPP_PACKAGE_PATH: '.'
 jobs:
   build-and-test:
   #needs a check to verify if the infrastructure already exists or not.
@@ -45,9 +46,8 @@ jobs:
       - name: deploy to funtionapp
         uses: azure/webapps-deploy@v2
         with: 
-          working-directory: whitewaterfinder.api.rivers
           app-name: 'paddle-finder'
-          package: './publish/rivers'
+          package: '${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/publish/rivers'
 
 
       #DOING THIS FOR AN INTERNAL TEST OF K8S ENVIRONMENTS
