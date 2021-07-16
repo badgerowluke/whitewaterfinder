@@ -4,6 +4,7 @@ on:
       - trunk
     paths:
       - 'whitewaterfinder.infrastructure/bicep/**'
+      - '.github/workflows/bicep.deploy.yml'
 jobs:
   build-and-provision:
     name: 'provision infra with bicep'

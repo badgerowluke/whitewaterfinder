@@ -4,6 +4,11 @@ on:
       - trunk
     paths:
       - 'whitewaterfinder.api.admin/**'
+      - '.github/workflows/api.admin.yml'
+
+
+env:
+  AZURE_FUNCTIONAPP_PACKAGE_PATH: 'whitewaterfinder.api.admin'      
 
 jobs:
   build-and-test:
@@ -18,30 +23,47 @@ jobs:
     steps:
       - name: "checkout"
         uses: actions/checkout@v2.1.0
-      # - name: setup dotnet
-      #   uses: actions/setup-dotnet@v1
-      #   with:
-      #    dotnet-version: '3.1.x'
-      
-      # - name: restore
-      #   run: dotnet restore
-      # - name: build
-      #   run: dotnet build --no-restore --configuration Release 
-      # - name: test
-      #   run: dotnet test --no-build --verbosity normal
-    
+      - name: setup dotnet
+        uses: actions/setup-dotnet@v1
+        with:
+         dotnet-version: '3.1.x'
+
+
 
       - name: az login
         uses: azure/login@v1
         with:
-          creds: ${{ secrets.AZCLI_CREDS }}
+          creds: ${{ secrets.AZCLI_CREDS }}      
+      
+      - name: build test and release
+        working-directory: whitewaterfinder.api.admin
 
-      - name: build container
+
         run: |
+          dotnet nuget add source --username ${{ secrets.GH_USER }} --password ${{ secrets.GH_TOKEN }} --store-password-in-clear-text --name github "${{ secrets.GH_PACKAGES }}"
+          dotnet restore 
+          dotnet build --no-restore --configuration Release
+          dotnet test --no-build --verbosity normal
+          dotnet publish --no-restore -c Release -o './publish/admin'
+      
+      - name: deploy to funtionapp
+        uses: azure/webapps-deploy@v2
+        with: 
+          app-name: 'paddle-finder-admin'
+          package: '${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/publish/admin'
+    
 
-          az acr login --name paddlefinderregistry 
-          docker build . --file ./whitewaterfinder.api.admin/Dockerfile \
-          --tag paddlefinderregistry.azurecr.io/whitewaterfinder.api.admin:$GITHUB_RUN_ID \
-          --build-arg TOKEN=${{ secrets.AZ_ARTIFACT_TOKEN }} \
-          --build-arg ENDPOINT=${{ secrets.AZ_ARTIFACTS }}
-          docker push paddlefinderregistry.azurecr.io/whitewaterfinder.api.admin:$GITHUB_RUN_ID  
+
+      # - name: build container
+      #   run: |
+
+      #     az acr login --name paddlefinderregistry 
+      #     docker build . --file ./whitewaterfinder.api.admin/Dockerfile \
+      #     --tag paddlefinderregistry.azurecr.io/whitewaterfinder.api.admin:$GITHUB_RUN_ID \
+      #     --build-arg TOKEN=${{ secrets.AZ_ARTIFACT_TOKEN }} \
+      #     --build-arg ENDPOINT=${{ secrets.AZ_ARTIFACTS }}
+      #     docker push paddlefinderregistry.azurecr.io/whitewaterfinder.api.admin:$GITHUB_RUN_ID  
+
+
+      - name: logout
+        run: az logout

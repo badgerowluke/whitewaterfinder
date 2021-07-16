@@ -4,10 +4,15 @@ on:
       - trunk
     paths:
       - 'whitewaterfinder.api.monitoring/**'
+      - '.github/workflows/api.monitoring.yml'
+
+
+env:
+  AZURE_FUNCTIONAPP_PACKAGE_PATH: 'whitewaterfinder.api.monitoring'      
 
 jobs:
   build-and-test:
-    # needs: terraform
+
     name: "build and test"
     runs-on: ubuntu-latest
 
@@ -19,26 +24,32 @@ jobs:
     steps:
       - name: "checkout"
         uses: actions/checkout@v2.1.0
-      # - name: setup dotnet
-      #   uses: actions/setup-dotnet@v1
-      #   with:
-      #    dotnet-version: '3.1.x'
-      
-      # - name: restore
-      #   working-directory: whitewaterfinder.api.monitoring
-      #   run: dotnet restore
-      # - name: build
-      #   working-directory: whitewaterfinder.api.monitoring
-      #   run: dotnet build --no-restore --configuration Release 
-      # - name: test
-      #   working-directory: whitewaterfinder.api.monitoring
-      #   run: dotnet test --no-build --verbosity normal
-    
+      - name: setup dotnet
+        uses: actions/setup-dotnet@v1
+        with:
+         dotnet-version: '3.1.x'
 
       - name: az login
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZCLI_CREDS }}
+      
+      - name: build test and release
+        working-directory: whitewaterfinder.api.monitoring
+
+        run: |
+          dotnet nuget add source --username ${{ secrets.GH_USER }} --password ${{ secrets.GH_TOKEN }} --store-password-in-clear-text --name github "${{ secrets.GH_PACKAGES }}"
+          dotnet restore 
+          dotnet build --no-restore --configuration Release
+          dotnet test --no-build --verbosity normal
+          dotnet publish --no-restore -c Release -o './publish/rivers'
+          
+      # this hasn't been provisioned yet and isn't ready to go anyway
+      # - name: deploy to funtionapp
+      #   uses: azure/webapps-deploy@v2
+      #   with: 
+      #     app-name: 'paddle-finder'
+      #     package: '${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/publish/rivers'
 
       - name: build container
         run: |
@@ -49,3 +60,6 @@ jobs:
           --build-arg TOKEN=${{ secrets.AZ_ARTIFACT_TOKEN }} \
           --build-arg ENDPOINT=${{ secrets.AZ_ARTIFACTS }}
           docker push paddlefinderregistry.azurecr.io/whitewaterfinder.api.monitoring:$GITHUB_RUN_ID  
+
+      - name: logout
+        run: az logout          

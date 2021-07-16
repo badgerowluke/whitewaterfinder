@@ -6,6 +6,10 @@ on:
       - trunk
     paths:
       - 'whitewaterfinder.api.bot/**'
+      - '.github/workflows/api.bot.yml'
+
+env:
+  AZURE_FUNCTIONAPP_PACKAGE_PATH: 'whitewaterfinder.api.bot'      
 
 jobs:
   build-and-test:
@@ -27,27 +31,36 @@ jobs:
 
         with:
          dotnet-version: '3.1.x'
-      
-      - name: restore
-        working-directory: whitewaterfinder.api.bot
-        run: dotnet restore
-      - name: build
-        working-directory: whitewaterfinder.api.bot
-        run: dotnet build --no-restore --configuration Release 
-      - name: test
-        working-directory: whitewaterfinder.api.bot
-        run: dotnet test --no-build --verbosity normal
-    
 
       - name: az login
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZCLI_CREDS }}
 
-      - name: build container
-
+      - name: build test and publish
+        working-directory: whitewaterfinder.api.bot
         run: |
+          dotnet nuget add source --username ${{ secrets.GH_USER }} --password ${{ secrets.GH_TOKEN }} --store-password-in-clear-text --name github "${{ secrets.GH_PACKAGES }}"        
+          dotnet restore
+          dotnet build --no-restore --configuration Release
+          dotnet test --no-build --verbosity normal
+          dotnet publish --no-restore -c Release -o './publish/bot'
 
-          az acr login --name paddlefinderregistry 
-          docker build . --file ./whitewaterfinder.api.bot/Dockerfile --tag paddlefinderregistry.azurecr.io/whitewaterfinder.api.bot:$GITHUB_RUN_ID 
-          docker push paddlefinderregistry.azurecr.io/whitewaterfinder.api.bot:$GITHUB_RUN_ID 
+      - name: deploy to funtionapp
+        uses: azure/webapps-deploy@v2
+        with: 
+          app-name: 'paddle-finder-webster'
+          package: '${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/publish/bot'
+    
+
+
+
+      # - name: build container
+
+      #   run: |
+
+      #     az acr login --name paddlefinderregistry 
+      #     docker build . --file ./whitewaterfinder.api.bot/Dockerfile --tag paddlefinderregistry.azurecr.io/whitewaterfinder.api.bot:$GITHUB_RUN_ID 
+      #     docker push paddlefinderregistry.azurecr.io/whitewaterfinder.api.bot:$GITHUB_RUN_ID 
+      - name: logout
+        run: az logout
