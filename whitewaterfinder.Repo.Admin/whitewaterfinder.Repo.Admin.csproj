@@ -5,8 +5,8 @@
   </PropertyGroup>
   
   <ItemGroup>
-    <PackageReference Include="com.brgs.orm" Version="0.4.3-CI-20200713-130518" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
+    <PackageReference Include="NOSQLORM" Version="0.3.5-43-g9d8b4e0" />
     <PackageReference Include="WindowsAzure.Storage" Version="9.3.3" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="2.1.1" />
   </ItemGroup>
