@@ -12,8 +12,8 @@
     <PackageReference Include="Microsoft.Extensions.Http" Version="2.2.0" />
     <PackageReference Include="Aliencube.AzureFunctions.Extensions.OpenApi" Version="1.5.4" />
     <PackageReference Include="Microsoft.Azure.Functions.Extensions" Version="1.0.0" />
-    <PackageReference Include="SendGrid.Extensions.DependencyInjection" Version="1.0.0" />   
-    <PackageReference Include="com.brgs.orm" Version="0.4.3-CI-20200713-130518" />         
+    <PackageReference Include="NOSQLORM" Version="0.3.5" />
+    <PackageReference Include="SendGrid.Extensions.DependencyInjection" Version="1.0.0" />         
   </ItemGroup>
   <ItemGroup>
     <None Update="host.json">
