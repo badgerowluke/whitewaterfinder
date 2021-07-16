@@ -6,7 +6,7 @@ on:
       - 'whitewaterfinder.api.rivers/**'
       - '.github/workflows/api.rivers.yml'
 env:
-  AZURE_FUNCTIONAPP_PACKAGE_PATH: '.'
+  AZURE_FUNCTIONAPP_PACKAGE_PATH: 'whitewaterfinder.api.rivers'
 jobs:
   build-and-test:
   #needs a check to verify if the infrastructure already exists or not.
