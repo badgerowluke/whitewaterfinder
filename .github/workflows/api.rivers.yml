@@ -4,7 +4,7 @@ on:
       - trunk
     paths:
       - 'whitewaterfinder.api.rivers/**'
-      - '.github/workflows/**'
+      - '.github/workflows/api.rivers.yml'
 
 jobs:
   build-and-test:
@@ -36,7 +36,7 @@ jobs:
 
 
         run: |
-          dotnet nuget add source --username {{ secrets.GH_USER }} --password {{ secrets.GH_TOKEN }} --store-password-in-clear-text --name github "${{ secrets.GH_PACKAGES }}"
+          dotnet nuget add source --username ${{ secrets.GH_USER }} --password ${ secrets.GH_TOKEN }} --store-password-in-clear-text --name github "${{ secrets.GH_PACKAGES }}"
           dotnet restore 
           dotnet build --no-restore --configuration Release
           dotnet test --no-build --verbosity normal
