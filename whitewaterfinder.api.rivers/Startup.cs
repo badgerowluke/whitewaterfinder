@@ -25,7 +25,7 @@ namespace whitewaterfinder.api
             var myConfig = config.Get<RiverRepositoryConfig>();
             builder.Services.AddHttpClient();
             builder.Services.AddSingleton<ICloudStorageAccount>(new CloudStorageAccountBuilder(myConfig.BlobStore));
-            builder.Services.AddSingleton<IAzureStorage, AzureTableBuilder>();
+            builder.Services.AddSingleton<IAzureTableBuilder, AzureStorageFactory>();
             builder.Services.AddSingleton<IConfiguration>(config);
             builder.Services.AddSingleton<IAppSettings>(new AppSettings(config));
             builder.Services.AddSingleton<RiverRepositoryConfig>(sp => myConfig);
