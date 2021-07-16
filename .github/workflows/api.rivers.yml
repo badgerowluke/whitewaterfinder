@@ -40,13 +40,14 @@ jobs:
           dotnet restore 
           dotnet build --no-restore --configuration Release
           dotnet test --no-build --verbosity normal
-          dotnet publish --no-restore -c Release -o '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/rivers'
+          dotnet publish --no-restore -c Release -o './publish/rivers'
       
       - name: deploy to funtionapp
         uses: azure/webapps-deploy@v2
         with: 
+          working-directory: whitewaterfinder.api.rivers
           app-name: 'paddle-finder'
-          package: '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/rivers'
+          package: './publish/rivers'
 
 
       #DOING THIS FOR AN INTERNAL TEST OF K8S ENVIRONMENTS
