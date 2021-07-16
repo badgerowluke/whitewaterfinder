@@ -43,7 +43,7 @@ jobs:
           dotnet build --no-restore --configuration Release
           dotnet test --no-build --verbosity normal
           dotnet publish --no-restore -c Release -o './publish/rivers'
-          
+
       # this hasn't been provisioned yet and isn't ready to go anyway
       # - name: deploy to funtionapp
       #   uses: azure/webapps-deploy@v2
@@ -51,15 +51,15 @@ jobs:
       #     app-name: 'paddle-finder'
       #     package: '${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/publish/rivers'
 
-      - name: build container
-        run: |
+      # - name: build container
+      #   run: |
 
-          az acr login --name paddlefinderregistry 
-          docker build . --file ./whitewaterfinder.api.monitoring/Dockerfile \
-          --tag paddlefinderregistry.azurecr.io/whitewaterfinder.api.monitoring:$GITHUB_RUN_ID \
-          --build-arg TOKEN=${{ secrets.AZ_ARTIFACT_TOKEN }} \
-          --build-arg ENDPOINT=${{ secrets.AZ_ARTIFACTS }}
-          docker push paddlefinderregistry.azurecr.io/whitewaterfinder.api.monitoring:$GITHUB_RUN_ID  
+      #     az acr login --name paddlefinderregistry 
+      #     docker build . --file ./whitewaterfinder.api.monitoring/Dockerfile \
+      #     --tag paddlefinderregistry.azurecr.io/whitewaterfinder.api.monitoring:$GITHUB_RUN_ID \
+      #     --build-arg TOKEN=${{ secrets.AZ_ARTIFACT_TOKEN }} \
+      #     --build-arg ENDPOINT=${{ secrets.AZ_ARTIFACTS }}
+      #     docker push paddlefinderregistry.azurecr.io/whitewaterfinder.api.monitoring:$GITHUB_RUN_ID  
 
       - name: logout
         run: az logout          
