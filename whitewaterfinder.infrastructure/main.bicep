@@ -47,6 +47,7 @@ module bot 'bicep/cognitiveservices/cognitiveservices.bicep' = {
     spid: serviceprincipal
     password: sppassword
     tenant: tenant
+    instrumentKey: storage.outputs.instrumentKey
   }
 }
 
@@ -57,6 +58,7 @@ module apis 'bicep/api/api.bicep' = {
   ]
   scope: newRg
   params: {
+    instrumentKey: storage.outputs.instrumentKey
     botAppId: bot.outputs.msaAppId
     luisApiKey: bot.outputs.luisId
     luisAppId: luisAppId

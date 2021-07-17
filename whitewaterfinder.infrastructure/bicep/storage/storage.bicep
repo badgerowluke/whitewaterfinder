@@ -16,7 +16,7 @@ param storageAccountName string = 'waterfinder'
 
 var storageAccountId = '${resourceGroup().id}/providers/Microsoft.Storage/storageAccounts/${storageAccountName}'
 
-resource appName_resource 'Microsoft.Insights/components@2015-05-01' = {
+resource appInsights 'Microsoft.Insights/components@2015-05-01' = {
   name: appName
   location: location
   kind: 'web'
@@ -26,7 +26,7 @@ resource appName_resource 'Microsoft.Insights/components@2015-05-01' = {
   }
 }
 
-resource storageAccountName_resource 'Microsoft.Storage/storageAccounts@2019-04-01' = {
+resource storageAccount'Microsoft.Storage/storageAccounts@2019-04-01' = {
   name: storageAccountName
   location: location
   sku: {
@@ -37,7 +37,7 @@ resource storageAccountName_resource 'Microsoft.Storage/storageAccounts@2019-04-
 }
 
 resource storageAccountName_default 'Microsoft.Storage/storageAccounts/blobServices@2019-04-01' = {
-  name: '${storageAccountName_resource.name}/default'
+  name: '${storageAccount.name}/default'
   properties: {
     cors: {
       corsRules: [
@@ -74,7 +74,7 @@ resource storageAccountName_default_azure_webjobs_hosts 'Microsoft.Storage/stora
     publicAccess: 'None'
   }
   dependsOn: [
-    storageAccountName_resource
+    storageAccount
   ]
 }
 
@@ -84,7 +84,7 @@ resource storageAccountName_default_azure_webjobs_secrets 'Microsoft.Storage/sto
     publicAccess: 'None'
   }
   dependsOn: [
-    storageAccountName_resource
+    storageAccount
   ]
 }
 
@@ -94,7 +94,7 @@ resource storageAccountName_default_data 'Microsoft.Storage/storageAccounts/blob
     publicAccess: 'Container'
   }
   dependsOn: [
-    storageAccountName_resource
+    storageAccount
   ]
 }
 
@@ -104,8 +104,9 @@ resource storageAccountName_default_botstore 'Microsoft.Storage/storageAccounts/
     publicAccess: 'Container'
   }
   dependsOn: [
-    storageAccountName_resource
+    storageAccount
   ]
 }
 
 output storageKey string = concat(listKeys(storageAccountId, '2015-05-01-preview').key1)
+output instrumentKey string = appInsights.properties.InstrumentationKey

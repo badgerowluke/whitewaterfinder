@@ -6,6 +6,7 @@ param storageAccountId string
 param azureSearchKey string
 param baseUSGSUrl string
 param searchUrl string
+param instrumentKey string
 
 resource app 'Microsoft.Web/sites@2016-08-01' = {
   name: appName
@@ -82,11 +83,11 @@ resource app 'Microsoft.Web/sites@2016-08-01' = {
         }
         {
           name: 'APPINSIGHTS_INSTRUMENTATIONKEY'
-          value: reference(resourceId('microsoft.insights/components/', appName), '2015-05-01').InstrumentationKey
+          value: instrumentKey
         }
         {
           name: 'APPINSIGHTS_CONNECTION_STRING'
-          value: 'InstrumentationKey=${reference(resourceId('microsoft.insights/components/', appName), '2015-05-01').InstrumentationKey}'
+          value: 'InstrumentationKey=${instrumentKey}'
         }
         {
           name: 'ApplicationInsightsAgent_EXTENSION_VERSION'

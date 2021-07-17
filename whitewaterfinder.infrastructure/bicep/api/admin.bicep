@@ -1,9 +1,10 @@
 param adminName string
 param location string
-param appName string
+
 param planId string
 param storageAccountName string
 param storageAccountId string
+param instrumentKey string
 
 resource app 'Microsoft.Web/sites@2016-08-01' = {
   name: adminName
@@ -52,7 +53,7 @@ resource app 'Microsoft.Web/sites@2016-08-01' = {
         }
         {
           name: 'APPINSIGHTS_INSTRUMENTATIONKEY'
-          value: reference(resourceId('microsoft.insights/components/', appName), '2015-05-01').InstrumentationKey
+          value: instrumentKey
         }
         {
           name: 'FUNCTIONS_EXTENSION_VERSION'
