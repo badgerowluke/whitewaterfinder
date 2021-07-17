@@ -38,10 +38,11 @@ resource depScript 'Microsoft.Resources/deploymentScripts@2020-10-01' = {
   kind:'AzureCLI'
   location: location
   name: 'bot-app-id-create'
+
   properties: {
     azCliVersion: '2.24.0'
-    retentionInterval: 'P1D'
-    cleanupPreference: 'OnSuccess'
+    retentionInterval: 'PT4H'
+    cleanupPreference: 'OnExpiration'
     arguments: '--botName ${botName} --botPassword ${botPassword} --spid ${spid} --pass ${password} --tenant ${tenant}'
     scriptContent: '''
   
@@ -103,7 +104,7 @@ resource botService 'Microsoft.BotService/botServices@2018-07-12' = {
     displayName: botAppName
     iconUrl: 'https://docs.botframework.com/static/devportal/client/images/bot-framework-default.png'
     endpoint: 'https://whitewater-finder.azure-api.net/webster/messages'
-    msaAppId: reference('bot-app-id-create').outputs.appId
+    msaAppId: depScript.properties.outputs.appId
     developerAppInsightKey: reference(resourceId('microsoft.insights/components/', botInsightsName), '2015-05-01').InstrumentationKey
     developerAppInsightsApplicationId: reference(resourceId('microsoft.insights/components', botInsightsName), '2015-05-01').appId
     luisAppIds: [
@@ -115,7 +116,7 @@ resource botService 'Microsoft.BotService/botServices@2018-07-12' = {
   ]
 }
 
-output msaAppId string = reference('bot-app-id-create').outputs.appId
+output msaAppId string = depScript.properties.outputs.appId
 
 output luisId string = listKeys(luis_resource.id, '2016-02-01-preview').key1
 output luisEndpoint string = reference(luis_resource.id, '2017-04-18').endpoint

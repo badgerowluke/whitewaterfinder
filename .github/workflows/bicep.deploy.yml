@@ -31,3 +31,6 @@ jobs:
                                                'botPassword=${{ secrets.BOTPASSWORD }}' \
                                                'luisAppId=${{ secrets.LUISID }}' \
                                                'adminId=${{ secrets.ADMINID }}'
+
+      - name: logout
+        run: az logout
