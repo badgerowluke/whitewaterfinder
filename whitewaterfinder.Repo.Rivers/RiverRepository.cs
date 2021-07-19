@@ -26,13 +26,13 @@ namespace whitewaterfinder.Repo.Rivers
     }
     public class RiverRepository : IRiverRepository
     {
-        private readonly IAzureStorage folders;
+        private readonly IAzureTableBuilder folders;
         private readonly HttpClient _client;
         private string _riverTable;
         private string _baseUSGSUrl;
         private string _azureSearchUrl;
         private string _azureSearchKey;
-        public RiverRepository(IAzureStorage _folder, HttpClient client)
+        public RiverRepository(IAzureTableBuilder _folder, HttpClient client)
         {
             folders = _folder;
             _client = client;
@@ -102,7 +102,7 @@ namespace whitewaterfinder.Repo.Rivers
 
         public async Task InsertRiverData(RiverEntity aRiver)
         {
-            await folders.PostAsync(aRiver);
+            await folders.PostStorageTableAsync(aRiver);
         }
         public async Task<int> InsertBatchData(IEnumerable<River> rivers, string partition)
         {
