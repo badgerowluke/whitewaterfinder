@@ -2,13 +2,14 @@ param luisName string = 'webster-luis'
 param authoringName string = 'webster-luis-authoring'
 param botAppName string = 'WhitewaterWebster'
 
-param botInsightsName string = 'paddle-finder'
 param botName string = 'whitewaterwebster-ar'
 param botPassword string
 
 param spid string
 param password string
 param tenant string
+param instrumentKey string
+param aiAppId string
 
 @description('Location for all resources.')
 param location string = resourceGroup().location
@@ -105,8 +106,8 @@ resource botService 'Microsoft.BotService/botServices@2018-07-12' = {
     iconUrl: 'https://docs.botframework.com/static/devportal/client/images/bot-framework-default.png'
     endpoint: 'https://whitewater-finder.azure-api.net/webster/messages'
     msaAppId: depScript.properties.outputs.appId
-    developerAppInsightKey: reference(resourceId('microsoft.insights/components/', botInsightsName), '2015-05-01').InstrumentationKey
-    developerAppInsightsApplicationId: reference(resourceId('microsoft.insights/components', botInsightsName), '2015-05-01').appId
+    developerAppInsightKey: instrumentKey
+    developerAppInsightsApplicationId: aiAppId
     luisAppIds: [
       listKeys(luis_resource.id, '2016-02-01-preview').key1
     ]

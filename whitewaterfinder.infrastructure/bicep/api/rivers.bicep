@@ -2,11 +2,14 @@ param location string
 param appName string
 param planId string
 param storageAccountName string
-param storageAccountId string
+
 param azureSearchKey string
 param baseUSGSUrl string
 param searchUrl string
 param instrumentKey string
+
+@secure()
+param storageKey string
 
 resource app 'Microsoft.Web/sites@2016-08-01' = {
   name: appName
@@ -39,11 +42,11 @@ resource app 'Microsoft.Web/sites@2016-08-01' = {
       appSettings: [
         {
           name: 'AzureWebJobsStorage'
-          value: 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};AccountKey=${listKeys(storageAccountId, '2015-05-01-preview').key1}'
+          value: 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};AccountKey=${storageKey}'
         }
         {
           name: 'AzureWebJobsDashboard'
-          value: 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};AccountKey=${listKeys(storageAccountId, '2015-05-01-preview').key1}'
+          value: 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};AccountKey=${storageKey}'
         }
         {
           name: 'FUNCTIONS_EXTENSION_VERSION'
@@ -59,7 +62,7 @@ resource app 'Microsoft.Web/sites@2016-08-01' = {
         }
         {
           name: 'WEBSITE_CONTENTAZUREFILECONNECTIONSTRING'
-          value: 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};AccountKey=${listKeys(storageAccountId, '2015-05-01-preview').key1}'
+          value: 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};AccountKey=${storageKey}'
         }
         {
           name: 'WEBSITE_NODE_DEFAULT_VERSION'
@@ -67,7 +70,7 @@ resource app 'Microsoft.Web/sites@2016-08-01' = {
         }
         {
           name: 'blobStore'
-          value: 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};AccountKey=${listKeys(storageAccountId, '2015-05-01-preview').key1}'
+          value: 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};AccountKey=${storageKey}'
         }
         {
           name: 'azureSearchKey'

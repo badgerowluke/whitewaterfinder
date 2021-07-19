@@ -110,3 +110,4 @@ resource storageAccountName_default_botstore 'Microsoft.Storage/storageAccounts/
 
 output storageKey string = concat(listKeys(storageAccountId, '2015-05-01-preview').key1)
 output instrumentKey string = appInsights.properties.InstrumentationKey
+output aiAppId string = appInsights.properties.AppId
