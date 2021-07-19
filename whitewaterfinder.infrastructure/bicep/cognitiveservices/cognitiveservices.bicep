@@ -9,6 +9,9 @@ param botPassword string
 param spid string
 param password string
 param tenant string
+param storageAccountName string
+@secure()
+param storageAccountKey string
 
 @description('Location for all resources.')
 param location string = resourceGroup().location
@@ -40,6 +43,10 @@ resource depScript 'Microsoft.Resources/deploymentScripts@2020-10-01' = {
   name: 'bot-app-id-create'
 
   properties: {
+    storageAccountSettings: {
+      storageAccountKey: storageAccountKey
+      storageAccountName: storageAccountName
+    }
     azCliVersion: '2.24.0'
     retentionInterval: 'PT4H'
     cleanupPreference: 'OnExpiration'
@@ -87,7 +94,7 @@ resource depScript 'Microsoft.Resources/deploymentScripts@2020-10-01' = {
     fi
     
     appId=$(az ad app list --all --display-name $botName | jq '{"appId": (.[0] .appId)}' > $AZ_SCRIPTS_OUTPUT_PATH)
-    
+    echo $appId
 
     '''
   }
@@ -110,10 +117,8 @@ resource botService 'Microsoft.BotService/botServices@2018-07-12' = {
     luisAppIds: [
       listKeys(luis_resource.id, '2016-02-01-preview').key1
     ]
+
   }
-  dependsOn: [
-    depScript
-  ]
 }
 
 output msaAppId string = depScript.properties.outputs.appId

@@ -43,6 +43,8 @@ module bot 'bicep/cognitiveservices/cognitiveservices.bicep' = {
   name: 'bot-deploy'
   scope: newRg
   params: {
+    storageAccountName: newRg.name
+    storageAccountKey: storage.outputs.storageKey
     botPassword: botPassword
     spid: serviceprincipal
     password: sppassword
