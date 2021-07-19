@@ -49,7 +49,7 @@ resource depScript 'Microsoft.Resources/deploymentScripts@2020-10-01' = {
     }
     azCliVersion: '2.24.0'
     retentionInterval: 'PT4H'
-    cleanupPreference: 'OnExpiration'
+    cleanupPreference: 'OnSuccess'
     arguments: '--botName ${botName} --botPassword ${botPassword} --spid ${spid} --pass ${password} --tenant ${tenant}'
     scriptContent: '''
   
