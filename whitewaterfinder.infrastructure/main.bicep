@@ -92,6 +92,19 @@ module apim 'bicep/apim/apimdeploy.bicep' = {
   }
 }
 
+module secrets 'bicep/keyvault/kvsecrets.bicep' = {
+  name: 'paddle-finder-secrets'
+  scope: newRg
+  params: {
+    kvName: 'paddle-finder'
+    riverFuncKey: apis.outputs.riversKey
+    prefFuncKey: apis.outputs.usersKey
+    botFuncKey: apis.outputs.botKey
+    adminFuncKey: apis.outputs.adminKey
+    apimKey: apim.outputs.subkey
+  }
+
+}
 
 
 
