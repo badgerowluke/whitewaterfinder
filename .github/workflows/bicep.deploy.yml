@@ -20,21 +20,23 @@ jobs:
         uses: azure/login@v1
         with:
           creds: ${{ secrets. AZCLI_CREDS }}
-      - name: provision
-        working-directory: whitewaterfinder.infrastructure
-        run: |
-          az deployment sub create -f main.bicep \
-                                  -l northcentralus \
-                                  --parameters 'serviceprincipal=${{ secrets.SERVICE_PRINCIPAL }}' \
-                                               'sppassword=${{ secrets.SPPASSWORD }}' \
-                                               'tenant=${{ secrets.TENANT }}' \
-                                               'botPassword=${{ secrets.BOTPASSWORD }}' \
-                                               'luisAppId=${{ secrets.LUISID }}' \
-                                               'adminId=${{ secrets.ADMINID }}'
+      # temporary.  I really just want to debug this script below    
+      # - name: provision
+      #   working-directory: whitewaterfinder.infrastructure
+      #   run: |
+      #     az deployment sub create -f main.bicep \
+      #                             -l northcentralus \
+      #                             --parameters 'serviceprincipal=${{ secrets.SERVICE_PRINCIPAL }}' \
+      #                                          'sppassword=${{ secrets.SPPASSWORD }}' \
+      #                                          'tenant=${{ secrets.TENANT }}' \
+      #                                          'botPassword=${{ secrets.BOTPASSWORD }}' \
+      #                                          'luisAppId=${{ secrets.LUISID }}' \
+      #                                          'adminId=${{ secrets.ADMINID }}'
 
 
       - name: 'push documents to search'
-        shell: powershell
+        shell: pwsh
+        working-directory: whitewaterfinder.infrastructure
         run: |
           az login --service-principal  --username ${{ secrets.SERVICE_PRINCIPAL }} `
                                         --password ${{ secrets.SPPASSWORD }} --tenant ${{ secrets.TENANT }}  
