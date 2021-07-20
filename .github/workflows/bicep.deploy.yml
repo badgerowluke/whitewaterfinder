@@ -54,7 +54,7 @@ jobs:
                   'Accept' = 'application/json'
               }
 
-              $filePath = $path + $jsonFile
+              $filePath = "./riverswithid.json"
 
               $rivers =  Get-Content $filePath |  ConvertFrom-Json
 
