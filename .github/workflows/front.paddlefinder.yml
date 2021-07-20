@@ -1,0 +1,49 @@
+on:
+  push:
+    branches:
+      - trunk
+    paths: 
+      - 'whitewaterfinder.pwa/paddle-finder/**'
+jobs:
+  build-and-deploy:
+    name: 'build'
+    runs-on: ubuntu-latest
+    steps:
+      - name: "checkout"
+        uses: actions/checkout@v2.1.0   
+
+
+      - name: az login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets. AZCLI_CREDS }}
+
+
+
+      - name: "apply config"
+        shell: pwsh
+        working-directory: 'whitewaterfinder.pwa/paddle-finder'
+        run: |
+         $value =  az keyvault secret show -n apim-master-key --vault-name paddle-finder | ConvertFrom-Json
+          $json = @"
+          {
+            "auth": {
+              "domain": "",
+              "clientId": ""
+            },
+            "insights": {
+              "instrumentationKey": ""
+            },
+            "backend": {
+              "apiUrl": "https://whitewater-finder.azure-api.net",
+              "subscriptionKey":""
+            }
+          }
+          "@
+          $workup = $json | ConvertFrom-Json
+          $workup.backend.subscriptionKey = $value.value
+
+
+
+      - name: logout
+        run: az logout            
