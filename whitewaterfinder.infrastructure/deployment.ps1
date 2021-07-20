@@ -3,10 +3,13 @@
 
 param (
         [Parameter(Mandatory=$true)] $resourceGroup,
-        [Parameter(Mandatory=$true)] $jsonFile
+        [Parameter(Mandatory=$true)] $jsonFile,
+        [Parameter(Mandatory=$true)] $spid,
+        [Parameter(Mandatory=$true)] $pass
+        [Parameter(Mandatory=$true)] $tenant
     
     )
-    
+az login --service-principal --username $spid --password $pass --tenant $tenant    
 $keys = az search admin-key show --output json --resource-group $resourceGroup `
         --service-name "waterfindersearch" | ConvertFrom-Json
 

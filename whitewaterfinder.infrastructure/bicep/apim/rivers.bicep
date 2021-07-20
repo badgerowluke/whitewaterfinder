@@ -22,7 +22,7 @@ resource apimName_appName_riverdetails 'Microsoft.ApiManagement/service/apis/ope
   properties: {
     displayName: 'RiverDetails'
     method: 'GET'
-    urlTemplate: '/details/{riverCode}'
+    urlTemplate: '/rivers/{riverCode}/details'
     templateParameters: [
       {
         name: 'riverCode'
@@ -39,7 +39,7 @@ resource apimName_appName_riverdetails 'Microsoft.ApiManagement/service/apis/ope
 resource apimName_appName_riverdetails_policy 'Microsoft.ApiManagement/service/apis/operations/policies@2019-01-01' = {
   name: '${apimName_appName_riverdetails.name}/policy'
   properties: {
-    value: '<policies><inbound><base /><set-backend-service base-url="https://${appName}.azurewebsites.net/api/" /><rewrite-uri template="/details/{riverCode}" copy-unmatched-params="true" /><set-header name="x-functions-key" exists-action="override"><value>${riverFuncKey}</value></set-header></inbound><backend><base /></backend><outbound><base /></outbound><on-error><base /></on-error></policies>'
+    value: '<policies><inbound><base /><set-backend-service base-url="https://${appName}.azurewebsites.net/api/" /><rewrite-uri template="/rivers/{riverCode}/details" copy-unmatched-params="true" /><set-header name="x-functions-key" exists-action="override"><value>${riverFuncKey}</value></set-header></inbound><backend><base /></backend><outbound><base /></outbound><on-error><base /></on-error></policies>'
     format: 'xml'
   }
   dependsOn: [
