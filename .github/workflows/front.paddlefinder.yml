@@ -24,33 +24,28 @@ jobs:
           keyvault: "paddle-finder"
           secrets: 'apim-master-key, instrumentKey'
 
+
       - name: "apply config"
-        uses: jsdaniell/create-json@1.1.2
-        with:
-          name: "config.json"
-          dir: 'src/assets/config/config.json'
-          json: '{"auth":{ "domain": "${{ secrets.AUTH0DOMAIN }}", "clientId": "${{ secrets.AUTH0CLIENTID }}" }, "insights": {"instrumentationKey": "${{ steps.getSecrets.outputs.instrumentKey }}" },"backend": {"apiUrl": "https://whitewater-finder.azure-api.net","subscriptionKey":"${{ steps.getSecrets.outputs.apim-master-key }}"}'
-      # - name: "apply config"
-      #   shell: pwsh
-      #   working-directory: 'whitewaterfinder.pwa/paddle-finder'
-      #   run: |
-      #     $json = @"
-      #     {
-      #       "auth": {
-      #         "domain": "${{ secrets.AUTH0DOMAIN }}",
-      #         "clientId": "${{ secrets.AUTH0CLIENTID }}"
-      #       },
-      #       "insights": {
-      #         "instrumentationKey": "${{ steps.getSecrets.outputs.instrumentKey }}"
-      #       },
-      #       "backend": {
-      #         "apiUrl": "https://whitewater-finder.azure-api.net",
-      #         "subscriptionKey":"${{ steps.getSecrets.outputs.apim-master-key }}"
-      #       }
-      #     }
-      #     "@
-      #     Write-Output $json
-      #     $json | ConvertTo-Json | Out-File 'src/assets/config/config.json' 
+        shell: pwsh
+        working-directory: 'whitewaterfinder.pwa/paddle-finder'
+        run: |
+          $json = @"
+          {
+            "auth": {
+              "domain": "${{ secrets.AUTH0DOMAIN }}",
+              "clientId": "${{ secrets.AUTH0CLIENTID }}"
+            },
+            "insights": {
+              "instrumentationKey": "${{ steps.getSecrets.outputs.instrumentKey }}"
+            },
+            "backend": {
+              "apiUrl": "https://whitewater-finder.azure-api.net",
+              "subscriptionKey":"${{ steps.getSecrets.outputs.apim-master-key }}"
+            }
+          }
+          "@
+          New-Item -ItemType directory -Path src/assets/config
+          $json | ConvertTo-Json | Out-File 'src/assets/config/config.json' 
 
       - name: build
         run: |
