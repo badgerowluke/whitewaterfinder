@@ -5,7 +5,7 @@
     "ng": "ng",
     "config": "tsc ./build.ts && node ./build.js",
     "start": "tsc ./build.ts && node ./build.js && ng serve",
-    "build-prod": "tsc ./build.ts && node ./build.js && ng build --configuration production",
+    "build-prod": "ng build pf-components && ng build --configuration production",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
