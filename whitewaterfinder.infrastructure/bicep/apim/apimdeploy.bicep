@@ -45,8 +45,7 @@ resource apim_policy 'Microsoft.ApiManagement/service/policies@2019-12-01' = {
               <method>OPTIONS</method>
             </allowed-methods>    
             <allowed-headers>     
-              <header>content-type</header>     
-              <header>accept</header> 
+              <header>*</header> 
             </allowed-headers>
           </cors> 
         </inbound> 
