@@ -49,6 +49,8 @@ module bot 'bicep/cognitiveservices/cognitiveservices.bicep' = {
     spid: serviceprincipal
     password: sppassword
     tenant: tenant
+    instrumentKey: storage.outputs.instrumentKey
+    aiAppId: storage.outputs.aiAppId
   }
 }
 
@@ -64,6 +66,8 @@ module apis 'bicep/api/api.bicep' = {
     luisAppId: luisAppId
     botPassword: botPassword
     azureSearchKey: search.outputs.searchKey
+    instrumentKey: storage.outputs.instrumentKey
+    storageKey: storage.outputs.storageKey
     baseUSGSUrl: 'https://waterservices.usgs.gov/nwis/iv/?format=json&indent=on&'
     searchUrl: 'https://waterfindersearch.search.windows.net/indexes/riversearch-index/docs/suggest?suggesterName=RiverName&api-version=2019-05-06&fuzzy=false&$top=20&&$select=Name,RiverId,Latitude,Longitude&search="'
   }

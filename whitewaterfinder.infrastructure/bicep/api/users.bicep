@@ -3,7 +3,10 @@ param preferencesApp string
 param appName string
 param planId string
 param storageAccountName string
-param storageAccountId string
+param instrumentKey string
+
+@secure()
+param storageKey string
 
 
 resource app 'Microsoft.Web/sites@2016-08-01' = {
@@ -37,15 +40,15 @@ resource app 'Microsoft.Web/sites@2016-08-01' = {
       appSettings: [
         {
           name: 'blobStore'
-          value: 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};AccountKey=${listKeys(storageAccountId, '2015-05-01-preview').key1}'
+          value: 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};AccountKey=${storageKey}'
         }
         {
           name: 'AzureWebJobsStorage'
-          value: 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};AccountKey=${listKeys(storageAccountId, '2015-05-01-preview').key1}'
+          value: 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};AccountKey=${storageKey}'
         }
         {
           name: 'WEBSITE_CONTENTAZUREFILECONNECTIONSTRING'
-          value: 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};AccountKey=${listKeys(storageAccountId, '2015-05-01-preview').key1}'
+          value: 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};AccountKey=${storageKey}'
         }
         {
           name: 'WEBSITE_CONTENTSHARE'
@@ -57,7 +60,7 @@ resource app 'Microsoft.Web/sites@2016-08-01' = {
         }
         {
           name: 'APPINSIGHTS_INSTRUMENTATIONKEY'
-          value: reference(resourceId('microsoft.insights/components/', appName), '2015-05-01').InstrumentationKey
+          value: instrumentKey
         }
         {
           name: 'WEBSITE_NODE_DEFAULT_VERSION'

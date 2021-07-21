@@ -8,6 +8,10 @@ param azureSearchKey string
 param baseUSGSUrl string
 param searchUrl string
 param botAppId string
+param instrumentKey string
+@secure()
+param storageKey string
+
 @secure()
 param botPassword string
 
@@ -49,10 +53,11 @@ module rivers 'rivers.bicep' = {
      location: location
      planId: appPlan.id
      storageAccountName: storageAccountName
-     storageAccountId: storageAccountId
      azureSearchKey: azureSearchKey
      baseUSGSUrl: baseUSGSUrl
      searchUrl: searchUrl
+     instrumentKey: instrumentKey
+     storageKey: storageKey
 
    }
 }
@@ -68,7 +73,9 @@ module preferences 'users.bicep' = {
     location: location
     planId: appPlan.id
     storageAccountName: storageAccountName
-    storageAccountId: storageAccountId
+    instrumentKey: instrumentKey
+    storageKey: storageKey
+
   }
 
 }
@@ -84,11 +91,11 @@ module bot 'bot.bicep' ={
     botPassword: botPassword
     luisApiKey: luisApiKey
     luisAppId: luisAppId
-    appName: appName
     location: location
     planId: appPlan.id
+    instrumentKey: instrumentKey
     storageAccountName: storageAccountName
-    storageAccountId: storageAccountId
+    storageKey: storageKey
 
   }
 }
@@ -102,11 +109,11 @@ module admin 'admin.bicep' ={
   ]
   params: {
     adminName: adminName
-    appName: appName
+    instrumentKey: instrumentKey
     location: location
     planId: appPlan.id
     storageAccountName: storageAccountName
-    storageAccountId: storageAccountId
+    storageKey: storageKey
     
   }
 }
