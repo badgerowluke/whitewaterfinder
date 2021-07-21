@@ -2,7 +2,7 @@ on:
   push:
     paths: 
       - 'whitewaterfinder.pwa/paddle-finder/**'
-      - '.github/workflow/front.paddlefinder.yml'
+      - '.github/workflows/front.paddlefinder.yml'
 jobs:
   build-and-deploy:
     name: 'build'
