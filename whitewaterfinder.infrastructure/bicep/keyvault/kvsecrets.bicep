@@ -1,37 +1,55 @@
-param appName string
+
 param kvName string
-param apimName string
-
-var riversAppId = resourceId('Microsoft.Web/sites', appName)
-var usersAppId = resourceId('Microsoft.Web/sites', '${appName}-preferences')
-var botFuncId = resourceId('Microsoft.Web/sites', '${appName}-webster')
 
 
+@secure()
+param riverFuncKey string
 
-resource kvName_apim_master_key 'Microsoft.KeyVault/vaults/secrets@2016-10-01' = {
+@secure()
+param prefFuncKey string
+
+@secure()
+param botFuncKey string
+
+@secure()
+param adminFuncKey string
+
+@secure() 
+param apimKey string
+
+
+
+resource apimMasterKey 'Microsoft.KeyVault/vaults/secrets@2016-10-01' = {
   name: '${kvName}/apim-master-key'
   properties: {
-    value: reference(resourceId('Microsoft.ApiManagement/service/subscriptions', apimName, 'master'), '2019-01-01').primaryKey
+    value:  apimKey
   }
 }
 
-resource kvName_riverfunckey 'Microsoft.KeyVault/vaults/secrets@2016-10-01' = {
+resource riversKey 'Microsoft.KeyVault/vaults/secrets@2016-10-01' = {
   name: '${kvName}/riverfunckey'
   properties: {
-    value: listkeys('${riversAppId}/host/default', '2018-11-01').functionKeys.default
+    value: riverFuncKey
   }
 }
 
-resource kvName_preferencefunckey 'Microsoft.KeyVault/vaults/secrets@2016-10-01' = {
+resource prefsKey 'Microsoft.KeyVault/vaults/secrets@2016-10-01' = {
   name: '${kvName}/preferencefunckey'
   properties: {
-    value: listkeys('${usersAppId}/host/default', '2018-11-01').functionKeys.default
+    value: prefFuncKey
   }
 }
 
-resource kvName_botfunckey 'Microsoft.KeyVault/vaults/secrets@2016-10-01' = {
+resource botKey 'Microsoft.KeyVault/vaults/secrets@2016-10-01' = {
   name: '${kvName}/botfunckey'
   properties: {
-    value: listkeys('${botFuncId}/host/default', '2018-11-01').functionKeys.default
+    value: botFuncKey
+  }
+}
+
+resource adminKey 'Microsoft.KeyVault/vaults/secrets@2016-10-01' = {
+  name: '${kvName}/adminfunckey'
+  properties: {
+    value: adminFuncKey
   }
 }

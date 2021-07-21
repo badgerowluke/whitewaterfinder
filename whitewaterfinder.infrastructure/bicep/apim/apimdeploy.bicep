@@ -11,7 +11,7 @@ param botFuncKey string
 param adminFuncKey string
 
 
-resource apimName_resource 'Microsoft.ApiManagement/service@2019-01-01' = {
+resource apim 'Microsoft.ApiManagement/service@2019-01-01' = {
   name: apimName
   location: location
   sku: {
@@ -24,8 +24,8 @@ resource apimName_resource 'Microsoft.ApiManagement/service@2019-01-01' = {
   }
 }
 
-resource apimName_policy 'Microsoft.ApiManagement/service/policies@2019-12-01' = {
-  name: '${apimName_resource.name}/policy'
+resource apim_policy 'Microsoft.ApiManagement/service/policies@2019-12-01' = {
+  name: '${apim.name}/policy'
   properties: {
     value: '''
     <policies>
@@ -67,33 +67,27 @@ resource apimName_policy 'Microsoft.ApiManagement/service/policies@2019-12-01' =
 
 module riversAPIM 'rivers.bicep' = {
   name: 'rivers-apim-deploy'
-  dependsOn: [
-    apimName_resource
-  ]
+
   params: {
-    apimName: apimName_resource.name
+    apimName: apim.name
     riverFuncKey: riverFuncKey
   }
 }
 
 module users 'users.bicep' = {
   name: 'users-apim-deploy'
-  dependsOn: [
-    apimName_resource
-  ]
+
   params: {
-    apimName: apimName
+    apimName: apim.name
     prefFuncKey: prefFuncKey
   }
 }
 
 module bot 'bot.bicep' = {
   name: 'bot-apim-deploy'
-  dependsOn: [
-    apimName_resource
-  ]
+
   params: {
-    apimName: apimName
+    apimName: apim.name
     botFuncKey: botFuncKey
   }
 
@@ -101,11 +95,9 @@ module bot 'bot.bicep' = {
 
 module admin 'admin.bicep' = {
   name: 'admin-apim-deploy'
-  dependsOn: [
-    apimName_resource
-  ]
+
   params: {
-    apimName: apimName
+    apimName: apim.name
     adminFuncKey: adminFuncKey
   }
 }

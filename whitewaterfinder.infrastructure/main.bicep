@@ -43,6 +43,8 @@ module bot 'bicep/cognitiveservices/cognitiveservices.bicep' = {
   name: 'bot-deploy'
   scope: newRg
   params: {
+    storageAccountName: newRg.name
+    storageAccountKey: storage.outputs.storageKey
     botPassword: botPassword
     spid: serviceprincipal
     password: sppassword
@@ -93,3 +95,21 @@ module apim 'bicep/apim/apimdeploy.bicep' = {
     adminFuncKey: apis.outputs.adminKey
   }
 }
+
+module secrets 'bicep/keyvault/kvsecrets.bicep' = {
+  name: 'paddle-finder-secrets'
+  scope: newRg
+  params: {
+    kvName: 'paddle-finder'
+    riverFuncKey: apis.outputs.riversKey
+    prefFuncKey: apis.outputs.usersKey
+    botFuncKey: apis.outputs.botKey
+    adminFuncKey: apis.outputs.adminKey
+    apimKey: apim.outputs.subkey
+  }
+
+}
+
+
+
+

@@ -4,6 +4,9 @@ on:
       - trunk
     paths:
       - 'whitewaterfinder.api.rivers/**'
+      - 'whitewaterfinder.Core.Rivers/**'
+      - 'whitewaterfinder.Repo.Rivers/**'
+      - 'whitewaterfinder.BusinessObjects/**'
       - '.github/workflows/api.rivers.yml'
 env:
   AZURE_FUNCTIONAPP_PACKAGE_PATH: 'whitewaterfinder.api.rivers'
