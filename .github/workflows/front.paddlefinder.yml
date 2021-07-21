@@ -2,6 +2,7 @@ on:
   push:
     paths: 
       - 'whitewaterfinder.pwa/paddle-finder/**'
+      - '.github/workflow/front.paddlefinder.yml'
 jobs:
   build-and-deploy:
     name: 'build'
@@ -21,7 +22,7 @@ jobs:
         id: getSecrets
         with:
           keyvault: "paddle-finder"
-          secrets: 'apim-master-key instrumentKey'
+          secrets: 'apim-master-key, instrumentKey'
 
 
       - name: "apply config"
