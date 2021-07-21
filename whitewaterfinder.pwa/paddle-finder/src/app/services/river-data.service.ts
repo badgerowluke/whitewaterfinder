@@ -17,7 +17,6 @@ export class RiverDataService extends BaseService {
 
     getAllUSRivers: (partialName: string) => Promise<River[]> = (partialName: string) => {
 
-        
         if(!partialName) {
             return this.http.get<River[]>(this.env.apiUrl + "/Rivers/rivers" ).toPromise();
 
@@ -27,7 +26,7 @@ export class RiverDataService extends BaseService {
         }
     }
     getRiverDetails: (riverCode: string) => Promise<River> = (riverCode: string) => {
-        return this.http.get<River>(this.env.apiUrl + '/Rivers/details/' + riverCode).toPromise();
+        return this.http.get<River>(this.env.apiUrl + `/Rivers/rivers/${riverCode}/details`).toPromise();
 
     }
 }

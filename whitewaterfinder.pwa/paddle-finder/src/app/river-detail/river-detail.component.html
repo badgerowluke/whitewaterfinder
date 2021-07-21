@@ -4,11 +4,11 @@
             <h3 class='' *ngIf='river'>
                 {{river.name}}
 
-                <pre *ngIf="auth.userProfile$ | async as profile">
+                <!-- <pre *ngIf="auth.userProfile$ | async as profile">
                     <button [hidden]="isFavorite" (click)='saveRiverAsFavorite()'>Add To Favorites</button>
                     <button [hidden]=!isFavorite>Remove Favorite</button>
                     
-                </pre>
+                </pre> -->
             </h3>
 
         </div>
