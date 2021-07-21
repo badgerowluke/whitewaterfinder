@@ -14,12 +14,6 @@ export class BaseService {
         return  this.http.get<AKVSecret>(environment.baseUrl + '/api/configure').toPromise();
     }
 
-        //TODO: replace this with an HTTP Intercepter
-    setAPIMHeader: (secret: AKVSecret) => void = (secret:AKVSecret) => {
-        environment.subscriptionKey = secret.value;
-        this.headers = new HttpHeaders()
-        .set('content-type', 'application/json')
-        .set('Ocp-Apim-Subscription-Key', secret.value);        
-    }
+
 
 }

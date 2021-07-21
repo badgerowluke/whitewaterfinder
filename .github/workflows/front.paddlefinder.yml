@@ -1,7 +1,5 @@
 on:
   push:
-    branches:
-      - trunk
     paths: 
       - 'whitewaterfinder.pwa/paddle-finder/**'
 jobs:
@@ -18,31 +16,39 @@ jobs:
         with:
           creds: ${{ secrets. AZCLI_CREDS }}
 
+      - name: get secrets
+        uses: Azure/get-keyvault-secrets@v1
+        id: getSecrets
+        with:
+          keyvault: "paddle-finder"
+          secrets: 'apim-master-key instrumentKey'
 
 
       - name: "apply config"
         shell: pwsh
         working-directory: 'whitewaterfinder.pwa/paddle-finder'
         run: |
-         $value =  az keyvault secret show -n apim-master-key --vault-name paddle-finder | ConvertFrom-Json
           $json = @"
           {
             "auth": {
-              "domain": "",
-              "clientId": ""
+              "domain": "${{ secrets.AUTH0DOMAIN }}",
+              "clientId": "${{ secrets.AUTH0CLIENTID }}"
             },
             "insights": {
-              "instrumentationKey": ""
+              "instrumentationKey": "${{ steps.getSecrets.outputs.instrumentKey }}"
             },
             "backend": {
               "apiUrl": "https://whitewater-finder.azure-api.net",
-              "subscriptionKey":""
+              "subscriptionKey":"${{ steps.getSecrets.outputs.apim-master-key }}"
             }
           }
           "@
-          $workup = $json | ConvertFrom-Json
-          $workup.backend.subscriptionKey = $value.value
+          Write-Output $json
+          $json | Out-File "src/assets/config/config.json"
 
+      - name: build
+        run: |
+          npm i && npm run build-prod
 
 
       - name: logout

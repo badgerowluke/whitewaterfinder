@@ -17,7 +17,8 @@ param adminFuncKey string
 @secure() 
 param apimKey string
 
-
+@secure()
+param instrumentKey string
 
 resource apimMasterKey 'Microsoft.KeyVault/vaults/secrets@2016-10-01' = {
   name: '${kvName}/apim-master-key'
@@ -51,5 +52,12 @@ resource adminKey 'Microsoft.KeyVault/vaults/secrets@2016-10-01' = {
   name: '${kvName}/adminfunckey'
   properties: {
     value: adminFuncKey
+  }
+}
+
+resource instrumentationKey 'Microsoft.KeyVault/vaults/secrets@2016-10-01' = {
+  name: '${kvName}/instrumentkey'
+  properties: {
+    value: instrumentKey
   }
 }
