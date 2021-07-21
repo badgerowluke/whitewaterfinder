@@ -7,7 +7,11 @@ jobs:
   build-and-deploy:
     name: 'build'
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: 'whitewaterfinder.pwa/paddle-finder'
     steps:
+    
       - name: "checkout"
         uses: actions/checkout@v2.1.0   
 
@@ -27,7 +31,7 @@ jobs:
 
       - name: "apply config"
         shell: pwsh
-        working-directory: 'whitewaterfinder.pwa/paddle-finder'
+
         run: |
           $json = @"
           {
