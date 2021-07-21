@@ -3,15 +3,15 @@
 
  
   <div id='side-nav' class='sidenav' (focusout)='closeNav()' >
-    <pre *ngIf="auth.userProfile$ | async as profile">
+    <!-- <pre *ngIf="auth.userProfile$ | async as profile">
       <a href="javascript:void(0)" [routerLink]="['profile']">
         <img style='height:36px;border-radius:16px;'src="{{profile.picture}}" class="avatar" alt="avatar">
       </a>
       
-    </pre>
+    </pre> -->
     <a href="javascript:void(0)" class='closebtn' (click)='closeNav()'>&times;</a>
-    <a href="javascript:void(0)" (click)="auth.login()" *ngIf="!auth.loggedIn">Login</a>
-    <a href="javascript:void(0)" (click)="auth.logout()" *ngIf="auth.loggedIn">Logout</a>
+    <!-- <a href="javascript:void(0)" (click)="auth.login()" *ngIf="!auth.loggedIn">Login</a>
+    <a href="javascript:void(0)" (click)="auth.logout()" *ngIf="auth.loggedIn">Logout</a> -->
     <a href="javascript:void(0)" [routerLink]="['']" [state]="{data:{user: profile}}">search</a>
     <a href="javascript:void(0)" [routerLink]="['favorites']" [state]="{data:{user: profile}}">favorites</a>
 

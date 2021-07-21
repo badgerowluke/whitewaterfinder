@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { environment } from "src/environments/environment";
-import { AuthService } from "./auth/auth.service";
+
 import { RiverUserPreference } from "../model/riveruserreference";
 import { BaseService } from './base-service';
 import { EnvironmentService } from "pf-components";
@@ -12,15 +12,15 @@ export class RiverUserSerice extends BaseService {
     private activeUser;
     
     constructor(http: HttpClient, 
-                private auth: AuthService,
+
                 private env: EnvironmentService) {
         super(http);
         
 
-        this.auth.userProfile$.subscribe(
-            value => this.activeUser = value,
-            err => console.error(err)
-        )
+        // this.auth.userProfile$.subscribe(
+        //     value => this.activeUser = value,
+        //     err => console.error(err)
+        // )
     }
 
     getActiveUser: () => any = () => {

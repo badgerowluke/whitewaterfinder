@@ -1,6 +1,5 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { AKVSecret } from '../model/keyvault';
-import { environment } from '../../environments/environment'
+
 
 export class BaseService {
     protected http:HttpClient;
@@ -10,9 +9,6 @@ export class BaseService {
         this.http = httpClient;
     }
 
-    getAPIMSubscriptionKey: () => Promise<AKVSecret> = () => {
-        return  this.http.get<AKVSecret>(environment.baseUrl + '/api/configure').toPromise();
-    }
 
 
 

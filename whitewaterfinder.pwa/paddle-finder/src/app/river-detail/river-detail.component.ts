@@ -7,7 +7,7 @@ import { ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash';
 
 import { RiverUserSerice } from '../services/river-user.service';
-import { AuthService } from '../services/auth/auth.service';
+
 import { User } from '../model/authuser';
 import { Observable, Subscription } from 'rxjs';
 @Component({
@@ -25,8 +25,7 @@ export class RiverDetailComponent implements OnInit, OnDestroy {
     
     constructor(private route: ActivatedRoute, 
                 private riverData: RiverDataService,
-                private riverUser: RiverUserSerice,
-                public auth: AuthService) {
+                private riverUser: RiverUserSerice) {
 
     }
     ngOnInit() {
@@ -35,12 +34,12 @@ export class RiverDetailComponent implements OnInit, OnDestroy {
         this.point = this.route.snapshot.queryParams;
         this.pullRiverDetails(this.riverCode);
         this.user = this.riverUser.getActiveUser();
-        this.profile = this.auth.userProfile$.subscribe(user => {
-            if(user) {
-                this.checkRiverFavorites(user.sub);
-            }
+        // this.profile = this.auth.userProfile$.subscribe(user => {
+        //     if(user) {
+        //         this.checkRiverFavorites(user.sub);
+        //     }
 
-        })
+        // })
     }
     ngOnDestroy() {
         this.profile.unsubscribe();

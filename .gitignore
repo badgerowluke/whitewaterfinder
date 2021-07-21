@@ -263,7 +263,7 @@ lcov.info
 **/.env
 
 **/build.js
-whitewaterfinder.pwa/paddle-finder/src/environments/environment.ts
+
 whitewaterfinder.pwa/paddle-finder/src/assets/config/config.json
 **/.terraform.lock.hcl
 whitewaterfinder.infrastructure/temp.sh
