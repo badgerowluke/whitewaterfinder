@@ -11,6 +11,12 @@
     "moduleResolution": "node",
     "importHelpers": true,
     "target": "es2015",
+    "paths": {
+      "pf-components": [
+        "dist/pf-components/pf-components",
+        "dist/pf-components"
+      ]
+    },
     "module": "es2020",
     "lib": [
       "es2018",

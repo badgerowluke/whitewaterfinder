@@ -2,7 +2,7 @@ import { HttpHandler,
     HttpInterceptor,
     HttpRequest} from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { EnvironmentService } from '../../environments/environment.service';
+import { EnvironmentService } from '../environments/environment.service';
 
 @Injectable()
 export class SubscriptionHeaderInterceptor implements HttpInterceptor {

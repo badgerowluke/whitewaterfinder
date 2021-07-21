@@ -4,7 +4,7 @@ import { Observable, of } from 'rxjs';
 import { shareReplay } from 'rxjs/operators';
 
 import { HttpClient } from '@angular/common/http';
-import { EnvironmentService } from '../environments/environment.service';
+import { EnvironmentService } from 'pf-components';
 
 @Injectable({ providedIn: 'root'})
 export class AppInitService {
