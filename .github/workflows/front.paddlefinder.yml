@@ -45,7 +45,7 @@ jobs:
           }
           "@
           Write-Output $json
-          $json | Out-File "src/assets/config/config.json"
+          $json | ConvertTo-Json | Out-File 'src/assets/config/config.json' 
 
       - name: build
         run: |
