@@ -94,4 +94,5 @@ resource depScript 'Microsoft.Resources/deploymentScripts@2020-10-01' = {
   }
 }
 
-output searchKey string = listQueryKeys(azureSearchName, '2020-03-13').value[0].key
+output searchKey string = azureSearch.listQueryKeys().value[0].key
+

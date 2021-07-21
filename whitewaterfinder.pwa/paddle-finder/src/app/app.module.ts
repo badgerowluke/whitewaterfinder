@@ -10,11 +10,19 @@ import { HttpClientModule } from '@angular/common/http';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { ProfileComponent } from './profile/profile.component';
-import { AppInitService } from './app-init.service';
 import 'rxjs';
-import { EnvironmentService } from 'src/environments/environment.service';
 
-import { interceptors } from './interceptors'
+
+import { 
+  interceptors, 
+  EnvironmentService,
+  BootstrapConfig
+} from 'pf-components'
+
+export function initAuth(config: BootstrapConfig, envService:EnvironmentService) {
+  envService.setEnvironment(config);
+  return () => {}
+}
 
 
 @NgModule({
@@ -38,10 +46,16 @@ import { interceptors } from './interceptors'
     EnvironmentService,
     {
       provide: APP_INITIALIZER,
-      useFactory: (appInit: AppInitService) => () => appInit.loadConfiguration().toPromise(),
-      deps: [AppInitService, EnvironmentService ],
+      useFactory: initAuth,
+      deps:[ BootstrapConfig, EnvironmentService],
       multi: true
     },
+    // {
+    //   provide: APP_INITIALIZER,
+    //   useFactory: (appInit: AppInitService) => () => appInit.loadConfiguration().toPromise(),
+    //   deps: [AppInitService, EnvironmentService ],
+    //   multi: true
+    // },
     interceptors
   ],
   bootstrap: [AppComponent]

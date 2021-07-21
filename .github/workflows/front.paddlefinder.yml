@@ -1,0 +1,60 @@
+on:
+  push:
+    paths: 
+      - 'whitewaterfinder.pwa/paddle-finder/**'
+      - '.github/workflows/front.paddlefinder.yml'
+jobs:
+  build-and-deploy:
+    name: 'build'
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: 'whitewaterfinder.pwa/paddle-finder'
+    steps:
+    
+      - name: "checkout"
+        uses: actions/checkout@v2.1.0   
+
+
+      - name: az login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets. AZCLI_CREDS }}
+
+      - name: get secrets
+        uses: Azure/get-keyvault-secrets@v1
+        id: getSecrets
+        with:
+          keyvault: "paddle-finder"
+          secrets: 'apim-master-key, instrumentKey'
+
+
+      - name: "apply config"
+        shell: pwsh
+
+        run: |
+          $json = @"
+          {
+            "auth": {
+              "domain": "${{ secrets.AUTH0DOMAIN }}",
+              "clientId": "${{ secrets.AUTH0CLIENTID }}"
+            },
+            "insights": {
+              "instrumentationKey": "${{ steps.getSecrets.outputs.instrumentKey }}"
+            },
+            "backend": {
+              "apiUrl": "https://whitewater-finder.azure-api.net",
+              "subscriptionKey":"${{ steps.getSecrets.outputs.apim-master-key }}"
+            }
+          }
+          "@
+          New-Item -ItemType directory -Path src/assets/config
+          $json | ConvertTo-Json | Out-File 'src/assets/config/config.json' 
+
+      - name: build
+        run: |
+          npm i && npm run build-prod
+
+
+      - name: logout
+        run: az logout            

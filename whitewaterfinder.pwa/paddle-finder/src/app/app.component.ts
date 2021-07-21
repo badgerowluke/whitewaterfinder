@@ -1,5 +1,5 @@
 import { Component, OnChanges, OnInit } from '@angular/core';
-import { AuthService } from './services/auth/auth.service';
+
 
 @Component({
   selector: 'app-root-paddle',
@@ -10,7 +10,7 @@ import { AuthService } from './services/auth/auth.service';
 export class AppComponent implements OnInit {
   title = 'paddle-finder';
   profile: any;
-  constructor(public auth: AuthService) {
+  constructor() {
 
   }
   ngOnInit() { }
