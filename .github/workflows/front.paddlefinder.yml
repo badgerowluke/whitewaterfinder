@@ -47,13 +47,12 @@ jobs:
               "subscriptionKey":"${{ steps.getSecrets.outputs.apim-master-key }}"
             }
           }
+          "production": true
           "@
           New-Item -ItemType directory -Path src/assets/config
           $json | ConvertTo-Json | Out-File 'src/assets/config/config.json' 
 
-      - name: build
-        run: |
-          npm i && npm run build-prod
+
 
 
       - name: logout
@@ -66,6 +65,6 @@ jobs:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_TOKEN }}
         run: |
           npm i g netlify-cli
-          npm run build-prod
+          npm i  && npm run build-prod
           netlify deploy --prod --dir ./dist/paddle-finder
           
