@@ -1,5 +1,7 @@
 on:
   push:
+    branches:
+    - trunk
     paths: 
       - 'whitewaterfinder.pwa/paddle-finder/**'
       - '.github/workflows/front.paddlefinder.yml'
@@ -45,9 +47,9 @@ jobs:
             "backend": {
               "apiUrl": "https://whitewater-finder.azure-api.net",
               "subscriptionKey":"${{ steps.getSecrets.outputs.apim-master-key }}"
-            }
+            },
+            "production": true
           }
-          "production": true
           "@
           New-Item -ItemType directory -Path src/assets/config
           $json | ConvertTo-Json | Out-File 'src/assets/config/config.json' 
