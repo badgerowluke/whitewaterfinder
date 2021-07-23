@@ -17,10 +17,11 @@ param botPassword string
 
 param botName string = 'paddle-finder-webster'
 param adminName string = 'paddle-finder-admin'
+@secure()
 param luisApiKey string
+@secure()
 param luisAppId string
 
-var storageAccountId = '${resourceGroup().id}/providers/Microsoft.Storage/storageAccounts/${storageAccountName}'
 
 
 resource appPlan 'Microsoft.Web/serverfarms@2016-09-01' = {

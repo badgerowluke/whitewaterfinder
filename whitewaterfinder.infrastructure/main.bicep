@@ -30,14 +30,14 @@ module search 'bicep/search/search.bicep' = {
   }
 }
 
-module registry 'bicep/registry/registry.bicep' = {
-  name: 'container-registry'
-  scope: newRg
-  params: {
-    name: 'paddlefinderregistry'
-    location: newRg.location
-  }
-}
+// module registry 'bicep/registry/registry.bicep' = {
+//   name: 'container-registry'
+//   scope: newRg
+//   params: {
+//     name: 'paddlefinderregistry'
+//     location: newRg.location
+//   }
+// }
 
 module bot 'bicep/cognitiveservices/cognitiveservices.bicep' = {
   name: 'bot-deploy'

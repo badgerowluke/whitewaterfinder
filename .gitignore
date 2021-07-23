@@ -267,3 +267,4 @@ lcov.info
 whitewaterfinder.pwa/paddle-finder/src/assets/config/config.json
 **/.terraform.lock.hcl
 whitewaterfinder.infrastructure/temp.sh
+whitewaterfinder.pwa/paddle-finder/documentation.json
