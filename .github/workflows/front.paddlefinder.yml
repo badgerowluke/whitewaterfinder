@@ -51,6 +51,7 @@ jobs:
             "production": true
           }
           "@
+          Write-Output $json
           New-Item -ItemType directory -Path src/assets/config
           $json | ConvertTo-Json | Out-File 'src/assets/config/config.json' 
 

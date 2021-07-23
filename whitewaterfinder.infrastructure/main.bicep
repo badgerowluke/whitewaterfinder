@@ -81,6 +81,7 @@ module keyvault 'bicep/keyvault/kvtemplate.bicep' = {
     kvName: 'paddle-finder'
     location: newRg.location
     tenantId: tenant
+    spnid: serviceprincipal
   }
   scope: newRg
 }
@@ -108,9 +109,4 @@ module secrets 'bicep/keyvault/kvsecrets.bicep' = {
     apimKey: apim.outputs.subkey
     instrumentKey: storage.outputs.instrumentKey
   }
-
 }
-
-
-
-
