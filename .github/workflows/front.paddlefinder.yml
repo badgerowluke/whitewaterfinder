@@ -67,5 +67,5 @@ jobs:
         run: |
           npm i g netlify-cli
           npm run build-prod
-          netlify deploy --prod --dir ./dist
+          netlify deploy --prod --dir ./dist/paddle-finder
           
