@@ -98,5 +98,38 @@ resource app 'Microsoft.Web/sites@2020-10-01' = {
     }
   }
 }
+resource props 'Microsoft.Web/sites/config@2021-01-15' = {
+  name: '/appsettings'
+  properties: {
+    appsettings: [
+      {
+        name: 'APPINSIGHTS_CONNECTION_STRING'
+        value: 'InstrumentationKey=${instrumentKey}'
+      }
+      {
+        name: 'ApplicationInsightsAgent_EXTENSION_VERSION'
+        value: '~2'
+      }
+      {
+        name: 'azureSearchKey'
+        value: azureSearchKey
+      }
+      {
+        name: 'baseUSGSUrl'
+        value: 'https://waterservices.usgs.gov/nwis/iv/?format=json&indent=on&'
+      }
+      {
+        name: 'azureSearchUrl'
+        value: 'https://waterfindersearch.search.windows.net/indexes/riversearch-index/docs/suggest?suggesterName=RiverName&api-version=2019-05-06&fuzzy=false&$top=20&&$select=Name,RiverId,Latitude,Longitude&search="'
+      }
+      {
+        name: 'APPINSIGHTS_INSTRUMENTATIONKEY'
+        value: instrumentKey
+      }      
+      
+
+    ]
+  }
+}
 
 output riversKey string = listkeys('${app.id}/host/default', '2018-11-01').functionKeys.default

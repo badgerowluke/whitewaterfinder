@@ -61,6 +61,8 @@ module apis 'bicep/api/api.bicep' = {
   name: 'paddle-finder-apis'
   dependsOn: [ 
     storage 
+    search
+    bot
   ]
   scope: newRg
   params: {
