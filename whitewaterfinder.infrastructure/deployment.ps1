@@ -5,7 +5,7 @@ param (
         [Parameter(Mandatory=$true)] $resourceGroup,
         [Parameter(Mandatory=$true)] $jsonFile,
         [Parameter(Mandatory=$true)] $spid,
-        [Parameter(Mandatory=$true)] $pass
+        [Parameter(Mandatory=$true)] $pass,
         [Parameter(Mandatory=$true)] $tenant
     
     )

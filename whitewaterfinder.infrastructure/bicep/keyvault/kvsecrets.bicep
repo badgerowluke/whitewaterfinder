@@ -20,6 +20,9 @@ param apimKey string
 @secure()
 param instrumentKey string
 
+@secure()
+param storageKey string
+
 resource apimMasterKey 'Microsoft.KeyVault/vaults/secrets@2016-10-01' = {
   name: '${kvName}/apim-master-key'
   properties: {
@@ -59,5 +62,11 @@ resource instrumentationKey 'Microsoft.KeyVault/vaults/secrets@2016-10-01' = {
   name: '${kvName}/instrumentkey'
   properties: {
     value: instrumentKey
+  }
+}
+resource storageAccess 'Microsoft.KeyVault/vaults/secrets@2016-10-01' = {
+  name: '${kvName}/storageKey'
+  properties: {
+    value: storageKey
   }
 }

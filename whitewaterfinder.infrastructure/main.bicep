@@ -108,5 +108,6 @@ module secrets 'bicep/keyvault/kvsecrets.bicep' = {
     adminFuncKey: apis.outputs.adminKey
     apimKey: apim.outputs.subkey
     instrumentKey: storage.outputs.instrumentKey
+    storageKey: storage.outputs.storageKey
   }
 }

@@ -14,7 +14,6 @@ param botApp string = 'paddle-finder-webster'
 param preferencesApp string = 'paddle-finder-preferences'
 param storageAccountName string = 'waterfinder'
 
-var storageAccountId = '${resourceGroup().id}/providers/Microsoft.Storage/storageAccounts/${storageAccountName}'
 
 resource appInsights 'Microsoft.Insights/components@2015-05-01' = {
   name: appName
@@ -36,7 +35,7 @@ resource storageAccount'Microsoft.Storage/storageAccounts@2019-04-01' = {
   properties: {}
 }
 
-resource storageAccountName_default 'Microsoft.Storage/storageAccounts/blobServices@2019-04-01' = {
+resource blobService 'Microsoft.Storage/storageAccounts/blobServices@2019-04-01' = {
   name: '${storageAccount.name}/default'
   properties: {
     cors: {
@@ -68,8 +67,8 @@ resource storageAccountName_default 'Microsoft.Storage/storageAccounts/blobServi
   }
 }
 
-resource storageAccountName_default_azure_webjobs_hosts 'Microsoft.Storage/storageAccounts/blobServices/containers@2019-04-01' = {
-  name: '${storageAccountName_default.name}/azure-webjobs-hosts'
+resource azure_webjobs_hosts 'Microsoft.Storage/storageAccounts/blobServices/containers@2019-04-01' = {
+  name: '${blobService.name}/azure-webjobs-hosts'
   properties: {
     publicAccess: 'None'
   }
@@ -78,8 +77,8 @@ resource storageAccountName_default_azure_webjobs_hosts 'Microsoft.Storage/stora
   ]
 }
 
-resource storageAccountName_default_azure_webjobs_secrets 'Microsoft.Storage/storageAccounts/blobServices/containers@2019-04-01' = {
-  name: '${storageAccountName_default.name}/azure-webjobs-secrets'
+resource azure_webjobs_secrets 'Microsoft.Storage/storageAccounts/blobServices/containers@2019-04-01' = {
+  name: '${blobService.name}/azure-webjobs-secrets'
   properties: {
     publicAccess: 'None'
   }
@@ -88,8 +87,8 @@ resource storageAccountName_default_azure_webjobs_secrets 'Microsoft.Storage/sto
   ]
 }
 
-resource storageAccountName_default_data 'Microsoft.Storage/storageAccounts/blobServices/containers@2019-04-01' = {
-  name: '${storageAccountName_default.name}/data'
+resource data 'Microsoft.Storage/storageAccounts/blobServices/containers@2019-04-01' = {
+  name: '${blobService.name}/data'
   properties: {
     publicAccess: 'Container'
   }
@@ -98,8 +97,17 @@ resource storageAccountName_default_data 'Microsoft.Storage/storageAccounts/blob
   ]
 }
 
-resource storageAccountName_default_botstore 'Microsoft.Storage/storageAccounts/blobServices/containers@2019-04-01' = {
-  name: '${storageAccountName_default.name}/botstore'
+resource botstore 'Microsoft.Storage/storageAccounts/blobServices/containers@2019-04-01' = {
+  name: '${blobService.name}/botstore'
+  properties: {
+    publicAccess: 'Container'
+  }
+  dependsOn: [
+    storageAccount
+  ]
+}
+resource archive 'Microsoft.Storage/storageAccounts/blobServices/containers@2019-04-01' = {
+  name: '${blobService.name}/archive'
   properties: {
     publicAccess: 'Container'
   }
