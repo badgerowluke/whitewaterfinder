@@ -4,8 +4,6 @@ param planId string
 param storageAccountName string
 
 param azureSearchKey string
-param baseUSGSUrl string
-param searchUrl string
 param instrumentKey string
 
 @secure()
@@ -78,11 +76,11 @@ resource app 'Microsoft.Web/sites@2016-08-01' = {
         }
         {
           name: 'baseUSGSUrl'
-          value: baseUSGSUrl
+          value: 'https://waterservices.usgs.gov/nwis/iv/?format=json&indent=on&'
         }
         {
           name: 'azureSearchUrl'
-          value: searchUrl
+          value: 'https://waterfindersearch.search.windows.net/indexes/riversearch-index/docs/suggest?suggesterName=RiverName&api-version=2019-05-06&fuzzy=false&$top=20&&$select=Name,RiverId,Latitude,Longitude&search="'
         }
         {
           name: 'APPINSIGHTS_INSTRUMENTATIONKEY'

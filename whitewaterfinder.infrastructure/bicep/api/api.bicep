@@ -5,8 +5,6 @@ param appPlanName string = 'WaterFinderPlan'
 param preferencesApp string = 'paddle-finder-preferences'
 param storageAccountName string = 'waterfinder'
 param azureSearchKey string
-param baseUSGSUrl string
-param searchUrl string
 param botAppId string
 param instrumentKey string
 @secure()
@@ -55,8 +53,6 @@ module rivers 'rivers.bicep' = {
      planId: appPlan.id
      storageAccountName: storageAccountName
      azureSearchKey: azureSearchKey
-     baseUSGSUrl: baseUSGSUrl
-     searchUrl: searchUrl
      instrumentKey: instrumentKey
      storageKey: storageKey
 
