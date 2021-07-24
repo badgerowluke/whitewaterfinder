@@ -18,7 +18,7 @@ export class SubscriptionHeaderInterceptor implements HttpInterceptor {
             if(key != null) {
                 const newReq = req.clone({
                     headers: req.headers.set('content-type', 'application/json')
-                    .set('Control-Allow-Origin', '*')
+                    .set('Access-Control-Allow-Origin', '*')
                     .set('Ocp-Apim-Subscription-Key', this.env.environment.backend.subscriptionKey)
                 });
                 return next.handle(newReq);

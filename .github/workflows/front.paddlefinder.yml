@@ -68,17 +68,6 @@ jobs:
           npm i  && npm run build-prod
           netlify deploy --prod --dir ./dist/paddle-finder
 
-
-      - uses: LanceMcCarthy/Action-AzureBlobUpload@v1.9.0
-        name: Azure Blob Upload with Destination folder defined
-        with:
-          connection_string: "DefaultEndpointsProtocol=https;AccountName=waterfinder;AccountKey=${{ steps.getSecrets.outputs.storageKey }};EndpointSuffix=core.windows.net"
-          container_name: archive
-          source_folder: whitewaterfinder.pwa/paddle-finder/dist
-          destination_folder: $GITHUB_RUN_ID
-          clean_destination_folder: true
-
-
       - name: logout
         run: az logout             
           
