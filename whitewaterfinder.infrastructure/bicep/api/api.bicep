@@ -72,9 +72,7 @@ module preferences 'users.bicep' = {
     storageAccountName: storageAccountName
     instrumentKey: instrumentKey
     storageKey: storageKey
-
   }
-
 }
 
 module bot 'bot.bicep' ={

@@ -9,7 +9,7 @@ param instrumentKey string
 @secure()
 param storageKey string
 
-resource app 'Microsoft.Web/sites@2016-08-01' = {
+resource app 'Microsoft.Web/sites@2020-10-01' = {
   name: appName
   location: location
   kind: 'functionapp'
