@@ -2,8 +2,9 @@ param location string
 param appName string
 param planId string
 param storageAccountName string
-
+@secure()
 param azureSearchKey string
+@secure()
 param instrumentKey string
 
 @secure()
@@ -36,8 +37,26 @@ resource app 'Microsoft.Web/sites@2020-10-01' = {
     containerSize: 1536
     dailyMemoryTimeQuota: 0
     httpsOnly: true
+
     siteConfig: {
       appSettings: [
+ 
+        {
+          name: 'BASEUSGSURL'
+          value: 'https://waterservices.usgs.gov/nwis/iv/?format=json&indent=on&'
+        }
+        {
+          name: 'AZURESEARCHURL'
+          value: 'https://waterfindersearch.search.windows.net/indexes/riversearch-index/docs/suggest?suggesterName=RiverName&api-version=2019-05-06&fuzzy=false&$top=20&&$select=Name,RiverId,Latitude,Longitude&search="'
+        }
+        {
+          name: 'azureSearchKey'
+          value: azureSearchKey
+        }
+        {
+          name: 'APPINSIGHTS_INSTRUMENTATIONKEY'
+          value: instrumentKey
+        }
         {
           name: 'AzureWebJobsStorage'
           value: 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};AccountKey=${storageKey}'
@@ -70,22 +89,7 @@ resource app 'Microsoft.Web/sites@2020-10-01' = {
           name: 'blobStore'
           value: 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};AccountKey=${storageKey}'
         }
-        {
-          name: 'azureSearchKey'
-          value: azureSearchKey
-        }
-        {
-          name: 'baseUSGSUrl'
-          value: 'https://waterservices.usgs.gov/nwis/iv/?format=json&indent=on&'
-        }
-        {
-          name: 'azureSearchUrl'
-          value: 'https://waterfindersearch.search.windows.net/indexes/riversearch-index/docs/suggest?suggesterName=RiverName&api-version=2019-05-06&fuzzy=false&$top=20&&$select=Name,RiverId,Latitude,Longitude&search="'
-        }
-        {
-          name: 'APPINSIGHTS_INSTRUMENTATIONKEY'
-          value: instrumentKey
-        }
+
         {
           name: 'APPINSIGHTS_CONNECTION_STRING'
           value: 'InstrumentationKey=${instrumentKey}'
@@ -96,39 +100,6 @@ resource app 'Microsoft.Web/sites@2020-10-01' = {
         }
       ]
     }
-  }
-}
-resource props 'Microsoft.Web/sites/config@2021-01-15' = {
-  name: '/appsettings'
-  properties: {
-    appsettings: [
-      {
-        name: 'APPINSIGHTS_CONNECTION_STRING'
-        value: 'InstrumentationKey=${instrumentKey}'
-      }
-      {
-        name: 'ApplicationInsightsAgent_EXTENSION_VERSION'
-        value: '~2'
-      }
-      {
-        name: 'azureSearchKey'
-        value: azureSearchKey
-      }
-      {
-        name: 'baseUSGSUrl'
-        value: 'https://waterservices.usgs.gov/nwis/iv/?format=json&indent=on&'
-      }
-      {
-        name: 'azureSearchUrl'
-        value: 'https://waterfindersearch.search.windows.net/indexes/riversearch-index/docs/suggest?suggesterName=RiverName&api-version=2019-05-06&fuzzy=false&$top=20&&$select=Name,RiverId,Latitude,Longitude&search="'
-      }
-      {
-        name: 'APPINSIGHTS_INSTRUMENTATIONKEY'
-        value: instrumentKey
-      }      
-      
-
-    ]
   }
 }
 
