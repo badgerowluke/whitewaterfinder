@@ -51,9 +51,9 @@ jobs:
             "production": true
           }
           "@
-          
+          $output = ConvertFrom-Json $json
           New-Item -ItemType directory -Path src/assets/config
-          $json | ConvertTo-Json | Out-File 'src/assets/config/config.json' 
+          $output | ConvertTo-Json | Out-File 'src/assets/config/config.json' 
 
 
          
