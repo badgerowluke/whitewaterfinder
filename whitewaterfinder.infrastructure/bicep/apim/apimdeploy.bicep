@@ -38,6 +38,7 @@ resource apim_policy 'Microsoft.ApiManagement/service/policies@2019-12-01' = {
               <origin>https://boring-fermat-c61944.netlify.app</origin>    
               <origin>http://paddle-finder.com</origin>       
               <origin>https://paddle-finder.com</origin>     
+              <origin>https://www.paddle-finder.com</origin>     
             </allowed-origins>
             <allowed-methods preflight-result-max-age="300">   
               <method>GET</method>       
