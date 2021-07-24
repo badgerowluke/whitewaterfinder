@@ -28,7 +28,7 @@ jobs:
         id: getSecrets
         with:
           keyvault: "paddle-finder"
-          secrets: 'apim-master-key, instrumentKey'
+          secrets: 'apim-master-key, instrumentKey, storageKey'
 
 
       - name: "apply config"
@@ -51,11 +51,19 @@ jobs:
             "production": true
           }
           "@
-          Write-Output $json
+          
           New-Item -ItemType directory -Path src/assets/config
           $json | ConvertTo-Json | Out-File 'src/assets/config/config.json' 
 
 
+      - uses: LanceMcCarthy/Action-AzureBlobUpload@v1.9.0
+        name: Azure Blob Upload with Destination folder defined
+        with:
+          connection_string: ${{ secrets.YourAzureBlobConnectionString }}
+          container_name: archive
+          source_folder: whitewaterfinder.pwa/paddle-finder/dist
+          destination_folder: $GITHUB_RUN_ID
+          clean_destination_folder: true
 
 
       - name: logout
