@@ -56,6 +56,19 @@ jobs:
           $json | ConvertTo-Json | Out-File 'src/assets/config/config.json' 
 
 
+         
+
+      - name: deploy to netlify
+        working-directory: whitewaterfinder.pwa/paddle-finder
+        env: 
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_APP_ID }}
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_TOKEN }}
+        run: |
+          npm i g netlify-cli
+          npm i  && npm run build-prod
+          netlify deploy --prod --dir ./dist/paddle-finder
+
+
       - uses: LanceMcCarthy/Action-AzureBlobUpload@v1.9.0
         name: Azure Blob Upload with Destination folder defined
         with:
@@ -67,15 +80,5 @@ jobs:
 
 
       - name: logout
-        run: az logout            
-
-      - name: deploy to netlify
-        working-directory: whitewaterfinder.pwa/paddle-finder
-        env: 
-          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_APP_ID }}
-          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_TOKEN }}
-        run: |
-          npm i g netlify-cli
-          npm i  && npm run build-prod
-          netlify deploy --prod --dir ./dist/paddle-finder
+        run: az logout             
           
