@@ -1,7 +1,10 @@
 param serviceprincipal string 
 @secure()
+param spObjectId string
+@secure()
 param sppassword string
 param tenant string
+@secure()
 param adminId string
 @secure()
 param botPassword string
@@ -81,7 +84,7 @@ module keyvault 'bicep/keyvault/kvtemplate.bicep' = {
     kvName: 'paddle-finder'
     location: newRg.location
     tenantId: tenant
-    spnid: serviceprincipal
+    spnid: spObjectId
   }
   scope: newRg
 }

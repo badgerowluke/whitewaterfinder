@@ -31,7 +31,8 @@ jobs:
                                                'tenant=${{ secrets.TENANT }}' \
                                                'botPassword=${{ secrets.BOTPASSWORD }}' \
                                                'luisAppId=${{ secrets.LUISID }}' \
-                                               'adminId=${{ secrets.ADMINID }}'
+                                               'adminId=${{ secrets.ADMINID }}' \
+                                               'spObjectId=${{ secrets.SP_OBJECTID }}'
 
 
       - name: 'push documents to search'
