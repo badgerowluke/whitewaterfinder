@@ -59,7 +59,7 @@ jobs:
       - uses: LanceMcCarthy/Action-AzureBlobUpload@v1.9.0
         name: Azure Blob Upload with Destination folder defined
         with:
-          connection_string: DefaultEndpointsProtocol=https;AccountName=waterfinder;AccountKey=${{ steps.getSecrets.outputs.storageKey }}
+          connection_string: "DefaultEndpointsProtocol=https;AccountName=waterfinder;AccountKey=${{ steps.getSecrets.outputs.storageKey }}"
           container_name: archive
           source_folder: whitewaterfinder.pwa/paddle-finder/dist
           destination_folder: $GITHUB_RUN_ID
