@@ -32,13 +32,14 @@ resource apim_policy 'Microsoft.ApiManagement/service/policies@2019-12-01' = {
         <inbound>    
           <cors allow-credentials="true">      
             <allowed-origins>     
-              <origin>http://localhost:5000</origin>        
-              <origin>http://localhost:3000</origin>        
-              <origin>http://localhost:4200</origin>   
-              <origin>https://reverent-yalow-362967.netlify.app</origin>    
-              <origin>http://paddle-finder.com</origin>       
-              <origin>https://paddle-finder.com</origin>     
-              <origin>https://www.paddle-finder.com</origin>     
+            <origin>http://localhost:5000</origin>
+            <origin>http://localhost:3000</origin>
+            <origin>http://localhost:4200</origin>
+            <origin>https://reverent-yalow-362967.netlify.app</origin>
+            <origin>https://paddle-finder.com</origin>
+            <origin>https://www.paddle-finder.com</origin>
+            <origin>http://paddle-finder.com</origin>
+            <origin>http://www.paddle-finder.com</origin>    
             </allowed-origins>
             <allowed-methods preflight-result-max-age="300">   
               <method>GET</method>       
