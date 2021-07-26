@@ -20,10 +20,6 @@ param luisApiKey string
 @secure()
 param luisAppId string
 
-@secure()
-param searchKey string
-
-
 
 resource appPlan 'Microsoft.Web/serverfarms@2016-09-01' = {
   name: appPlanName

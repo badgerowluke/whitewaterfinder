@@ -71,7 +71,7 @@ module apis 'bicep/api/api.bicep' = {
     instrumentKey: storage.outputs.instrumentKey
     storageKey: storage.outputs.storageKey
     storageAccountName: storageAccountName
-    searchKey: search.outputs.searchKey
+
  
   }
 }
