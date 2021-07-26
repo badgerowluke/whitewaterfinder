@@ -10,6 +10,8 @@ param adminId string
 param botPassword string
 param luisAppId string
 
+param storageAccountName string = 'waterfinder'
+
 targetScope = 'subscription'
 
 resource  newRg 'Microsoft.Resources/resourceGroups@2021-04-01' = {
@@ -59,20 +61,17 @@ module bot 'bicep/cognitiveservices/cognitiveservices.bicep' = {
 
 module apis 'bicep/api/api.bicep' = {
   name: 'paddle-finder-apis'
-  dependsOn: [ 
-    storage 
-    search
-    bot
-  ]
+
   scope: newRg
   params: {
     botAppId: bot.outputs.msaAppId
     luisApiKey: bot.outputs.luisId
     luisAppId: luisAppId
     botPassword: botPassword
-    azureSearchKey: search.outputs.searchKey
     instrumentKey: storage.outputs.instrumentKey
     storageKey: storage.outputs.storageKey
+    storageAccountName: storageAccountName
+    searchKey: search.outputs.searchKey
  
   }
 }
@@ -85,7 +84,8 @@ module keyvault 'bicep/keyvault/kvtemplate.bicep' = {
     kvName: 'paddle-finder'
     location: newRg.location
     tenantId: tenant
-    spnid: spObjectId
+    spnid: spObjectId 
+    riversMI: apis.outputs.riversMI
   }
   scope: newRg
 }
@@ -106,12 +106,27 @@ module secrets 'bicep/keyvault/kvsecrets.bicep' = {
   scope: newRg
   params: {
     kvName: 'paddle-finder'
-    riverFuncKey: apis.outputs.riversKey
-    prefFuncKey: apis.outputs.usersKey
-    botFuncKey: apis.outputs.botKey
-    adminFuncKey: apis.outputs.adminKey
     apimKey: apim.outputs.subkey
     instrumentKey: storage.outputs.instrumentKey
     storageKey: storage.outputs.storageKey
+    searchKey: search.outputs.searchKey
+    storageAccountName: storageAccountName
   }
 }
+
+module config 'bicep/api/config.bicep' = {
+  scope: newRg
+  dependsOn: [
+    apis
+    secrets
+  ]
+  name: 'app-config'
+  params: {
+    appName: 'paddle-finder'
+    instrumentKey: storage.outputs.instrumentKey
+    storageAccountName: storageAccountName
+    storageKey: storage.outputs.storageKey
+  }
+  
+}
+

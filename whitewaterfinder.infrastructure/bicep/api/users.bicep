@@ -1,6 +1,6 @@
 param location string
 param preferencesApp string
-param appName string
+
 param planId string
 param storageAccountName string
 param instrumentKey string
@@ -10,14 +10,14 @@ param storageKey string
 
 
 resource app 'Microsoft.Web/sites@2016-08-01' = {
-  name: appName
+  name: preferencesApp
   location: location
   kind: 'functionapp'
   properties: {
     enabled: true
     hostNameSslStates: [
       {
-        name: '${appName}.azurewebsites.net'
+        name: '${preferencesApp}.azurewebsites.net'
         sslState: 'Disabled'
         hostType: 'Standard'
       }

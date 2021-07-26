@@ -4,7 +4,7 @@ param appName string = 'paddle-finder'
 param appPlanName string = 'WaterFinderPlan'
 param preferencesApp string = 'paddle-finder-preferences'
 param storageAccountName string = 'waterfinder'
-param azureSearchKey string
+
 param botAppId string
 param instrumentKey string
 @secure()
@@ -19,6 +19,9 @@ param adminName string = 'paddle-finder-admin'
 param luisApiKey string
 @secure()
 param luisAppId string
+
+@secure()
+param searchKey string
 
 
 
@@ -44,29 +47,20 @@ resource appPlan 'Microsoft.Web/serverfarms@2016-09-01' = {
 
 module rivers 'rivers.bicep' = {
    name: 'rivers-api'
-   dependsOn: [
-     appPlan
-   ]
+
    params: {
      appName: appName
      location: location
      planId: appPlan.id
-     storageAccountName: storageAccountName
-     azureSearchKey: azureSearchKey
-     instrumentKey: instrumentKey
-     storageKey: storageKey
-
    }
 }
 
 module preferences 'users.bicep' = {
   name: 'preferences-api'
-  dependsOn: [
-    appPlan
-  ]
+
   params: {
     preferencesApp: preferencesApp
-    appName: appName
+
     location: location
     planId: appPlan.id
     storageAccountName: storageAccountName
@@ -77,9 +71,7 @@ module preferences 'users.bicep' = {
 
 module bot 'bot.bicep' ={
   name:'bot-api'
-  dependsOn: [
-    appPlan
-  ]
+
   params: {
     botName: botName
     msftAppId: botAppId
@@ -117,3 +109,4 @@ output riversKey string = rivers.outputs.riversKey
 output usersKey string = preferences.outputs.prefsKey
 output botKey string = bot.outputs.botKey
 output adminKey string = admin.outputs.adminKey
+output riversMI string = rivers.outputs.appIdent

@@ -1,12 +1,16 @@
 
 @description('Location for all resources.')
 param location string
+@secure()
 param tenantId string
 @secure()
 param adminId string
 param kvName string
 @secure()
 param spnid string
+
+@secure()
+param riversMI string
 
 resource kvName_resource 'Microsoft.KeyVault/vaults@2019-09-01' = {
   name: kvName
@@ -35,6 +39,16 @@ resource kvName_resource 'Microsoft.KeyVault/vaults@2019-09-01' = {
       }
       {
         objectId: spnid
+        tenantId: tenantId
+        permissions: {
+          secrets:[
+            'get'
+            'list'
+          ]
+        }
+      }
+      {
+        objectId: riversMI
         tenantId: tenantId
         permissions: {
           secrets:[
