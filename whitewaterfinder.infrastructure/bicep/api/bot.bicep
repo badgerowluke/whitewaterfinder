@@ -19,6 +19,9 @@ resource app 'Microsoft.Web/sites@2016-08-01' = {
   name: botName
   location: location
   kind: 'functionapp'
+  identity: {
+    type: 'SystemAssigned'
+  }
   properties: {
     enabled: true
     hostNameSslStates: [
@@ -104,3 +107,4 @@ resource app 'Microsoft.Web/sites@2016-08-01' = {
 }
 
 output botKey string = listkeys('${app.id}/host/default', '2018-11-01').functionKeys.default
+output appIdent string = app.identity.principalId

@@ -49,3 +49,10 @@ resource storageConnection 'Microsoft.KeyVault/vaults/secrets@2016-10-01' = {
     value: 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};AccountKey=${storageKey}'
   }
 }
+
+resource instrumentConnection 'Microsoft.KeyVault/vaults/secrets@2016-10-01' = {
+  name: '${kvName}/instrumentConnection'
+  properties: {
+    value: 'InstrumentationKey=${instrumentKey}'
+  }
+}

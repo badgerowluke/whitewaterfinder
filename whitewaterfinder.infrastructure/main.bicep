@@ -114,7 +114,7 @@ module secrets 'bicep/keyvault/kvsecrets.bicep' = {
   }
 }
 
-module config 'bicep/api/config.bicep' = {
+module config 'bicep/api/config/config.bicep' = {
   scope: newRg
   dependsOn: [
     apis
@@ -123,10 +123,6 @@ module config 'bicep/api/config.bicep' = {
   name: 'app-config'
   params: {
     appName: 'paddle-finder'
-    instrumentKey: storage.outputs.instrumentKey
-    storageAccountName: storageAccountName
-    storageKey: storage.outputs.storageKey
   }
-  
 }
 

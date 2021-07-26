@@ -1,12 +1,4 @@
 param appName string
-
-param storageAccountName string
-
-@secure()
-param storageKey string
-
-@secure() 
-param instrumentKey string
 resource riversConfig 'Microsoft.Web/sites/config@2020-12-01' = {
   name: '${appName}/web'
 
@@ -64,7 +56,7 @@ resource riversConfig 'Microsoft.Web/sites/config@2020-12-01' = {
 
       {
         name: 'APPINSIGHTS_CONNECTION_STRING'
-        value: 'InstrumentationKey=${instrumentKey}'
+        value: '@Microsoft.KeyVault(VaultName=paddle-finder;SecretName=instrumentConnection)'
       }
       {
         name: 'ApplicationInsightsAgent_EXTENSION_VERSION'

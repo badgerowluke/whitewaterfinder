@@ -60,7 +60,6 @@ module preferences 'users.bicep' = {
 
   params: {
     preferencesApp: preferencesApp
-
     location: location
     planId: appPlan.id
     storageAccountName: storageAccountName
