@@ -36,7 +36,7 @@ resource app 'Microsoft.Web/sites@2016-08-01' = {
     hostNamesDisabled: false
     containerSize: 1536
     dailyMemoryTimeQuota: 0
-    httpsOnly: false
+    httpsOnly: true
     siteConfig: {
       appSettings: [
         {

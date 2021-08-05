@@ -4,17 +4,20 @@ param appName string = 'paddle-finder'
 param appPlanName string = 'WaterFinderPlan'
 param preferencesApp string = 'paddle-finder-preferences'
 param storageAccountName string = 'waterfinder'
+param botName string = 'paddle-finder-webster'
+param adminName string = 'paddle-finder-admin'
 
 param botAppId string
+
+@secure()
 param instrumentKey string
+
 @secure()
 param storageKey string
 
 @secure()
 param botPassword string
 
-param botName string = 'paddle-finder-webster'
-param adminName string = 'paddle-finder-admin'
 @secure()
 param luisApiKey string
 @secure()
