@@ -7,22 +7,13 @@ param storageAccountName string = 'waterfinder'
 param botName string = 'paddle-finder-webster'
 param adminName string = 'paddle-finder-admin'
 
-param botAppId string
+
 
 @secure()
 param instrumentKey string
 
 @secure()
 param storageKey string
-
-@secure()
-param botPassword string
-
-@secure()
-param luisApiKey string
-@secure()
-param luisAppId string
-
 
 resource appPlan 'Microsoft.Web/serverfarms@2016-09-01' = {
   name: appPlanName
@@ -72,15 +63,10 @@ module bot 'bot.bicep' ={
 
   params: {
     botName: botName
-    msftAppId: botAppId
-    botPassword: botPassword
-    luisApiKey: luisApiKey
-    luisAppId: luisAppId
+
     location: location
     planId: appPlan.id
-    instrumentKey: instrumentKey
-    storageAccountName: storageAccountName
-    storageKey: storageKey
+
 
   }
 }
@@ -108,3 +94,4 @@ output usersKey string = preferences.outputs.prefsKey
 output botKey string = bot.outputs.botKey
 output adminKey string = admin.outputs.adminKey
 output riversMI string = rivers.outputs.appIdent
+output botMI string = bot.outputs.appIdent

@@ -1,7 +1,8 @@
 param appName string
-resource riversConfig 'Microsoft.Web/sites/config@2020-12-01' = {
-  name: '${appName}/web'
 
+
+resource riversConfig 'Microsoft.Web/sites/config@2021-01-15' = {
+  name: '${appName}/web'
 
   properties: {
     appSettings: [

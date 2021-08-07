@@ -12,6 +12,9 @@ param spnid string
 @secure()
 param riversMI string
 
+@secure()
+param botMI string
+
 resource kvName_resource 'Microsoft.KeyVault/vaults@2019-09-01' = {
   name: kvName
   location: location
@@ -49,6 +52,16 @@ resource kvName_resource 'Microsoft.KeyVault/vaults@2019-09-01' = {
       }
       {
         objectId: riversMI
+        tenantId: tenantId
+        permissions: {
+          secrets:[
+            'get'
+            'list'
+          ]
+        }
+      }
+      {
+        objectId: botMI
         tenantId: tenantId
         permissions: {
           secrets:[
