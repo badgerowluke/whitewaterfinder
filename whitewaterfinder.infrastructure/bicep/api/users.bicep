@@ -38,38 +38,7 @@ resource app 'Microsoft.Web/sites@2016-08-01' = {
     containerSize: 1536
     dailyMemoryTimeQuota: 0
     httpsOnly: true
-    siteConfig: {
-      appSettings: [
-        {
-          name: 'blobStore'
-          value: 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};AccountKey=${storageKey}'
-        }
-        {
-          name: 'AzureWebJobsStorage'
-          value: 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};AccountKey=${storageKey}'
-        }
-        {
-          name: 'WEBSITE_CONTENTAZUREFILECONNECTIONSTRING'
-          value: 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};AccountKey=${storageKey}'
-        }
-        {
-          name: 'WEBSITE_CONTENTSHARE'
-          value: toLower(preferencesApp)
-        }
-        {
-          name: 'FUNCTIONS_EXTENSION_VERSION'
-          value: '~2'
-        }
-        {
-          name: 'APPINSIGHTS_INSTRUMENTATIONKEY'
-          value: instrumentKey
-        }
-        {
-          name: 'WEBSITE_NODE_DEFAULT_VERSION'
-          value: '10.22.0'
-        }
-      ]
-    }
+
   }
 }
 

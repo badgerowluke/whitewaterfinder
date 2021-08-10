@@ -1,5 +1,7 @@
 param appName string
 param botName string
+param adminName string
+param prefsName string
 param location string
 
 module riverConfig 'riverConfig.bicep' = {
@@ -15,5 +17,19 @@ module botConfig 'botConfig.bicep' = {
     botName: botName
     location: location
 
+  }
+}
+
+module adminConfig 'adminConfig.bicep' = {
+  name: 'admin-config'
+  params: {
+    adminName: adminName
+  }
+}
+
+module userConfig 'usersConfig.bicep' = {
+  name: 'users-config'
+  params: {
+    name: prefsName
   }
 }

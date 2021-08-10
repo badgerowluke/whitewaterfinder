@@ -63,28 +63,17 @@ module bot 'bot.bicep' ={
 
   params: {
     botName: botName
-
     location: location
     planId: appPlan.id
-
-
   }
 }
 
-
-
 module admin 'admin.bicep' ={ 
   name: 'admin-api'
-  dependsOn: [
-    appPlan
-  ]
   params: {
     adminName: adminName
-    instrumentKey: instrumentKey
     location: location
     planId: appPlan.id
-    storageAccountName: storageAccountName
-    storageKey: storageKey
     
   }
 }
@@ -95,3 +84,5 @@ output botKey string = bot.outputs.botKey
 output adminKey string = admin.outputs.adminKey
 output riversMI string = rivers.outputs.appIdent
 output botMI string = bot.outputs.appIdent
+output adminMI string = admin.outputs.appIdent
+output prefsMI string = preferences.outputs.appIdent

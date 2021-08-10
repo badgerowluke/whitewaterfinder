@@ -3,8 +3,6 @@ param location string
 
 param planId string
 
-
-
 resource app 'Microsoft.Web/sites@2016-08-01' = {
   name: botName
   location: location

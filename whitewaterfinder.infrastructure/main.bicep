@@ -64,13 +64,9 @@ module apis 'bicep/api/api.bicep' = {
 
   scope: newRg
   params: {
-    
-    
     instrumentKey: storage.outputs.instrumentKey
     storageKey: storage.outputs.storageKey
     storageAccountName: storageAccountName
-
- 
   }
 }
 
@@ -85,6 +81,8 @@ module keyvault 'bicep/keyvault/kvtemplate.bicep' = {
     spnid: spObjectId 
     riversMI: apis.outputs.riversMI
     botMI: apis.outputs.botMI
+    adminMI: apis.outputs.adminMI
+    preferencesMI: apis.outputs.prefsMI
   }
   scope: newRg
 }
@@ -127,6 +125,8 @@ module config 'bicep/api/config/config.bicep' = {
   params: {
     appName: 'paddle-finder'
     botName: 'paddle-finder-webster'
+    adminName: 'paddle-finder-admin'
+    prefsName: 'paddle-finder-preferences'
     location: newRg.location
   }
 }
