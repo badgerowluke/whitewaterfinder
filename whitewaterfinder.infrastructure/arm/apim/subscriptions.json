@@ -1,0 +1,32 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "metadata": {
+    "_generator": {
+      "name": "bicep",
+      "version": "0.4.451.19169",
+      "templateHash": "2673654945406105034"
+    }
+  },
+  "parameters": {
+    "apimName": {
+      "type": "string"
+    },
+    "apimId": {
+      "type": "string"
+    }
+  },
+  "functions": [],
+  "resources": [
+    {
+      "type": "Microsoft.ApiManagement/service/subscriptions",
+      "apiVersion": "2021-01-01-preview",
+      "name": "[format('{0}/demo-sub', parameters('apimName'))]",
+      "properties": {
+        "allowTracing": true,
+        "displayName": "Demo-Sub",
+        "scope": "[format('{0}/apis', parameters('apimId'))]"
+      }
+    }
+  ]
+}
