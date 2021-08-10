@@ -61,13 +61,7 @@ module bot 'bicep/cognitiveservices/cognitiveservices.bicep' = {
 
 module apis 'bicep/api/api.bicep' = {
   name: 'paddle-finder-apis'
-
   scope: newRg
-  params: {
-    instrumentKey: storage.outputs.instrumentKey
-    storageKey: storage.outputs.storageKey
-    storageAccountName: storageAccountName
-  }
 }
 
 module keyvault 'bicep/keyvault/kvtemplate.bicep' = {

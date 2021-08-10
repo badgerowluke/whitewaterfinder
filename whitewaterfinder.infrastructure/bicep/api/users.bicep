@@ -1,12 +1,6 @@
 param location string
 param preferencesApp string
 param planId string
-param storageAccountName string
-param instrumentKey string
-
-@secure()
-param storageKey string
-
 
 resource app 'Microsoft.Web/sites@2016-08-01' = {
   name: preferencesApp

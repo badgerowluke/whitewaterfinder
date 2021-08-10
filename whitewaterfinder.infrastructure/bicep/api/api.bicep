@@ -3,17 +3,9 @@ param location string = resourceGroup().location
 param appName string = 'paddle-finder'
 param appPlanName string = 'WaterFinderPlan'
 param preferencesApp string = 'paddle-finder-preferences'
-param storageAccountName string = 'waterfinder'
 param botName string = 'paddle-finder-webster'
 param adminName string = 'paddle-finder-admin'
 
-
-
-@secure()
-param instrumentKey string
-
-@secure()
-param storageKey string
 
 resource appPlan 'Microsoft.Web/serverfarms@2016-09-01' = {
   name: appPlanName
@@ -52,9 +44,6 @@ module preferences 'users.bicep' = {
     preferencesApp: preferencesApp
     location: location
     planId: appPlan.id
-    storageAccountName: storageAccountName
-    instrumentKey: instrumentKey
-    storageKey: storageKey
   }
 }
 
