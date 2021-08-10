@@ -3,23 +3,8 @@ param location string = resourceGroup().location
 param appName string = 'paddle-finder'
 param appPlanName string = 'WaterFinderPlan'
 param preferencesApp string = 'paddle-finder-preferences'
-param storageAccountName string = 'waterfinder'
-param azureSearchKey string
-param botAppId string
-param instrumentKey string
-@secure()
-param storageKey string
-
-@secure()
-param botPassword string
-
 param botName string = 'paddle-finder-webster'
 param adminName string = 'paddle-finder-admin'
-@secure()
-param luisApiKey string
-@secure()
-param luisAppId string
-
 
 
 resource appPlan 'Microsoft.Web/serverfarms@2016-09-01' = {
@@ -44,71 +29,40 @@ resource appPlan 'Microsoft.Web/serverfarms@2016-09-01' = {
 
 module rivers 'rivers.bicep' = {
    name: 'rivers-api'
-   dependsOn: [
-     appPlan
-   ]
+
    params: {
      appName: appName
      location: location
      planId: appPlan.id
-     storageAccountName: storageAccountName
-     azureSearchKey: azureSearchKey
-     instrumentKey: instrumentKey
-     storageKey: storageKey
-
    }
 }
 
 module preferences 'users.bicep' = {
   name: 'preferences-api'
-  dependsOn: [
-    appPlan
-  ]
+
   params: {
     preferencesApp: preferencesApp
-    appName: appName
     location: location
     planId: appPlan.id
-    storageAccountName: storageAccountName
-    instrumentKey: instrumentKey
-    storageKey: storageKey
   }
 }
 
 module bot 'bot.bicep' ={
   name:'bot-api'
-  dependsOn: [
-    appPlan
-  ]
+
   params: {
     botName: botName
-    msftAppId: botAppId
-    botPassword: botPassword
-    luisApiKey: luisApiKey
-    luisAppId: luisAppId
     location: location
     planId: appPlan.id
-    instrumentKey: instrumentKey
-    storageAccountName: storageAccountName
-    storageKey: storageKey
-
   }
 }
 
-
-
 module admin 'admin.bicep' ={ 
   name: 'admin-api'
-  dependsOn: [
-    appPlan
-  ]
   params: {
     adminName: adminName
-    instrumentKey: instrumentKey
     location: location
     planId: appPlan.id
-    storageAccountName: storageAccountName
-    storageKey: storageKey
     
   }
 }
@@ -117,3 +71,7 @@ output riversKey string = rivers.outputs.riversKey
 output usersKey string = preferences.outputs.prefsKey
 output botKey string = bot.outputs.botKey
 output adminKey string = admin.outputs.adminKey
+output riversMI string = rivers.outputs.appIdent
+output botMI string = bot.outputs.appIdent
+output adminMI string = admin.outputs.appIdent
+output prefsMI string = preferences.outputs.appIdent

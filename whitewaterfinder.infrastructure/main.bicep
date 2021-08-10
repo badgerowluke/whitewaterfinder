@@ -10,6 +10,8 @@ param adminId string
 param botPassword string
 param luisAppId string
 
+param storageAccountName string = 'waterfinder'
+
 targetScope = 'subscription'
 
 resource  newRg 'Microsoft.Resources/resourceGroups@2021-04-01' = {
@@ -59,22 +61,7 @@ module bot 'bicep/cognitiveservices/cognitiveservices.bicep' = {
 
 module apis 'bicep/api/api.bicep' = {
   name: 'paddle-finder-apis'
-  dependsOn: [ 
-    storage 
-    search
-    bot
-  ]
   scope: newRg
-  params: {
-    botAppId: bot.outputs.msaAppId
-    luisApiKey: bot.outputs.luisId
-    luisAppId: luisAppId
-    botPassword: botPassword
-    azureSearchKey: search.outputs.searchKey
-    instrumentKey: storage.outputs.instrumentKey
-    storageKey: storage.outputs.storageKey
- 
-  }
 }
 
 module keyvault 'bicep/keyvault/kvtemplate.bicep' = {
@@ -85,7 +72,11 @@ module keyvault 'bicep/keyvault/kvtemplate.bicep' = {
     kvName: 'paddle-finder'
     location: newRg.location
     tenantId: tenant
-    spnid: spObjectId
+    spnid: spObjectId 
+    riversMI: apis.outputs.riversMI
+    botMI: apis.outputs.botMI
+    adminMI: apis.outputs.adminMI
+    preferencesMI: apis.outputs.prefsMI
   }
   scope: newRg
 }
@@ -106,12 +97,31 @@ module secrets 'bicep/keyvault/kvsecrets.bicep' = {
   scope: newRg
   params: {
     kvName: 'paddle-finder'
-    riverFuncKey: apis.outputs.riversKey
-    prefFuncKey: apis.outputs.usersKey
-    botFuncKey: apis.outputs.botKey
-    adminFuncKey: apis.outputs.adminKey
     apimKey: apim.outputs.subkey
     instrumentKey: storage.outputs.instrumentKey
     storageKey: storage.outputs.storageKey
+    searchKey: search.outputs.searchKey
+    storageAccountName: storageAccountName
+    botAppId: bot.outputs.msaAppId
+    botPassword: botPassword
+    luisAppId: luisAppId
+    luisApiKey: bot.outputs.luisId
   }
 }
+
+module config 'bicep/api/config/config.bicep' = {
+  scope: newRg
+  dependsOn: [
+    apis
+    secrets
+  ]
+  name: 'app-config'
+  params: {
+    appName: 'paddle-finder'
+    botName: 'paddle-finder-webster'
+    adminName: 'paddle-finder-admin'
+    prefsName: 'paddle-finder-preferences'
+    location: newRg.location
+  }
+}
+

@@ -1,18 +1,6 @@
 
 param kvName string
-
-
-@secure()
-param riverFuncKey string
-
-@secure()
-param prefFuncKey string
-
-@secure()
-param botFuncKey string
-
-@secure()
-param adminFuncKey string
+param storageAccountName string
 
 @secure() 
 param apimKey string
@@ -23,38 +11,25 @@ param instrumentKey string
 @secure()
 param storageKey string
 
+@secure()
+param searchKey string
+
+@secure()
+param botAppId string
+
+@secure()
+param botPassword string
+
+@secure()
+param luisAppId string
+
+@secure()
+param luisApiKey string
+
 resource apimMasterKey 'Microsoft.KeyVault/vaults/secrets@2016-10-01' = {
   name: '${kvName}/apim-master-key'
   properties: {
     value:  apimKey
-  }
-}
-
-resource riversKey 'Microsoft.KeyVault/vaults/secrets@2016-10-01' = {
-  name: '${kvName}/riverfunckey'
-  properties: {
-    value: riverFuncKey
-  }
-}
-
-resource prefsKey 'Microsoft.KeyVault/vaults/secrets@2016-10-01' = {
-  name: '${kvName}/preferencefunckey'
-  properties: {
-    value: prefFuncKey
-  }
-}
-
-resource botKey 'Microsoft.KeyVault/vaults/secrets@2016-10-01' = {
-  name: '${kvName}/botfunckey'
-  properties: {
-    value: botFuncKey
-  }
-}
-
-resource adminKey 'Microsoft.KeyVault/vaults/secrets@2016-10-01' = {
-  name: '${kvName}/adminfunckey'
-  properties: {
-    value: adminFuncKey
   }
 }
 
@@ -64,9 +39,59 @@ resource instrumentationKey 'Microsoft.KeyVault/vaults/secrets@2016-10-01' = {
     value: instrumentKey
   }
 }
+
 resource storageAccess 'Microsoft.KeyVault/vaults/secrets@2016-10-01' = {
   name: '${kvName}/storageKey'
   properties: {
     value: storageKey
+  }
+}
+
+resource searchAccess 'Microsoft.KeyVault/vaults/secrets@2016-10-01' = {
+  name: '${kvName}/searchKey'
+  properties: {
+    value: searchKey
+  }
+}
+
+resource storageConnection 'Microsoft.KeyVault/vaults/secrets@2016-10-01' = {
+  name: '${kvName}/storageConnection'
+  properties: {
+    value: 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};AccountKey=${storageKey}'
+  }
+}
+
+resource instrumentConnection 'Microsoft.KeyVault/vaults/secrets@2016-10-01' = {
+  name: '${kvName}/instrumentConnection'
+  properties: {
+    value: 'InstrumentationKey=${instrumentKey}'
+  }
+}
+
+resource msftAppId 'Microsoft.KeyVault/vaults/secrets@2019-09-01' = {
+  name: '${kvName}/botAppId'
+  properties: {
+    value: botAppId
+  }
+}
+
+resource botPass 'Microsoft.KeyVault/vaults/secrets@2019-09-01' = {
+  name: '${kvName}/botPassword'
+  properties: {
+    value: botPassword
+  }
+}
+
+resource luisApp 'Microsoft.KeyVault/vaults/secrets@2019-09-01' = {
+  name: '${kvName}/luisAppId'
+  properties: {
+    value: luisAppId
+  }
+}
+
+resource luisKey 'Microsoft.KeyVault/vaults/secrets@2019-09-01' = {
+  name: '${kvName}/luisApiKey'
+  properties: {
+    value: luisApiKey
   }
 }

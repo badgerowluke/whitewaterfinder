@@ -67,6 +67,15 @@ resource apim_policy 'Microsoft.ApiManagement/service/policies@2019-12-01' = {
   }
 }
 
+module subscriptions 'subscriptions.bicep' = {
+  name: 'deploy-apim-subscriptions'
+  params: {
+    apimId: apim.id
+    apimName: apimName
+  }
+ 
+}
+
 module riversAPIM 'rivers.bicep' = {
   name: 'rivers-apim-deploy'
 

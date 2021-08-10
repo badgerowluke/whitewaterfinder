@@ -2,15 +2,14 @@ param adminName string
 param location string
 
 param planId string
-param storageAccountName string
-
-param instrumentKey string
-param storageKey string
 
 resource app 'Microsoft.Web/sites@2016-08-01' = {
   name: adminName
   location: location
   kind: 'functionapp'
+  identity: {
+    type: 'SystemAssigned'
+  }
   properties: {
     enabled: true
     hostNameSslStates: [
@@ -33,40 +32,10 @@ resource app 'Microsoft.Web/sites@2016-08-01' = {
     hostNamesDisabled: false
     containerSize: 1536
     dailyMemoryTimeQuota: 0
-    httpsOnly: false
-    siteConfig: {
-      appSettings: [
-        {
-          name: 'blobStore'
-          value: 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};AccountKey=${storageKey}'
-        }
-        {
-          name: 'AzureWebJobsStorage'
-          value: 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};AccountKey=${storageKey}'
-        }
-        {
-          name: 'WEBSITE_CONTENTAZUREFILECONNECTIONSTRING'
-          value: 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};AccountKey=${storageKey}'
-        }
-        {
-          name: 'WEBSITE_CONTENTSHARE'
-          value: toLower(adminName)
-        }
-        {
-          name: 'APPINSIGHTS_INSTRUMENTATIONKEY'
-          value: instrumentKey
-        }
-        {
-          name: 'FUNCTIONS_EXTENSION_VERSION'
-          value: '~3'
-        }
-        {
-          name: 'FUNCTIONS_WORKER_RUNTIME'
-          value: 'dotnet'
-        }
-      ]
-    }
+    httpsOnly: true
+
   }
 }
 
 output adminKey string = listkeys('${app.id}/host/default', '2018-11-01').functionKeys.default
+output appIdent string = app.identity.principalId
