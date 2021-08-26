@@ -38,21 +38,21 @@ steps:
 - task: ArchiveFiles@2
   displayName: bundle bot api
   inputs:
-    rootFolderOrFile: whitewaterfinder.api.bot/bin/release/netcoreapp3.0
+    rootFolderOrFile: whitewaterfinder.api.bot/bin/release/netcoreapp3.1
     includeRootFolder: false
     archiveFile: $(Pipeline.Workspace)/botfunc/app.zip
 
 - task: ArchiveFiles@2
   displayName: bundle api 
   inputs: 
-    rootFolderOrFile: whitewaterfinder.api/bin/release/netcoreapp3.0
+    rootFolderOrFile: whitewaterfinder.api/bin/release/netcoreapp3.1
     includeRootFolder: false
     archiveFile: $(Pipeline.Workspace)/riversfunc/app.zip
 
 - task: ArchiveFiles@2
   displayName: bundle admin Functions
   inputs:
-    rootFolderOrFile: whitewaterfinder.api.admin/bin/release/netcoreapp3.0
+    rootFolderOrFile: whitewaterfinder.api.admin/bin/release/netcoreapp3.1
     includeRootFolder: false
     archiveFile: $(Pipeline.Workspace)/adminfunc/app.zip
 
