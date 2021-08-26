@@ -63,6 +63,7 @@ jobs:
     #    and modify them (or add more) to build your code if your project
     #    uses a compiled language
 
+    - name: build-dotnet
       run: |
         dotnet nuget add source --username ${{ secrets.GH_USER }} \
                                 --password ${{ secrets.GH_TOKEN }} \
