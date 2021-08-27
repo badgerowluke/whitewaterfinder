@@ -26,6 +26,14 @@ jobs:
     steps:
       - name: "checkout"
         uses: actions/checkout@v2.1.0
+
+
+      - name: setup dotnet 3.1.x
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '3.1.x'
+          
+                  
       - name: setup dotnet
         uses: actions/setup-dotnet@v1
 
