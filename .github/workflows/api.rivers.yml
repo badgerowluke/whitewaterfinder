@@ -44,7 +44,7 @@ jobs:
       - name: build test and release
         working-directory: whitewaterfinder.api.rivers
         run: |
-          dotnet --info \
+
           dotnet nuget add source --username ${{ secrets.GH_USER }} \
                                   --password ${{ secrets.GH_TOKEN }} \
                                   --store-password-in-clear-text \
