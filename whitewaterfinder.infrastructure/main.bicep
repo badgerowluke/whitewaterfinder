@@ -24,7 +24,10 @@ module storage 'bicep/storage/storage.bicep' = {
 
   scope:newRg
 }
-
+module monitoring 'bicep/monitoring/insights.bicep' = {
+  name: 'monitoring'
+  scope: newRg
+}
 module search 'bicep/search/search.bicep' = {
   name: 'paddle-finder-search'
   scope: newRg
@@ -54,8 +57,8 @@ module bot 'bicep/cognitiveservices/cognitiveservices.bicep' = {
     spid: serviceprincipal
     password: sppassword
     tenant: tenant
-    instrumentKey: storage.outputs.instrumentKey
-    aiAppId: storage.outputs.aiAppId
+    instrumentKey: monitoring.outputs.instrumentKey
+    aiAppId: monitoring.outputs.aiAppId
   }
 }
 
@@ -98,7 +101,7 @@ module secrets 'bicep/keyvault/kvsecrets.bicep' = {
   params: {
     kvName: 'paddle-finder'
     apimKey: apim.outputs.subkey
-    instrumentKey: storage.outputs.instrumentKey
+    instrumentKey: monitoring.outputs.instrumentKey
     storageKey: storage.outputs.storageKey
     searchKey: search.outputs.searchKey
     storageAccountName: storageAccountName

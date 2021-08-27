@@ -15,15 +15,7 @@ param preferencesApp string = 'paddle-finder-preferences'
 param storageAccountName string = 'waterfinder'
 
 
-resource appInsights 'Microsoft.Insights/components@2015-05-01' = {
-  name: appName
-  location: location
-  kind: 'web'
-  properties: {
-    Application_Type: 'web'
-    Request_Source: 'rest'
-  }
-}
+
 
 resource storageAccount'Microsoft.Storage/storageAccounts@2019-04-01' = {
   name: storageAccountName
@@ -35,9 +27,11 @@ resource storageAccount'Microsoft.Storage/storageAccounts@2019-04-01' = {
   properties: {}
 }
 
+
 resource blobService 'Microsoft.Storage/storageAccounts/blobServices@2019-04-01' = {
   name: '${storageAccount.name}/default'
   properties: {
+    
     cors: {
       corsRules: [
         {
@@ -90,7 +84,7 @@ resource azure_webjobs_secrets 'Microsoft.Storage/storageAccounts/blobServices/c
 resource data 'Microsoft.Storage/storageAccounts/blobServices/containers@2019-04-01' = {
   name: '${blobService.name}/data'
   properties: {
-    publicAccess: 'Container'
+    publicAccess: 'None'
   }
   dependsOn: [
     storageAccount
@@ -100,7 +94,7 @@ resource data 'Microsoft.Storage/storageAccounts/blobServices/containers@2019-04
 resource botstore 'Microsoft.Storage/storageAccounts/blobServices/containers@2019-04-01' = {
   name: '${blobService.name}/botstore'
   properties: {
-    publicAccess: 'Container'
+    publicAccess: 'None'
   }
   dependsOn: [
     storageAccount
@@ -109,7 +103,7 @@ resource botstore 'Microsoft.Storage/storageAccounts/blobServices/containers@201
 resource archive 'Microsoft.Storage/storageAccounts/blobServices/containers@2019-04-01' = {
   name: '${blobService.name}/archive'
   properties: {
-    publicAccess: 'Container'
+    publicAccess: 'None'
   }
   dependsOn: [
     storageAccount
@@ -117,7 +111,6 @@ resource archive 'Microsoft.Storage/storageAccounts/blobServices/containers@2019
 }
 
 output storageKey string = storageAccount.listkeys().keys[0].value
-output instrumentKey string = appInsights.properties.InstrumentationKey
-output aiAppId string = appInsights.properties.AppId
+
 
 

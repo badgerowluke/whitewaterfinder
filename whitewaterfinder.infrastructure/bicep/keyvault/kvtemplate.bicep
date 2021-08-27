@@ -33,6 +33,7 @@ resource kvName_resource 'Microsoft.KeyVault/vaults@2019-09-01' = {
       family: 'A'
     }
     tenantId: tenantId
+    enablePurgeProtection: true
     accessPolicies: [
       {
         objectId: adminId

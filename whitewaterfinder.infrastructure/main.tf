@@ -27,12 +27,13 @@ module "storage" {
   name     = azurerm_resource_group.rg.name
 }
 
-module "registry" {
-  source   = "./terraform/registry"
-  location = azurerm_resource_group.rg.location
-  rg_name  = azurerm_resource_group.rg.name
-  name     = "paddlefinderregistry"
-}
+#turning this of.  I really don't want to pay for ACR when I should be able to drop the containers in GH
+# module "registry" {
+#   source   = "./terraform/registry"
+#   location = azurerm_resource_group.rg.location
+#   rg_name  = azurerm_resource_group.rg.name
+#   name     = "paddlefinderregistry"
+# }
 
 module "search" {
   source   = "./terraform/search"
