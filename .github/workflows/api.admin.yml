@@ -11,9 +11,9 @@ env:
   AZURE_FUNCTIONAPP_PACKAGE_PATH: 'whitewaterfinder.api.admin'      
 
 jobs:
-  build-and-test:
+  build-and-test-admin-api:
     # needs: terraform
-    name: "build and test"
+    name: "build and test admin api"
     runs-on: ubuntu-latest
 
     defaults:

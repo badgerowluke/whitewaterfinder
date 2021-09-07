@@ -261,6 +261,9 @@ lcov.info
 **/*.local.*
 
 **/.env
+# adding this for the creds that get stored to try and 
+# make nektos/act run my github actions locally.
+**/*.env 
 
 **/build.js
 

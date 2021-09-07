@@ -7,7 +7,7 @@ on:
       - '.github/workflows/front.paddlefinder.yml'
 jobs:
   build-and-deploy:
-    name: 'build'
+    name: 'build frontend and deploy to netlify'
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -21,7 +21,7 @@ jobs:
       - name: az login
         uses: azure/login@v1
         with:
-          creds: ${{ secrets. AZCLI_CREDS }}
+          creds: ${{ secrets.AZCLI_CREDS }}
 
       - name: get secrets
         uses: Azure/get-keyvault-secrets@v1

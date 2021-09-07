@@ -19,7 +19,7 @@ jobs:
       - name: az login
         uses: azure/login@v1
         with:
-          creds: ${{ secrets. AZCLI_CREDS }}
+          creds: ${{ secrets.AZCLI_CREDS }}
 
       - name: provision
         working-directory: whitewaterfinder.infrastructure

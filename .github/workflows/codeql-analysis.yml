@@ -74,6 +74,8 @@ jobs:
         $output = ConvertFrom-Json $json
         New-Item -ItemType directory -Path src/assets/config
         $output | ConvertTo-Json | Out-File 'src/assets/config/config.json' 
+
+        
     - name: build typescript
       working-directory: whitewaterfinder.pwa/paddle-finder
       run: | 

@@ -12,9 +12,9 @@ env:
   AZURE_FUNCTIONAPP_PACKAGE_PATH: 'whitewaterfinder.api.bot'      
 
 jobs:
-  build-and-test:
+  build-and-test-bot-api:
     # needs: terraform
-    name: "build and test"
+    name: "build and test the chatbot api"
     runs-on: ubuntu-latest
 
     defaults:
