@@ -36,7 +36,6 @@ jobs:
                   
       - name: setup dotnet
         uses: actions/setup-dotnet@v1
-
         with:
          dotnet-version: '5.0.x'
 
@@ -46,7 +45,7 @@ jobs:
           creds: ${{ secrets.AZCLI_CREDS }}
 
       - name: build test and publish
-        working-directory: whitewaterfinder.api.bot
+        working-directory: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
         run: |
           dotnet nuget add source --username ${{ secrets.GH_USER }} --password ${{ secrets.GH_TOKEN }} --store-password-in-clear-text --name github "${{ secrets.GH_PACKAGES }}"        
           dotnet restore
