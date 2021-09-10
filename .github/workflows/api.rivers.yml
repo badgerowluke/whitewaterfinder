@@ -66,6 +66,7 @@ jobs:
       - name: Build container image
         uses: docker/build-push-action@v2
         with:
+          context: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
           username: ${{github.actor}}
           password: ${{secrets.GITHUB_TOKEN}}
           registry: docker.pkg.github.com
