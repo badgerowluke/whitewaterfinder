@@ -29,7 +29,16 @@ namespace whitewaterfinder.Repo.Weather
             _factory = client;
             _config = config;
         }
-
+        ///<summary>
+        ///factory method to reach out and execute an HTTP Request and return the desired payload
+        ///</summary>
+        ///<param name="Message">the built up HTTP Request</param>
+        ///<param name="prop1">1st JSON Property to parse into a JObject</param>
+        ///<param name="prop2">2nd JSON Property to parse into a JObject</param>
+        ///<param name="prop3">3rd JSON Property to parse into a JObject</param>
+        ///<remarks>
+        ///prop2 and prop3 are both optional parameters
+        ///</remarks>
         internal async Task<T> MakeThatHttpCall<T>(HttpRequestMessage message, string prop1, string prop2 = "", string prop3 = "")
         {
             var client = _factory.CreateClient();
