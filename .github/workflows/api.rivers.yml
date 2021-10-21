@@ -75,18 +75,18 @@ jobs:
       - name: logout
         run: az logout
 
-      - name: Build container image
-        uses: docker/build-push-action@v2
-        with:
-          context: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-          build-args: |
-            TOKEN=${{ secrets.AZ_ARTIFACT_TOKEN }}
-            ENDPOINT=${{ secrets.GH_PACKAGES }}
-          registry: docker.pkg.github.com
-          # repository: badgerowluke/github-actions-for-packages/tic-tac-toe
-          tag_with_sha: true     
+      # - name: Build container image
+      #   uses: docker/build-push-action@v2
+      #   with:
+      #     context: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
+      #     username: ${{ github.actor }}
+      #     password: ${{ secrets.GITHUB_TOKEN }}
+      #     build-args: |
+      #       TOKEN=${{ secrets.AZ_ARTIFACT_TOKEN }}
+      #       ENDPOINT=${{ secrets.GH_PACKAGES }}
+      #     registry: docker.pkg.github.com
+      #     # repository: badgerowluke/github-actions-for-packages/tic-tac-toe
+      #     tag_with_sha: true     
 
 
 
