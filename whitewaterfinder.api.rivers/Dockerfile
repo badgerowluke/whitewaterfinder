@@ -1,9 +1,6 @@
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS installer-env
 
-ARG TOKEN
-ARG ENDPOINT
 
-COPY .. /src
 COPY . /src/dotnet-function-app
 
 # RUN wget -qO- https://raw.githubusercontent.com/Microsoft/artifacts-credprovider/master/helpers/installcredprovider.sh | bash

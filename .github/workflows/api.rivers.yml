@@ -62,31 +62,40 @@ jobs:
           package: '${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/publish/rivers'
 
       #DOING THIS FOR AN INTERNAL TEST OF K8S ENVIRONMENTS
-      # - name: build container
-      #   run: |
+      - name: build container
+        run: |
 
-      #     az acr login --name paddlefinderregistry 
-      #     docker build . --file ./whitewaterfinder.api.rivers/Dockerfile \
-      #     --tag paddlefinderregistry.azurecr.io/whitewaterfinder.api.rivers:$GITHUB_RUN_ID \
-      #     --build-arg TOKEN=${{ secrets.AZ_ARTIFACT_TOKEN }} \
-      #     --build-arg ENDPOINT=${{ secrets.GH_PACKAGES }}
-      #     docker push paddlefinderregistry.azurecr.io/whitewaterfinder.api.rivers:$GITHUB_RUN_ID  
+          # az acr login --name paddlefinderregistry 
+          docker build . --file ./whitewaterfinder.api.rivers/Dockerfile --label "runnumber=${GITHUB_RUN_ID}"
+          # --tag paddlefinderregistry.azurecr.io/whitewaterfinder.api.rivers:$GITHUB_RUN_ID \
+          # --build-arg TOKEN=${{ secrets.AZ_ARTIFACT_TOKEN }} \
+          # --build-arg ENDPOINT=${{ secrets.GH_PACKAGES }}
+          # docker push paddlefinderregistry.azurecr.io/whitewaterfinder.api.rivers:$GITHUB_RUN_ID  
 
       - name: logout
         run: az logout
 
-      # - name: Build container image
-      #   uses: docker/build-push-action@v2
-      #   with:
-      #     context: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
-      #     username: ${{ github.actor }}
-      #     password: ${{ secrets.GITHUB_TOKEN }}
-      #     build-args: |
-      #       TOKEN=${{ secrets.AZ_ARTIFACT_TOKEN }}
-      #       ENDPOINT=${{ secrets.GH_PACKAGES }}
-      #     registry: docker.pkg.github.com
-      #     # repository: badgerowluke/github-actions-for-packages/tic-tac-toe
-      #     tag_with_sha: true     
+        
+      - name: Log in to registry
+        # This is where you will update the PAT to GITHUB_TOKEN
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
+
+      - name: Push image
+        run: |
+          IMAGE_ID=ghcr.io/${{ github.repository_owner }}/$IMAGE_NAME
+
+          # Change all uppercase to lowercase
+          IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
+          # Strip git ref prefix from version
+          VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
+          # Strip "v" prefix from tag name
+          [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
+          # Use Docker `latest` tag convention
+          [ "$VERSION" == "master" ] && VERSION=latest
+          echo IMAGE_ID=$IMAGE_ID
+          echo VERSION=$VERSION
+          docker tag $IMAGE_NAME $IMAGE_ID:$VERSION
+          docker push $IMAGE_ID:$VERSION
 
 
