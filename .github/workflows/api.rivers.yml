@@ -55,21 +55,21 @@ jobs:
           dotnet test --no-build --verbosity normal
           dotnet publish --no-restore -c Release -o './publish/rivers'
       
-      - name: deploy to funtionapp
-        uses: azure/webapps-deploy@v2
-        with: 
-          app-name: 'paddle-finder'
-          package: '${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/publish/rivers'
+      # - name: deploy to funtionapp
+      #   uses: azure/webapps-deploy@v2
+      #   with: 
+      #     app-name: 'paddle-finder'
+      #     package: '${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/publish/rivers'
 
       #DOING THIS FOR AN INTERNAL TEST OF K8S ENVIRONMENTS
       - name: build container
         run: |
-
-          # az acr login --name paddlefinderregistry 
+          echo ${{ secrets.GH_PACKAGES }}
           docker build . --file ./whitewaterfinder.api.rivers/Dockerfile --label "runnumber=${GITHUB_RUN_ID}"
           # --tag paddlefinderregistry.azurecr.io/whitewaterfinder.api.rivers:$GITHUB_RUN_ID \
-          # --build-arg TOKEN=${{ secrets.AZ_ARTIFACT_TOKEN }} \
-          # --build-arg ENDPOINT=${{ secrets.GH_PACKAGES }}
+          --build-arg TOKEN=${{ secrets.GITHUB_TOKEN }} \
+          --build-arg ENDPOINT=${{ secrets.GH_PACKAGES }} \
+          --build-arg USER=${{ secrets.GH_USER }}
           # docker push paddlefinderregistry.azurecr.io/whitewaterfinder.api.rivers:$GITHUB_RUN_ID  
 
       - name: logout
