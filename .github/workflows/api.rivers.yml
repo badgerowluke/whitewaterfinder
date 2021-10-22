@@ -64,10 +64,12 @@ jobs:
       #DOING THIS FOR AN INTERNAL TEST OF K8S ENVIRONMENTS
       - name: build container
         run: |
-          echo ${{ secrets.GH_PACKAGES }}
-          docker build . --file ./whitewaterfinder.api.rivers/Dockerfile --label "runnumber=${GITHUB_RUN_ID}"
+
+          docker build . --file ./whitewaterfinder.api.rivers/Dockerfile \
+          --label "runnumber=${GITHUB_RUN_ID}" \
+          --mount=type=secret,TOKEN=${{ secrets.GITHUB_TOKEN }} \
           # --tag paddlefinderregistry.azurecr.io/whitewaterfinder.api.rivers:$GITHUB_RUN_ID \
-          --build-arg TOKEN=${{ secrets.GITHUB_TOKEN }} \
+          # --build-arg TOKEN=${{ secrets.GITHUB_TOKEN }} \
           --build-arg ENDPOINT=${{ secrets.GH_PACKAGES }} \
           --build-arg USER=${{ secrets.GH_USER }}
           # docker push paddlefinderregistry.azurecr.io/whitewaterfinder.api.rivers:$GITHUB_RUN_ID  

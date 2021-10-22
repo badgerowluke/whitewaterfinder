@@ -16,6 +16,9 @@ RUN wget -qO- https://raw.githubusercontent.com/Microsoft/artifacts-credprovider
 # # still tinkering
 
 # notice the no-restore flag on dotnet publish
+RUN echo ${USER} && \
+    echo ${ENDPOINT}
+
 RUN mkdir -p /home/site/wwwroot
 
 
