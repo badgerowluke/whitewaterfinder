@@ -5,7 +5,9 @@ FROM mcr.microsoft.com/azure-functions/dotnet:3.0
 
 
 RUN mkdir -p /home/site/wwwroot
-COPY ./publish/rivers /home/site/wwwroot
+ADD folder /publish/rivers
+COPY /publish/rivers /home/site/wwwroot
+
 
 ENV AzureWebJobsScriptRoot=/home/site/wwwroot \
     AzureFunctionsJobHost__Logging__Console__IsEnabled=true
