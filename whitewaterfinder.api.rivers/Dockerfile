@@ -5,7 +5,7 @@ FROM mcr.microsoft.com/azure-functions/dotnet:3.0
 
 
 RUN mkdir -p /home/site/wwwroot
-ADD folder /publish/rivers
+ADD /publish/rivers /publish/rivers
 COPY /publish/rivers /home/site/wwwroot
 
 
