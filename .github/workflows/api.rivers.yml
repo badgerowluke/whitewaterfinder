@@ -43,7 +43,7 @@ jobs:
       #     creds: ${{ secrets.AZCLI_CREDS }}         
 
       - name: build test and release
-        working-directory: whitewaterfinder.api.rivers
+        working-directory: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
         run: |
 
           dotnet nuget add source --username ${{ secrets.GH_USER }} \
@@ -53,7 +53,7 @@ jobs:
           dotnet restore 
           dotnet build --no-restore --configuration Release
           dotnet test --no-build --verbosity normal
-          dotnet publish --no-restore -c Release -o './publish/rivers'
+          dotnet publish --no-restore -c Release -o '/publish/rivers'
           docker build . --file ./Dockerfile --label "runnumber-${GITHUB_RUN_ID}"
       
       # - name: deploy to funtionapp
