@@ -55,7 +55,7 @@ jobs:
           dotnet test --no-build --verbosity normal
           dotnet publish --no-restore -c Release -o './publish/rivers'
           pwd
-          ls
+          ls publish
           docker build . --file ./Dockerfile --label "runnumber-${GITHUB_RUN_ID}"
       
       # - name: deploy to funtionapp
