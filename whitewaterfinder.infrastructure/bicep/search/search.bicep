@@ -33,7 +33,7 @@ resource depScript 'Microsoft.Resources/deploymentScripts@2020-10-01' = {
     azCliVersion: '2.24.0'
     retentionInterval: 'P1D'
     cleanupPreference: 'OnSuccess'
-    arguments: '--spid ${spid} --pass ${password} --tenant ${tenant} --resourceGroup ${resourceGroup().name} --jsonFile ../../riverswithid'
+    arguments: '--spid ${spid} --pass ${password} --tenant ${tenant} --resourceGroup ${resourceGroup().name} --searchServiceName ${azureSearchName} --jsonFile ../../riverswithid'
     scriptContent: '''
 
         resourceGroup=""
@@ -41,6 +41,7 @@ resource depScript 'Microsoft.Resources/deploymentScripts@2020-10-01' = {
         spid=""
         pass=""
         tenant=""
+        searchServiceName=""
         while [ $# -gt 0 ]; do
         
           if [[ $1 == *"--"* ]]; then
@@ -54,13 +55,13 @@ resource depScript 'Microsoft.Resources/deploymentScripts@2020-10-01' = {
 
         az login --service-principal --username $spid --password $pass --tenant $tenant
     
-        key=$(az search admin-key show --output json --resource-group ${resourceGroup} --service-name "waterfindersearch" | jq '. .primaryKey')
+        key=$(az search admin-key show --output json --resource-group ${resourceGroup} --service-name ${searchServiceName} | jq '. .primaryKey')
         
         stripped="${key%\"}"
         stripped="${stripped#\"}"
 
         
-        curl -X PUT https://waterfindersearch.search.windows.net/indexes/riversearch-index?api-version=2019-05-06 \
+        curl -X PUT https://${searchServiceName}.search.windows.net/indexes/riversearch-index?api-version=2019-05-06 \
            -H "api-key : ${stripped}" \
            -H "Content-Type: application/json" \
            --data "
@@ -89,7 +90,9 @@ resource depScript 'Microsoft.Resources/deploymentScripts@2020-10-01' = {
                     }
                 ]
             }
-            " 
+            "
+            
+        az logout     
     '''
   }
 }
