@@ -1,4 +1,5 @@
 param appName string
+param searchServiceName string
 
 
 resource riversConfig 'Microsoft.Web/sites/config@2021-01-15' = {
@@ -12,7 +13,7 @@ resource riversConfig 'Microsoft.Web/sites/config@2021-01-15' = {
       }
       {
         name: 'AZURESEARCHURL'
-        value: 'https://waterfindersearch.search.windows.net/indexes/riversearch-index/docs/suggest?suggesterName=RiverName&api-version=2019-05-06&fuzzy=false&$top=20&&$select=Name,RiverId,Latitude,Longitude&search="'
+        value: 'https://${searchServiceName}.search.windows.net/indexes/riversearch-index/docs/suggest?suggesterName=RiverName&api-version=2019-05-06&fuzzy=false&$top=20&&$select=Name,RiverId,Latitude,Longitude&search="'
       }
       {
         name: 'azureSearchKey'

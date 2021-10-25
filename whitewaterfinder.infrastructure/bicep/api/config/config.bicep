@@ -3,11 +3,13 @@ param botName string
 param adminName string
 param prefsName string
 param location string
+param searchName string
 
 module riverConfig 'riverConfig.bicep' = {
   name: 'rivers-config'
   params: {
     appName: appName
+    searchServiceName:searchName
   }
 }
 
@@ -16,7 +18,6 @@ module botConfig 'botConfig.bicep' = {
   params: {
     botName: botName
     location: location
-
   }
 }
 

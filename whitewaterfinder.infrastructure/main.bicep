@@ -127,6 +127,7 @@ module config 'bicep/api/config/config.bicep' = {
     adminName: 'paddle-finder-admin'
     prefsName: 'paddle-finder-preferences'
     location: newRg.location
+    searchName: searchName
   }
 }
 
