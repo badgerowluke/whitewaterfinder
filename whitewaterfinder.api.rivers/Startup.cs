@@ -32,6 +32,7 @@ namespace whitewaterfinder.api
             builder.Services.AddSingleton<IRiverRepository, RiverRepository>();
             builder.Services.AddSingleton<IRiverDetailRepository, RiverDetailRepository>();
             builder.Services.AddSingleton<IRiverService, RiverService>();
+            builder.Services.AddApplicationInsightsTelemetry(config["APPINSIGHTS_INSTRUMENTATIONKEY"]);
         }
     }
 }

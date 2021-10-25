@@ -5,6 +5,9 @@ on:
     paths:
       - 'whitewaterfinder.infrastructure/bicep/**'
       - '.github/workflows/bicep.deploy.yml'
+
+env:
+  SEARCH_NAME: 'waterfindersearch'
 jobs:
   build-and-provision:
     name: 'provision infra with bicep'
@@ -32,7 +35,8 @@ jobs:
                                                'botPassword=${{ secrets.BOTPASSWORD }}' \
                                                'luisAppId=${{ secrets.LUISID }}' \
                                                'adminId=${{ secrets.ADMINID }}' \
-                                               'spObjectId=${{ secrets.SP_OBJECTID }}'
+                                               'spObjectId=${{ secrets.SP_OBJECTID }}' \
+                                               'searchName=${{ env.SEARCH_NAME }}'
 
 
       - name: 'push documents to search'
@@ -42,7 +46,7 @@ jobs:
           az login --service-principal  --username ${{ secrets.SERVICE_PRINCIPAL }} `
                                         --password ${{ secrets.SPPASSWORD }} --tenant ${{ secrets.TENANT }}  
           $keys = az search admin-key show --output json --resource-group waterfinder `
-                  --service-name "waterfindersearch" | ConvertFrom-Json
+                  --service-name "${{ env.SEARCH_NAME }} | ConvertFrom-Json
 
           $key = $keys.primaryKey
           Write-Output 'Attempting to Build Index'
@@ -69,7 +73,7 @@ jobs:
 
 
               $index = ConvertTo-Json -InputObject $index
-              $updateUrl = "https://waterfindersearch.search.windows.net/indexes/riversearch-index/docs/index?api-version=2019-05-06"
+              $updateUrl = "https://${{ env.SEARCH_NAME }}.search.windows.net/indexes/riversearch-index/docs/index?api-version=2019-05-06"
               Invoke-RestMethod -Uri $updateUrl -Headers $indexHeaders -Method Post -Body $index -TimeoutSec 300
 
 
