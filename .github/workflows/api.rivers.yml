@@ -37,10 +37,14 @@ jobs:
 
 
 
-      # - name: az login
-      #   uses: azure/login@v1
-      #   with:
-      #     creds: ${{ secrets.AZCLI_CREDS }}         
+      - name: az login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZCLI_CREDS }}         
+
+
+
+
 
       - name: build test and release
         working-directory: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
@@ -54,19 +58,21 @@ jobs:
           dotnet build --no-restore --configuration Release
           dotnet test --no-build --verbosity normal
           dotnet publish --no-restore -c Release -o './publish/rivers'
-
+          # this is here for a test on running Dapr and on running a cluster in my local data center
           docker build . --file ./Dockerfile --label "runnumber-${GITHUB_RUN_ID}" --tag rivers.api
-      
-      # - name: deploy to funtionapp
-      #   uses: azure/webapps-deploy@v2
-      #   with: 
-      #     app-name: 'paddle-finder'
-      #     package: '${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/publish/rivers'
+
+
+
+      - name: deploy to funtionapp
+        uses: azure/webapps-deploy@v2
+        with: 
+          app-name: 'paddle-finder'
+          package: '${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/publish/rivers'
 
  
 
-      # - name: logout
-      #   run: az logout
+      - name: logout
+        run: az logout
 
         
       - name: Log in to registry
@@ -85,7 +91,7 @@ jobs:
           # Strip "v" prefix from tag name
           [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
           # Use Docker `latest` tag convention
-          [ "$VERSION" == "master" ] && VERSION=latest
+          [ "$VERSION" == "trunk" ] && VERSION=latest
 
           echo IMAGE_ID=$IMAGE_ID
           echo VERSION=$VERSION
