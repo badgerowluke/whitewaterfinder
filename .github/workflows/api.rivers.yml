@@ -54,9 +54,8 @@ jobs:
           dotnet build --no-restore --configuration Release
           dotnet test --no-build --verbosity normal
           dotnet publish --no-restore -c Release -o './publish/rivers'
-          pwd
-          ls publish
-          docker build . --file ./Dockerfile --label "runnumber-${GITHUB_RUN_ID}"
+
+          docker build . --file ./Dockerfile --label "runnumber-${GITHUB_RUN_ID}" --tag rivers.api
       
       # - name: deploy to funtionapp
       #   uses: azure/webapps-deploy@v2
@@ -87,7 +86,7 @@ jobs:
           [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
           # Use Docker `latest` tag convention
           [ "$VERSION" == "master" ] && VERSION=latest
-          echo NAME=$IMAGE_NAME
+
           echo IMAGE_ID=$IMAGE_ID
           echo VERSION=$VERSION
           docker tag rivers.api $IMAGE_ID:$VERSION
