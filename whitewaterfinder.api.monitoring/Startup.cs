@@ -22,6 +22,7 @@ namespace whitewaterfinder.api.monitoring
             builder.Services.AddSingleton<IAppSettings>(new AppSettings(config));    
             builder.Services.AddSingleton<ICloudStorageAccount>(new CloudStorageAccountBuilder(config.GetConnectionString("blob-store")));                
             builder.Services.AddSingleton<IAzureStorage,AzureQueueBuilder>();
+            builder.Services.AddApplicationInsightsTelemetry(config["APPINSIGHTS_INSTRUMENTATIONKEY"]);
         }
     }
 }

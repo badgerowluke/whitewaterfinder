@@ -41,6 +41,7 @@ namespace whitewaterfinder.api.admin
             builder.Services.AddScoped<IAzureStorage, AzureStorageFactory>();
             builder.Services.AddScoped<IEmailRepository, EmailRepository>();
             builder.Services.AddScoped<IEmailService, EmailService>();
+            builder.Services.AddApplicationInsightsTelemetry(config["APPINSIGHTS_INSTRUMENTATIONKEY"]);
         }
     }
 
