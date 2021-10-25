@@ -9,6 +9,7 @@ param adminId string
 @secure()
 param botPassword string
 param luisAppId string
+param searchName string
 
 param storageAccountName string = 'waterfinder'
 
@@ -35,6 +36,7 @@ module search 'bicep/search/search.bicep' = {
     spid: serviceprincipal
     password: sppassword
     tenant: tenant
+    azureSearchName: searchName
   }
 }
 
