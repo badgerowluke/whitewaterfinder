@@ -46,7 +46,7 @@ jobs:
           az login --service-principal  --username ${{ secrets.SERVICE_PRINCIPAL }} `
                                         --password ${{ secrets.SPPASSWORD }} --tenant ${{ secrets.TENANT }}  
           $keys = az search admin-key show --output json --resource-group waterfinder `
-                  --service-name "${{ env.SEARCH_NAME }} | ConvertFrom-Json
+                  --service-name "${{ env.SEARCH_NAME }}" | ConvertFrom-Json
 
           $key = $keys.primaryKey
           Write-Output 'Attempting to Build Index'
