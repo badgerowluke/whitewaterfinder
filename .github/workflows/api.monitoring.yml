@@ -29,16 +29,11 @@ jobs:
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: '3.1.x'
-                  
-      - name: setup dotnet
-        uses: actions/setup-dotnet@v1
-        with:
-         dotnet-version: '5.0.x'
 
-      - name: az login
-        uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AZCLI_CREDS }}
+      # - name: az login
+      #   uses: azure/login@v1
+      #   with:
+      #     creds: ${{ secrets.AZCLI_CREDS }}
       
       - name: build test and release
         working-directory: whitewaterfinder.api.monitoring
@@ -56,16 +51,6 @@ jobs:
       #   with: 
       #     app-name: 'paddle-finder'
       #     package: '${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/publish/rivers'
-
-      # - name: build container
-      #   run: |
-
-      #     az acr login --name paddlefinderregistry 
-      #     docker build . --file ./whitewaterfinder.api.monitoring/Dockerfile \
-      #     --tag paddlefinderregistry.azurecr.io/whitewaterfinder.api.monitoring:$GITHUB_RUN_ID \
-      #     --build-arg TOKEN=${{ secrets.AZ_ARTIFACT_TOKEN }} \
-      #     --build-arg ENDPOINT=${{ secrets.AZ_ARTIFACTS }}
-      #     docker push paddlefinderregistry.azurecr.io/whitewaterfinder.api.monitoring:$GITHUB_RUN_ID  
-
-      - name: logout
-        run: az logout          
+  
+      # - name: logout
+      #   run: az logout          

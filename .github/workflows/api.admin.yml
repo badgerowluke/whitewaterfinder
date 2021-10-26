@@ -28,13 +28,6 @@ jobs:
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: '3.1.x'
-                  
-      - name: setup dotnet
-        uses: actions/setup-dotnet@v1
-        with:
-         dotnet-version: '5.0.x'
-
-
 
       - name: az login
         uses: azure/login@v1
@@ -57,18 +50,6 @@ jobs:
         with: 
           app-name: 'paddle-finder-admin'
           package: '${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/publish/admin'
-    
-
-
-      # - name: build container
-      #   run: |
-
-      #     az acr login --name paddlefinderregistry 
-      #     docker build . --file ./whitewaterfinder.api.admin/Dockerfile \
-      #     --tag paddlefinderregistry.azurecr.io/whitewaterfinder.api.admin:$GITHUB_RUN_ID \
-      #     --build-arg TOKEN=${{ secrets.AZ_ARTIFACT_TOKEN }} \
-      #     --build-arg ENDPOINT=${{ secrets.AZ_ARTIFACTS }}
-      #     docker push paddlefinderregistry.azurecr.io/whitewaterfinder.api.admin:$GITHUB_RUN_ID  
 
 
       - name: logout
