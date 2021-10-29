@@ -12,7 +12,7 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.OpenApi;
 using Newtonsoft.Json.Serialization;
 
-namespace whitewaterfinder.api
+namespace whitewaterfinder.api.rivers
 {
     public class RenderSwaggerDoc
     {

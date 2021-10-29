@@ -9,6 +9,7 @@ using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Builder.Integration.AspNet.Core;
 using Microsoft.Bot.Connector.Authentication;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 using whitewaterfinder.Bot;
 using whitewaterfinder.Bot.Middleware;
@@ -28,10 +29,10 @@ namespace whitewaterfinder.app.bot
 {
     public class Startup
     {
-        public IHostingEnvironment Environment { get; }
+        public IWebHostEnvironment Environment { get; }
         public IConfiguration Configuration  { get; }
         private ILoggerFactory _logFactory;
-        public Startup(IHostingEnvironment env, IConfiguration config, ILoggerFactory loggerFactory)
+        public Startup(IWebHostEnvironment env, IConfiguration config, ILoggerFactory loggerFactory)
         {
             this.Environment = env;
             this.Configuration = config;
@@ -40,7 +41,7 @@ namespace whitewaterfinder.app.bot
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
             services.AddHttpClient();
             var myConfig = Configuration.Get<WebsterConfig>();
             services.AddSingleton<WebsterConfig>(sp => myConfig);
@@ -51,6 +52,7 @@ namespace whitewaterfinder.app.bot
 
             IStorage datastore;
             ICredentialProvider creds;
+
             if(Environment.IsDevelopment())
             {
                 datastore = new MemoryStorage();
@@ -111,7 +113,7 @@ namespace whitewaterfinder.app.bot
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
             if (env.IsDevelopment())
             {

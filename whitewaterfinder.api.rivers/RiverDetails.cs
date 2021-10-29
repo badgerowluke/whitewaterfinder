@@ -17,7 +17,7 @@ using System.Net;
 using System.Collections.Generic;
 using whitewaterfinder.BusinessObjects.Rivers;
 
-namespace whitewaterfinder.api
+namespace whitewaterfinder.api.rivers
 {
     public  class RiverDetails
     {

@@ -16,7 +16,7 @@ using Aliencube.AzureFunctions.Extensions.OpenApi.Attributes;
 using whitewaterfinder.BusinessObjects.Rivers;
 using whitewaterfinder.Core.Rivers;
 
-namespace whitewaterfinder.api
+namespace whitewaterfinder.api.rivers
 {
     public class RiversByState
     {
