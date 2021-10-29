@@ -6,6 +6,7 @@ resource app 'Microsoft.Web/sites@2020-10-01' = {
   name: appName
   location: location
   kind: 'functionapp'
+  //this pushes the app to use a managed service identity
   identity: {
     type: 'SystemAssigned'
   }
