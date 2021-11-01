@@ -35,7 +35,7 @@ namespace whitewaterfinder.Daemon
             
 
 
-            var account = new CloudStorageAccountBuilder(config.BlobStore);            
+            var account = new CloudStorageAccountBuilder(config.StorageConnection);            
             var azureFactory = new AzureStorageFactory(account);
             azureFactory.CollectionName = config.RiverTable;
             var client = new HttpClient();

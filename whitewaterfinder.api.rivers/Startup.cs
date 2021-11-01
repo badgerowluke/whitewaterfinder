@@ -25,7 +25,7 @@ namespace whitewaterfinder.api.rivers
         {
             var myConfig = BuiltConfig.Get<RiverRepositoryConfig>();
             builder.Services.AddHttpClient();
-            builder.Services.AddSingleton<ICloudStorageAccount>(new CloudStorageAccountBuilder(myConfig.BlobStore));
+            builder.Services.AddSingleton<ICloudStorageAccount>(new CloudStorageAccountBuilder(myConfig.StorageConnection));
             builder.Services.AddSingleton<IAzureTableBuilder, AzureStorageFactory>();
             builder.Services.AddSingleton<IConfiguration>(BuiltConfig);
             builder.Services.AddSingleton<IAppSettings>(new AppSettings(BuiltConfig));
@@ -44,20 +44,23 @@ namespace whitewaterfinder.api.rivers
             var context = builder.GetContext();
 
             if(!string.IsNullOrEmpty(context.EnvironmentName) 
-                && context.EnvironmentName.ToLower() != "development")
+                && context.EnvironmentName.ToLower() == "development")
             {
-                BuiltConfig = builder.ConfigurationBuilder
-                    .SetBasePath(Environment.CurrentDirectory)
-                    .AddJsonFile("local.settings.json", optional: true, reloadOnChange: true)
-                    .AddEnvironmentVariables()
-                    .AddAzureKeyVault(new Uri(builtConfig["keyVaultUrl"]), new DefaultAzureCredential())
-                    .Build();
-            } else {
+
                 BuiltConfig = builder.ConfigurationBuilder
                     .SetBasePath(Environment.CurrentDirectory)
                     .AddJsonFile("local.settings.json", optional: true, reloadOnChange: true)
                     .AddUserSecrets(Assembly.GetExecutingAssembly(), true)
                     .AddEnvironmentVariables()
+                    .Build();
+
+            } else {
+
+                BuiltConfig = builder.ConfigurationBuilder
+                    .SetBasePath(Environment.CurrentDirectory)
+                    .AddJsonFile("local.settings.json", optional: true, reloadOnChange: true)
+                    .AddEnvironmentVariables()
+                    .AddAzureKeyVault(new Uri(builtConfig["keyVaultUrl"]), new DefaultAzureCredential())
                     .Build();
             }
         }

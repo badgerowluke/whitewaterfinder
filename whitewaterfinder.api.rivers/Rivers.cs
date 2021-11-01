@@ -28,6 +28,7 @@ namespace whitewaterfinder.api.rivers
 
 
         }
+        //TODO:  need to switch the Function KEY AUTHORIZATION with some form of a JWT for running inside of a container (no keys can get into the container.)
 
         //TODO: update documentation, details here: https://github.com/aliencube/AzureFunctions.Extensions/blob/dev/docs/openapi-core.md
         [FunctionName("Rivers")]

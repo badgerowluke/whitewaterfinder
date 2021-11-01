@@ -17,19 +17,19 @@ resource riversConfig 'Microsoft.Web/sites/config@2021-01-15' = {
       }
       {
         name: 'azureSearchKey'
-        value: '@Microsoft.KeyVault(VaultName=paddle-finder;SecretName=searchKey)'
+        value: '@Microsoft.KeyVault(VaultName=${appName};SecretName=searchKey)'
       }
       {
         name: 'APPINSIGHTS_INSTRUMENTATIONKEY'
-        value: '@Microsoft.KeyVault(VaultName=paddle-finder;SecretName=instrumentKey)'
+        value: '@Microsoft.KeyVault(VaultName=${appName};SecretName=instrumentKey)'
       }
       {
         name: 'AzureWebJobsStorage'
-        value: '@Microsoft.KeyVault(VaultName=paddle-finder;SecretName=storageConnection)'
+        value: '@Microsoft.KeyVault(VaultName=${appName};SecretName=storageConnection)'
       }
       {
         name: 'AzureWebJobsDashboard'
-        value: '@Microsoft.KeyVault(VaultName=paddle-finder;SecretName=storageConnection)'
+        value: '@Microsoft.KeyVault(VaultName=${appName};SecretName=storageConnection)'
       }
       {
         name: 'FUNCTIONS_EXTENSION_VERSION'
@@ -45,7 +45,7 @@ resource riversConfig 'Microsoft.Web/sites/config@2021-01-15' = {
       }
       {
         name: 'WEBSITE_CONTENTAZUREFILECONNECTIONSTRING'
-        value: '@Microsoft.KeyVault(VaultName=paddle-finder;SecretName=storageConnection)'
+        value: '@Microsoft.KeyVault(VaultName=${appName};SecretName=storageConnection)'
       }
       {
         name: 'WEBSITE_NODE_DEFAULT_VERSION'
@@ -53,16 +53,24 @@ resource riversConfig 'Microsoft.Web/sites/config@2021-01-15' = {
       }
       {
         name: 'blobStore'
-        value: '@Microsoft.KeyVault(VaultName=paddle-finder;SecretName=storageConnection)'
+        value: '@Microsoft.KeyVault(VaultName=${appName};SecretName=storageConnection)'
       }
 
       {
         name: 'APPINSIGHTS_CONNECTION_STRING'
-        value: '@Microsoft.KeyVault(VaultName=paddle-finder;SecretName=instrumentConnection)'
+        value: '@Microsoft.KeyVault(VaultName=${appName};SecretName=instrumentConnection)'
       }
       {
         name: 'ApplicationInsightsAgent_EXTENSION_VERSION'
         value: '~2'
+      }
+      {
+        name: 'keyVaultName'
+        value: 'https://${appName}.vault.azure.net'
+      }
+      {
+        name: 'riverTable'
+        value: 'USRivers'
       }
     ]
   }

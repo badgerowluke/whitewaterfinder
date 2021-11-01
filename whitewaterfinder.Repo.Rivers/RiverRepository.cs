@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
@@ -45,7 +43,7 @@ namespace whitewaterfinder.Repo.Rivers
 
             /*TODO: look into parameterizing the search */
             _azureSearchUrl = configVals.AzureSearchUrl;
-            _azureSearchKey = configVals.AzureSearchKey;
+            _azureSearchKey = configVals.SearchKey;
         }
         public async Task<USGSRiverResponse> GetRiverData(string stateCode)
         {
