@@ -10,15 +10,20 @@ ARG ENDPOINT
 RUN mkdir -p /home/site/wwwroot
 COPY ./publish/rivers /home/site/wwwroot
 
-ENV BASEUSGSURL="https://waterservices.usgs.gov/nwis/iv/?format=json&indent=on&"
-ENV FUNCTIONS_EXTENSION_VERSION="~3"
-ENV FUNCTIONS_WORKER_RUNTIME="dotnet"
-ENV WEBSITE_CONTENT_SHARE="paddle-finder"
-
-
 FROM mcr.microsoft.com/azure-functions/dotnet:3.0
 
 ENV AzureWebJobsScriptRoot=/home/site/wwwroot \
     AzureFunctionsJobHost__Logging__Console__IsEnabled=true
+
+
+ENV keyVaultUrl "https://paddle-finder.vault.azure.net"
+
+ENV AzureWebJobsStorage "DefaultEndpointsProtocol=https;AccountName=waterfinder;AccountKey=GCAjvJyG29Wmr5MJZpeFqTuFpfjJbrABnB8jELwV+nIt2Ue9ihitdArbZk6nSmI3M50btZuHY9ar4+pHoeFg0Q==;EndpointSuffix=core.windows.net"
+ENV baseUSGSUrl https://waterservices.usgs.gov/nwis/iv/?format=json&indent=on&
+ENV azureSearchUrl "https://waterfindersearch.search.windows.net/indexes/riversearch-index/docs/suggest?suggesterName=RiverName&api-version=2019-05-06&fuzzy=false&$top=20&&$select=Name,RiverId,Latitude,Longitude&search="
+ENV WEBSITE_CONTENT_SHARE "paddle-finder"
+ENV riverTable "USRivers"
+ENV APPINSIGHTS_INSTRUMENTATIONKEY "07b9d01f-ba67-49aa-892f-c77ccdbefd73"
+
 
 COPY --from=installer-env ["/home/site/wwwroot", "/home/site/wwwroot"]

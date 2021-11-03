@@ -16,7 +16,7 @@ resource riversConfig 'Microsoft.Web/sites/config@2021-01-15' = {
         value: 'https://${searchServiceName}.search.windows.net/indexes/riversearch-index/docs/suggest?suggesterName=RiverName&api-version=2019-05-06&fuzzy=false&$top=20&&$select=Name,RiverId,Latitude,Longitude&search="'
       }
       {
-        name: 'azureSearchKey'
+        name: 'SearchKey'
         value: '@Microsoft.KeyVault(VaultName=${appName};SecretName=searchKey)'
       }
       {
@@ -52,7 +52,7 @@ resource riversConfig 'Microsoft.Web/sites/config@2021-01-15' = {
         value: '8.11.1'
       }
       {
-        name: 'blobStore'
+        name: 'storageConnection'
         value: '@Microsoft.KeyVault(VaultName=${appName};SecretName=storageConnection)'
       }
 

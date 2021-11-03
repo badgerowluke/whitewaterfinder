@@ -13,6 +13,9 @@ using System.Reflection;
 using whitewaterfinder.Core.Rivers;
 using whitewaterfinder.Repo.Rivers;
 using whitewaterfinder.BusinessObjects.Configuration;
+using Microsoft.Azure.Services.AppAuthentication;
+using Microsoft.Azure.KeyVault;
+using Microsoft.Extensions.Configuration.AzureKeyVault;
 
 [assembly: FunctionsStartup(typeof(whitewaterfinder.api.rivers.Startup))]
 namespace whitewaterfinder.api.rivers
@@ -39,7 +42,9 @@ namespace whitewaterfinder.api.rivers
         }
         public override void ConfigureAppConfiguration(IFunctionsConfigurationBuilder builder)
         {
-            var builtConfig = builder.ConfigurationBuilder.Build();
+            var builtConfig = builder.ConfigurationBuilder
+            .AddEnvironmentVariables()
+            .Build();
 
             var context = builder.GetContext();
 
@@ -56,12 +61,27 @@ namespace whitewaterfinder.api.rivers
 
             } else {
 
-                BuiltConfig = builder.ConfigurationBuilder
-                    .SetBasePath(Environment.CurrentDirectory)
-                    .AddJsonFile("local.settings.json", optional: true, reloadOnChange: true)
-                    .AddEnvironmentVariables()
-                    .AddAzureKeyVault(new Uri(builtConfig["keyVaultUrl"]), new DefaultAzureCredential())
-                    .Build();
+                try 
+                {
+
+                    var tokenProvider = new AzureServiceTokenProvider();
+                    var kvClient = new KeyVaultClient(
+                        new KeyVaultClient.AuthenticationCallback(
+                            tokenProvider.KeyVaultTokenCallback)
+                    );
+                    BuiltConfig = builder.ConfigurationBuilder
+                        .SetBasePath(Environment.CurrentDirectory)
+                        // .AddJsonFile("local.settings.json", optional: true, reloadOnChange: true)
+                        .AddEnvironmentVariables()
+                        .AddAzureKeyVault(builtConfig["keyVaultUrl"], kvClient, new DefaultKeyVaultSecretManager())
+                        .Build();
+
+                } catch (Exception e) 
+                {
+                    Console.WriteLine(e.Message);
+                }
+
+
             }
         }
     }
