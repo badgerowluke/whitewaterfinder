@@ -18,7 +18,7 @@ ENV AzureWebJobsScriptRoot=/home/site/wwwroot \
 
 ENV keyVaultUrl "https://paddle-finder.vault.azure.net"
 
-ENV AzureWebJobsStorage "DefaultEndpointsProtocol=https;AccountName=waterfinder;AccountKey=GCAjvJyG29Wmr5MJZpeFqTuFpfjJbrABnB8jELwV+nIt2Ue9ihitdArbZk6nSmI3M50btZuHY9ar4+pHoeFg0Q==;EndpointSuffix=core.windows.net"
+
 ENV baseUSGSUrl https://waterservices.usgs.gov/nwis/iv/?format=json&indent=on&
 ENV azureSearchUrl "https://waterfindersearch.search.windows.net/indexes/riversearch-index/docs/suggest?suggesterName=RiverName&api-version=2019-05-06&fuzzy=false&$top=20&&$select=Name,RiverId,Latitude,Longitude&search="
 ENV WEBSITE_CONTENT_SHARE "paddle-finder"
