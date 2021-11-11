@@ -29,6 +29,11 @@ jobs:
         with:
           dotnet-version: '3.1.x'
 
+      - name: setup .NET 6
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '6.0.x'          
+
       - name: az login
         uses: azure/login@v1
         with:
