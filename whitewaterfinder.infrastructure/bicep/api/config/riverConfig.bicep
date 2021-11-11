@@ -33,7 +33,7 @@ resource riversConfig 'Microsoft.Web/sites/config@2021-01-15' = {
       }
       {
         name: 'FUNCTIONS_EXTENSION_VERSION'
-        value: '~3'
+        value: '~4'
       }
       {
         name: 'FUNCTIONS_WORKER_RUNTIME'
