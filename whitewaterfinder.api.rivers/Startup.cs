@@ -64,6 +64,7 @@ namespace whitewaterfinder.api.rivers
                 try 
                 {
 
+
                     // var tokenProvider = new AzureServiceTokenProvider();
                     // var kvClient = new KeyVaultClient(
                     //     new KeyVaultClient.AuthenticationCallback(
@@ -73,7 +74,7 @@ namespace whitewaterfinder.api.rivers
                         .SetBasePath(Environment.CurrentDirectory)
                         // .AddJsonFile("local.settings.json", optional: true, reloadOnChange: true)
                         .AddEnvironmentVariables()
-                        // .AddAzureKeyVault(builtConfig["keyVaultUrl"])
+                        .AddAzureKeyVault(builtConfig["keyVaultUrl"])
                         .Build();
 
                 } catch (Exception e) 
