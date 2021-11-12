@@ -65,7 +65,7 @@ resource riversConfig 'Microsoft.Web/sites/config@2021-01-15' = {
         value: '~2'
       }
       {
-        name: 'keyVaultName'
+        name: 'keyVaultUrl'
         value: 'https://${appName}.vault.azure.net'
       }
       {

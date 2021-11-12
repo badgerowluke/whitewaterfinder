@@ -73,7 +73,7 @@ namespace whitewaterfinder.api.rivers
                         .SetBasePath(Environment.CurrentDirectory)
                         // .AddJsonFile("local.settings.json", optional: true, reloadOnChange: true)
                         .AddEnvironmentVariables()
-                        .AddAzureKeyVault(builtConfig["keyVaultUrl"], kvClient, new DefaultKeyVaultSecretManager())
+                        .AddAzureKeyVault(builtConfig["keyVaultUrl"])
                         .Build();
 
                 } catch (Exception e) 
