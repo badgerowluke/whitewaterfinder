@@ -1,11 +1,11 @@
 ﻿using com.brgs.orm.Azure;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Configuration.UserSecrets;
+
 
 using Microsoft.Extensions.DependencyInjection;
 
-using Azure.Identity;
+
 
 
 using System;

@@ -1,5 +1,7 @@
-FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS installer-env
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS installer-env
 
+# Build requires 3.1 SDK
+COPY --from=mcr.microsoft.com/dotnet/core/sdk:3.1 /usr/share/dotnet /usr/share/dotnet
 #TODO: we need to make sure that we get configuration injected into the application
 #TODO: we need to make sure that we get our configuration secured.
 
@@ -10,7 +12,7 @@ ARG ENDPOINT
 RUN mkdir -p /home/site/wwwroot
 COPY ./publish/rivers /home/site/wwwroot
 
-FROM mcr.microsoft.com/azure-functions/dotnet:3.0
+FROM mcr.microsoft.com/azure-functions/dotnet:4
 
 ENV AzureWebJobsScriptRoot=/home/site/wwwroot \
     AzureFunctionsJobHost__Logging__Console__IsEnabled=true
