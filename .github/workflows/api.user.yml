@@ -63,5 +63,5 @@ jobs:
 
           echo IMAGE_ID=$IMAGE_ID
           echo VERSION=$VERSION
-          docker tag rivers.api $IMAGE_ID:$VERSION
+          docker tag users.api $IMAGE_ID:$VERSION
           docker push $IMAGE_ID:$VERSION        
