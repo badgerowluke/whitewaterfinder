@@ -1,5 +1,5 @@
-#because GHA doesn't allow manual runs 3
-          #  
+#because GHA doesn't allow manual runs 1
+#  
 on:
   push:
     branches:
