@@ -13,7 +13,7 @@ jobs:
     uses: badgerowluke/.github/.github/workflows/ru-functions-build.yaml@main
     secrets: inherit
     with:
-      working-directory: 'whitewaterfinder.api.bot'
+      WORKING_DIR: 'whitewaterfinder.api.bot'
       PUBLISH_FOLDER_NAME: 'bot'
 
 # env:
