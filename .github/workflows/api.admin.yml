@@ -12,50 +12,9 @@ env:
 
 jobs:
   build-and-test-admin-api:
-    # needs: terraform
-    name: "build and test admin api"
-    runs-on: ubuntu-latest
+    uses: badgerowluke/.github/.github/workflows/ru-functions-build.yaml@main
+    secrets: inherit
+    with:
+      WORKING_DIR: 'whitewaterfinder.api.admin'
+      PUBLISH_FOLDER_NAME: 'admin'
 
-    defaults:
-      run:
-        shell: bash
-
-    steps:
-      - name: "checkout"
-        uses: actions/checkout@v2.1.0
-
-      - name: setup dotnet 3.1.x
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: '3.1.x'
-
-      - name: setup .NET 6
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: '6.0.x'          
-
-      - name: az login
-        uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AZCLI_CREDS }}      
-      
-      - name: build test and release
-        working-directory: whitewaterfinder.api.admin
-
-
-        run: |
-          dotnet nuget add source --username ${{ secrets.GH_USER }} --password ${{ secrets.GH_TOKEN }} --store-password-in-clear-text --name github "${{ secrets.GH_PACKAGES }}"
-          dotnet restore 
-          dotnet build --no-restore --configuration Release
-          dotnet test --no-build --verbosity normal
-          dotnet publish --no-restore -c Release -o './publish/admin'
-      
-      - name: deploy to funtionapp
-        uses: azure/webapps-deploy@v2
-        with: 
-          app-name: 'paddle-finder-admin'
-          package: '${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/publish/admin'
-
-
-      - name: logout
-        run: az logout
