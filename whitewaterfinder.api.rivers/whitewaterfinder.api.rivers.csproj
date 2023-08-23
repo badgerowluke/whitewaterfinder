@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
     <AzureFunctionsVersion>v4</AzureFunctionsVersion>
     <Rootnamespace>whitewaterfinder.api.rivers</Rootnamespace>
     <UserSecretsId>9b1505c6-1459-428b-94c1-2174d656211b</UserSecretsId>
@@ -18,7 +18,7 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.AzureKeyVault" Version="3.1.20" />
     <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="3.1.20" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="2.2.0" />
-    <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="3.0.13" />
+    <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="4.2.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
 
   </ItemGroup>

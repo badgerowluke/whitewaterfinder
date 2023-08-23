@@ -3,7 +3,7 @@
         <PackageReference Include="WindowsAzure.Storage" Version="9.3.2" />
   </ItemGroup>
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
     
   </PropertyGroup>
 
