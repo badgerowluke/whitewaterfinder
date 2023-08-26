@@ -19,5 +19,5 @@ jobs:
       PUBLISH_FOLDER_NAME: 'admin'
       GHUSER: ${{ github.USER }}
       GHTOKEN: ${{ github.TOKEN }}
-      GHPACKAGES: ${{ secrets.GH_PACKAGES }}
+
 
