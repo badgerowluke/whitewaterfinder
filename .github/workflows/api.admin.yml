@@ -17,7 +17,7 @@ jobs:
     with:
       WORKING_DIR: 'whitewaterfinder.api.admin'
       PUBLISH_FOLDER_NAME: 'admin'
-      GHUSER: ${{ secrets.GH_USER }}
-      GHTOKEN: ${{ secrets.GH_TOKEN }}
+      GHUSER: ${{ github.USER }}
+      GHTOKEN: ${{ github.TOKEN }}
       GHPACKAGES: ${{ secrets.GH_PACKAGES }}
 
