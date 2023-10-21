@@ -12,81 +12,10 @@ env:
   AZURE_FUNCTIONAPP_PACKAGE_PATH: 'whitewaterfinder.api.rivers'
 jobs:
   build-and-test-rivers-api:
-  #needs a check to verify if the infrastructure already exists or not.
-    name: "build and test rivers api"
-    runs-on: ubuntu-latest
-
-    defaults:
-      run:
-        shell: bash
-
-    steps:
-      - name: "checkout"
-        uses: actions/checkout@v2.1.0
-
-      - name: setup dotnet 3.1.x
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: '3.1.x'
-
-      - name: setup .NET 6
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: '6.0.x'          
-
-      - name: az login
-        uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AZCLI_CREDS }}         
-
-      - name: build test and release
-        working-directory: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
-        run: |
-
-          dotnet nuget add source --username ${{ secrets.GH_USER }} \
-                                  --password ${{ secrets.GH_TOKEN }} \
-                                  --store-password-in-clear-text \
-                                  --name github "${{ secrets.GH_PACKAGES }}"
-          dotnet restore 
-          dotnet build --no-restore --configuration Release
-          dotnet test --no-build --verbosity normal
-          dotnet publish --no-restore -c Release -o './publish/rivers'
-          # this is here for a test on running Dapr and on running a cluster in my local data center
-          docker build . --file ./Dockerfile --label "runnumber-${GITHUB_RUN_ID}" --tag rivers.api
-
-
-
-      - name: deploy to funtionapp
-        uses: azure/webapps-deploy@v2
-        with: 
-          app-name: 'paddle-finder'
-          package: '${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/publish/rivers'
-
-      - name: logout
-        run: az logout
-
-        
-      - name: Log in to registry
-        # This is where you will update the PAT to GITHUB_TOKEN
-        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-
-
-      - name: Push image
-        run: |
-          IMAGE_ID=ghcr.io/${{ github.repository_owner }}/rivers.api
-
-          # Change all uppercase to lowercase
-          IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
-          # Strip git ref prefix from version
-          VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
-          # Strip "v" prefix from tag name
-          [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
-          # Use Docker `latest` tag convention
-          [ "$VERSION" == "trunk" ] && VERSION=latest
-
-          echo IMAGE_ID=$IMAGE_ID
-          echo VERSION=$VERSION
-          docker tag rivers.api $IMAGE_ID:$VERSION
-          docker push $IMAGE_ID:$VERSION
-
-
+    uses: badgerowluke/.github/.github/workflows/ru-functions-build.yaml@main
+    secrets: inherit
+    with:
+      WORKING_DIR: 'whitewaterfinder.api.rivers'
+      PUBLISH_FOLDER_NAME: 'rivers'
+      GHUSER: ${{ github.USER }}
+      GHTOKEN: ${{ github.TOKEN }}
