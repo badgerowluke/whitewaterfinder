@@ -7,7 +7,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Http" Version="2.1.1" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-    <PackageReference Include="NOSQLORM" Version="0.3.5-43-g9d8b4e0" />
+    <PackageReference Include="NOSQLORM" Version="0.3.6-55-gd49b3eb" />
     <PackageReference Include="WindowsAzure.Storage" Version="9.3.3" />
   </ItemGroup>
 
