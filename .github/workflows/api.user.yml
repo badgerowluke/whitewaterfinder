@@ -27,7 +27,7 @@ jobs:
       - name: 'build user pref functions'
         run: |
           npm install && npm run build
-          # this is here for a test of running Dapr and runnign a cluster in my local data center
+          # this is here for a test of running Dapr and running a cluster in my local data center
           docker build . --file ./Dockerfile --label "runnumber-${GITHUB_RUN_ID}" --tag users.api
 
       - name: az login
