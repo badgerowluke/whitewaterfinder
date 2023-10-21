@@ -10,7 +10,6 @@
     <PackageReference Include="Microsoft.Azure.Functions.Extensions" Version="1.0.0" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="2.2.0" />
     <PackageReference Include="Aliencube.AzureFunctions.Extensions.OpenApi" Version="1.5.4" />
-    <PackageReference Include="Microsoft.Azure.Functions.Extensions" Version="1.0.0" />
     <PackageReference Include="NOSQLORM" Version="0.3.6-55-gd49b3eb" />
     <PackageReference Include="SendGrid.Extensions.DependencyInjection" Version="1.0.0" />  
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.17.0" />       
